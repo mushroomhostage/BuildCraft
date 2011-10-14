@@ -1,18 +1,19 @@
 package buildcraft.energy;
 
+import buildcraft.core.BuildCraftContainer;
 import buildcraft.energy.EngineStone;
 import buildcraft.energy.TileEngine;
-import net.minecraft.server.Container;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.InventoryPlayer;
 import net.minecraft.server.Slot;
 
-public class ContainerEngineRoot extends Container {
+public class ContainerEngineRoot extends BuildCraftContainer {
 
    protected TileEngine engine;
 
 
    public ContainerEngineRoot(InventoryPlayer var1, TileEngine var2) {
+      super(var2.getSize());
       this.engine = var2;
       if(var2.engine instanceof EngineStone) {
          this.a(new Slot(var2, 0, 80, 41));
@@ -35,9 +36,5 @@ public class ContainerEngineRoot extends Container {
 
    public boolean isUsableByPlayer(EntityHuman var1) {
       return this.engine.a(var1);
-   }
-
-   public boolean b(EntityHuman var1) {
-      return true;
    }
 }

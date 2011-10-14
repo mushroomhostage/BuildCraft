@@ -311,15 +311,15 @@ public class PipeTransportItems extends PipeTransport {
          var3.setPosition((double)var1.dataFloat[0], (double)var1.dataFloat[1], (double)var1.dataFloat[2]);
          var3.speed = var1.dataFloat[3];
          var3.deterministicRandomization = var1.dataInt[8];
-         if(var3.container != this.container) {
+         if(var3.container == this.container && this.travelingEntities.containsKey(Integer.valueOf(var3.entityId))) {
+            ((PipeTransportItems.EntityData)this.travelingEntities.get(new Integer(var3.entityId))).orientation = var7;
+         } else {
             if(var3.container != null) {
                ((PipeTransportItems)((TileGenericPipe)var3.container).pipe.transport).scheduleRemoval(var3);
             }
 
             this.travelingEntities.put(new Integer(var3.entityId), new PipeTransportItems.EntityData(var3, var7));
             var3.container = this.container;
-         } else {
-            ((PipeTransportItems.EntityData)this.travelingEntities.get(new Integer(var3.entityId))).orientation = var7;
          }
 
       }

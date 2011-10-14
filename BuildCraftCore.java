@@ -1,17 +1,16 @@
 package net.minecraft.server;
 
+import buildcraft.api.API;
+import buildcraft.api.LiquidData;
 import buildcraft.api.PowerFramework;
 import buildcraft.core.BuildCraftConfiguration;
 import buildcraft.core.BuildCraftItem;
 import buildcraft.core.CoreProxy;
 import buildcraft.core.DefaultProps;
-import buildcraft.core.LiquidData;
 import buildcraft.core.RedstonePowerFramework;
 import forge.Property;
 import java.io.File;
-import java.util.Iterator;
 import java.util.TreeMap;
-import java.util.LinkedList;
 import net.minecraft.server.BaseMod;
 import net.minecraft.server.Block;
 import net.minecraft.server.CraftingManager;
@@ -45,9 +44,6 @@ public class BuildCraftCore {
    public static int oilModel;
    public static String customBuildCraftTexture = "/net/minecraft/src/buildcraft/core/gui/block_textures.png";
    public static String customBuildCraftSprites = "/net/minecraft/src/buildcraft/core/gui/item_textures.png";
-   public static PowerFramework powerFramework;
-   public static final int BUCKET_VOLUME = 1000;
-   public static LinkedList liquids = new LinkedList();
 
 
    public static void initialize() {
@@ -65,10 +61,10 @@ public class BuildCraftCore {
          Property var1 = mainConfiguration.getOrCreateProperty("power.framework", 0, "buildcraft.energy.PneumaticPowerFramework");
 
          try {
-            powerFramework = (PowerFramework)Class.forName(var1.value).getConstructor((Class[])null).newInstance((Object[])null);
+            PowerFramework.currentFramework = (PowerFramework)Class.forName(var1.value).getConstructor((Class[])null).newInstance((Object[])null);
          } catch (Throwable var4) {
             var4.printStackTrace();
-            powerFramework = new RedstonePowerFramework();
+            PowerFramework.currentFramework = new RedstonePowerFramework();
          }
 
          Property var2 = mainConfiguration.getOrCreateIntProperty("wrench.id", 2, DefaultProps.WRENCH_ID);
@@ -78,10 +74,10 @@ public class BuildCraftCore {
          wrenchItem = (new BuildCraftItem(Integer.parseInt(var2.value))).b(2).a("wrenchItem");
          var3.registerShapedRecipe(new ItemStack(wrenchItem), new Object[]{"I I", " G ", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem});
          CoreProxy.addName(wrenchItem, "Wrench");
-         liquids.add(new LiquidData(Block.STATIONARY_WATER.id, Item.WATER_BUCKET.id));
-         liquids.add(new LiquidData(Block.STATIONARY_LAVA.id, Item.LAVA_BUCKET.id));
-         liquids.add(new LiquidData(Block.STATIONARY_WATER.id, Block.STATIONARY_WATER.id));
-         liquids.add(new LiquidData(Block.STATIONARY_LAVA.id, Block.STATIONARY_LAVA.id));
+         API.liquids.add(new LiquidData(Block.STATIONARY_WATER.id, Item.WATER_BUCKET.id));
+         API.liquids.add(new LiquidData(Block.STATIONARY_LAVA.id, Item.LAVA_BUCKET.id));
+         API.liquids.add(new LiquidData(Block.STATIONARY_WATER.id, Block.STATIONARY_WATER.id));
+         API.liquids.add(new LiquidData(Block.STATIONARY_LAVA.id, Block.STATIONARY_LAVA.id));
          mainConfiguration.save();
       }
    }
@@ -123,36 +119,6 @@ public class BuildCraftCore {
       pipeModel = ModLoader.getUniqueBlockModelID(var0, true);
       markerModel = ModLoader.getUniqueBlockModelID(var0, false);
       oilModel = ModLoader.getUniqueBlockModelID(var0, false);
-   }
-
-   public static int getLiquidForBucket(int var0) {
-      Iterator var1 = liquids.iterator();
-
-      LiquidData var2;
-      do {
-         if(!var1.hasNext()) {
-            return 0;
-         }
-
-         var2 = (LiquidData)var1.next();
-      } while(var2.filledBucketId != var0);
-
-      return var2.liquidId;
-   }
-
-   public static int getBucketForLiquid(int var0) {
-      Iterator var1 = liquids.iterator();
-
-      LiquidData var2;
-      do {
-         if(!var1.hasNext()) {
-            return 0;
-         }
-
-         var2 = (LiquidData)var1.next();
-      } while(var2.liquidId != var0);
-
-      return var2.filledBucketId;
    }
 
 }

@@ -1,19 +1,19 @@
 package buildcraft.transport.pipes;
 
 import buildcraft.api.EntityPassiveItem;
+import buildcraft.api.ILiquidContainer;
 import buildcraft.api.IPowerReceptor;
 import buildcraft.api.ISpecialInventory;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
+import buildcraft.api.PowerFramework;
 import buildcraft.api.PowerProvider;
-import buildcraft.core.ILiquidContainer;
 import buildcraft.core.Utils;
 import buildcraft.transport.Pipe;
 import buildcraft.transport.PipeLogicWood;
 import buildcraft.transport.PipeTransportItems;
 import forge.ISidedInventory;
 import net.minecraft.server.Block;
-import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.TileEntity;
@@ -30,7 +30,7 @@ public class PipeItemsWood extends Pipe implements IPowerReceptor {
    public PipeItemsWood(int var1) {
       super(new PipeTransportItems(), new PipeLogicWood(), var1);
       this.nextTexture = this.baseTexture;
-      this.powerProvider = BuildCraftCore.powerFramework.createPowerProvider();
+      this.powerProvider = PowerFramework.currentFramework.createPowerProvider();
       this.powerProvider.configure(50, 1, 64, 1, 64);
       this.powerProvider.configurePowerPerdition(64, 1);
    }

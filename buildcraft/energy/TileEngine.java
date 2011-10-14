@@ -1,20 +1,21 @@
 package buildcraft.energy;
 
 import buildcraft.api.APIProxy;
+import buildcraft.api.ILiquidContainer;
 import buildcraft.api.IPowerReceptor;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
+import buildcraft.api.PowerFramework;
 import buildcraft.api.PowerProvider;
-import buildcraft.core.ILiquidContainer;
+import buildcraft.api.TileNetworkData;
 import buildcraft.core.TileBuildCraft;
-import buildcraft.core.TileNetworkData;
 import buildcraft.energy.Engine;
 import buildcraft.energy.EngineIron;
 import buildcraft.energy.EngineStone;
 import buildcraft.energy.EngineWood;
+import buildcraft.energy.IEngineProvider;
 import buildcraft.energy.PneumaticPowerProvider;
 import java.util.HashMap;
-import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
@@ -23,7 +24,7 @@ import net.minecraft.server.Packet;
 import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.TileEntity;
 
-public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInventory, ILiquidContainer {
+public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInventory, ILiquidContainer, IEngineProvider {
 
    public static HashMap possibleFuels = new HashMap();
    @TileNetworkData
@@ -39,7 +40,7 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
 
 
    public TileEngine() {
-      this.provider = BuildCraftCore.powerFramework.createPowerProvider();
+      this.provider = PowerFramework.currentFramework.createPowerProvider();
    }
    
    public ItemStack[] getContents() {
@@ -303,6 +304,10 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
 
    public int powerRequest() {
       return 0;
+   }
+
+   public Engine getEngine() {
+      return this.engine;
    }
 
 }

@@ -2,6 +2,7 @@ package buildcraft.factory;
 
 import buildcraft.api.IPowerReceptor;
 import buildcraft.api.Orientations;
+import buildcraft.api.PowerFramework;
 import buildcraft.api.PowerProvider;
 import buildcraft.core.IMachine;
 import buildcraft.core.StackUtil;
@@ -9,7 +10,6 @@ import buildcraft.core.Utils;
 import buildcraft.factory.TileMachine;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftBlockUtil;
-import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.BuildCraftFactory;
 import net.minecraft.server.EntityItem;
 import net.minecraft.server.ItemStack;
@@ -22,7 +22,7 @@ public class TileMiningWell extends TileMachine implements IMachine, IPowerRecep
 
 
    public TileMiningWell() {
-      this.powerProvider = BuildCraftCore.powerFramework.createPowerProvider();
+      this.powerProvider = PowerFramework.currentFramework.createPowerProvider();
       this.powerProvider.configure(50, 25, 25, 25, 1000);
    }
 

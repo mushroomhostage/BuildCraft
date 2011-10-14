@@ -257,4 +257,8 @@ public class BlockOilFlowing extends BlockFluids {
    public int stillLiquidId() {
       return BuildCraftEnergy.oilStill.id;
    }
+
+   public boolean isBlockReplaceable(World var1, int var2, int var3, int var4) {
+      return true;
+   }
 }

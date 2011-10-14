@@ -1,7 +1,7 @@
 package buildcraft.energy;
 
 import buildcraft.api.Orientations;
-import buildcraft.core.TileNetworkData;
+import buildcraft.api.TileNetworkData;
 import buildcraft.energy.ContainerEngine;
 import buildcraft.energy.TileEngine;
 import net.minecraft.server.Entity;
@@ -100,7 +100,7 @@ public abstract class Engine {
 
    public void sendGUINetworkData(ContainerEngine var1, ICrafting var2) {}
 
-   static enum EnergyStage {
+   public static enum EnergyStage {
 
       Blue("Blue", 0),
       Green("Green", 1),

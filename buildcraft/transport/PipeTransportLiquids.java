@@ -1,14 +1,14 @@
 package buildcraft.transport;
 
 import buildcraft.api.APIProxy;
+import buildcraft.api.ILiquidContainer;
 import buildcraft.api.IPipeEntry;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
 import buildcraft.api.SafeTimeTracker;
+import buildcraft.api.TileNetworkData;
 import buildcraft.core.CoreProxy;
-import buildcraft.core.ILiquidContainer;
 import buildcraft.core.IMachine;
-import buildcraft.core.TileNetworkData;
 import buildcraft.core.Utils;
 import buildcraft.transport.IPipeTransportLiquidsHook;
 import buildcraft.transport.PipeTransport;
@@ -205,7 +205,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
       for(int var1 = 0; var1 < 6; ++var1) {
          Position var2 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, Orientations.values()[var1]);
          var2.moveForwards(1.0D);
-         if(!this.canReceiveLiquid(var2)) {
+         if(!Utils.checkPipesConnections(this.worldObj, (int)var2.x, (int)var2.y, (int)var2.z, this.xCoord, this.yCoord, this.zCoord)) {
             this.side[var1].reset();
          }
       }

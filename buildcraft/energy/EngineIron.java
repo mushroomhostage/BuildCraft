@@ -1,12 +1,12 @@
 package buildcraft.energy;
 
+import buildcraft.api.API;
 import buildcraft.api.Orientations;
 import buildcraft.energy.ContainerEngine;
 import buildcraft.energy.Engine;
 import buildcraft.energy.EngineFuel;
 import buildcraft.energy.TileEngine;
 import net.minecraft.server.Block;
-import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.ICrafting;
 import net.minecraft.server.Item;
 import net.minecraft.server.ItemStack;
@@ -85,7 +85,7 @@ public class EngineIron extends Engine {
       ItemStack var1 = this.tile.getItem(0);
       int var2;
       if(var1 != null) {
-         var2 = BuildCraftCore.getLiquidForBucket(var1.id);
+         var2 = API.getLiquidForBucket(var1.id);
          if(var2 != 0 && this.fill(Orientations.Unknown, 1000, var2, false) == 1000) {
             this.fill(Orientations.Unknown, 1000, var2, true);
             this.tile.setItem(0, new ItemStack(Item.BUCKET, 1));

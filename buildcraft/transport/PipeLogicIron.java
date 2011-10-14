@@ -1,9 +1,9 @@
 package buildcraft.transport;
 
+import buildcraft.api.ILiquidContainer;
 import buildcraft.api.IPipeEntry;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
-import buildcraft.core.ILiquidContainer;
 import buildcraft.transport.PipeLogic;
 import buildcraft.transport.PipeLogicWood;
 import buildcraft.transport.TileGenericPipe;

@@ -2,7 +2,7 @@ package buildcraft.api;
 
 import buildcraft.api.IPowerReceptor;
 import buildcraft.api.SafeTimeTracker;
-import buildcraft.core.TileNetworkData;
+import buildcraft.api.TileNetworkData;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
 

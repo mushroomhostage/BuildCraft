@@ -36,51 +36,55 @@ public class BuildCraftBuilders {
    public static BlockBuilder builderBlock;
    public static BlockTemplate templateBlock;
    public static ItemTemplate templateItem;
+   private static boolean initialized = false;
    public static BluePrint[] bluePrints = new BluePrint['\ufe01'];
 
 
    public static void initialize() {
-      mod_BuildCraftCore.initialize();
-      BuildCraftCore.initializeGears();
-      Property var0 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("templateItem.id", 2, DefaultProps.TEMPLATE_ITEM_ID);
-      Property var1 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("marker.id", DefaultProps.MARKER_ID);
-      Property var2 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("filler.id", DefaultProps.FILLER_ID);
-      Property var3 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("builder.id", DefaultProps.BUILDER_ID);
-      Property var4 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("template.id", DefaultProps.TEMPLATE_ID);
-      BuildCraftCore.mainConfiguration.save();
-      CraftingManager var5 = CraftingManager.getInstance();
-      templateItem = new ItemTemplate(Integer.parseInt(var0.value));
-      templateItem.a("templateItem");
-      CoreProxy.addName(templateItem, "Blank Template");
-      var5.registerShapedRecipe(new ItemStack(templateItem, 1), new Object[]{"ppp", "pip", "ppp", Character.valueOf('i'), new ItemStack(Item.INK_SACK, 1, 0), Character.valueOf('p'), Item.PAPER});
-      markerBlock = new BlockMarker(Integer.parseInt(var1.value));
-      ModLoader.RegisterBlock(markerBlock);
-      CoreProxy.addName(markerBlock.a("markerBlock"), "Land Mark");
-      var5.registerShapedRecipe(new ItemStack(markerBlock, 1), new Object[]{"l ", "r ", Character.valueOf('l'), new ItemStack(Item.INK_SACK, 1, 4), Character.valueOf('r'), Block.REDSTONE_TORCH_ON});
-      fillerBlock = new BlockFiller(Integer.parseInt(var2.value));
-      ModLoader.RegisterBlock(fillerBlock);
-      CoreProxy.addName(fillerBlock.a("fillerBlock"), "Filler");
-      var5.registerShapedRecipe(new ItemStack(fillerBlock, 1), new Object[]{"btb", "ycy", "gCg", Character.valueOf('b'), new ItemStack(Item.INK_SACK, 1, 0), Character.valueOf('t'), markerBlock, Character.valueOf('y'), new ItemStack(Item.INK_SACK, 1, 11), Character.valueOf('c'), Block.WORKBENCH, Character.valueOf('g'), BuildCraftCore.goldGearItem, Character.valueOf('C'), Block.CHEST});
-      builderBlock = new BlockBuilder(Integer.parseInt(var3.value));
-      ModLoader.RegisterBlock(builderBlock);
-      CoreProxy.addName(builderBlock.a("builderBlock"), "Builder");
-      var5.registerShapedRecipe(new ItemStack(builderBlock, 1), new Object[]{"btb", "ycy", "gCg", Character.valueOf('b'), new ItemStack(Item.INK_SACK, 1, 0), Character.valueOf('t'), markerBlock, Character.valueOf('y'), new ItemStack(Item.INK_SACK, 1, 11), Character.valueOf('c'), Block.WORKBENCH, Character.valueOf('g'), BuildCraftCore.diamondGearItem, Character.valueOf('C'), Block.CHEST});
-      templateBlock = new BlockTemplate(Integer.parseInt(var4.value));
-      ModLoader.RegisterBlock(templateBlock);
-      CoreProxy.addName(templateBlock.a("templateBlock"), "Template Drawing Table");
-      var5.registerShapedRecipe(new ItemStack(templateBlock, 1), new Object[]{"btb", "ycy", "gCg", Character.valueOf('b'), new ItemStack(Item.INK_SACK, 1, 0), Character.valueOf('t'), markerBlock, Character.valueOf('y'), new ItemStack(Item.INK_SACK, 1, 11), Character.valueOf('c'), Block.WORKBENCH, Character.valueOf('g'), BuildCraftCore.diamondGearItem, Character.valueOf('C'), new ItemStack(templateItem, 1)});
-      ModLoader.RegisterTileEntity(TileMarker.class, "Marker");
-      ModLoader.RegisterTileEntity(TileFiller.class, "Filler");
-      ModLoader.RegisterTileEntity(TileBuilder.class, "net.minecraft.server.builders.TileBuilder");
-      ModLoader.RegisterTileEntity(TileTemplate.class, "net.minecraft.server.builders.TileTemplate");
-      FillerRegistry.addRecipe(new FillerFillAll(), new Object[]{"bbb", "bbb", "bbb", Character.valueOf('b'), new ItemStack(Block.BRICK, 1)});
-      FillerRegistry.addRecipe(new FillerFlattener(), new Object[]{"   ", "ggg", "bbb", Character.valueOf('g'), Block.GLASS, Character.valueOf('b'), Block.BRICK});
-      FillerRegistry.addRecipe(new FillerRemover(), new Object[]{"ggg", "ggg", "ggg", Character.valueOf('g'), Block.GLASS});
-      FillerRegistry.addRecipe(new FillerFillWalls(), new Object[]{"bbb", "b b", "bbb", Character.valueOf('b'), Block.BRICK});
-      FillerRegistry.addRecipe(new FillerFillPyramid(), new Object[]{"   ", " b ", "bbb", Character.valueOf('b'), Block.BRICK});
-      FillerRegistry.addRecipe(new FillerFillStairs(), new Object[]{"  b", " bb", "bbb", Character.valueOf('b'), Block.BRICK});
-      BuildCraftCore.mainConfiguration.save();
-      loadBluePrints();
+      if(!initialized) {
+         initialized = true;
+         mod_BuildCraftCore.initialize();
+         BuildCraftCore.initializeGears();
+         Property var0 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("templateItem.id", 2, DefaultProps.TEMPLATE_ITEM_ID);
+         Property var1 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("marker.id", DefaultProps.MARKER_ID);
+         Property var2 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("filler.id", DefaultProps.FILLER_ID);
+         Property var3 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("builder.id", DefaultProps.BUILDER_ID);
+         Property var4 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("template.id", DefaultProps.TEMPLATE_ID);
+         BuildCraftCore.mainConfiguration.save();
+         CraftingManager var5 = CraftingManager.getInstance();
+         templateItem = new ItemTemplate(Integer.parseInt(var0.value));
+         templateItem.a("templateItem");
+         CoreProxy.addName(templateItem, "Blank Template");
+         var5.registerShapedRecipe(new ItemStack(templateItem, 1), new Object[]{"ppp", "pip", "ppp", Character.valueOf('i'), new ItemStack(Item.INK_SACK, 1, 0), Character.valueOf('p'), Item.PAPER});
+         markerBlock = new BlockMarker(Integer.parseInt(var1.value));
+         ModLoader.RegisterBlock(markerBlock);
+         CoreProxy.addName(markerBlock.a("markerBlock"), "Land Mark");
+         var5.registerShapedRecipe(new ItemStack(markerBlock, 1), new Object[]{"l ", "r ", Character.valueOf('l'), new ItemStack(Item.INK_SACK, 1, 4), Character.valueOf('r'), Block.REDSTONE_TORCH_ON});
+         fillerBlock = new BlockFiller(Integer.parseInt(var2.value));
+         ModLoader.RegisterBlock(fillerBlock);
+         CoreProxy.addName(fillerBlock.a("fillerBlock"), "Filler");
+         var5.registerShapedRecipe(new ItemStack(fillerBlock, 1), new Object[]{"btb", "ycy", "gCg", Character.valueOf('b'), new ItemStack(Item.INK_SACK, 1, 0), Character.valueOf('t'), markerBlock, Character.valueOf('y'), new ItemStack(Item.INK_SACK, 1, 11), Character.valueOf('c'), Block.WORKBENCH, Character.valueOf('g'), BuildCraftCore.goldGearItem, Character.valueOf('C'), Block.CHEST});
+         builderBlock = new BlockBuilder(Integer.parseInt(var3.value));
+         ModLoader.RegisterBlock(builderBlock);
+         CoreProxy.addName(builderBlock.a("builderBlock"), "Builder");
+         var5.registerShapedRecipe(new ItemStack(builderBlock, 1), new Object[]{"btb", "ycy", "gCg", Character.valueOf('b'), new ItemStack(Item.INK_SACK, 1, 0), Character.valueOf('t'), markerBlock, Character.valueOf('y'), new ItemStack(Item.INK_SACK, 1, 11), Character.valueOf('c'), Block.WORKBENCH, Character.valueOf('g'), BuildCraftCore.diamondGearItem, Character.valueOf('C'), Block.CHEST});
+         templateBlock = new BlockTemplate(Integer.parseInt(var4.value));
+         ModLoader.RegisterBlock(templateBlock);
+         CoreProxy.addName(templateBlock.a("templateBlock"), "Template Drawing Table");
+         var5.registerShapedRecipe(new ItemStack(templateBlock, 1), new Object[]{"btb", "ycy", "gCg", Character.valueOf('b'), new ItemStack(Item.INK_SACK, 1, 0), Character.valueOf('t'), markerBlock, Character.valueOf('y'), new ItemStack(Item.INK_SACK, 1, 11), Character.valueOf('c'), Block.WORKBENCH, Character.valueOf('g'), BuildCraftCore.diamondGearItem, Character.valueOf('C'), new ItemStack(templateItem, 1)});
+         ModLoader.RegisterTileEntity(TileMarker.class, "Marker");
+         ModLoader.RegisterTileEntity(TileFiller.class, "Filler");
+         ModLoader.RegisterTileEntity(TileBuilder.class, "net.minecraft.server.builders.TileBuilder");
+         ModLoader.RegisterTileEntity(TileTemplate.class, "net.minecraft.server.builders.TileTemplate");
+         FillerRegistry.addRecipe(new FillerFillAll(), new Object[]{"bbb", "bbb", "bbb", Character.valueOf('b'), new ItemStack(Block.BRICK, 1)});
+         FillerRegistry.addRecipe(new FillerFlattener(), new Object[]{"   ", "ggg", "bbb", Character.valueOf('g'), Block.GLASS, Character.valueOf('b'), Block.BRICK});
+         FillerRegistry.addRecipe(new FillerRemover(), new Object[]{"ggg", "ggg", "ggg", Character.valueOf('g'), Block.GLASS});
+         FillerRegistry.addRecipe(new FillerFillWalls(), new Object[]{"bbb", "b b", "bbb", Character.valueOf('b'), Block.BRICK});
+         FillerRegistry.addRecipe(new FillerFillPyramid(), new Object[]{"   ", " b ", "bbb", Character.valueOf('b'), Block.BRICK});
+         FillerRegistry.addRecipe(new FillerFillStairs(), new Object[]{"  b", " bb", "bbb", Character.valueOf('b'), Block.BRICK});
+         BuildCraftCore.mainConfiguration.save();
+         loadBluePrints();
+      }
    }
 
    public static int storeBluePrint(BluePrint var0) {

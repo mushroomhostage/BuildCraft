@@ -1,22 +1,22 @@
 package buildcraft.builders;
 
+import buildcraft.api.API;
 import buildcraft.api.APIProxy;
 import buildcraft.api.IAreaProvider;
 import buildcraft.api.IPowerReceptor;
 import buildcraft.api.LaserKind;
 import buildcraft.api.Orientations;
+import buildcraft.api.PowerFramework;
 import buildcraft.api.PowerProvider;
+import buildcraft.api.TileNetworkData;
 import buildcraft.core.BlockContents;
 import buildcraft.core.BluePrint;
 import buildcraft.core.BluePrintBuilder;
 import buildcraft.core.Box;
 import buildcraft.core.CoreProxy;
 import buildcraft.core.TileBuildCraft;
-import buildcraft.core.TileNetworkData;
-import buildcraft.core.Utils;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftBuilders;
-import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemBlock;
@@ -37,7 +37,7 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
 
 
    public TileBuilder() {
-      this.powerProvider = BuildCraftCore.powerFramework.createPowerProvider();
+      this.powerProvider = PowerFramework.currentFramework.createPowerProvider();
       this.powerProvider.configure(10, 25, 25, 25, 25);
       this.powerProvider.configurePowerPerdition(25, 1);
    }
@@ -125,7 +125,7 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
                   return;
                }
 
-               if(!Utils.softBlock(var1.blockId)) {
+               if(!API.softBlock(var1.blockId)) {
                   Block.byId[var1.blockId].g(this.world, var1.x, var1.y, var1.z, this.world.getData(var1.x, var1.y, var1.z));
                   this.world.setTypeId(var1.x, var1.y, var1.z, 0);
                } else {

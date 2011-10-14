@@ -1,9 +1,9 @@
 package buildcraft.transport;
 
+import buildcraft.api.ILiquidContainer;
 import buildcraft.api.ISpecialInventory;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
-import buildcraft.core.ILiquidContainer;
 import buildcraft.core.StackUtil;
 import java.util.List;
 import net.minecraft.server.AxisAlignedBB;

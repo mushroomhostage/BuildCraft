@@ -224,15 +224,6 @@ public class Utils {
       return var14;
    }
 
-   public static void breakBlock(World var0, int var1, int var2, int var3) {
-      int var4 = var0.getTypeId(var1, var2, var3);
-      if(var4 != 0) {
-         Block.byId[var4].g(var0, var1, var2, var3, var0.getData(var1, var2, var3));
-      }
-
-      var0.setTypeId(var1, var2, var3, 0);
-   }
-
    public static void handleDescriptionPacket(Packet230ModLoader var0) {
       int var1 = var0.dataInt[0];
       int var2 = var0.dataInt[1];
@@ -281,16 +272,8 @@ public class Utils {
 
    }
 
-   public static boolean softBlock(int var0) {
-      return var0 == 0 || var0 == Block.STATIONARY_WATER.id || var0 == Block.WATER.id || Block.byId[var0] == null;
-   }
-
    public static int liquidId(int var0) {
       return var0 != Block.STATIONARY_WATER.id && var0 != Block.WATER.id?(var0 != Block.STATIONARY_LAVA.id && var0 != Block.LAVA.id?(Block.byId[var0] instanceof ILiquid?((ILiquid)Block.byId[var0]).stillLiquidId():0):Block.STATIONARY_LAVA.id):Block.STATIONARY_WATER.id;
-   }
-
-   public static boolean unbreakableBlock(int var0) {
-      return var0 == Block.BEDROCK.id || var0 == Block.STATIONARY_LAVA.id || var0 == Block.LAVA.id;
    }
 
    public static int packetIdToInt(PacketIds var0) {

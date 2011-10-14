@@ -1,5 +1,6 @@
 package buildcraft.factory;
 
+import buildcraft.api.API;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
 import buildcraft.core.Utils;
@@ -68,7 +69,7 @@ public class BlockRefinery extends BlockContainer {
 
             var1.notify(var2, var3, var4);
          } else {
-            var6 = BuildCraftCore.getLiquidForBucket(var5.K().id);
+            var6 = API.getLiquidForBucket(var5.K().id);
             if(var6 != 0) {
                int var7 = ((TileRefinery)var1.getTileEntity(var2, var3, var4)).fill(Orientations.Unknown, 1000, var6, true);
                if(var7 != 0 && !BuildCraftCore.debugMode) {

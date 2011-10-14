@@ -1,11 +1,14 @@
 package buildcraft.factory;
 
+import buildcraft.api.API;
 import buildcraft.api.APIProxy;
 import buildcraft.api.IAreaProvider;
 import buildcraft.api.IPowerReceptor;
 import buildcraft.api.LaserKind;
 import buildcraft.api.Orientations;
+import buildcraft.api.PowerFramework;
 import buildcraft.api.PowerProvider;
+import buildcraft.api.TileNetworkData;
 import buildcraft.core.BlockContents;
 import buildcraft.core.BluePrint;
 import buildcraft.core.BluePrintBuilder;
@@ -13,14 +16,12 @@ import buildcraft.core.Box;
 import buildcraft.core.DefaultAreaProvider;
 import buildcraft.core.IMachine;
 import buildcraft.core.StackUtil;
-import buildcraft.core.TileNetworkData;
 import buildcraft.core.Utils;
 import buildcraft.factory.EntityMechanicalArm;
 import buildcraft.factory.IArmListener;
 import buildcraft.factory.TileMachine;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftBlockUtil;
-import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.BuildCraftFactory;
 import net.minecraft.server.EntityItem;
 import net.minecraft.server.ItemStack;
@@ -59,7 +60,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
 
 
    public TileQuarry() {
-      this.powerProvider = BuildCraftCore.powerFramework.createPowerProvider();
+      this.powerProvider = PowerFramework.currentFramework.createPowerProvider();
       this.powerProvider.configure(20, 25, 25, 25, MAX_ENERGY);
    }
 
@@ -141,7 +142,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                         BlockContents var1 = this.bluePrintBuilder.findNextBlock(this.world);
                         int var2 = this.world.getTypeId(var1.x, var1.y, var1.z);
                         if(var1 != null) {
-                           if(!Utils.softBlock(var2)) {
+                           if(!API.softBlock(var2)) {
                               this.world.setTypeId(var1.x, var1.y, var1.z, 0);
                            } else if(var1.blockId != 0) {
                               this.world.setTypeId(var1.x, var1.y, var1.z, var1.blockId);
@@ -233,7 +234,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
 
    public void a(NBTTagCompound var1) {
       super.a(var1);
-      BuildCraftCore.powerFramework.loadPowerProvider(this, var1);
+      PowerFramework.currentFramework.loadPowerProvider(this, var1);
       if(var1.hasKey("box")) {
          this.box.initialize(var1.k("box"));
          this.loadDefaultBoundaries = false;
@@ -264,7 +265,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
 
    public void b(NBTTagCompound var1) {
       super.b(var1);
-      BuildCraftCore.powerFramework.savePowerProvider(this, var1);
+      PowerFramework.currentFramework.savePowerProvider(this, var1);
       var1.a("targetX", this.targetX);
       var1.a("targetY", this.targetY);
       var1.a("targetZ", this.targetZ);
@@ -323,7 +324,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
    }
 
    private boolean canDig(int var1) {
-      return !this.blockDig(var1) && !Utils.softBlock(var1) && var1 != Block.SNOW.id;
+      return !this.blockDig(var1) && !API.softBlock(var1) && var1 != Block.SNOW.id;
    }
 
    public void destroy() {

@@ -1,8 +1,8 @@
 package buildcraft.builders;
 
+import buildcraft.api.API;
 import buildcraft.api.FillerPattern;
 import buildcraft.api.IBox;
-import buildcraft.core.Utils;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemStack;
@@ -38,7 +38,7 @@ public class FillerFlattener extends FillerPattern {
          for(int var17 = var4; var17 <= var7; ++var17) {
             for(int var18 = var6; var18 <= var8; ++var18) {
                if(!var11[var17 - var4][var18 - var6]) {
-                  if(!Utils.softBlock(var1.world.getTypeId(var17, var16, var18))) {
+                  if(!API.softBlock(var1.world.getTypeId(var17, var16, var18))) {
                      var11[var17 - var4][var18 - var6] = true;
                   } else {
                      var19 = true;

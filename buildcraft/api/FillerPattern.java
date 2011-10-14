@@ -1,7 +1,7 @@
 package buildcraft.api;
 
+import buildcraft.api.API;
 import buildcraft.api.IBox;
-import buildcraft.core.Utils;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.TileEntity;
@@ -27,7 +27,7 @@ public abstract class FillerPattern {
       for(int var13 = var2; var13 <= var5 && !var9; ++var13) {
          for(int var14 = var1; var14 <= var4 && !var9; ++var14) {
             for(int var15 = var3; var15 <= var6 && !var9; ++var15) {
-               if(Utils.softBlock(var8.getTypeId(var14, var13, var15))) {
+               if(API.softBlock(var8.getTypeId(var14, var13, var15))) {
                   var10 = var14;
                   var11 = var13;
                   var12 = var15;
@@ -55,7 +55,7 @@ public abstract class FillerPattern {
 
          for(int var13 = var1; var13 <= var4; ++var13) {
             for(int var14 = var3; var14 <= var6; ++var14) {
-               if(!Utils.softBlock(var7.getTypeId(var13, var12, var14)) && !Utils.unbreakableBlock(var7.getTypeId(var13, var12, var14))) {
+               if(!API.softBlock(var7.getTypeId(var13, var12, var14)) && !API.unbreakableBlock(var7.getTypeId(var13, var12, var14))) {
                   var8 = true;
                   var9 = var13;
                   var10 = var12;
@@ -70,7 +70,7 @@ public abstract class FillerPattern {
       }
 
       if(var9 != Integer.MAX_VALUE) {
-         Utils.breakBlock(var7, var9, var10, var11);
+         API.breakBlock(var7, var9, var10, var11);
       }
 
       return var9 == Integer.MAX_VALUE;

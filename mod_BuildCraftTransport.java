@@ -10,11 +10,11 @@ public class mod_BuildCraftTransport extends BaseModMp {
 
    public void ModsLoaded() {
       super.ModsLoaded();
-      BuildCraftTransport.ModsLoaded();
+      BuildCraftTransport.initialize();
       instance = this;
    }
 
    public String Version() {
-      return "2.2.1";
+      return "2.2.2";
    }
 }

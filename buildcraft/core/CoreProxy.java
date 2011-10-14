@@ -47,4 +47,8 @@ public class CoreProxy {
    public static int addFuel(int var0, int var1) {
       return ModLoader.AddAllFuel(var0);
    }
+
+   public static int addCustomTexture(String var0) {
+      return 0;
+   }
 }

@@ -8,15 +8,15 @@ import buildcraft.api.IPowerReceptor;
 import buildcraft.api.ISpecialInventory;
 import buildcraft.api.LaserKind;
 import buildcraft.api.Orientations;
+import buildcraft.api.PowerFramework;
 import buildcraft.api.PowerProvider;
+import buildcraft.api.TileNetworkData;
 import buildcraft.builders.TileMarker;
 import buildcraft.core.Box;
 import buildcraft.core.IMachine;
 import buildcraft.core.StackUtil;
 import buildcraft.core.TileBuildCraft;
-import buildcraft.core.TileNetworkData;
 import buildcraft.core.Utils;
-import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemBlock;
 import net.minecraft.server.ItemStack;
@@ -39,7 +39,7 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
 
 
    public TileFiller() {
-      this.powerProvider = BuildCraftCore.powerFramework.createPowerProvider();
+      this.powerProvider = PowerFramework.currentFramework.createPowerProvider();
       this.powerProvider.configure(10, 25, 100, 25, 100);
       this.powerProvider.configurePowerPerdition(25, 40);
    }

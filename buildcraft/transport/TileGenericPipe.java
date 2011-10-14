@@ -1,13 +1,13 @@
 package buildcraft.transport;
 
 import buildcraft.api.EntityPassiveItem;
+import buildcraft.api.ILiquidContainer;
 import buildcraft.api.IPipeEntry;
 import buildcraft.api.IPowerReceptor;
 import buildcraft.api.ISpecialInventory;
 import buildcraft.api.Orientations;
 import buildcraft.api.PowerProvider;
 import buildcraft.core.BlockIndex;
-import buildcraft.core.ILiquidContainer;
 import buildcraft.core.ISynchronizedTile;
 import buildcraft.core.PacketIds;
 import buildcraft.transport.BlockGenericPipe;
@@ -53,6 +53,10 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
          this.pipe = (Pipe)BlockGenericPipe.pipeBuffer.get(new BlockIndex(this.x, this.y, this.z));
       }
 
+      if(BlockGenericPipe.pipeBuffer.containsKey(new BlockIndex(this.x, this.y, this.z))) {
+         BlockGenericPipe.pipeBuffer.remove(new BlockIndex(this.x, this.y, this.z));
+      }
+
       if(this.pipe != null) {
          this.pipe.setTile(this);
          this.pipe.setWorld(this.world);
@@ -61,23 +65,25 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
    }
 
    public void h_() {
-      if(!this.initialized) {
-         this.pipe.initialize();
-         this.pipe.setWorld(this.world);
-         this.initialized = true;
-      }
+      if(BlockGenericPipe.isValid(this.pipe)) {
+         if(!this.initialized) {
+            this.pipe.initialize();
+            this.pipe.setWorld(this.world);
+            this.initialized = true;
+         }
 
-      if(this.blockNeighborChange) {
-         this.pipe.onNeighborBlockChange();
-         this.blockNeighborChange = false;
-      }
+         if(this.blockNeighborChange) {
+            this.pipe.onNeighborBlockChange();
+            this.blockNeighborChange = false;
+         }
 
-      PowerProvider var1 = this.getPowerProvider();
-      if(var1 != null) {
-         var1.update(this);
-      }
+         PowerProvider var1 = this.getPowerProvider();
+         if(var1 != null) {
+            var1.update(this);
+         }
 
-      this.pipe.updateEntity();
+         this.pipe.updateEntity();
+      }
    }
 
    public void setPowerProvider(PowerProvider var1) {
@@ -176,7 +182,10 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
    }
 
    public void handleUpdatePacket(Packet230ModLoader var1) {
-      this.pipe.handlePacket(var1);
+      if(BlockGenericPipe.isValid(this.pipe)) {
+         this.pipe.handlePacket(var1);
+      }
+
    }
 
    public void postPacketHandling(Packet230ModLoader var1) {}

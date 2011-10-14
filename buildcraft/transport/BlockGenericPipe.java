@@ -31,6 +31,8 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
 
    public static TreeMap pipes = new TreeMap();
    public static TreeMap pipeBuffer = new TreeMap();
+   long lastRemovedDate = -1L;
+   public static TreeMap pipeRemoved = new TreeMap();
 
 
    public BlockGenericPipe(int var1) {
@@ -166,6 +168,12 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
 
    public void remove(World var1, int var2, int var3, int var4) {
       Utils.preDestroyBlock(var1, var2, var3, var4);
+      if(this.lastRemovedDate != var1.getTime()) {
+         this.lastRemovedDate = var1.getTime();
+         pipeRemoved.clear();
+      }
+
+      pipeRemoved.put(new BlockIndex(var2, var3, var4), getPipe(var1, var2, var3, var4));
       super.remove(var1, var2, var3, var4);
    }
 
@@ -183,9 +191,16 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
 
          for(int var8 = 0; var8 < var7; ++var8) {
             if(var1.random.nextFloat() <= var6) {
-               int var9 = getPipe(var1, var2, var3, var4).itemID;
-               if(var9 > 0) {
-                  this.a(var1, var2, var3, var4, new ItemStack(var9, 1, this.a_(var5)));
+               Pipe var9 = getPipe(var1, var2, var3, var4);
+               if(var9 == null) {
+                  var9 = (Pipe)pipeRemoved.get(new BlockIndex(var2, var3, var4));
+               }
+
+               if(var9 != null) {
+                  int var10 = var9.itemID;
+                  if(var10 > 0) {
+                     this.a(var1, var2, var3, var4, new ItemStack(var10, 1, this.a_(var5)));
+                  }
                }
             }
          }
@@ -197,35 +212,53 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
       TileEntity var8 = var1.getTileEntity(var5, var6, var7);
       Pipe var9 = getPipe(var1, var2, var3, var4);
       Pipe var10 = getPipe(var1, var5, var6, var7);
-      return var10 != null && !var9.transport.getClass().isAssignableFrom(var10.transport.getClass()) && !var10.transport.getClass().isAssignableFrom(var9.transport.getClass())?false:getPipe(var1, var2, var3, var4).isPipeConnected(var8);
+      return !isValid(var9)?false:(isValid(var10) && !var9.transport.getClass().isAssignableFrom(var10.transport.getClass()) && !var10.transport.getClass().isAssignableFrom(var9.transport.getClass())?false:(var9 != null?var9.isPipeConnected(var8):false));
    }
 
    public void doPhysics(World var1, int var2, int var3, int var4, int var5) {
       super.doPhysics(var1, var2, var3, var4, var5);
-      getPipe(var1, var2, var3, var4).onNeighborBlockChange();
+      Pipe var6 = getPipe(var1, var2, var3, var4);
+      if(isValid(var6)) {
+         var6.onNeighborBlockChange();
+      }
+
    }
 
    public void postPlace(World var1, int var2, int var3, int var4, int var5) {
       super.postPlace(var1, var2, var3, var4, var5);
-      getPipe(var1, var2, var3, var4).onBlockPlaced();
+      Pipe var6 = getPipe(var1, var2, var3, var4);
+      if(isValid(var6)) {
+         var6.onBlockPlaced();
+      }
+
    }
 
    public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5) {
       super.interact(var1, var2, var3, var4, var5);
-      return getPipe(var1, var2, var3, var4).blockActivated(var1, var2, var3, var4, var5);
+      Pipe var6 = getPipe(var1, var2, var3, var4);
+      return isValid(var6)?var6.blockActivated(var1, var2, var3, var4, var5):false;
    }
 
    public void prepareTextureFor(IBlockAccess var1, int var2, int var3, int var4, Orientations var5) {
-      getPipe(var1, var2, var3, var4).prepareTextureFor(var5);
+      Pipe var6 = getPipe(var1, var2, var3, var4);
+      if(isValid(var6)) {
+         var6.prepareTextureFor(var5);
+      }
+
    }
 
    public int getBlockTexture(IBlockAccess var1, int var2, int var3, int var4, int var5) {
-      return getPipe(var1, var2, var3, var4).getBlockTexture();
+      Pipe var6 = getPipe(var1, var2, var3, var4);
+      return isValid(var6)?var6.getBlockTexture():0;
    }
 
    public void a(World var1, int var2, int var3, int var4, Entity var5) {
       super.a(var1, var2, var3, var4, var5);
-      getPipe(var1, var2, var3, var4).onEntityCollidedWithBlock(var5);
+      Pipe var6 = getPipe(var1, var2, var3, var4);
+      if(isValid(var6)) {
+         var6.onEntityCollidedWithBlock(var5);
+      }
+
    }
 
    public static Item registerPipe(int var0, Class var1) {
@@ -278,6 +311,10 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
       }
 
       return var5;
+   }
+
+   public static boolean isValid(Pipe var0) {
+      return var0 != null && var0.transport != null && var0.logic != null;
    }
 
 }

@@ -238,6 +238,12 @@ public class ClassMapping
         {
             ClassMapping classmapping1 = (ClassMapping)iterator9.next();
             TileNetworkData tilenetworkdata2 = (TileNetworkData)classmapping1.field.getAnnotation(buildcraft.core.TileNetworkData.class);
+            if (!(classmapping1.field.get(obj) instanceof Object[])) {
+				// Make a vague attempt to continue, probably won't work though.
+				indexes.intIndex += tilenetworkdata2.staticSize();
+				System.err.println("Error: Trying to restore array of non-objects: "+classmapping1.toString()+" -> "+classmapping1.field.toString());
+				continue;
+            }
             Object aobj[] = (Object[])classmapping1.field.get(obj);
             int k = 0;
             while(k < tilenetworkdata2.staticSize()) 

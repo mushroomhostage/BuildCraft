@@ -1,22 +1,22 @@
 package buildcraft.factory;
 
 import buildcraft.api.APIProxy;
+import buildcraft.api.ILiquidContainer;
 import buildcraft.api.IPowerReceptor;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
+import buildcraft.api.PowerFramework;
 import buildcraft.api.PowerProvider;
+import buildcraft.api.TileNetworkData;
 import buildcraft.core.BlockIndex;
 import buildcraft.core.EntityBlock;
-import buildcraft.core.ILiquidContainer;
 import buildcraft.core.IMachine;
-import buildcraft.core.TileNetworkData;
 import buildcraft.core.Utils;
 import buildcraft.factory.TileMachine;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.BuildCraftEnergy;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.Packet230ModLoader;
@@ -38,7 +38,7 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor {
 
 
    public TilePump() {
-      this.powerProvider = BuildCraftCore.powerFramework.createPowerProvider();
+      this.powerProvider = PowerFramework.currentFramework.createPowerProvider();
       this.powerProvider.configure(20, 10, 10, 10, 100);
    }
 
@@ -226,13 +226,13 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor {
       this.aimY = var1.e("aimY");
       this.tubeY = (double)var1.g("tubeY");
       this.liquidId = var1.e("liquidId");
-      BuildCraftCore.powerFramework.loadPowerProvider(this, var1);
+      PowerFramework.currentFramework.loadPowerProvider(this, var1);
       this.powerProvider.configure(20, 10, 10, 10, 100);
    }
 
    public void b(NBTTagCompound var1) {
       super.b(var1);
-      BuildCraftCore.powerFramework.savePowerProvider(this, var1);
+      PowerFramework.currentFramework.savePowerProvider(this, var1);
       var1.a("internalLiquid", this.internalLiquid);
       var1.a("aimY", this.aimY);
       if(this.tube != null) {

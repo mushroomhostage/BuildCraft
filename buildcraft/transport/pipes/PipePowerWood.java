@@ -3,13 +3,13 @@ package buildcraft.transport.pipes;
 import buildcraft.api.IPowerReceptor;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
+import buildcraft.api.PowerFramework;
 import buildcraft.api.PowerProvider;
 import buildcraft.core.Utils;
 import buildcraft.transport.Pipe;
 import buildcraft.transport.PipeLogicWood;
 import buildcraft.transport.PipeTransportPower;
 import buildcraft.transport.TileGenericPipe;
-import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.TileEntity;
 
 public class PipePowerWood extends Pipe implements IPowerReceptor {
@@ -23,7 +23,7 @@ public class PipePowerWood extends Pipe implements IPowerReceptor {
    public PipePowerWood(int var1) {
       super(new PipeTransportPower(), new PipeLogicWood(), var1);
       this.nextTexture = this.baseTexture;
-      this.powerProvider = BuildCraftCore.powerFramework.createPowerProvider();
+      this.powerProvider = PowerFramework.currentFramework.createPowerProvider();
       this.powerProvider.configure(50, 1, 1000, 1, 1000);
       this.powerProvider.configurePowerPerdition(1, 100);
    }

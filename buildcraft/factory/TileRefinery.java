@@ -1,18 +1,18 @@
 package buildcraft.factory;
 
 import buildcraft.api.APIProxy;
+import buildcraft.api.ILiquidContainer;
 import buildcraft.api.IPowerReceptor;
 import buildcraft.api.Orientations;
+import buildcraft.api.PowerFramework;
 import buildcraft.api.PowerProvider;
 import buildcraft.api.SafeTimeTracker;
-import buildcraft.core.ILiquidContainer;
+import buildcraft.api.TileNetworkData;
 import buildcraft.core.IMachine;
-import buildcraft.core.TileNetworkData;
 import buildcraft.factory.RefineryRecipe;
 import buildcraft.factory.TileMachine;
 import java.util.Iterator;
 import java.util.LinkedList;
-import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
@@ -38,7 +38,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
 
 
    public TileRefinery() {
-      this.powerProvider = BuildCraftCore.powerFramework.createPowerProvider();
+      this.powerProvider = PowerFramework.currentFramework.createPowerProvider();
       this.powerProvider.configure(20, 25, 25, 25, 1000);
    }
    
@@ -220,7 +220,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
 
       this.animationStage = var1.e("animationStage");
       this.animationSpeed = var1.g("animationSpeed");
-      BuildCraftCore.powerFramework.loadPowerProvider(this, var1);
+      PowerFramework.currentFramework.loadPowerProvider(this, var1);
       this.powerProvider.configure(20, 25, 25, 25, 1000);
    }
 
@@ -237,7 +237,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
       var1.a("result", var4);
       var1.a("animationStage", this.animationStage);
       var1.a("animationSpeed", this.animationSpeed);
-      BuildCraftCore.powerFramework.savePowerProvider(this, var1);
+      PowerFramework.currentFramework.savePowerProvider(this, var1);
    }
 
    public int getAnimationStage() {
@@ -324,7 +324,12 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
 
       public void readFromNBT(NBTTagCompound var1) {
          this.liquidId = var1.e("liquidId");
-         this.quantity = var1.e("quantity");
+         if(this.liquidId != 0) {
+            this.quantity = var1.e("quantity");
+         } else {
+            this.quantity = 0;
+         }
+
       }
    }
 }

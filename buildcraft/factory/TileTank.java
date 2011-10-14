@@ -1,10 +1,10 @@
 package buildcraft.factory;
 
 import buildcraft.api.APIProxy;
+import buildcraft.api.ILiquidContainer;
 import buildcraft.api.Orientations;
-import buildcraft.core.ILiquidContainer;
+import buildcraft.api.TileNetworkData;
 import buildcraft.core.TileBuildCraft;
-import buildcraft.core.TileNetworkData;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
 

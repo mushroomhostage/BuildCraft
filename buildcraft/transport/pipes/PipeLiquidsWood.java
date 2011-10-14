@@ -1,16 +1,16 @@
 package buildcraft.transport.pipes;
 
+import buildcraft.api.ILiquidContainer;
 import buildcraft.api.IPowerReceptor;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
+import buildcraft.api.PowerFramework;
 import buildcraft.api.PowerProvider;
-import buildcraft.core.ILiquidContainer;
-import buildcraft.core.TileNetworkData;
+import buildcraft.api.TileNetworkData;
 import buildcraft.transport.Pipe;
 import buildcraft.transport.PipeLogicWood;
 import buildcraft.transport.PipeTransportLiquids;
 import net.minecraft.server.Block;
-import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.World;
 
@@ -31,7 +31,7 @@ public class PipeLiquidsWood extends Pipe implements IPowerReceptor {
       this.nextTexture = this.baseTexture;
       this.lastMining = 0L;
       this.lastPower = false;
-      this.powerProvider = BuildCraftCore.powerFramework.createPowerProvider();
+      this.powerProvider = PowerFramework.currentFramework.createPowerProvider();
       this.powerProvider.configure(50, 1, 1, 1, 1);
       this.powerProvider.configurePowerPerdition(1, 1);
    }

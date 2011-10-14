@@ -1,9 +1,9 @@
 package buildcraft.core;
 
+import buildcraft.api.API;
 import buildcraft.api.IAreaProvider;
 import buildcraft.core.BlockContents;
 import buildcraft.core.BluePrint;
-import buildcraft.core.Utils;
 import net.minecraft.server.World;
 
 public class BluePrintBuilder implements IAreaProvider {
@@ -45,14 +45,14 @@ public class BluePrintBuilder implements IAreaProvider {
                         var10.x = var6;
                         var10.y = var7;
                         var10.z = var8;
-                        if(Utils.softBlock(var10.blockId)) {
-                           if(!Utils.softBlock(var9) && !Utils.unbreakableBlock(var9)) {
+                        if(API.softBlock(var10.blockId)) {
+                           if(!API.softBlock(var9) && !API.unbreakableBlock(var9)) {
                               return var10;
                            }
-                        } else if(var9 != var10.blockId && !Utils.unbreakableBlock(var9)) {
+                        } else if(var9 != var10.blockId && !API.unbreakableBlock(var9)) {
                            return var10;
                         }
-                     } else if(var2 == BluePrintBuilder.Mode.Template && (var10.blockId != 0 && Utils.softBlock(var9) || var10.blockId == 0 && !Utils.softBlock(var9) && !Utils.unbreakableBlock(var9))) {
+                     } else if(var2 == BluePrintBuilder.Mode.Template && (var10.blockId != 0 && API.softBlock(var9) || var10.blockId == 0 && !API.softBlock(var9) && !API.unbreakableBlock(var9))) {
                         var10 = new BlockContents();
                         var10.x = var6;
                         var10.y = var7;

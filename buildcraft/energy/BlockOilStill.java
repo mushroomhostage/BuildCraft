@@ -6,6 +6,7 @@ import net.minecraft.server.BlockStationary;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.BuildCraftEnergy;
 import net.minecraft.server.Material;
+import net.minecraft.server.World;
 
 public class BlockOilStill extends BlockStationary implements ITextureProvider, ILiquid {
 
@@ -23,5 +24,9 @@ public class BlockOilStill extends BlockStationary implements ITextureProvider, 
 
    public int stillLiquidId() {
       return BuildCraftEnergy.oilStill.id;
+   }
+
+   public boolean isBlockReplaceable(World var1, int var2, int var3, int var4) {
+      return true;
    }
 }
