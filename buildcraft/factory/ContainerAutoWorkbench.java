@@ -25,8 +25,8 @@ public class ContainerAutoWorkbench extends ContainerWorkbench {
 
    public void a(EntityHuman var1) {
       InventoryPlayer var2 = var1.inventory;
-      if(var2.j() != null) {
-         var1.b(var2.j());
+      if(var2.l() != null) {
+         var1.b(var2.l());
          var2.b((ItemStack)null);
       }
 

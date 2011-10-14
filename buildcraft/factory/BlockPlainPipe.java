@@ -3,7 +3,7 @@ package buildcraft.factory;
 import buildcraft.api.IBlockPipe;
 import buildcraft.api.IPipeConnection;
 import buildcraft.api.Orientations;
-import net.minecraft.server.forge.ITextureProvider;
+import forge.ITextureProvider;
 import java.util.Random;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftCore;
@@ -47,11 +47,9 @@ public class BlockPlainPipe extends Block implements IPipeConnection, IBlockPipe
       return BuildCraftCore.customBuildCraftTexture;
    }
 
-   public int getTextureForConnection(Orientations var1, int var2) {
-      return this.textureId;
-   }
-
    public float getHeightInPipe() {
       return 0.5F;
    }
+
+   public void prepareTextureFor(IBlockAccess var1, int var2, int var3, int var4, Orientations var5) {}
 }

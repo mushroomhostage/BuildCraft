@@ -13,15 +13,11 @@ import buildcraft.energy.EngineIron;
 import buildcraft.energy.EngineStone;
 import buildcraft.energy.EngineWood;
 import buildcraft.energy.PneumaticPowerProvider;
-import net.minecraft.server.Block;
+import java.util.HashMap;
 import net.minecraft.server.BuildCraftCore;
-import net.minecraft.server.BuildCraftEnergy;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
-import net.minecraft.server.Item;
 import net.minecraft.server.ItemStack;
-import net.minecraft.server.Material;
-import net.minecraft.server.ModLoader;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.Packet;
 import net.minecraft.server.Packet230ModLoader;
@@ -29,21 +25,17 @@ import net.minecraft.server.TileEntity;
 
 public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInventory, ILiquidContainer {
 
+   public static HashMap possibleFuels = new HashMap();
    @TileNetworkData
    public Engine engine;
    @TileNetworkData
    public int progressPart = 0;
    @TileNetworkData
-   public int burnTime = 0;
-   @TileNetworkData
    public float serverPistonSpeed = 0.0F;
    boolean lastPower = false;
    public int orientation;
    private ItemStack itemInInventory;
-   public int totalBurnTime = 0;
-   public short scaledBurnTime = 0;
    PowerProvider provider;
-   public static int OIL_BUCKET_TIME = 10000;
 
 
    public TileEngine() {
@@ -68,8 +60,8 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
 
    }
 
-   public void g_() {
-      super.g_();
+   public void h_() {
+      super.h_();
       if(this.engine != null) {
          if(APIProxy.isClient(this.world)) {
             if(this.progressPart != 0) {
@@ -118,40 +110,7 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
                this.sendNetworkUpdate();
             }
 
-            if(this.engine instanceof EngineStone) {
-               if(this.burnTime > 0) {
-                  --this.burnTime;
-                  this.engine.addEnergy(1);
-               }
-
-               if(this.burnTime == 0 && var1) {
-                  this.burnTime = this.totalBurnTime = this.getItemBurnTime(this.itemInInventory);
-                  if(this.burnTime > 0) {
-                     this.splitStack(1, 1);
-                  }
-               }
-            } else if(this.engine instanceof EngineIron) {
-               if(var1 && this.burnTime > 0) {
-                  --this.burnTime;
-                  this.engine.addEnergy(2);
-               }
-
-               if(this.itemInInventory != null && this.itemInInventory.id == BuildCraftEnergy.bucketOil.id) {
-                  this.totalBurnTime = OIL_BUCKET_TIME * 10;
-                  int var6 = OIL_BUCKET_TIME;
-                  if(this.burnTime + var6 <= this.totalBurnTime) {
-                     this.itemInInventory = new ItemStack(Item.BUCKET, 1);
-                     this.burnTime += var6;
-                  }
-               }
-            }
-
-            if(this.totalBurnTime != 0) {
-               this.scaledBurnTime = (short)(this.burnTime * 1000 / this.totalBurnTime);
-            } else {
-               this.scaledBurnTime = 0;
-            }
-
+            this.engine.burn();
          }
       }
    }
@@ -191,7 +150,9 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
 
    }
 
-   public void delete() {}
+   public void delete() {
+      this.engine.delete();
+   }
 
    public void a(NBTTagCompound var1) {
       super.a(var1);
@@ -208,13 +169,12 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
       this.engine.progress = var1.g("progress");
       this.engine.energy = var1.e("energy");
       this.engine.orientation = Orientations.values()[this.orientation];
-      this.totalBurnTime = var1.e("totalBurnTime");
-      this.burnTime = var1.e("burnTime");
       if(var1.hasKey("itemInInventory")) {
          NBTTagCompound var3 = var1.k("itemInInventory");
-         this.itemInInventory = new ItemStack(var3);
+         this.itemInInventory = ItemStack.a(var3);
       }
 
+      this.engine.readFromNBT(var1);
    }
 
    public void b(NBTTagCompound var1) {
@@ -223,14 +183,13 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
       var1.a("orientation", this.orientation);
       var1.a("progress", this.engine.progress);
       var1.a("energy", this.engine.energy);
-      var1.a("totalBurnTime", this.totalBurnTime);
-      var1.a("burnTime", this.burnTime);
       if(this.itemInInventory != null) {
          NBTTagCompound var2 = new NBTTagCompound();
-         this.itemInInventory.a(var2);
+         this.itemInInventory.b(var2);
          var1.a("itemInInventory", var2);
       }
 
+      this.engine.writeToNBT(var1);
    }
 
    public int getSize() {
@@ -262,30 +221,21 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
       return 64;
    }
 
-   public boolean a_(EntityHuman var1) {
+   public boolean a(EntityHuman var1) {
       return true;
-   }
-
-   private int getItemBurnTime(ItemStack var1) {
-      if(var1 == null) {
-         return 0;
-      } else {
-         int var2 = var1.getItem().id;
-         return var2 < 256 && Block.byId[var2].material == Material.WOOD?300:(var2 == Item.STICK.id?100:(var2 == Item.COAL.id?1600:(var2 == Item.LAVA_BUCKET.id?20000:(var2 == Block.SAPLING.id?100:ModLoader.AddAllFuel(var2)))));
-      }
    }
 
    public boolean isBurning() {
       return this.engine != null && this.engine.isBurning();
    }
 
-   public int getBurnTimeRemainingScaled(int var1) {
-      return this.scaledBurnTime * var1 / 1000;
+   public int getScaledBurnTime(int var1) {
+      return this.engine.getScaledBurnTime(var1);
    }
 
-   public Packet getDescriptionPacket() {
+   public Packet l() {
       this.createEngineIfNeeded();
-      return super.getDescriptionPacket();
+      return super.l();
    }
 
    public Packet230ModLoader getUpdatePacket() {
@@ -327,22 +277,8 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
       }
    }
 
-   public int fill(Orientations var1, int var2) {
-      if(this.engine instanceof EngineIron) {
-         this.totalBurnTime = OIL_BUCKET_TIME * 10;
-         int var3 = (int)((float)var2 * (float)OIL_BUCKET_TIME / 1000.0F);
-         if(var3 + this.burnTime <= OIL_BUCKET_TIME * 10) {
-            this.burnTime += var3;
-            return var2;
-         } else {
-            var3 = OIL_BUCKET_TIME * 10 - this.burnTime;
-            int var4 = (int)((float)var3 * 1000.0F / (float)OIL_BUCKET_TIME);
-            this.burnTime += (int)((float)var4 * (float)OIL_BUCKET_TIME / 1000.0F);
-            return var4;
-         }
-      } else {
-         return 0;
-      }
+   public int fill(Orientations var1, int var2, int var3, boolean var4) {
+      return this.engine instanceof EngineIron?((EngineIron)this.engine).fill(var1, var2, var3, true):0;
    }
 
    public int empty(int var1, boolean var2) {
@@ -355,6 +291,18 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
 
    public int getCapacity() {
       return 10000;
+   }
+
+   public int getLiquidId() {
+      return 0;
+   }
+
+   public void e() {}
+
+   public void t_() {}
+
+   public int powerRequest() {
+      return 0;
    }
 
 }

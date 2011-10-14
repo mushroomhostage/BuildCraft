@@ -5,8 +5,8 @@ import buildcraft.api.Orientations;
 import buildcraft.api.PowerProvider;
 import buildcraft.core.IMachine;
 import buildcraft.core.StackUtil;
-import buildcraft.core.TileBuildCraft;
 import buildcraft.core.Utils;
+import buildcraft.factory.TileMachine;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftBlockUtil;
 import net.minecraft.server.BuildCraftCore;
@@ -15,7 +15,7 @@ import net.minecraft.server.EntityItem;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.World;
 
-public class TileMiningWell extends TileBuildCraft implements IMachine, IPowerReceptor {
+public class TileMiningWell extends TileMachine implements IMachine, IPowerReceptor {
 
    boolean isDigging = true;
    PowerProvider powerProvider;
@@ -73,5 +73,13 @@ public class TileMiningWell extends TileBuildCraft implements IMachine, IPowerRe
 
    public PowerProvider getPowerProvider() {
       return this.powerProvider;
+   }
+
+   public boolean manageLiquids() {
+      return false;
+   }
+
+   public boolean manageSolids() {
+      return true;
    }
 }

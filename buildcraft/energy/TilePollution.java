@@ -12,7 +12,7 @@ public class TilePollution extends TileEntity {
    public int saturation = 0;
 
 
-   public void g_() {
+   public void h_() {
       if(!this.init) {
          this.init = true;
          this.timeTracker.markTime(this.world);

@@ -284,7 +284,9 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider {
 
          for(var4 = 0; var4 < var10; ++var4) {
             EntityBlock var12 = var8[var4];
-            var12.die();
+            if(var12 != null) {
+               var12.die();
+            }
          }
       }
 
@@ -347,8 +349,8 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider {
 
    }
 
-   public Packet getDescriptionPacket() {
-      return this.origin.vectO.getMarker(this.world) == this?super.getDescriptionPacket():null;
+   public Packet l() {
+      return this.origin.vectO.getMarker(this.world) == this?super.l():null;
    }
 
    public Packet230ModLoader getUpdatePacket() {

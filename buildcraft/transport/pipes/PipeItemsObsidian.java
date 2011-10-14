@@ -1,4 +1,4 @@
-package buildcraft.transport;
+package buildcraft.transport.pipes;
 
 import buildcraft.api.APIProxy;
 import buildcraft.api.EntityPassiveItem;
@@ -7,7 +7,9 @@ import buildcraft.api.Orientations;
 import buildcraft.api.Position;
 import buildcraft.api.PowerProvider;
 import buildcraft.core.Utils;
-import buildcraft.transport.TilePipe;
+import buildcraft.transport.Pipe;
+import buildcraft.transport.PipeLogicObsidian;
+import buildcraft.transport.PipeTransportItems;
 import buildcraft.transport.TransportProxy;
 import java.util.List;
 import net.minecraft.server.AxisAlignedBB;
@@ -20,16 +22,18 @@ import net.minecraft.server.IInventory;
 import net.minecraft.server.Item;
 import net.minecraft.server.ItemStack;
 
-public class TileObsidianPipe extends TilePipe implements IPowerReceptor {
+public class PipeItemsObsidian extends Pipe implements IPowerReceptor {
 
    private PowerProvider powerProvider;
    private int[] entitiesDropped = new int[32];
    private int entitiesDroppedIndex = 0;
 
 
-   public TileObsidianPipe() {
-      for(int var1 = 0; var1 < this.entitiesDropped.length; ++var1) {
-         this.entitiesDropped[var1] = -1;
+   public PipeItemsObsidian(int var1) {
+      super(new PipeTransportItems(), new PipeLogicObsidian(), var1);
+
+      for(int var2 = 0; var2 < this.entitiesDropped.length; ++var2) {
+         this.entitiesDropped[var2] = -1;
       }
 
       this.powerProvider = BuildCraftCore.powerFramework.createPowerProvider();
@@ -37,8 +41,22 @@ public class TileObsidianPipe extends TilePipe implements IPowerReceptor {
       this.powerProvider.configurePowerPerdition(1, 1);
    }
 
+   public int getBlockTexture() {
+      return 28;
+   }
+
+   public void onEntityCollidedWithBlock(Entity var1) {
+      super.onEntityCollidedWithBlock(var1);
+      if(!var1.dead) {
+         if(this.canSuck(var1, 0)) {
+            this.pullItemIntoPipe(var1, 0);
+         }
+
+      }
+   }
+
    public Orientations getSuckingOrientation() {
-      Position var1 = new Position((double)this.x, (double)this.y, (double)this.z);
+      Position var1 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord);
       int var2 = 0;
       Position var3 = new Position(var1);
 
@@ -46,7 +64,7 @@ public class TileObsidianPipe extends TilePipe implements IPowerReceptor {
          Position var5 = new Position(var1);
          var5.orientation = Orientations.values()[var4];
          var5.moveForwards(1.0D);
-         if(Utils.checkPipesConnections(this.world, (int)var5.x, (int)var5.y, (int)var5.z, this.x, this.y, this.z)) {
+         if(Utils.checkPipesConnections(this.worldObj, (int)var5.x, (int)var5.y, (int)var5.z, this.xCoord, this.yCoord, this.zCoord)) {
             ++var2;
             if(var2 == 1) {
                var3 = new Position(var5);
@@ -65,9 +83,9 @@ public class TileObsidianPipe extends TilePipe implements IPowerReceptor {
       if(var1 == Orientations.Unknown) {
          return null;
       } else {
-         Position var3 = new Position((double)this.x, (double)this.y, (double)this.z, var1);
-         Position var4 = new Position((double)this.x, (double)this.y, (double)this.z, var1);
-         switch(TileObsidianPipe.NamelessClass995489607.$SwitchMap$net$minecraft$src$buildcraft$api$Orientations[var1.ordinal()]) {
+         Position var3 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, var1);
+         Position var4 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, var1);
+         switch(PipeItemsObsidian.NamelessClass327021671.$SwitchMap$net$minecraft$src$buildcraft$api$Orientations[var1.ordinal()]) {
          case 1:
             var3.x += (double)var2;
             var4.x += (double)(1 + var2);
@@ -92,7 +110,7 @@ public class TileObsidianPipe extends TilePipe implements IPowerReceptor {
             var4.z -= (double)var2;
          }
 
-         switch(TileObsidianPipe.NamelessClass995489607.$SwitchMap$net$minecraft$src$buildcraft$api$Orientations[var1.ordinal()]) {
+         switch(PipeItemsObsidian.NamelessClass327021671.$SwitchMap$net$minecraft$src$buildcraft$api$Orientations[var1.ordinal()]) {
          case 1:
          case 2:
             var3.y += (double)(var2 + 1);
@@ -137,7 +155,7 @@ public class TileObsidianPipe extends TilePipe implements IPowerReceptor {
       if(var2 == null) {
          return false;
       } else {
-         List var3 = this.world.a(Entity.class, var2);
+         List var3 = this.worldObj.a(Entity.class, var2);
 
          for(int var4 = 0; var4 < var3.size(); ++var4) {
             if(var3.get(var4) instanceof Entity) {
@@ -152,9 +170,9 @@ public class TileObsidianPipe extends TilePipe implements IPowerReceptor {
                   if(!var6.dead && var6.type == 1) {
                      ItemStack var7 = this.checkExtractGeneric(var6, true, this.getSuckingOrientation().reverse());
                      if(var7 != null && this.powerProvider.useEnergy(1, 1, true) == 1) {
-                        EntityItem var8 = new EntityItem(this.world, var6.locX, var6.locY + 0.30000001192092896D, var6.locZ, var7);
+                        EntityItem var8 = new EntityItem(this.worldObj, var6.locX, var6.locY + 0.30000001192092896D, var6.locZ, var7);
                         var8.pickupDelay = 10;
-                        this.world.addEntity(var8);
+                        this.worldObj.addEntity(var8);
                         this.pullItemIntoPipe(var8, 1);
                         return true;
                      }
@@ -185,14 +203,14 @@ public class TileObsidianPipe extends TilePipe implements IPowerReceptor {
    }
 
    public void pullItemIntoPipe(Entity var1, int var2) {
-      if(!APIProxy.isClient(this.world)) {
+      if(!APIProxy.isClient(this.worldObj)) {
          Orientations var3 = this.getSuckingOrientation();
          if(var3 != Orientations.Unknown) {
-            this.world.makeSound(var1, "random.pop", 0.2F, ((this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            this.worldObj.makeSound(var1, "random.pop", 0.2F, ((this.worldObj.random.nextFloat() - this.worldObj.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             ItemStack var4 = null;
             if(var1 instanceof EntityItem) {
                EntityItem var5 = (EntityItem)var1;
-               TransportProxy.obsidianPipePickup(this.world, var5, this);
+               TransportProxy.obsidianPipePickup(this.worldObj, var5, this.container);
                int var6 = this.powerProvider.useEnergy(var2, var5.itemStack.count * var2, true);
                if(var2 != 0 && var6 / var2 != var5.itemStack.count) {
                   var4 = var5.itemStack.a(var6 / var2);
@@ -206,8 +224,8 @@ public class TileObsidianPipe extends TilePipe implements IPowerReceptor {
                APIProxy.removeEntity(var1);
             }
 
-            EntityPassiveItem var7 = new EntityPassiveItem(this.world, (double)this.x + 0.5D, (double)((float)this.y + Utils.getPipeFloorOf(var4)), (double)this.z + 0.5D, var4);
-            this.entityEntering(var7, var3.reverse());
+            EntityPassiveItem var7 = new EntityPassiveItem(this.worldObj, (double)this.xCoord + 0.5D, (double)((float)this.yCoord + Utils.getPipeFloorOf(var4)), (double)this.zCoord + 0.5D, var4);
+            ((PipeTransportItems)this.transport).entityEntering(var7, var3.reverse());
          }
 
       }
@@ -249,8 +267,12 @@ public class TileObsidianPipe extends TilePipe implements IPowerReceptor {
       return this.powerProvider;
    }
 
+   public int powerRequest() {
+      return this.getPowerProvider().maxEnergyReceived;
+   }
+
    // $FF: synthetic class
-   static class NamelessClass995489607 {
+   static class NamelessClass327021671 {
 
       // $FF: synthetic field
       static final int[] $SwitchMap$net$minecraft$src$buildcraft$api$Orientations = new int[Orientations.values().length];

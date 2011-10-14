@@ -3,7 +3,7 @@ package buildcraft.builders;
 import buildcraft.builders.BuildersProxy;
 import buildcraft.builders.TileMarker;
 import buildcraft.core.Utils;
-import net.minecraft.server.forge.ITextureProvider;
+import forge.ITextureProvider;
 import net.minecraft.server.AxisAlignedBB;
 import net.minecraft.server.Block;
 import net.minecraft.server.BlockContainer;
@@ -53,7 +53,7 @@ public class BlockMarker extends BlockContainer implements ITextureProvider {
       return false;
    }
 
-   protected TileEntity a_() {
+   public TileEntity a_() {
       return new TileMarker();
    }
 
@@ -154,8 +154,8 @@ public class BlockMarker extends BlockContainer implements ITextureProvider {
       var1.setData(var2, var3, var4, var6);
    }
 
-   public void c(World var1, int var2, int var3, int var4) {
-      super.c(var1, var2, var3, var4);
+   public void a(World var1, int var2, int var3, int var4) {
+      super.a(var1, var2, var3, var4);
       if(BuildersProxy.canPlaceTorch(var1, var2 - 1, var3, var4)) {
          var1.setData(var2, var3, var4, 1);
       } else if(BuildersProxy.canPlaceTorch(var1, var2 + 1, var3, var4)) {

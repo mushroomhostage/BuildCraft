@@ -15,12 +15,12 @@ public class mod_BuildCraftEnergy extends BaseModMp {
    public void ModsLoaded() {
       super.ModsLoaded();
       BuildCraftEnergy.ModsLoaded();
-      ModLoader.RegisterTileEntity(TileEngine.class, "net.minecraft.src.buildcraft.energy.Engine");
+      ModLoader.RegisterTileEntity(TileEngine.class, "net.minecraft.server.buildcraft.energy.Engine");
       instance = this;
    }
 
    public String Version() {
-      return "2.1.1";
+      return "2.2.1";
    }
 
    public void GenerateSurface(World var1, Random var2, int var3, int var4) {

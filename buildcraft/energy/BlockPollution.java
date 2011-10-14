@@ -1,7 +1,7 @@
 package buildcraft.energy;
 
 import buildcraft.energy.TilePollution;
-import net.minecraft.server.forge.ITextureProvider;
+import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.IBlockAccess;
@@ -27,7 +27,7 @@ public class BlockPollution extends BlockContainer implements ITextureProvider {
       return false;
    }
 
-   protected TileEntity a_() {
+   public TileEntity a_() {
       return new TilePollution();
    }
 

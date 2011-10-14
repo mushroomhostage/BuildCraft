@@ -13,11 +13,11 @@ import buildcraft.core.Box;
 import buildcraft.core.DefaultAreaProvider;
 import buildcraft.core.IMachine;
 import buildcraft.core.StackUtil;
-import buildcraft.core.TileBuildCraft;
 import buildcraft.core.TileNetworkData;
 import buildcraft.core.Utils;
 import buildcraft.factory.EntityMechanicalArm;
 import buildcraft.factory.IArmListener;
+import buildcraft.factory.TileMachine;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftBlockUtil;
 import net.minecraft.server.BuildCraftCore;
@@ -27,7 +27,7 @@ import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.Packet230ModLoader;
 
-public class TileQuarry extends TileBuildCraft implements IArmListener, IMachine, IPowerReceptor {
+public class TileQuarry extends TileMachine implements IArmListener, IMachine, IPowerReceptor {
 
    BlockContents nextBlockForBluePrint = null;
    boolean isDigging = false;
@@ -103,8 +103,8 @@ public class TileQuarry extends TileBuildCraft implements IArmListener, IMachine
       this.loadArm = true;
    }
 
-   public void g_() {
-      super.g_();
+   public void h_() {
+      super.h_();
       if(this.inProcess && this.arm != null) {
          this.arm.speed = 0.0D;
          int var1 = 2 + this.powerProvider.energyStored / 1000;
@@ -142,7 +142,7 @@ public class TileQuarry extends TileBuildCraft implements IArmListener, IMachine
                         int var2 = this.world.getTypeId(var1.x, var1.y, var1.z);
                         if(var1 != null) {
                            if(!Utils.softBlock(var2)) {
-                              Utils.breakBlock(this.world, var1.x, var1.y, var1.z);
+                              this.world.setTypeId(var1.x, var1.y, var1.z, 0);
                            } else if(var1.blockId != 0) {
                               this.world.setTypeId(var1.x, var1.y, var1.z, var1.blockId);
                            }
@@ -370,20 +370,20 @@ public class TileQuarry extends TileBuildCraft implements IArmListener, IMachine
          int var6 = 0;
          int var7 = 0;
          Orientations var8 = Orientations.values()[this.world.getData(this.x, this.y, this.z)].reverse();
-         switch(TileQuarry.NamelessClass756983615.$SwitchMap$net$minecraft$src$buildcraft$api$Orientations[var8.ordinal()]) {
-         case 1:
+         switch(var8) {
+         case XPos:
             var6 = this.x + 1;
             var7 = this.z - 4 - 1;
             break;
-         case 2:
+         case XNeg:
             var6 = this.x - 9 - 2;
             var7 = this.z - 4 - 1;
             break;
-         case 3:
+         case ZPos:
             var6 = this.x - 4 - 1;
             var7 = this.z + 1;
             break;
-         case 4:
+         case ZNeg:
             var6 = this.x - 4 - 1;
             var7 = this.z - 9 - 2;
          }
@@ -457,39 +457,11 @@ public class TileQuarry extends TileBuildCraft implements IArmListener, IMachine
       return this.powerProvider;
    }
 
+   public boolean manageLiquids() {
+      return false;
+   }
 
-   // $FF: synthetic class
-   static class NamelessClass756983615 {
-
-      // $FF: synthetic field
-      static final int[] $SwitchMap$net$minecraft$src$buildcraft$api$Orientations = new int[Orientations.values().length];
-
-
-      static {
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.XPos.ordinal()] = 1;
-         } catch (NoSuchFieldError var4) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.XNeg.ordinal()] = 2;
-         } catch (NoSuchFieldError var3) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.ZPos.ordinal()] = 3;
-         } catch (NoSuchFieldError var2) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.ZNeg.ordinal()] = 4;
-         } catch (NoSuchFieldError var1) {
-            ;
-         }
-
-      }
+   public boolean manageSolids() {
+      return true;
    }
 }

@@ -5,7 +5,7 @@ import buildcraft.api.Position;
 import buildcraft.builders.BuildersProxy;
 import buildcraft.builders.TileBuilder;
 import buildcraft.core.Utils;
-import net.minecraft.server.forge.ITextureProvider;
+import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityHuman;
@@ -26,7 +26,7 @@ public class BlockBuilder extends BlockContainer implements ITextureProvider {
       this.c(0.7F);
    }
 
-   protected TileEntity a_() {
+   public TileEntity a_() {
       return new TileBuilder();
    }
 
@@ -50,20 +50,20 @@ public class BlockBuilder extends BlockContainer implements ITextureProvider {
    }
 
    public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5) {
-      if(var5.G() != null && var5.G().getItem() == BuildCraftCore.wrenchItem) {
+      if(var5.K() != null && var5.K().getItem() == BuildCraftCore.wrenchItem) {
          int var7 = var1.getData(var2, var3, var4);
-         switch(BlockBuilder.NamelessClass146654956.$SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.values()[var7].ordinal()]) {
-         case 1:
-            var1.setRawData(var2, var3, var4, Orientations.ZPos.ordinal());
-            break;
-         case 2:
-            var1.setRawData(var2, var3, var4, Orientations.ZNeg.ordinal());
-            break;
-         case 3:
-            var1.setRawData(var2, var3, var4, Orientations.XNeg.ordinal());
-            break;
-         case 4:
-            var1.setRawData(var2, var3, var4, Orientations.XPos.ordinal());
+         switch (Orientations.values()[var7]) {
+            case XNeg:
+               var1.setRawData(var2, var3, var4, Orientations.ZPos.ordinal());
+               break;
+            case XPos:
+               var1.setRawData(var2, var3, var4, Orientations.ZNeg.ordinal());
+               break;
+            case ZNeg:
+               var1.setRawData(var2, var3, var4, Orientations.XNeg.ordinal());
+               break;
+            case ZPos:
+               var1.setRawData(var2, var3, var4, Orientations.XPos.ordinal());
          }
 
          var1.notify(var2, var3, var4);
@@ -84,40 +84,5 @@ public class BlockBuilder extends BlockContainer implements ITextureProvider {
    public void remove(World var1, int var2, int var3, int var4) {
       Utils.preDestroyBlock(var1, var2, var3, var4);
       super.remove(var1, var2, var3, var4);
-   }
-
-   // $FF: synthetic class
-   static class NamelessClass146654956 {
-
-      // $FF: synthetic field
-      static final int[] $SwitchMap$net$minecraft$src$buildcraft$api$Orientations = new int[Orientations.values().length];
-
-
-      static {
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.XNeg.ordinal()] = 1;
-         } catch (NoSuchFieldError var4) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.XPos.ordinal()] = 2;
-         } catch (NoSuchFieldError var3) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.ZNeg.ordinal()] = 3;
-         } catch (NoSuchFieldError var2) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.ZPos.ordinal()] = 4;
-         } catch (NoSuchFieldError var1) {
-            ;
-         }
-
-      }
    }
 }

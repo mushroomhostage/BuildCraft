@@ -5,7 +5,7 @@ import buildcraft.api.FillerPattern;
 import buildcraft.builders.BuildersProxy;
 import buildcraft.builders.TileFiller;
 import buildcraft.core.Utils;
-import net.minecraft.server.forge.ITextureProvider;
+import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityHuman;
@@ -55,7 +55,7 @@ public class BlockFiller extends BlockContainer implements ITextureProvider {
       return var1 != 0 && var1 != 1?this.textureSides:this.textureTopOn;
    }
 
-   protected TileEntity a_() {
+   public TileEntity a_() {
       return new TileFiller();
    }
 

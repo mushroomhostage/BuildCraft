@@ -1,6 +1,6 @@
 package buildcraft.core;
 
-import net.minecraft.server.forge.ITextureProvider;
+import forge.ITextureProvider;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.Item;
 

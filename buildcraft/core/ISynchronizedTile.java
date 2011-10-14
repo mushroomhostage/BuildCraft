@@ -13,5 +13,5 @@ public interface ISynchronizedTile {
 
    Packet230ModLoader getUpdatePacket();
 
-   Packet getDescriptionPacket();
+   Packet l();
 }

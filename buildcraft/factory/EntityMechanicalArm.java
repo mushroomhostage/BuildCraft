@@ -44,7 +44,7 @@ public class EntityMechanicalArm extends Entity {
       this.lastZ = var6;
       this.sizeX = var10;
       this.sizeZ = var8;
-      this.bt = true;
+      this.bJ = true;
       this.baseY = var4;
       this.headPosX = var2;
       this.headPosY = var4 - 2.0D;
@@ -145,7 +145,7 @@ public class EntityMechanicalArm extends Entity {
       return new double[]{this.targetX, this.targetY, this.targetZ};
    }
 
-   public void m_() {
+   public void s_() {
       if(this.speed > 0.0D) {
          this.doMove(this.speed);
       }
@@ -153,7 +153,7 @@ public class EntityMechanicalArm extends Entity {
    }
 
    public void doMove(double var1) {
-      super.m_();
+      super.s_();
       if(this.inProgressionXZ) {
          if(Math.abs(this.targetX - this.headPosX) < var1 * 2.0D && Math.abs(this.targetZ - this.headPosZ) < var1 * 2.0D) {
             this.headPosX = this.targetX;

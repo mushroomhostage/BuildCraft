@@ -1,6 +1,6 @@
 package buildcraft.energy;
 
-import net.minecraft.server.forge.IBucketHandler;
+import forge.IBucketHandler;
 import net.minecraft.server.BuildCraftEnergy;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.World;

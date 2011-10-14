@@ -10,6 +10,7 @@ import buildcraft.api.Orientations;
 import buildcraft.api.Position;
 import buildcraft.core.BlockIndex;
 import buildcraft.core.EntityBlock;
+import buildcraft.core.ILiquid;
 import buildcraft.core.ISynchronizedTile;
 import buildcraft.core.PacketIds;
 import buildcraft.core.TileBuildCraft;
@@ -62,7 +63,7 @@ public class Utils {
             var6 = new Position((double)var0.x, (double)var0.y, (double)var0.z, Orientations.values()[var5]);
             var6.moveForwards(1.0D);
             TileEntity var7 = var3.getTileEntity((int)var6.x, (int)var6.y, (int)var6.z);
-            if(var7 instanceof IPipeEntry) {
+            if(var7 instanceof IPipeEntry && ((IPipeEntry)var7).acceptItems()) {
                var4.add(Orientations.values()[var5]);
             }
          }
@@ -188,14 +189,14 @@ public class Utils {
          }
 
          int var16 = BuildCraftCore.redLaserTexture;
-         switch(Utils.NamelessClass1132302297.$SwitchMap$net$minecraft$src$buildcraft$api$LaserKind[var3.ordinal()]) {
-         case 1:
+         switch(var3) {
+         case Blue:
             var16 = BuildCraftCore.blueLaserTexture;
             break;
-         case 2:
+         case Red:
             var16 = BuildCraftCore.redLaserTexture;
             break;
-         case 3:
+         case Stripes:
             var16 = BuildCraftCore.stripesLaserTexture;
          }
 
@@ -284,25 +285,29 @@ public class Utils {
       return var0 == 0 || var0 == Block.STATIONARY_WATER.id || var0 == Block.WATER.id || Block.byId[var0] == null;
    }
 
+   public static int liquidId(int var0) {
+      return var0 != Block.STATIONARY_WATER.id && var0 != Block.WATER.id?(var0 != Block.STATIONARY_LAVA.id && var0 != Block.LAVA.id?(Block.byId[var0] instanceof ILiquid?((ILiquid)Block.byId[var0]).stillLiquidId():0):Block.STATIONARY_LAVA.id):Block.STATIONARY_WATER.id;
+   }
+
    public static boolean unbreakableBlock(int var0) {
       return var0 == Block.BEDROCK.id || var0 == Block.STATIONARY_LAVA.id || var0 == Block.LAVA.id;
    }
 
    public static int packetIdToInt(PacketIds var0) {
-      switch(Utils.NamelessClass1132302297.$SwitchMap$net$minecraft$src$buildcraft$core$PacketIds[var0.ordinal()]) {
-      case 1:
+      switch(var0) {
+      case DiamondPipeGUI:
          return 70;
-      case 2:
+      case AutoCraftingGUI:
          return 71;
-      case 3:
+      case FillerGUI:
          return 72;
-      case 4:
+      case TemplateGUI:
          return 73;
-      case 5:
+      case BuilderGUI:
          return 74;
-      case 6:
+      case EngineSteamGUI:
          return 75;
-      case 7:
+      case EngineCombustionGUI:
          return 76;
       default:
          throw new RuntimeException("Invalid GUI id: " + var0);
@@ -346,81 +351,5 @@ public class Utils {
       Block var7 = Block.byId[var0.getTypeId(var1, var2, var3)];
       Block var8 = Block.byId[var0.getTypeId(var4, var5, var6)];
       return !(var7 instanceof IPipeConnection) && !(var8 instanceof IPipeConnection)?false:(var7 instanceof IPipeConnection && !((IPipeConnection)var7).isPipeConnected(var0, var1, var2, var3, var4, var5, var6)?false:!(var8 instanceof IPipeConnection) || ((IPipeConnection)var8).isPipeConnected(var0, var4, var5, var6, var1, var2, var3));
-   }
-
-
-   // $FF: synthetic class
-   static class NamelessClass1132302297 {
-
-      // $FF: synthetic field
-      static final int[] $SwitchMap$net$minecraft$src$buildcraft$api$LaserKind;
-      // $FF: synthetic field
-      static final int[] $SwitchMap$net$minecraft$src$buildcraft$core$PacketIds = new int[PacketIds.values().length];
-
-
-      static {
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$core$PacketIds[PacketIds.DiamondPipeGUI.ordinal()] = 1;
-         } catch (NoSuchFieldError var10) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$core$PacketIds[PacketIds.AutoCraftingGUI.ordinal()] = 2;
-         } catch (NoSuchFieldError var9) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$core$PacketIds[PacketIds.FillerGUI.ordinal()] = 3;
-         } catch (NoSuchFieldError var8) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$core$PacketIds[PacketIds.TemplateGUI.ordinal()] = 4;
-         } catch (NoSuchFieldError var7) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$core$PacketIds[PacketIds.BuilderGUI.ordinal()] = 5;
-         } catch (NoSuchFieldError var6) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$core$PacketIds[PacketIds.EngineSteamGUI.ordinal()] = 6;
-         } catch (NoSuchFieldError var5) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$core$PacketIds[PacketIds.EngineCombustionGUI.ordinal()] = 7;
-         } catch (NoSuchFieldError var4) {
-            ;
-         }
-
-         $SwitchMap$net$minecraft$src$buildcraft$api$LaserKind = new int[LaserKind.values().length];
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$LaserKind[LaserKind.Blue.ordinal()] = 1;
-         } catch (NoSuchFieldError var3) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$LaserKind[LaserKind.Red.ordinal()] = 2;
-         } catch (NoSuchFieldError var2) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$LaserKind[LaserKind.Stripes.ordinal()] = 3;
-         } catch (NoSuchFieldError var1) {
-            ;
-         }
-
-      }
    }
 }

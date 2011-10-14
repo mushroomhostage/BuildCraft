@@ -5,7 +5,6 @@ import net.minecraft.server.BaseModMp;
 import net.minecraft.server.Block;
 import net.minecraft.server.EntityItem;
 import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.Item;
 import net.minecraft.server.ModLoader;
 import net.minecraft.server.ModLoaderMp;
 import net.minecraft.server.Packet230ModLoader;
@@ -45,7 +44,7 @@ public class CoreProxy {
 
    public static void addLocalization(String var0, String var1) {}
 
-   public static boolean isDamageable(Item var0) {
-      return var0.f();
+   public static int addFuel(int var0, int var1) {
+      return ModLoader.AddAllFuel(var0);
    }
 }

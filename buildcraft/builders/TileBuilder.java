@@ -186,7 +186,7 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
       return 64;
    }
 
-   public boolean a_(EntityHuman var1) {
+   public boolean a(EntityHuman var1) {
       return true;
    }
 
@@ -199,7 +199,7 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
          NBTTagCompound var4 = (NBTTagCompound)var2.a(var3);
          int var5 = var4.c("Slot") & 255;
          if(var5 >= 0 && var5 < this.items.length) {
-            this.items[var5] = new ItemStack(var4);
+            this.items[var5] = ItemStack.a(var4);
          }
       }
 
@@ -217,7 +217,7 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
          if(this.items[var3] != null) {
             NBTTagCompound var4 = new NBTTagCompound();
             var4.a("Slot", (byte)var3);
-            this.items[var3].a(var4);
+            this.items[var3].b(var4);
             var2.a(var4);
          }
       }
@@ -262,5 +262,13 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
          this.box.createLasers(this.world, LaserKind.Stripes);
       }
 
+   }
+
+   public void e() {}
+
+   public void t_() {}
+
+   public int powerRequest() {
+      return this.powerProvider.maxEnergyReceived;
    }
 }

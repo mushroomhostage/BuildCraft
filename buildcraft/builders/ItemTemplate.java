@@ -1,7 +1,7 @@
 package buildcraft.builders;
 
 import buildcraft.core.CoreProxy;
-import net.minecraft.server.forge.ITextureProvider;
+import forge.ITextureProvider;
 import java.util.Properties;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.Entity;
@@ -21,9 +21,9 @@ public class ItemTemplate extends Item implements ITextureProvider {
 
    public String getItemNameIS(ItemStack var1) {
       if(var1.getData() == 0) {
-         return this.a();
+         return this.b();
       } else {
-         String var2 = this.a() + "#" + var1.getData();
+         String var2 = this.b() + "#" + var1.getData();
 
          try {
             Properties var3 = (Properties)ModLoader.getPrivateValue(StatisticStorage.class, StatisticStorage.a(), 1);
@@ -43,7 +43,7 @@ public class ItemTemplate extends Item implements ITextureProvider {
       }
    }
 
-   public void onUpdate(ItemStack var1, World var2, Entity var3, int var4, boolean var5) {}
+   public void a(ItemStack var1, World var2, Entity var3, int var4, boolean var5) {}
 
    public String getTextureFile() {
       return BuildCraftCore.customBuildCraftSprites;

@@ -9,4 +9,6 @@ public interface IPowerReceptor {
    PowerProvider getPowerProvider();
 
    void doWork();
+
+   int powerRequest();
 }

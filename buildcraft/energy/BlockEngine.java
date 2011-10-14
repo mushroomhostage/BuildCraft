@@ -39,7 +39,7 @@ public class BlockEngine extends BlockContainer implements IPipeConnection {
       return BuildCraftCore.blockByEntityModel;
    }
 
-   protected TileEntity a_() {
+   public TileEntity a_() {
       return new TileEngine();
    }
 
@@ -50,7 +50,7 @@ public class BlockEngine extends BlockContainer implements IPipeConnection {
 
    public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5) {
       TileEngine var6 = (TileEngine)var1.getTileEntity(var2, var3, var4);
-      if(var5.G() != null && var5.G().getItem() == BuildCraftCore.wrenchItem) {
+      if(var5.K() != null && var5.K().getItem() == BuildCraftCore.wrenchItem) {
          var6.switchOrientation();
          return true;
       } else if(var6.engine instanceof EngineStone) {
@@ -96,69 +96,22 @@ public class BlockEngine extends BlockContainer implements IPipeConnection {
       } else if(var8.engine instanceof EngineWood) {
          return false;
       } else {
-         switch(BlockEngine.NamelessClass660792225.$SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.values()[var8.orientation].ordinal()]) {
-         case 1:
+         switch(Orientations.values()[var8.orientation]) {
+         case YPos:
             return var3 - var6 != -1;
-         case 2:
+         case YNeg:
             return var3 - var6 != 1;
-         case 3:
+         case ZPos:
             return var4 - var7 != -1;
-         case 4:
+         case ZNeg:
             return var4 - var7 != 1;
-         case 5:
+         case XPos:
             return var2 - var5 != -1;
-         case 6:
+         case XNeg:
             return var2 - var5 != 1;
          default:
             return true;
          }
-      }
-   }
-
-   // $FF: synthetic class
-   static class NamelessClass660792225 {
-
-      // $FF: synthetic field
-      static final int[] $SwitchMap$net$minecraft$src$buildcraft$api$Orientations = new int[Orientations.values().length];
-
-
-      static {
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.YPos.ordinal()] = 1;
-         } catch (NoSuchFieldError var6) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.YNeg.ordinal()] = 2;
-         } catch (NoSuchFieldError var5) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.ZPos.ordinal()] = 3;
-         } catch (NoSuchFieldError var4) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.ZNeg.ordinal()] = 4;
-         } catch (NoSuchFieldError var3) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.XPos.ordinal()] = 5;
-         } catch (NoSuchFieldError var2) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.XNeg.ordinal()] = 6;
-         } catch (NoSuchFieldError var1) {
-            ;
-         }
-
       }
    }
 }

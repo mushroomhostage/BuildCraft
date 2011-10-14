@@ -1,6 +1,6 @@
 package buildcraft.energy;
 
-import net.minecraft.server.forge.ITextureProvider;
+import forge.ITextureProvider;
 import net.minecraft.server.BuildCraftEnergy;
 import net.minecraft.server.ItemBucket;
 
@@ -12,6 +12,6 @@ public class ItemBucketOil extends ItemBucket implements ITextureProvider {
    }
 
    public String getTextureFile() {
-      return "/net/minecraft/src/buildcraft/energy/gui/item_textures.png";
+      return "/net/minecraft/src/buildcraft/core/gui/item_textures.png";
    }
 }

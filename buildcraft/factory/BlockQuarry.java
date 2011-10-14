@@ -6,7 +6,7 @@ import buildcraft.api.Position;
 import buildcraft.core.Utils;
 import buildcraft.factory.BlockMachineRoot;
 import buildcraft.factory.TileQuarry;
-import net.minecraft.server.forge.ITextureProvider;
+import forge.ITextureProvider;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityLiving;
 import net.minecraft.server.IBlockAccess;
@@ -52,7 +52,7 @@ public class BlockQuarry extends BlockMachineRoot implements ITextureProvider, I
       }
    }
 
-   protected TileEntity a_() {
+   public TileEntity a_() {
       return new TileQuarry();
    }
 

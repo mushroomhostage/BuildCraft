@@ -4,6 +4,7 @@ import buildcraft.api.APIProxy;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
 import buildcraft.api.SafeTimeTracker;
+import java.util.TreeMap;
 import net.minecraft.server.EntityItem;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
@@ -12,6 +13,7 @@ import net.minecraft.server.World;
 
 public class EntityPassiveItem {
 
+   public static TreeMap allEntities = new TreeMap();
    public float speed;
    public ItemStack item;
    public TileEntity container;
@@ -26,14 +28,20 @@ public class EntityPassiveItem {
 
 
    public EntityPassiveItem(World var1) {
+      this(var1, maxId != Integer.MAX_VALUE?++maxId:(maxId = 0));
+   }
+
+   public EntityPassiveItem(World var1, int var2) {
       this.speed = 0.01F;
       this.synchroTracker = new SafeTimeTracker();
       this.deterministicRandomization = 0;
-      this.entityId = maxId++;
-      if(maxId > Integer.MAX_VALUE) {
-         maxId = 0;
-      }
+      this.entityId = var2;
+      allEntities.put(Integer.valueOf(this.entityId), this);
+      this.worldObj = var1;
+   }
 
+   public static EntityPassiveItem getOrCreate(World var0, int var1) {
+      return allEntities.containsKey(Integer.valueOf(var1))?(EntityPassiveItem)allEntities.get(Integer.valueOf(var1)):new EntityPassiveItem(var0, var1);
    }
 
    public EntityPassiveItem(World var1, double var2, double var4, double var6) {
@@ -60,7 +68,7 @@ public class EntityPassiveItem {
       this.posY = var1.h("y");
       this.posZ = var1.h("z");
       this.speed = var1.g("speed");
-      this.item = new ItemStack(var1.k("Item"));
+      this.item = ItemStack.a(var1.k("Item"));
    }
 
    public void writeToNBT(NBTTagCompound var1) {
@@ -69,25 +77,33 @@ public class EntityPassiveItem {
       var1.a("z", this.posZ);
       var1.a("speed", this.speed);
       NBTTagCompound var2 = new NBTTagCompound();
-      this.item.a(var2);
+      this.item.b(var2);
       var1.a("Item", var2);
    }
 
-   public EntityItem toEntityItem(World var1, Orientations var2) {
+   public EntityItem toEntityItem(Orientations var1) {
       if(!APIProxy.isClient(this.worldObj)) {
-         Position var3 = new Position(0.0D, 0.0D, 0.0D, var2);
-         var3.moveForwards(0.1D + (double)(this.speed * 2.0F));
-         EntityItem var4 = new EntityItem(var1, this.posX, this.posY, this.posZ, this.item);
-         float var5 = 0.0F + var1.random.nextFloat() * 0.04F - 0.02F;
-         var4.motX = (double)((float)var1.random.nextGaussian() * var5) + var3.x;
-         var4.motY = (double)((float)var1.random.nextGaussian() * var5) + var3.y;
-         var4.motZ = (double)((float)var1.random.nextGaussian() * var5) + var3.z;
-         var1.addEntity(var4);
-         var4.pickupDelay = 20;
-         return var4;
+         Position var2 = new Position(0.0D, 0.0D, 0.0D, var1);
+         var2.moveForwards(0.1D + (double)(this.speed * 2.0F));
+         EntityItem var3 = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, this.item);
+         float var4 = 0.0F + this.worldObj.random.nextFloat() * 0.04F - 0.02F;
+         var3.motX = (double)((float)this.worldObj.random.nextGaussian() * var4) + var2.x;
+         var3.motY = (double)((float)this.worldObj.random.nextGaussian() * var4) + var2.y;
+         var3.motZ = (double)((float)this.worldObj.random.nextGaussian() * var4) + var2.z;
+         this.worldObj.addEntity(var3);
+         this.remove();
+         var3.pickupDelay = 20;
+         return var3;
       } else {
          return null;
       }
+   }
+
+   public void remove() {
+      if(allEntities.containsKey(Integer.valueOf(this.entityId))) {
+         allEntities.remove(Integer.valueOf(this.entityId));
+      }
+
    }
 
 }

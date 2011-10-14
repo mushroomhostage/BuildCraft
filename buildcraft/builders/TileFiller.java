@@ -11,6 +11,7 @@ import buildcraft.api.Orientations;
 import buildcraft.api.PowerProvider;
 import buildcraft.builders.TileMarker;
 import buildcraft.core.Box;
+import buildcraft.core.IMachine;
 import buildcraft.core.StackUtil;
 import buildcraft.core.TileBuildCraft;
 import buildcraft.core.TileNetworkData;
@@ -23,7 +24,7 @@ import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.NBTTagList;
 import net.minecraft.server.Packet230ModLoader;
 
-public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPowerReceptor {
+public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPowerReceptor, IMachine {
 
    @TileNetworkData
    public Box box = new Box();
@@ -39,8 +40,8 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
 
    public TileFiller() {
       this.powerProvider = BuildCraftCore.powerFramework.createPowerProvider();
-      this.powerProvider.configure(10, 25, 25, 25, 25);
-      this.powerProvider.configurePowerPerdition(25, 1);
+      this.powerProvider.configure(10, 25, 100, 25, 100);
+      this.powerProvider.configurePowerPerdition(25, 40);
    }
    
    public ItemStack[] getContents() {
@@ -64,12 +65,16 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
       this.computeRecipe();
    }
 
-   public void g_() {
-      super.g_();
+   public void h_() {
+      super.h_();
       if(this.box.isInitialized()) {
          this.box.createLasers(this.world, LaserKind.Stripes);
       } else {
          this.done = true;
+      }
+
+      if(this.powerProvider.energyStored > 25) {
+         this.doWork();
       }
 
    }
@@ -98,6 +103,10 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
                   this.world.i(this.x, this.y, this.z);
                   this.sendNetworkUpdate();
                }
+            }
+
+            if(this.powerProvider.energyStored > 25) {
+               this.doWork();
             }
 
          }
@@ -186,7 +195,7 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
          NBTTagCompound var4 = (NBTTagCompound)var2.a(var3);
          int var5 = var4.c("Slot") & 255;
          if(var5 >= 0 && var5 < this.contents.length) {
-            this.contents[var5] = new ItemStack(var4);
+            this.contents[var5] = ItemStack.a(var4);
          }
       }
 
@@ -206,7 +215,7 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
          if(this.contents[var3] != null) {
             NBTTagCompound var4 = new NBTTagCompound();
             var4.a("Slot", (byte)var3);
-            this.contents[var3].a(var4);
+            this.contents[var3].b(var4);
             var2.a(var4);
          }
       }
@@ -225,7 +234,7 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
       return 64;
    }
 
-   public boolean a_(EntityHuman var1) {
+   public boolean a(EntityHuman var1) {
       return this.world.getTileEntity(this.x, this.y, this.z) != this?false:var1.e((double)this.x + 0.5D, (double)this.y + 0.5D, (double)this.z + 0.5D) <= 64.0D;
    }
 
@@ -324,5 +333,25 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
 
    public PowerProvider getPowerProvider() {
       return this.powerProvider;
+   }
+
+   public boolean isActive() {
+      return true;
+   }
+
+   public boolean manageLiquids() {
+      return false;
+   }
+
+   public boolean manageSolids() {
+      return true;
+   }
+
+   public void e() {}
+
+   public void t_() {}
+
+   public int powerRequest() {
+      return this.powerProvider.maxEnergyReceived;
    }
 }

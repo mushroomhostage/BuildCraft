@@ -1,8 +1,8 @@
 package buildcraft.core;
 
 import buildcraft.core.CoreProxy;
-import net.minecraft.server.forge.Configuration;
-import net.minecraft.server.forge.Property;
+import forge.Configuration;
+import forge.Property;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

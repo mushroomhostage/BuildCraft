@@ -8,13 +8,17 @@ import buildcraft.factory.BlockMiningWell;
 import buildcraft.factory.BlockPlainPipe;
 import buildcraft.factory.BlockPump;
 import buildcraft.factory.BlockQuarry;
+import buildcraft.factory.BlockRefinery;
 import buildcraft.factory.BlockTank;
+import buildcraft.factory.TankBucketHandler;
 import buildcraft.factory.TileAutoWorkbench;
 import buildcraft.factory.TileMiningWell;
 import buildcraft.factory.TilePump;
 import buildcraft.factory.TileQuarry;
+import buildcraft.factory.TileRefinery;
 import buildcraft.factory.TileTank;
-import net.minecraft.server.forge.Property;
+import forge.MinecraftForge;
+import forge.Property;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.CraftingManager;
@@ -32,6 +36,7 @@ public class BuildCraftFactory {
    public static BlockPlainPipe plainPipeBlock;
    public static BlockPump pumpBlock;
    public static BlockTank tankBlock;
+   public static BlockRefinery refineryBlock;
    public static int drillTexture;
 
 
@@ -47,7 +52,9 @@ public class BuildCraftFactory {
       Property var6 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("quarry.id", DefaultProps.QUARRY_ID);
       Property var7 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("pump.id", DefaultProps.PUMP_ID);
       Property var8 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("tank.id", DefaultProps.TANK_ID);
+      Property var9 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("refinery.id", DefaultProps.REFINERY_ID);
       BuildCraftCore.mainConfiguration.save();
+      MinecraftForge.registerCustomBucketHandler(new TankBucketHandler());
       miningWellBlock = new BlockMiningWell(Integer.parseInt(var2.value));
       ModLoader.RegisterBlock(miningWellBlock);
       CoreProxy.addName(miningWellBlock.a("miningWellBlock"), "Mining Well");
@@ -58,13 +65,16 @@ public class BuildCraftFactory {
       plainPipeBlock = new BlockPlainPipe(Integer.parseInt(var3.value));
       ModLoader.RegisterBlock(plainPipeBlock);
       CoreProxy.addName(plainPipeBlock.a("plainPipeBlock"), "Mining Pipe");
+      
       autoWorkbenchBlock = new BlockAutoWorkbench(Integer.parseInt(var4.value));
       ModLoader.RegisterBlock(autoWorkbenchBlock);
       var0.registerShapedRecipe(new ItemStack(autoWorkbenchBlock), new Object[]{" g ", "gwg", " g ", Character.valueOf('w'), Block.WORKBENCH, Character.valueOf('g'), BuildCraftCore.woodenGearItem});
       CoreProxy.addName(autoWorkbenchBlock.a("autoWorkbenchBlock"), "Automatic Crafting Table");
+      
       frameBlock = new BlockFrame(Integer.parseInt(var5.value));
       ModLoader.RegisterBlock(frameBlock);
       CoreProxy.addName(frameBlock.a("frameBlock"), "Frame");
+      
       quarryBlock = new BlockQuarry(Integer.parseInt(var6.value));
       ModLoader.RegisterBlock(quarryBlock);
       if(var1) {
@@ -72,19 +82,28 @@ public class BuildCraftFactory {
       }
 
       CoreProxy.addName(quarryBlock.a("machineBlock"), "Quarry");
+
       tankBlock = new BlockTank(Integer.parseInt(var8.value));
+      ModLoader.RegisterBlock(tankBlock);
       var0.registerShapedRecipe(new ItemStack(tankBlock), new Object[]{"ggg", "g g", "ggg", Character.valueOf('g'), Block.GLASS});
       CoreProxy.addName(tankBlock.a("tankBlock"), "Tank");
-      ModLoader.RegisterBlock(tankBlock);
+
       pumpBlock = new BlockPump(Integer.parseInt(var7.value));
+      ModLoader.RegisterBlock(pumpBlock);
       var0.registerShapedRecipe(new ItemStack(pumpBlock), new Object[]{"T ", "W ", Character.valueOf('T'), tankBlock, Character.valueOf('W'), miningWellBlock});
       CoreProxy.addName(pumpBlock.a("pumpBlock"), "Pump");
-      ModLoader.RegisterBlock(pumpBlock);
+
+      refineryBlock = new BlockRefinery(Integer.parseInt(var9.value));
+      ModLoader.RegisterBlock(refineryBlock);
+      var0.registerShapedRecipe(new ItemStack(refineryBlock), new Object[]{"   ", "RTR", "TGT", Character.valueOf('T'), tankBlock, Character.valueOf('G'), BuildCraftCore.diamondGearItem, Character.valueOf('R'), Block.REDSTONE_TORCH_ON});
+      CoreProxy.addName(refineryBlock.a("refineryBlock"), "Refinery");
+
       ModLoader.RegisterTileEntity(TileQuarry.class, "Machine");
       ModLoader.RegisterTileEntity(TileMiningWell.class, "MiningWell");
       ModLoader.RegisterTileEntity(TileAutoWorkbench.class, "AutoWorkbench");
-      ModLoader.RegisterTileEntity(TilePump.class, "net.minecraft.src.buildcraft.factory.TilePump");
-      ModLoader.RegisterTileEntity(TileTank.class, "net.minecraft.src.buildcraft.factory.TileTank");
+      ModLoader.RegisterTileEntity(TilePump.class, "net.minecraft.server.buildcraft.factory.TilePump");
+      ModLoader.RegisterTileEntity(TileTank.class, "net.minecraft.server.buildcraft.factory.TileTank");
+      ModLoader.RegisterTileEntity(TileRefinery.class, "net.minecraft.server.buildcraft.factory.Refinery");
       drillTexture = 33;
       BuildCraftCore.mainConfiguration.save();
    }

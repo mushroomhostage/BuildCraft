@@ -2,8 +2,11 @@ package buildcraft.energy;
 
 import buildcraft.api.Orientations;
 import buildcraft.core.TileNetworkData;
+import buildcraft.energy.ContainerEngine;
 import buildcraft.energy.TileEngine;
 import net.minecraft.server.Entity;
+import net.minecraft.server.ICrafting;
+import net.minecraft.server.NBTTagCompound;
 
 public abstract class Engine {
 
@@ -43,10 +46,16 @@ public abstract class Engine {
 
    public abstract boolean isBurning();
 
+   public abstract void delete();
+
    public void addEnergy(int var1) {
       this.energy += var1;
       if(this.getEnergyStage() == Engine.EnergyStage.Explosion) {
          this.tile.world.a((Entity)null, (double)this.tile.x, (double)this.tile.y, (double)this.tile.z, (float)this.explosionRange());
+      }
+
+      if(this.energy > this.maxEnergy) {
+         this.energy = this.maxEnergy;
       }
 
    }
@@ -78,6 +87,18 @@ public abstract class Engine {
          return var5;
       }
    }
+
+   public abstract int getScaledBurnTime(int var1);
+
+   public abstract void burn();
+
+   public void readFromNBT(NBTTagCompound var1) {}
+
+   public void writeToNBT(NBTTagCompound var1) {}
+
+   public void getGUINetworkData(int var1, int var2) {}
+
+   public void sendGUINetworkData(ContainerEngine var1, ICrafting var2) {}
 
    static enum EnergyStage {
 

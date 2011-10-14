@@ -5,6 +5,7 @@ import buildcraft.api.ISpecialInventory;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
 import buildcraft.core.Utils;
+import forge.ISidedInventory;
 import java.util.LinkedList;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
@@ -64,8 +65,24 @@ public class StackUtil {
       } else {
          boolean var4 = false;
          IInventory var5;
-         int var6;
-         if(var1.getSize() == 2) {
+         ISidedInventory var6;
+         int var7;
+         int var8;
+         int var9;
+         int var10;
+         if(var1 instanceof ISidedInventory) {
+            var5 = Utils.getInventory(var1);
+            var6 = (ISidedInventory)var5;
+            var7 = var6.getStartInventorySide(var3.ordinal());
+            var8 = var7 + var6.getSizeInventorySide(var3.ordinal()) - 1;
+
+            for(var9 = var7; var9 <= var8; ++var9) {
+               if(this.tryAdding(var5, var9, var2, false)) {
+                  var4 = true;
+                  break;
+               }
+            }
+         } else if(var1.getSize() == 2) {
             if(var3 != Orientations.YNeg && var3 != Orientations.YPos) {
                if(this.tryAdding(var1, 1, var2, false)) {
                   var4 = true;
@@ -84,8 +101,8 @@ public class StackUtil {
          } else {
             var5 = Utils.getInventory(var1);
 
-            for(var6 = 0; var6 < var5.getSize(); ++var6) {
-               if(this.tryAdding(var5, var6, var2, false)) {
+            for(var10 = 0; var10 < var5.getSize(); ++var10) {
+               if(this.tryAdding(var5, var10, var2, false)) {
                   var4 = true;
                   break;
                }
@@ -102,7 +119,19 @@ public class StackUtil {
                return true;
             }
          } else {
-            if(var1.getSize() == 2) {
+            if(var1 instanceof ISidedInventory) {
+               var5 = Utils.getInventory(var1);
+               var6 = (ISidedInventory)var5;
+               var7 = var6.getStartInventorySide(var3.ordinal());
+               var8 = var7 + var6.getSizeInventorySide(var3.ordinal()) - 1;
+
+               for(var9 = var7; var9 <= var8; ++var9) {
+                  if(this.tryAdding(var5, var9, var2, true)) {
+                     var4 = true;
+                     break;
+                  }
+               }
+            } else if(var1.getSize() == 2) {
                if(var3 != Orientations.YNeg && var3 != Orientations.YPos) {
                   if(this.tryAdding(var1, 1, var2, true)) {
                      var4 = true;
@@ -121,8 +150,8 @@ public class StackUtil {
             } else {
                var5 = Utils.getInventory(var1);
 
-               for(var6 = 0; var6 < var5.getSize(); ++var6) {
-                  if(this.tryAdding(var5, var6, var2, true)) {
+               for(var10 = 0; var10 < var5.getSize(); ++var10) {
+                  if(this.tryAdding(var5, var10, var2, true)) {
                      var4 = true;
                      break;
                   }

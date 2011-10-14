@@ -3,7 +3,7 @@ package buildcraft.factory;
 import buildcraft.core.Utils;
 import buildcraft.factory.FactoryProxy;
 import buildcraft.factory.TileAutoWorkbench;
-import net.minecraft.server.forge.ITextureProvider;
+import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityHuman;
@@ -32,7 +32,7 @@ public class BlockAutoWorkbench extends BlockContainer implements ITextureProvid
       return true;
    }
 
-   protected TileEntity a_() {
+   public TileEntity a_() {
       return new TileAutoWorkbench();
    }
 

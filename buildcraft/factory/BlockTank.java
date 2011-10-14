@@ -1,19 +1,24 @@
 package buildcraft.factory;
 
+import buildcraft.api.Orientations;
 import buildcraft.factory.TileTank;
-import net.minecraft.server.forge.ITextureProvider;
+import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.BuildCraftCore;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IBlockAccess;
+import net.minecraft.server.Item;
+import net.minecraft.server.ItemStack;
 import net.minecraft.server.Material;
 import net.minecraft.server.TileEntity;
+import net.minecraft.server.World;
 
 public class BlockTank extends BlockContainer implements ITextureProvider {
 
    public BlockTank(int var1) {
-      super(var1, Material.ORE);
+      super(var1, Material.SHATTERABLE);
       this.a(0.125F, 0.0F, 0.125F, 0.875F, 1.0F, 0.875F);
-      this.c(5.0F);
+      this.c(1.0F);
    }
 
    public boolean renderAsNormalBlock() {
@@ -28,7 +33,7 @@ public class BlockTank extends BlockContainer implements ITextureProvider {
       return false;
    }
 
-   protected TileEntity a_() {
+   public TileEntity a_() {
       return new TileTank();
    }
 
@@ -54,5 +59,23 @@ public class BlockTank extends BlockContainer implements ITextureProvider {
       default:
          return var1.getTypeId(var2, var3 - 1, var4) == this.id?97:96;
       }
+   }
+
+   public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5) {
+      if(var5.K() != null) {
+         int var6 = var5.K().id;
+         int var7 = BuildCraftCore.getLiquidForBucket(var6);
+         TileTank var8 = (TileTank)var1.getTileEntity(var2, var3, var4);
+         if(var7 != 0) {
+            int var9 = var8.fill(Orientations.Unknown, 1000, var7, true);
+            if(var9 != 0 && !BuildCraftCore.debugMode) {
+               var5.inventory.setItem(var5.inventory.itemInHandIndex, new ItemStack(Item.BUCKET, 1));
+            }
+
+            return true;
+         }
+      }
+
+      return false;
    }
 }

@@ -2,7 +2,7 @@ package buildcraft.factory;
 
 import buildcraft.core.Utils;
 import buildcraft.factory.TilePump;
-import net.minecraft.server.forge.ITextureProvider;
+import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.Material;
@@ -16,7 +16,7 @@ public class BlockPump extends BlockContainer implements ITextureProvider {
       this.c(5.0F);
    }
 
-   protected TileEntity a_() {
+   public TileEntity a_() {
       return new TilePump();
    }
 

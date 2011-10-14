@@ -6,7 +6,7 @@ import buildcraft.api.Position;
 import buildcraft.core.Utils;
 import buildcraft.factory.BlockMachineRoot;
 import buildcraft.factory.TileMiningWell;
-import net.minecraft.server.forge.ITextureProvider;
+import forge.ITextureProvider;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityLiving;
 import net.minecraft.server.IBlockAccess;
@@ -42,7 +42,7 @@ public class BlockMiningWell extends BlockMachineRoot implements ITextureProvide
       var1.setData(var2, var3, var4, var6.reverse().ordinal());
    }
 
-   protected TileEntity a_() {
+   public TileEntity a_() {
       return new TileMiningWell();
    }
 

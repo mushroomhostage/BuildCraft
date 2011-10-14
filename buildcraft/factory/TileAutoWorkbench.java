@@ -49,14 +49,14 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
    }
 
    public String getName() {
-      return "Crafting Container";
+      return "";
    }
 
    public int getMaxStackSize() {
       return 64;
    }
 
-   public boolean a_(EntityHuman var1) {
+   public boolean a(EntityHuman var1) {
       return true;
    }
 
@@ -68,7 +68,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
       for(int var3 = 0; var3 < this.stackList.length; ++var3) {
          NBTTagCompound var4 = (NBTTagCompound)var2.a(var3);
          if(!var4.m("isNull")) {
-            this.stackList[var3] = new ItemStack(var4);
+            this.stackList[var3] = ItemStack.a(var4);
          }
       }
 
@@ -85,7 +85,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
             var4.a("isNull", true);
          } else {
             var4.a("isNull", false);
-            this.stackList[var3].a(var4);
+            this.stackList[var3].b(var4);
          }
       }
 
@@ -236,6 +236,10 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
 
       return null;
    }
+
+   public void e() {}
+
+   public void t_() {}
 
    class StackPointer {
 

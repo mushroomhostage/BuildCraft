@@ -23,14 +23,14 @@ public class EngineWood extends Engine {
    }
 
    public float getPistonSpeed() {
-      switch(EngineWood.NamelessClass291164544.$SwitchMap$net$minecraft$src$buildcraft$energy$Engine$EnergyStage[this.getEnergyStage().ordinal()]) {
-      case 1:
+      switch(this.getEnergyStage()) {
+      case Blue:
          return 0.01F;
-      case 2:
+      case Green:
          return 0.02F;
-      case 3:
+      case Yellow:
          return 0.04F;
-      case 4:
+      case Red:
          return 0.08F;
       default:
          return 0.0F;
@@ -49,38 +49,11 @@ public class EngineWood extends Engine {
       return this.tile.world.isBlockIndirectlyPowered(this.tile.x, this.tile.y, this.tile.z);
    }
 
-   // $FF: synthetic class
-   static class NamelessClass291164544 {
-
-      // $FF: synthetic field
-      static final int[] $SwitchMap$net$minecraft$src$buildcraft$energy$Engine$EnergyStage = new int[Engine.EnergyStage.values().length];
-
-
-      static {
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Blue.ordinal()] = 1;
-         } catch (NoSuchFieldError var4) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Green.ordinal()] = 2;
-         } catch (NoSuchFieldError var3) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Yellow.ordinal()] = 3;
-         } catch (NoSuchFieldError var2) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Red.ordinal()] = 4;
-         } catch (NoSuchFieldError var1) {
-            ;
-         }
-
-      }
+   public int getScaledBurnTime(int var1) {
+      return 0;
    }
+
+   public void delete() {}
+
+   public void burn() {}
 }

@@ -1,31 +1,40 @@
 package buildcraft.transport;
 
+import buildcraft.api.APIProxy;
 import buildcraft.api.IBlockPipe;
 import buildcraft.api.IPipeConnection;
-import buildcraft.api.IPipeEntry;
 import buildcraft.api.Orientations;
-import buildcraft.core.ILiquidContainer;
-import buildcraft.core.IMachine;
+import buildcraft.core.BlockIndex;
 import buildcraft.core.Utils;
-import buildcraft.transport.TilePipe;
-import net.minecraft.server.forge.ITextureProvider;
+import buildcraft.transport.ItemPipe;
+import buildcraft.transport.Pipe;
+import buildcraft.transport.TileGenericPipe;
+import forge.ITextureProvider;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.TreeMap;
 import net.minecraft.server.AxisAlignedBB;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.BuildCraftCore;
+import net.minecraft.server.Entity;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.IInventory;
+import net.minecraft.server.Item;
+import net.minecraft.server.ItemStack;
 import net.minecraft.server.Material;
 import net.minecraft.server.MovingObjectPosition;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.Vec3D;
 import net.minecraft.server.World;
 
-public abstract class BlockPipe extends BlockContainer implements IPipeConnection, IBlockPipe, ITextureProvider {
+public class BlockGenericPipe extends BlockContainer implements IPipeConnection, IBlockPipe, ITextureProvider {
 
-   public BlockPipe(int var1, Material var2) {
-      super(var1, var2);
-      this.c(0.5F);
+   public static TreeMap pipes = new TreeMap();
+   public static TreeMap pipeBuffer = new TreeMap();
+
+
+   public BlockGenericPipe(int var1) {
+      super(var1, Material.SHATTERABLE);
    }
 
    public int getRenderType() {
@@ -43,8 +52,6 @@ public abstract class BlockPipe extends BlockContainer implements IPipeConnectio
    public boolean b() {
       return false;
    }
-
-   protected abstract TileEntity a_();
 
    public void a(World var1, int var2, int var3, int var4, AxisAlignedBB var5, ArrayList var6) {
       this.a(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
@@ -157,29 +164,120 @@ public abstract class BlockPipe extends BlockContainer implements IPipeConnectio
       return var13;
    }
 
-   public boolean isPipeConnected(IBlockAccess var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      TileEntity var8 = var1.getTileEntity(var5, var6, var7);
-      return var8 instanceof IPipeEntry || var8 instanceof IInventory || var8 instanceof IMachine || var8 instanceof ILiquidContainer;
-   }
-
    public void remove(World var1, int var2, int var3, int var4) {
       Utils.preDestroyBlock(var1, var2, var3, var4);
       super.remove(var1, var2, var3, var4);
-   }
-
-   public int getTextureForConnection(Orientations var1, int var2) {
-      return this.textureId;
-   }
-
-   public float getHeightInPipe() {
-      return 0.5F;
    }
 
    public String getTextureFile() {
       return BuildCraftCore.customBuildCraftTexture;
    }
 
-   public void doPhysics(World var1, int var2, int var3, int var4, int var5) {
-      ((TilePipe)var1.getTileEntity(var2, var3, var4)).scheduleNeighborChange();
+   public TileEntity a_() {
+      return new TileGenericPipe();
    }
+
+   public void dropNaturally(World var1, int var2, int var3, int var4, int var5, float var6) {
+      if(!APIProxy.isClient(var1)) {
+         int var7 = this.a(var1.random);
+
+         for(int var8 = 0; var8 < var7; ++var8) {
+            if(var1.random.nextFloat() <= var6) {
+               int var9 = getPipe(var1, var2, var3, var4).itemID;
+               if(var9 > 0) {
+                  this.a(var1, var2, var3, var4, new ItemStack(var9, 1, this.a_(var5)));
+               }
+            }
+         }
+
+      }
+   }
+
+   public boolean isPipeConnected(IBlockAccess var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+      TileEntity var8 = var1.getTileEntity(var5, var6, var7);
+      Pipe var9 = getPipe(var1, var2, var3, var4);
+      Pipe var10 = getPipe(var1, var5, var6, var7);
+      return var10 != null && !var9.transport.getClass().isAssignableFrom(var10.transport.getClass()) && !var10.transport.getClass().isAssignableFrom(var9.transport.getClass())?false:getPipe(var1, var2, var3, var4).isPipeConnected(var8);
+   }
+
+   public void doPhysics(World var1, int var2, int var3, int var4, int var5) {
+      super.doPhysics(var1, var2, var3, var4, var5);
+      getPipe(var1, var2, var3, var4).onNeighborBlockChange();
+   }
+
+   public void postPlace(World var1, int var2, int var3, int var4, int var5) {
+      super.postPlace(var1, var2, var3, var4, var5);
+      getPipe(var1, var2, var3, var4).onBlockPlaced();
+   }
+
+   public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5) {
+      super.interact(var1, var2, var3, var4, var5);
+      return getPipe(var1, var2, var3, var4).blockActivated(var1, var2, var3, var4, var5);
+   }
+
+   public void prepareTextureFor(IBlockAccess var1, int var2, int var3, int var4, Orientations var5) {
+      getPipe(var1, var2, var3, var4).prepareTextureFor(var5);
+   }
+
+   public int getBlockTexture(IBlockAccess var1, int var2, int var3, int var4, int var5) {
+      return getPipe(var1, var2, var3, var4).getBlockTexture();
+   }
+
+   public void a(World var1, int var2, int var3, int var4, Entity var5) {
+      super.a(var1, var2, var3, var4, var5);
+      getPipe(var1, var2, var3, var4).onEntityCollidedWithBlock(var5);
+   }
+
+   public static Item registerPipe(int var0, Class var1) {
+      ItemPipe var2 = new ItemPipe(var0);
+      pipes.put(Integer.valueOf(var2.id), var1);
+      return var2;
+   }
+
+   public static Pipe createPipe(int var0) {
+      try {
+         return (Pipe)((Class)pipes.get(Integer.valueOf(var0))).getConstructor(new Class[]{Integer.TYPE}).newInstance(new Object[]{Integer.valueOf(var0)});
+      } catch (SecurityException var2) {
+         var2.printStackTrace();
+      } catch (NoSuchMethodException var3) {
+         var3.printStackTrace();
+      } catch (IllegalArgumentException var4) {
+         var4.printStackTrace();
+      } catch (InstantiationException var5) {
+         var5.printStackTrace();
+      } catch (IllegalAccessException var6) {
+         var6.printStackTrace();
+      } catch (InvocationTargetException var7) {
+         var7.printStackTrace();
+      }
+
+      return null;
+   }
+
+   public static Pipe createPipe(int var0, int var1, int var2, int var3) {
+      BlockIndex var4 = new BlockIndex(var0, var1, var2);
+      if(pipeBuffer.containsKey(var4)) {
+         pipeBuffer.remove(var4);
+      }
+
+      Pipe var5 = createPipe(var3);
+      var5.setPosition(var0, var1, var2);
+      pipeBuffer.put(var4, var5);
+      return var5;
+   }
+
+   public static Pipe getPipe(IBlockAccess var0, int var1, int var2, int var3) {
+      TileEntity var4 = var0.getTileEntity(var1, var2, var3);
+      Pipe var5 = null;
+      if(var4 instanceof TileGenericPipe) {
+         var5 = ((TileGenericPipe)var4).pipe;
+      }
+
+      if(var5 == null) {
+         var5 = (Pipe)pipeBuffer.get(new BlockIndex(var1, var2, var3));
+      }
+
+      return var5;
+   }
+
 }

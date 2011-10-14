@@ -17,8 +17,8 @@ public class EntityBlock extends Entity {
       super(var1);
       this.texture = -1;
       this.shadowSize = 0.0F;
-      this.aI = false;
-      this.bt = true;
+      this.aY = false;
+      this.bJ = true;
       this.fireProof = true;
    }
 
@@ -71,7 +71,7 @@ public class EntityBlock extends Entity {
       var1.a("kSize", this.kSize);
    }
 
-   public boolean l_() {
+   public boolean r_() {
       return !this.dead;
    }
 }

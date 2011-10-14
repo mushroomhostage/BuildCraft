@@ -6,7 +6,7 @@ import net.minecraft.server.NBTTagCompound;
 
 public abstract class PowerFramework {
 
-   private static String baseNBTName = "net.minecraft.src.buildcarft.Power";
+   private static String baseNBTName = "net.minecraft.server.buildcarft.Power";
 
 
    public abstract PowerProvider createPowerProvider();

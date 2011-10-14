@@ -10,7 +10,6 @@ import net.minecraft.server.Slot;
 public class ContainerEngineRoot extends Container {
 
    protected TileEngine engine;
-   protected int scaledBurnTime = 0;
 
 
    public ContainerEngineRoot(InventoryPlayer var1, TileEngine var2) {
@@ -34,15 +33,8 @@ public class ContainerEngineRoot extends Container {
 
    }
 
-   public void a(int var1, int var2) {
-      if(var1 == 0) {
-         this.engine.scaledBurnTime = (short)var2;
-      }
-
-   }
-
    public boolean isUsableByPlayer(EntityHuman var1) {
-      return this.engine.a_(var1);
+      return this.engine.a(var1);
    }
 
    public boolean b(EntityHuman var1) {
