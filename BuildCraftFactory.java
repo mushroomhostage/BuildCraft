@@ -83,17 +83,17 @@ public class BuildCraftFactory {
 
          CoreProxy.addName(quarryBlock.a("machineBlock"), "Quarry");
          tankBlock = new BlockTank(Integer.parseInt(var8.value));
+         ModLoader.RegisterBlock(tankBlock);
          var0.registerShapedRecipe(new ItemStack(tankBlock), new Object[]{"ggg", "g g", "ggg", Character.valueOf('g'), Block.GLASS});
          CoreProxy.addName(tankBlock.a("tankBlock"), "Tank");
-         ModLoader.RegisterBlock(tankBlock);
          pumpBlock = new BlockPump(Integer.parseInt(var7.value));
+         ModLoader.RegisterBlock(pumpBlock);
          var0.registerShapedRecipe(new ItemStack(pumpBlock), new Object[]{"T ", "W ", Character.valueOf('T'), tankBlock, Character.valueOf('W'), miningWellBlock});
          CoreProxy.addName(pumpBlock.a("pumpBlock"), "Pump");
-         ModLoader.RegisterBlock(pumpBlock);
          refineryBlock = new BlockRefinery(Integer.parseInt(var9.value));
+         ModLoader.RegisterBlock(refineryBlock);
          var0.registerShapedRecipe(new ItemStack(refineryBlock), new Object[]{"   ", "RTR", "TGT", Character.valueOf('T'), tankBlock, Character.valueOf('G'), BuildCraftCore.diamondGearItem, Character.valueOf('R'), Block.REDSTONE_TORCH_ON});
          CoreProxy.addName(refineryBlock.a("refineryBlock"), "Refinery");
-         ModLoader.RegisterBlock(refineryBlock);
          ModLoader.RegisterTileEntity(TileQuarry.class, "Machine");
          ModLoader.RegisterTileEntity(TileMiningWell.class, "MiningWell");
          ModLoader.RegisterTileEntity(TileAutoWorkbench.class, "AutoWorkbench");

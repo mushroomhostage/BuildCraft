@@ -255,6 +255,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
       this.targetZ = var1.e("targetZ");
       if(var1.m("hasArm")) {
          NBTTagCompound var7 = var1.k("arm");
+         if(this.world == null) this.world = APIProxy.getWorld();
          this.arm = new EntityMechanicalArm(this.world);
          this.arm.e(var7);
          this.arm.listener = this;

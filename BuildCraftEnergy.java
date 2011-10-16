@@ -56,10 +56,10 @@ public class BuildCraftEnergy {
          BuildCraftCore.mainConfiguration.save();
          CraftingManager var5 = CraftingManager.getInstance();
          engineBlock = new BlockEngine(Integer.parseInt(var0.value));
+         ModLoader.RegisterBlock(engineBlock);
          var5.registerShapedRecipe(new ItemStack(engineBlock, 1, 0), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.WOOD, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.woodenGearItem, Character.valueOf('p'), Block.PISTON});
          var5.registerShapedRecipe(new ItemStack(engineBlock, 1, 1), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.COBBLESTONE, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.stoneGearItem, Character.valueOf('p'), Block.PISTON});
          var5.registerShapedRecipe(new ItemStack(engineBlock, 1, 2), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Item.IRON_INGOT, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.ironGearItem, Character.valueOf('p'), Block.PISTON});
-         ModLoader.RegisterBlock(engineBlock);
          Item.byId[engineBlock.id] = null;
          Item.byId[engineBlock.id] = new ItemEngine(engineBlock.id - 256);
          CoreProxy.addName(new ItemStack(engineBlock, 1, 0), "Redstone Engine");
