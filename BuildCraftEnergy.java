@@ -55,16 +55,18 @@ public class BuildCraftEnergy {
          Property var4 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("bucketFuel.id", 2, DefaultProps.BUCKET_FUEL_ID);
          BuildCraftCore.mainConfiguration.save();
          CraftingManager var5 = CraftingManager.getInstance();
+
          engineBlock = new BlockEngine(Integer.parseInt(var0.value));
          ModLoader.RegisterBlock(engineBlock);
-         var5.registerShapedRecipe(new ItemStack(engineBlock, 1, 0), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.WOOD, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.woodenGearItem, Character.valueOf('p'), Block.PISTON});
-         var5.registerShapedRecipe(new ItemStack(engineBlock, 1, 1), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.COBBLESTONE, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.stoneGearItem, Character.valueOf('p'), Block.PISTON});
-         var5.registerShapedRecipe(new ItemStack(engineBlock, 1, 2), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Item.IRON_INGOT, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.ironGearItem, Character.valueOf('p'), Block.PISTON});
          Item.byId[engineBlock.id] = null;
          Item.byId[engineBlock.id] = new ItemEngine(engineBlock.id - 256);
          CoreProxy.addName(new ItemStack(engineBlock, 1, 0), "Redstone Engine");
          CoreProxy.addName(new ItemStack(engineBlock, 1, 1), "Steam Engine");
          CoreProxy.addName(new ItemStack(engineBlock, 1, 2), "Combustion Engine");
+         var5.registerShapedRecipe(new ItemStack(engineBlock, 1, 0), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.WOOD, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.woodenGearItem, Character.valueOf('p'), Block.PISTON});
+         var5.registerShapedRecipe(new ItemStack(engineBlock, 1, 1), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.COBBLESTONE, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.stoneGearItem, Character.valueOf('p'), Block.PISTON});
+         var5.registerShapedRecipe(new ItemStack(engineBlock, 1, 2), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Item.IRON_INGOT, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.ironGearItem, Character.valueOf('p'), Block.PISTON});
+
          oilMoving = (new BlockOilFlowing(Integer.parseInt(var2.value), Material.WATER)).c(100.0F).f(3).a("oil");
          CoreProxy.addName(oilMoving.a("oilMoving"), "Oil");
          ModLoader.RegisterBlock(oilMoving);
