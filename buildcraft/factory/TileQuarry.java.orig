@@ -328,17 +328,12 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
       return !this.blockDig(var1) && !API.softBlock(var1) && var1 != Block.SNOW.id;
    }
 
-   public void i() {
-      this.destroy();
-   }
-
    public void destroy() {
       if(this.arm != null) {
          this.arm.die();
       }
 
       this.box.deleteLasers();
-      this.arm = null;
    }
 
    public boolean isActive() {

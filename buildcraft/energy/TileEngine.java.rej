@@ -1,0 +1,10 @@
+--- buildcraft/energy/TileEngine.java
++++ buildcraft/energy/TileEngine.java
+@@ -15,7 +15,6 @@
+ import buildcraft.energy.EngineWood;
+ import buildcraft.energy.IEngineProvider;
+ import buildcraft.energy.PneumaticPowerProvider;
+-import java.util.HashMap;
+ import net.minecraft.src.EntityHuman;
+ import net.minecraft.src.IInventory;
+ import net.minecraft.src.ItemStack;

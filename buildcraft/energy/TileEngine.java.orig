@@ -15,6 +15,7 @@ import buildcraft.energy.EngineStone;
 import buildcraft.energy.EngineWood;
 import buildcraft.energy.IEngineProvider;
 import buildcraft.energy.PneumaticPowerProvider;
+import java.util.HashMap;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
@@ -25,6 +26,7 @@ import net.minecraft.server.TileEntity;
 
 public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInventory, ILiquidContainer, IEngineProvider {
 
+   public static HashMap possibleFuels = new HashMap();
    @TileNetworkData
    public Engine engine;
    @TileNetworkData
@@ -307,4 +309,5 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
    public Engine getEngine() {
       return this.engine;
    }
+
 }

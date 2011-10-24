@@ -234,17 +234,6 @@ public class ClassMapping {
 		for (ClassMapping c : objectArrayFields) {
 			TileNetworkData updateAnnotation = c.field.getAnnotation(TileNetworkData.class);
 			
-			if (!(c.field.get(obj) instanceof Object[])) {
-				System.err.println("Error: Tried to cast non-Object to Object in "+c.toString()+" -> "+c.field.toString());
-				for (int i = 0; i < updateAnnotation.staticSize(); i++) {
-					intValues[index.intIndex] = 0;
-					index.intIndex += c.sizeInt + 1;
-					index.floatIndex += c.sizeFloat;
-					index.stringIndex += c.sizeString;
-				}
-				continue;
-			}
-			
 			Object [] cpts = (Object []) c.field.get (obj);	
 			
 			for (int i = 0; i < updateAnnotation.staticSize(); ++i) {

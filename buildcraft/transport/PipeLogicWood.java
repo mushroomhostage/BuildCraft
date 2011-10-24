@@ -1,5 +1,6 @@
 package buildcraft.transport;
 
+import buildcraft.api.APIProxy;
 import buildcraft.api.ILiquidContainer;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
@@ -84,7 +85,10 @@ public class PipeLogicWood extends PipeLogic {
 
    public void initialize() {
       super.initialize();
-      this.switchSourceIfNeeded();
+      if(!APIProxy.isClient(this.worldObj)) {
+         this.switchSourceIfNeeded();
+      }
+
    }
 
    private void switchSourceIfNeeded() {
@@ -104,7 +108,10 @@ public class PipeLogicWood extends PipeLogic {
 
    public void onNeighborBlockChange() {
       super.onNeighborBlockChange();
-      this.switchSourceIfNeeded();
+      if(!APIProxy.isClient(this.worldObj)) {
+         this.switchSourceIfNeeded();
+      }
+
    }
 
 }

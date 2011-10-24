@@ -1,7 +1,6 @@
 package buildcraft.api;
 
 import buildcraft.api.LiquidData;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import net.minecraft.server.Block;
@@ -11,7 +10,6 @@ public class API {
 
    public static LinkedList liquids = new LinkedList();
    public static final int BUCKET_VOLUME = 1000;
-   public static HashMap ironEngineFuel = new HashMap();
 
 
    public static int getLiquidForBucket(int var0) {

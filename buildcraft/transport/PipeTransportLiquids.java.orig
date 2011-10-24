@@ -5,7 +5,9 @@ import buildcraft.api.ILiquidContainer;
 import buildcraft.api.IPipeEntry;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
+import buildcraft.api.SafeTimeTracker;
 import buildcraft.api.TileNetworkData;
+import buildcraft.core.CoreProxy;
 import buildcraft.core.IMachine;
 import buildcraft.core.Utils;
 import buildcraft.transport.IPipeTransportLiquidsHook;
@@ -15,6 +17,7 @@ import net.minecraft.server.EntityItem;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.World;
+import net.minecraft.server.mod_BuildCraftCore;
 
 public class PipeTransportLiquids extends PipeTransport implements ILiquidContainer {
 
@@ -29,6 +32,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
    public PipeTransportLiquids.LiquidBuffer center;
    boolean[] isInput = new boolean[6];
    boolean[] isOutput = new boolean[]{false, false, false, false, false, false};
+   private SafeTimeTracker timeTracker = new SafeTimeTracker();
    int lockedTime = 0;
    private static long lastSplit = 0L;
    private static int[] splitVector;
@@ -51,7 +55,10 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
    public void updateEntity() {
       if(!APIProxy.isClient(this.worldObj)) {
          this.moveLiquids();
-         this.container.synchronizeIfDelay(10);
+         if(APIProxy.isServerSide() && this.timeTracker.markTimeIfDelay(this.worldObj, 10L)) {
+            CoreProxy.sendToPlayers(this.container.getUpdatePacket(), this.xCoord, this.yCoord, this.zCoord, 40, mod_BuildCraftCore.instance);
+         }
+
       }
    }
 
@@ -290,9 +297,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
       }
 
       public int fill(int var1, boolean var2, short var3) {
-         if(PipeTransportLiquids.this.worldObj == null) {
-            return 0;
-         } else if(this.qty > 0 && this.liquidId != var3 && this.liquidId != 0) {
+         if(this.qty > 0 && this.liquidId != var3 && this.liquidId != 0) {
             return 0;
          } else {
             if(this.liquidId != var3) {

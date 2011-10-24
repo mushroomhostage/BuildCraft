@@ -44,67 +44,65 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor {
 
    public void h_() {
       super.h_();
-      if(this.tube != null) {
-         if(!APIProxy.isClient(this.world)) {
-            if(this.tube.locY - (double)this.aimY > 0.01D) {
-               this.tubeY = this.tube.locY - 0.01D;
-               this.setTubePosition();
-               if(APIProxy.isServerSide()) {
-                  this.sendNetworkUpdate();
-               }
-
-               return;
+      if(!APIProxy.isClient(this.world)) {
+         if(this.tube.locY - (double)this.aimY > 0.01D) {
+            this.tubeY = this.tube.locY - 0.01D;
+            this.setTubePosition();
+            if(APIProxy.isServerSide()) {
+               this.sendNetworkUpdate();
             }
 
-            if(this.internalLiquid <= 0) {
-               BlockIndex var1 = this.getNextIndexToPump(false);
-               int var2;
-               if(this.isPumpableLiquid(var1)) {
-                  var2 = Utils.liquidId(this.world.getTypeId(var1.i, var1.j, var1.k));
-                  if(this.internalLiquid == 0 || this.liquidId == var2) {
-                     this.liquidId = var2;
-                     if(this.powerProvider.useEnergy(10, 10, true) == 10) {
-                        var1 = this.getNextIndexToPump(true);
-                        this.world.setTypeId(var1.i, var1.j, var1.k, 0);
-                        this.internalLiquid = this.internalLiquid += 1000;
-                        if(APIProxy.isServerSide()) {
-                           this.sendNetworkUpdate();
-                        }
+            return;
+         }
+
+         if(this.internalLiquid <= 0) {
+            BlockIndex var1 = this.getNextIndexToPump(false);
+            int var2;
+            if(this.isPumpableLiquid(var1)) {
+               var2 = Utils.liquidId(this.world.getTypeId(var1.i, var1.j, var1.k));
+               if(this.internalLiquid == 0 || this.liquidId == var2) {
+                  this.liquidId = var2;
+                  if(this.powerProvider.useEnergy(10, 10, true) == 10) {
+                     var1 = this.getNextIndexToPump(true);
+                     this.world.setTypeId(var1.i, var1.j, var1.k, 0);
+                     this.internalLiquid = this.internalLiquid += 1000;
+                     if(APIProxy.isServerSide()) {
+                        this.sendNetworkUpdate();
                      }
                   }
-               } else if(this.world.getTime() % 100L == 0L) {
-                  this.initializePumpFromPosition(this.x, this.aimY, this.z);
-                  if(this.getNextIndexToPump(false) == null) {
-                     for(var2 = this.y - 1; var2 > 0; --var2) {
-                        if(this.isLiquid(new BlockIndex(this.x, var2, this.z))) {
-                           this.aimY = var2;
-                           return;
-                        }
+               }
+            } else if(this.world.getTime() % 100L == 0L) {
+               this.initializePumpFromPosition(this.x, this.aimY, this.z);
+               if(this.getNextIndexToPump(false) == null) {
+                  for(var2 = this.y - 1; var2 > 0; --var2) {
+                     if(this.isLiquid(new BlockIndex(this.x, var2, this.z))) {
+                        this.aimY = var2;
+                        return;
+                     }
 
-                        if(this.world.getTypeId(this.x, var2, this.z) != 0) {
-                           return;
-                        }
+                     if(this.world.getTypeId(this.x, var2, this.z) != 0) {
+                        return;
                      }
                   }
                }
             }
          }
-
-         if(this.internalLiquid >= 0) {
-            for(int var4 = 0; var4 < 6; ++var4) {
-               Position var5 = new Position((double)this.x, (double)this.y, (double)this.z, Orientations.values()[var4]);
-               var5.moveForwards(1.0D);
-               TileEntity var3 = this.world.getTileEntity((int)var5.x, (int)var5.y, (int)var5.z);
-               if(var3 instanceof ILiquidContainer) {
-                  this.internalLiquid -= ((ILiquidContainer)var3).fill(var5.orientation.reverse(), this.internalLiquid, this.liquidId, true);
-                  if(this.internalLiquid <= 0) {
-                     break;
-                  }
-               }
-            }
-         }
-
       }
+
+      if(this.internalLiquid >= 0) {
+         for(int var4 = 0; var4 < 6; ++var4) {
+            Position var5 = new Position((double)this.x, (double)this.y, (double)this.z, Orientations.values()[var4]);
+            var5.moveForwards(1.0D);
+            TileEntity var3 = this.world.getTileEntity((int)var5.x, (int)var5.y, (int)var5.z);
+            if(var3 instanceof ILiquidContainer) {
+               this.internalLiquid -= ((ILiquidContainer)var3).fill(var5.orientation.reverse(), this.internalLiquid, this.liquidId, true);
+               if(this.internalLiquid <= 0) {
+                  break;
+               }
+            }
+         }
+      }
+
    }
 
    public void initialize() {
@@ -280,14 +278,9 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor {
 
    }
 
-   public void i() {
-      this.destroy();
-   }
-
    public void destroy() {
       if(this.tube != null) {
          APIProxy.removeEntity(this.tube);
-         this.tube = null;
       }
 
    }

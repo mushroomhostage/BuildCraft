@@ -11,7 +11,7 @@ public class LegacyTile extends TileEntity {
    public void h_() {
       int var1 = this.world.getData(this.x, this.y, this.z);
       int var2 = ((LegacyBlock)Block.byId[this.world.getTypeId(this.x, this.y, this.z)]).newPipeId;
-      BlockGenericPipe.createPipe(this.x, this.y, this.z, var2);
+      BlockGenericPipe.createPipe(this.world, this.x, this.y, this.z, var2);
       this.world.setTypeIdAndData(this.x, this.y, this.z, BuildCraftTransport.genericPipeBlock.id, var1);
    }
 }

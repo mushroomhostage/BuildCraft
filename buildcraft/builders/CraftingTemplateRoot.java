@@ -13,7 +13,7 @@ class CraftingTemplateRoot extends BuildCraftContainer {
 
 
    public CraftingTemplateRoot(IInventory var1, TileTemplate var2) {
-      super(2);
+      super(var2.getSize());
       this.playerIInventory = var1;
       this.template = var2;
       this.a(new Slot(var2, 0, 55, 35));

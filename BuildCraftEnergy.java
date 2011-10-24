@@ -1,20 +1,19 @@
 package net.minecraft.server;
 
 import buildcraft.api.API;
+import buildcraft.api.IronEngineFuel;
 import buildcraft.api.LiquidData;
-import buildcraft.core.BuildCraftItem;
 import buildcraft.core.CoreProxy;
 import buildcraft.core.DefaultProps;
+import buildcraft.core.ItemBuildCraftTexture;
 import buildcraft.energy.BlockEngine;
 import buildcraft.energy.BlockOilFlowing;
 import buildcraft.energy.BlockOilStill;
-import buildcraft.energy.EngineFuel;
 import buildcraft.energy.ItemBucketOil;
 import buildcraft.energy.ItemEngine;
 import buildcraft.energy.ItemFuel;
 import buildcraft.energy.OilBucketHandler;
 import buildcraft.energy.OilPopulate;
-import buildcraft.energy.TileEngine;
 import buildcraft.factory.RefineryRecipe;
 import buildcraft.factory.TileRefinery;
 import forge.MinecraftForge;
@@ -80,12 +79,12 @@ public class BuildCraftEnergy {
             bucketOil = (new ItemBucketOil(Integer.parseInt(var3.value))).a("bucketOil").a(Item.BUCKET);
             CoreProxy.addName(bucketOil, "Oil Bucket");
             fuel = new ItemFuel(DefaultProps.FUEL_ID);
-            bucketFuel = (new BuildCraftItem(Integer.parseInt(var4.value))).b(3).a("bucketFuel").c(1).a(Item.BUCKET);
+            bucketFuel = (new ItemBuildCraftTexture(Integer.parseInt(var4.value))).b(3).a("bucketFuel").c(1).a(Item.BUCKET);
             CoreProxy.addName(bucketFuel, "Fuel Bucket");
             TileRefinery.addRecipe(new RefineryRecipe(oilStill.id, 1, 0, 0, 10, fuel.id, 1, 1));
-            TileEngine.possibleFuels.put(Integer.valueOf(Block.STATIONARY_LAVA.id), new EngineFuel(oilStill.id, 1, 2000));
-            TileEngine.possibleFuels.put(Integer.valueOf(oilStill.id), new EngineFuel(oilStill.id, 2, 10000));
-            TileEngine.possibleFuels.put(Integer.valueOf(fuel.id), new EngineFuel(fuel.id, 5, '\uc350'));
+            API.ironEngineFuel.put(Integer.valueOf(Block.STATIONARY_LAVA.id), new IronEngineFuel(oilStill.id, 1, 2000));
+            API.ironEngineFuel.put(Integer.valueOf(oilStill.id), new IronEngineFuel(oilStill.id, 2, 10000));
+            API.ironEngineFuel.put(Integer.valueOf(fuel.id), new IronEngineFuel(fuel.id, 5, '\uc350'));
             API.liquids.add(new LiquidData(oilStill.id, bucketOil.id));
             API.liquids.add(new LiquidData(fuel.id, bucketFuel.id));
          }

@@ -15,7 +15,7 @@ public class BlockIndex implements Comparable {
    }
 
    public int compareTo(BlockIndex var1) {
-      return var1.i < this.i?1:(var1.i > this.i?-1:(var1.j < this.j?1:(var1.j > this.j?-1:(var1.k < this.k?1:(var1.k > this.k?-1:0)))));
+      return var1.i < this.i?1:(var1.i > this.i?-1:(var1.k < this.k?1:(var1.k > this.k?-1:(var1.j < this.j?1:(var1.j > this.j?-1:0)))));
    }
 
    // $FF: synthetic method

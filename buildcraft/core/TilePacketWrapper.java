@@ -31,10 +31,20 @@ public class TilePacketWrapper {
       var2.modId = mod_BuildCraftCore.instance.getId();
       var2.k = true;
       var2.packetType = this.packetType.ordinal();
-      int[] var3 = this.rootMappings[0].getSize();
-      var2.dataInt = new int[var3[0] + 3];
-      var2.dataFloat = new float[var3[1]];
-      var2.dataString = new String[var3[2]];
+      int var3 = 3;
+      int var4 = 0;
+      int var5 = 0;
+
+      for(int var6 = 0; var6 < this.rootMappings.length; ++var6) {
+         int[] var7 = this.rootMappings[var6].getSize();
+         var3 += var7[0];
+         var4 += var7[1];
+         var5 += var7[2];
+      }
+
+      var2.dataInt = new int[var3];
+      var2.dataFloat = new float[var4];
+      var2.dataString = new String[var5];
       var2.dataInt[0] = var1.x;
       var2.dataInt[1] = var1.y;
       var2.dataInt[2] = var1.z;
@@ -42,8 +52,8 @@ public class TilePacketWrapper {
       try {
          this.rootMappings[0].setData(var1, var2.dataInt, var2.dataFloat, var2.dataString, new ClassMapping.Indexes(3, 0, 0));
          return var2;
-      } catch (Exception var5) {
-         var5.printStackTrace();
+      } catch (Exception var8) {
+         var8.printStackTrace();
          return null;
       }
    }
@@ -58,7 +68,7 @@ public class TilePacketWrapper {
       int var8 = 0;
 
       for(int var9 = 0; var9 < this.rootMappings.length; ++var9) {
-         int[] var10 = this.rootMappings[0].getSize();
+         int[] var10 = this.rootMappings[var9].getSize();
          var6 += var10[0];
          var7 += var10[1];
          var8 += var10[2];

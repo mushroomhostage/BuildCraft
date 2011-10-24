@@ -1,6 +1,5 @@
 package buildcraft.transport;
 
-import buildcraft.api.APIProxy;
 import buildcraft.api.EntityPassiveItem;
 import buildcraft.api.ILiquidContainer;
 import buildcraft.api.IPipeEntry;
@@ -8,14 +7,9 @@ import buildcraft.api.IPowerReceptor;
 import buildcraft.api.ISpecialInventory;
 import buildcraft.api.Orientations;
 import buildcraft.api.PowerProvider;
-import buildcraft.api.SafeTimeTracker;
-import buildcraft.api.TileNetworkData;
 import buildcraft.core.BlockIndex;
-import buildcraft.core.CoreProxy;
 import buildcraft.core.ISynchronizedTile;
 import buildcraft.core.PacketIds;
-import buildcraft.core.PersistentTile;
-import buildcraft.core.PersistentWorld;
 import buildcraft.transport.BlockGenericPipe;
 import buildcraft.transport.Pipe;
 import net.minecraft.server.EntityHuman;
@@ -28,12 +22,9 @@ import net.minecraft.server.mod_BuildCraftCore;
 
 public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiquidContainer, ISpecialInventory, IPipeEntry, ISynchronizedTile {
 
-   public SafeTimeTracker networkSyncTracker = new SafeTimeTracker();
    public Pipe pipe;
    private boolean blockNeighborChange = false;
-   private boolean pipeBound = false;
-   @TileNetworkData
-   public int pipeId = -1;
+   private boolean initialized = false;
 
 
    public void b(NBTTagCompound var1) {
@@ -47,7 +38,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
 
    public void a(NBTTagCompound var1) {
       super.a(var1);
-      this.pipe = BlockGenericPipe.createPipe(var1.e("pipeId"));
+      this.pipe = BlockGenericPipe.createPipe(this.x, this.y, this.z, var1.e("pipeId"));
       this.pipe.setTile(this);
       this.pipe.readFromNBT(var1);
    }
@@ -56,20 +47,31 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
       return new ItemStack[0];
    }
 
-   public void synchronizeIfDelay(int var1) {
-      if(APIProxy.isServerSide() && this.networkSyncTracker.markTimeIfDelay(this.world, (long)var1)) {
-         CoreProxy.sendToPlayers(this.getUpdatePacket(), this.x, this.y, this.z, 40, mod_BuildCraftCore.instance);
-       }
-   }
-
    public void n() {
-      this.bindPipe();
+      super.n();
+      if(this.pipe == null) {
+         this.pipe = (Pipe)BlockGenericPipe.pipeBuffer.get(new BlockIndex(this.x, this.y, this.z));
+      }
+
+      if(BlockGenericPipe.pipeBuffer.containsKey(new BlockIndex(this.x, this.y, this.z))) {
+         BlockGenericPipe.pipeBuffer.remove(new BlockIndex(this.x, this.y, this.z));
+      }
+
+      if(this.pipe != null) {
+         this.pipe.setTile(this);
+         this.pipe.setWorld(this.world);
+      }
+
    }
 
    public void h_() {
-      this.bindPipe();
-      this.pipe.initialize();
       if(BlockGenericPipe.isValid(this.pipe)) {
+         if(!this.initialized) {
+            this.pipe.initialize();
+            this.pipe.setWorld(this.world);
+            this.initialized = true;
+         }
+
          if(this.blockNeighborChange) {
             this.pipe.onNeighborBlockChange();
             this.blockNeighborChange = false;
@@ -84,62 +86,42 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
       }
    }
 
-   private void bindPipe() {
-      if(!this.pipeBound) {
-         if(this.pipe == null) {
-            PersistentTile var1 = PersistentWorld.getWorld(this.world).getTile(new BlockIndex(this.x, this.y, this.z));
-            if(var1 != null && var1 instanceof Pipe) {
-               this.pipe = (Pipe)var1;
-            }
-         }
-
-         if(this.pipe != null) {
-            this.pipe.setTile(this);
-            this.pipe.setWorld(this.world);
-            PersistentWorld.getWorld(this.world).storeTile(this.pipe, new BlockIndex(this.x, this.y, this.z));
-            this.pipeId = this.pipe.itemID;
-            this.pipeBound = true;
-         }
-      }
-
-   }
-
    public void setPowerProvider(PowerProvider var1) {
-      if(BlockGenericPipe.isValid(this.pipe) && this.pipe instanceof IPowerReceptor) {
+      if(this.pipe instanceof IPowerReceptor) {
          ((IPowerReceptor)this.pipe).setPowerProvider(var1);
       }
 
    }
 
    public PowerProvider getPowerProvider() {
-      return BlockGenericPipe.isValid(this.pipe) && this.pipe instanceof IPowerReceptor?((IPowerReceptor)this.pipe).getPowerProvider():null;
+      return this.pipe instanceof IPowerReceptor?((IPowerReceptor)this.pipe).getPowerProvider():null;
    }
 
    public void doWork() {
-      if(BlockGenericPipe.isValid(this.pipe) && this.pipe instanceof IPowerReceptor) {
+      if(this.pipe instanceof IPowerReceptor) {
          ((IPowerReceptor)this.pipe).doWork();
       }
 
    }
 
    public int fill(Orientations var1, int var2, int var3, boolean var4) {
-      return BlockGenericPipe.isValid(this.pipe) && this.pipe.transport instanceof ILiquidContainer?((ILiquidContainer)this.pipe.transport).fill(var1, var2, var3, var4):0;
+      return this.pipe.transport instanceof ILiquidContainer?((ILiquidContainer)this.pipe.transport).fill(var1, var2, var3, var4):0;
    }
 
    public int empty(int var1, boolean var2) {
-      return BlockGenericPipe.isValid(this.pipe) && this.pipe.transport instanceof ILiquidContainer?((ILiquidContainer)this.pipe.transport).empty(var1, var2):0;
+      return this.pipe.transport instanceof ILiquidContainer?((ILiquidContainer)this.pipe.transport).empty(var1, var2):0;
    }
 
    public int getLiquidQuantity() {
-      return BlockGenericPipe.isValid(this.pipe) && this.pipe.transport instanceof ILiquidContainer?((ILiquidContainer)this.pipe.transport).getLiquidQuantity():0;
+      return this.pipe.transport instanceof ILiquidContainer?((ILiquidContainer)this.pipe.transport).getLiquidQuantity():0;
    }
 
    public int getCapacity() {
-      return BlockGenericPipe.isValid(this.pipe) && this.pipe.transport instanceof ILiquidContainer?((ILiquidContainer)this.pipe.transport).getCapacity():0;
+      return this.pipe.transport instanceof ILiquidContainer?((ILiquidContainer)this.pipe.transport).getCapacity():0;
    }
 
    public int getLiquidId() {
-      return BlockGenericPipe.isValid(this.pipe) && this.pipe.transport instanceof ILiquidContainer?((ILiquidContainer)this.pipe.transport).getLiquidId():0;
+      return this.pipe.transport instanceof ILiquidContainer?((ILiquidContainer)this.pipe.transport).getLiquidId():0;
    }
 
    public void scheduleNeighborChange() {
@@ -147,61 +129,54 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
    }
 
    public int getSize() {
-      return BlockGenericPipe.isFullyDefined(this.pipe)?this.pipe.logic.getSizeInventory():0;
+      return this.pipe.logic.getSizeInventory();
    }
 
    public ItemStack getItem(int var1) {
-      return BlockGenericPipe.isFullyDefined(this.pipe)?this.pipe.logic.getStackInSlot(var1):null;
+      return this.pipe.logic.getStackInSlot(var1);
    }
 
    public ItemStack splitStack(int var1, int var2) {
-      return BlockGenericPipe.isFullyDefined(this.pipe)?this.pipe.logic.decrStackSize(var1, var2):null;
+      return this.pipe.logic.decrStackSize(var1, var2);
    }
 
    public void setItem(int var1, ItemStack var2) {
-      if(BlockGenericPipe.isFullyDefined(this.pipe)) {
-         this.pipe.logic.setInventorySlotContents(var1, var2);
-      }
-
+      this.pipe.logic.setInventorySlotContents(var1, var2);
    }
 
    public String getName() {
-      return BlockGenericPipe.isFullyDefined(this.pipe)?this.pipe.logic.getInvName():"";
+      return this.pipe.logic.getInvName();
    }
 
    public int getMaxStackSize() {
-      return BlockGenericPipe.isFullyDefined(this.pipe)?this.pipe.logic.getInventoryStackLimit():0;
+      return this.pipe.logic.getInventoryStackLimit();
    }
 
    public boolean a(EntityHuman var1) {
-      return BlockGenericPipe.isFullyDefined(this.pipe)?this.pipe.logic.canInteractWith(var1):false;
+      return this.pipe.logic.canInteractWith(var1);
    }
 
    public boolean addItem(ItemStack var1, boolean var2, Orientations var3) {
-      return BlockGenericPipe.isValid(this.pipe)?this.pipe.logic.addItem(var1, var2, var3):false;
+      return this.pipe.logic.addItem(var1, var2, var3);
    }
 
    public ItemStack extractItem(boolean var1, Orientations var2) {
-      return BlockGenericPipe.isValid(this.pipe)?this.pipe.logic.extractItem(var1, var2):null;
+      return this.pipe.logic.extractItem(var1, var2);
    }
 
    public void entityEntering(EntityPassiveItem var1, Orientations var2) {
-      if(BlockGenericPipe.isValid(this.pipe)) {
-         this.pipe.transport.entityEntering(var1, var2);
-      }
-
+      this.pipe.transport.entityEntering(var1, var2);
    }
 
    public boolean acceptItems() {
-      return BlockGenericPipe.isValid(this.pipe)?this.pipe.transport.acceptItems():false;
+      return this.pipe.transport.acceptItems();
    }
 
    public void handleDescriptionPacket(Packet230ModLoader var1) {
       if(this.pipe == null) {
-         this.pipe = BlockGenericPipe.createPipe(var1.dataInt[3]);
-         this.pipeBound = false;
-         this.bindPipe();
-         this.pipe.initialize();
+         this.pipe = BlockGenericPipe.createPipe(this.x, this.y, this.z, var1.dataInt[3]);
+         this.pipe.setTile(this);
+         this.pipe.setWorld(this.world);
       }
 
    }
@@ -220,7 +195,6 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
    }
 
    public Packet l() {
-      this.bindPipe();
       Packet230ModLoader var1 = new Packet230ModLoader();
       var1.modId = mod_BuildCraftCore.instance.getId();
       var1.k = true;

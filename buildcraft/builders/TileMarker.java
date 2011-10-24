@@ -224,6 +224,10 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider {
       return this.origin.isSet()?this.origin.zMax:this.z;
    }
 
+   public void i() {
+      this.destroy();
+   }
+
    public void destroy() {
       TileMarker var1 = null;
       int var4;

@@ -44,19 +44,7 @@ public class PipeTransportPower extends PipeTransport {
    }
 
    public void updateEntity() {
-      int var4;
-      int var5;
-      if(APIProxy.isClient(this.worldObj)) {
-         double var12 = 0.0D;
-         double[] var20 = this.displayPower;
-         var4 = var20.length;
-
-         for(var5 = 0; var5 < var4; ++var5) {
-            double var21 = var20[var5];
-            var12 += var21;
-         }
-
-      } else {
+      if(!APIProxy.isClient(this.worldObj)) {
          this.step();
          TileEntity[] var1 = new TileEntity[6];
 
@@ -73,19 +61,19 @@ public class PipeTransportPower extends PipeTransport {
 
          for(var2 = 0; var2 < 6; ++var2) {
             if(this.internalPower[var2] > 0.0D) {
-               double var13 = 0.0D;
+               double var12 = 0.0D;
 
-               for(var5 = 0; var5 < 6; ++var5) {
+               for(int var5 = 0; var5 < 6; ++var5) {
                   if(var5 != var2 && this.powerQuery[var5] > 0 && (var1[var5] instanceof TileGenericPipe || var1[var5] instanceof IPowerReceptor)) {
-                     var13 += (double)this.powerQuery[var5];
+                     var12 += (double)this.powerQuery[var5];
                   }
                }
 
-               double var19 = this.internalPower[var2];
+               double var18 = this.internalPower[var2];
 
                for(int var7 = 0; var7 < 6; ++var7) {
                   if(var7 != var2 && this.powerQuery[var7] > 0) {
-                     double var8 = var19 / var13 * (double)this.powerQuery[var7];
+                     double var8 = var18 / var12 * (double)this.powerQuery[var7];
                      if(var1[var7] instanceof TileGenericPipe) {
                         TileGenericPipe var10 = (TileGenericPipe)var1[var7];
                         PipeTransportPower var11 = (PipeTransportPower)var10.pipe.transport;
@@ -94,8 +82,8 @@ public class PipeTransportPower extends PipeTransport {
                         this.displayPower[var2] += var8 / 2.0D;
                         this.internalPower[var2] -= var8;
                      } else if(var1[var7] instanceof IPowerReceptor) {
-                        IPowerReceptor var22 = (IPowerReceptor)var1[var7];
-                        var22.getPowerProvider().receiveEnergy((int)var8);
+                        IPowerReceptor var19 = (IPowerReceptor)var1[var7];
+                        var19.getPowerProvider().receiveEnergy((int)var8);
                         this.displayPower[var7] += var8 / 2.0D;
                         this.displayPower[var2] += var8 / 2.0D;
                         this.internalPower[var2] -= var8;
@@ -105,36 +93,37 @@ public class PipeTransportPower extends PipeTransport {
             }
          }
 
+         int var4;
          for(var2 = 0; var2 < 6; ++var2) {
             if(var1[var2] instanceof IPowerReceptor && !(var1[var2] instanceof TileGenericPipe)) {
-               IPowerReceptor var14 = (IPowerReceptor)var1[var2];
-               var4 = var14.powerRequest();
+               IPowerReceptor var13 = (IPowerReceptor)var1[var2];
+               var4 = var13.powerRequest();
                if(var4 > 0) {
                   this.requestEnergy(Orientations.values()[var2], var4);
                }
             }
          }
 
-         int[] var15 = new int[]{0, 0, 0, 0, 0, 0};
+         int[] var14 = new int[]{0, 0, 0, 0, 0, 0};
 
-         int var16;
-         for(var16 = 0; var16 < 6; ++var16) {
-            var15[var16] = 0;
+         int var15;
+         for(var15 = 0; var15 < 6; ++var15) {
+            var14[var15] = 0;
 
             for(var4 = 0; var4 < 6; ++var4) {
-               if(var4 != var16) {
-                  var15[var16] += this.powerQuery[var4];
+               if(var4 != var15) {
+                  var14[var15] += this.powerQuery[var4];
                }
             }
          }
 
-         for(var16 = 0; var16 < 6; ++var16) {
-            if(var15[var16] != 0 && var1[var16] != null) {
-               TileEntity var17 = var1[var16];
-               if(var17 instanceof TileGenericPipe) {
-                  TileGenericPipe var18 = (TileGenericPipe)var17;
-                  PipeTransportPower var6 = (PipeTransportPower)var18.pipe.transport;
-                  var6.requestEnergy(Orientations.values()[var16].reverse(), var15[var16]);
+         for(var15 = 0; var15 < 6; ++var15) {
+            if(var14[var15] != 0 && var1[var15] != null) {
+               TileEntity var16 = var1[var15];
+               if(var16 instanceof TileGenericPipe) {
+                  TileGenericPipe var17 = (TileGenericPipe)var16;
+                  PipeTransportPower var6 = (PipeTransportPower)var17.pipe.transport;
+                  var6.requestEnergy(Orientations.values()[var15].reverse(), var14[var15]);
                }
             }
          }

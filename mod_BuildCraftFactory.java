@@ -15,6 +15,6 @@ public class mod_BuildCraftFactory extends BaseModMp {
    }
 
    public String Version() {
-      return "2.2.2";
+      return "2.2.3";
    }
 }

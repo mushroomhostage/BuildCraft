@@ -207,10 +207,6 @@ public class TileTemplate extends TileBuildCraft implements IInventory {
       var1.a("Items", var5);
    }
 
-   public void i() {
-      this.destroy();
-   }
-
    public void destroy() {
       if(this.box.isInitialized()) {
          this.box.deleteLasers();

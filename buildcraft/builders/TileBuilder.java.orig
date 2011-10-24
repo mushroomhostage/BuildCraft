@@ -231,10 +231,6 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
 
    }
 
-   public void i() {
-      this.destroy();
-   }
-
    public void destroy() {
       if(this.box.isInitialized()) {
          this.box.deleteLasers();

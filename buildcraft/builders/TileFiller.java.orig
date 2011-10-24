@@ -238,10 +238,6 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
       return this.world.getTileEntity(this.x, this.y, this.z) != this?false:var1.e((double)this.x + 0.5D, (double)this.y + 0.5D, (double)this.z + 0.5D) <= 64.0D;
    }
 
-   public void i() {
-      this.destroy();
-   }
-
    public void destroy() {
       if(this.box != null) {
          this.box.deleteLasers();

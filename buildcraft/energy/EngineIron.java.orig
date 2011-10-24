@@ -1,10 +1,10 @@
 package buildcraft.energy;
 
 import buildcraft.api.API;
-import buildcraft.api.IronEngineFuel;
 import buildcraft.api.Orientations;
 import buildcraft.energy.ContainerEngine;
 import buildcraft.energy.Engine;
+import buildcraft.energy.EngineFuel;
 import buildcraft.energy.TileEngine;
 import net.minecraft.server.Block;
 import net.minecraft.server.ICrafting;
@@ -63,7 +63,7 @@ public class EngineIron extends Engine {
    }
 
    public void burn() {
-      IronEngineFuel var1 = (IronEngineFuel)API.ironEngineFuel.get(Integer.valueOf(this.liquidId));
+      EngineFuel var1 = (EngineFuel)TileEngine.possibleFuels.get(Integer.valueOf(this.liquidId));
       if(var1 != null) {
          if(this.tile.world.isBlockIndirectlyPowered(this.tile.x, this.tile.y, this.tile.z) && (this.burnTime > 0 || this.liquidQty > 0)) {
             if(this.burnTime > 0) {
@@ -113,19 +113,8 @@ public class EngineIron extends Engine {
 
    }
 
-   public void computeEnergyStage() {
-      if(this.heat <= MAX_HEAT / 4) {
-         this.energyStage = Engine.EnergyStage.Blue;
-      } else if(this.heat <= MAX_HEAT / 2) {
-         this.energyStage = Engine.EnergyStage.Green;
-      } else if((float)this.heat <= (float)MAX_HEAT * 3.0F / 4.0F) {
-         this.energyStage = Engine.EnergyStage.Yellow;
-      } else if(this.heat <= MAX_HEAT) {
-         this.energyStage = Engine.EnergyStage.Red;
-      } else {
-         this.energyStage = Engine.EnergyStage.Explosion;
-      }
-
+   public Engine.EnergyStage getEnergyStage() {
+      return this.heat <= MAX_HEAT / 4?Engine.EnergyStage.Blue:(this.heat <= MAX_HEAT / 2?Engine.EnergyStage.Green:((float)this.heat <= (float)MAX_HEAT * 3.0F / 4.0F?Engine.EnergyStage.Yellow:(this.heat <= MAX_HEAT?Engine.EnergyStage.Red:Engine.EnergyStage.Explosion)));
    }
 
    public int getScaledBurnTime(int var1) {
@@ -139,7 +128,7 @@ public class EngineIron extends Engine {
          boolean var5 = false;
          if(this.liquidQty > 0 && this.liquidId != var3) {
             return 0;
-         } else if(!API.ironEngineFuel.containsKey(Integer.valueOf(var3))) {
+         } else if(!TileEngine.possibleFuels.containsKey(Integer.valueOf(var3))) {
             return 0;
          } else {
             int var6;

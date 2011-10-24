@@ -8,15 +8,19 @@ public class SafeTimeTracker {
 
 
    public boolean markTimeIfDelay(World var1, long var2) {
-      long var4 = var1.getTime();
-      if(var4 < this.lastMark) {
-         this.lastMark = var4;
+      if(var1 == null) {
          return false;
-      } else if(this.lastMark + var2 <= var4) {
-         this.lastMark = var1.getTime();
-         return true;
       } else {
-         return false;
+         long var4 = var1.getTime();
+         if(var4 < this.lastMark) {
+            this.lastMark = var4;
+            return false;
+         } else if(this.lastMark + var2 <= var4) {
+            this.lastMark = var1.getTime();
+            return true;
+         } else {
+            return false;
+         }
       }
    }
 

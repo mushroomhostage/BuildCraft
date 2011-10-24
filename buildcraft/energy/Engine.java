@@ -1,5 +1,6 @@
 package buildcraft.energy;
 
+import buildcraft.api.APIProxy;
 import buildcraft.api.Orientations;
 import buildcraft.api.TileNetworkData;
 import buildcraft.energy.ContainerEngine;
@@ -15,18 +16,40 @@ public abstract class Engine {
    public float progress;
    @TileNetworkData
    public Orientations orientation;
-   @TileNetworkData
    public int energy;
-   public int maxEnergyExtracted = 1;
+   @TileNetworkData
+   public Engine.EnergyStage energyStage;
+   public int maxEnergyExtracted;
    protected TileEngine tile;
 
 
    public Engine(TileEngine var1) {
+      this.energyStage = Engine.EnergyStage.Blue;
+      this.maxEnergyExtracted = 1;
       this.tile = var1;
    }
 
-   public Engine.EnergyStage getEnergyStage() {
-      return (double)this.energy / (double)this.maxEnergy * 100.0D <= 25.0D?Engine.EnergyStage.Blue:((double)this.energy / (double)this.maxEnergy * 100.0D <= 50.0D?Engine.EnergyStage.Green:((double)this.energy / (double)this.maxEnergy * 100.0D <= 75.0D?Engine.EnergyStage.Yellow:((double)this.energy / (double)this.maxEnergy * 100.0D <= 100.0D?Engine.EnergyStage.Red:Engine.EnergyStage.Explosion)));
+   protected void computeEnergyStage() {
+      if((double)this.energy / (double)this.maxEnergy * 100.0D <= 25.0D) {
+         this.energyStage = Engine.EnergyStage.Blue;
+      } else if((double)this.energy / (double)this.maxEnergy * 100.0D <= 50.0D) {
+         this.energyStage = Engine.EnergyStage.Green;
+      } else if((double)this.energy / (double)this.maxEnergy * 100.0D <= 75.0D) {
+         this.energyStage = Engine.EnergyStage.Yellow;
+      } else if((double)this.energy / (double)this.maxEnergy * 100.0D <= 100.0D) {
+         this.energyStage = Engine.EnergyStage.Red;
+      } else {
+         this.energyStage = Engine.EnergyStage.Explosion;
+      }
+
+   }
+
+   public final Engine.EnergyStage getEnergyStage() {
+      if(!APIProxy.isClient(this.tile.world)) {
+         this.computeEnergyStage();
+      }
+
+      return this.energyStage;
    }
 
    public void update() {

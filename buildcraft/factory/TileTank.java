@@ -23,33 +23,38 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer {
          var5 = (TileTank)this.world.getTileEntity(this.x, var6, this.z);
       }
 
-      return var5.actualFill(var1, var2, var3);
+      return var5.actualFill(var1, var2, var3, var4);
    }
 
-   private int actualFill(Orientations var1, int var2, int var3) {
+   private int actualFill(Orientations var1, int var2, int var3, boolean var4) {
       if(this.stored != 0 && var3 != this.liquidId) {
          return 0;
       } else {
          this.liquidId = var3;
-         TileEntity var4 = this.world.getTileEntity(this.x, this.y + 1, this.z);
-         int var5 = 0;
+         TileEntity var5 = this.world.getTileEntity(this.x, this.y + 1, this.z);
+         int var6 = 0;
          if(this.stored + var2 <= this.getCapacity()) {
-            this.stored += var2;
-            var5 = var2;
+            if(var4) {
+               this.stored += var2;
+            }
+
+            var6 = var2;
          } else if(this.stored <= this.getCapacity()) {
-            var5 = this.getCapacity() - this.stored;
-            this.stored = this.getCapacity();
+            var6 = this.getCapacity() - this.stored;
+            if(var4) {
+               this.stored = this.getCapacity();
+            }
          }
 
-         if(APIProxy.isServerSide() && var5 > 0) {
+         if(var4 && APIProxy.isServerSide() && var6 > 0) {
             this.sendNetworkUpdate();
          }
 
-         if(var5 < var2 && var4 instanceof TileTank) {
-            var5 += ((TileTank)var4).actualFill(var1, var2 - var5, var3);
+         if(var6 < var2 && var5 instanceof TileTank) {
+            var6 += ((TileTank)var5).actualFill(var1, var2 - var6, var3, var4);
          }
 
-         return var5;
+         return var6;
       }
    }
 
