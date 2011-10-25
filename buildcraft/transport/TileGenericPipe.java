@@ -48,8 +48,11 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
    public void a(NBTTagCompound var1) {
       super.a(var1);
       this.pipe = BlockGenericPipe.createPipe(var1.e("pipeId"));
-      this.pipe.setTile(this);
-      this.pipe.readFromNBT(var1);
+      if(this.pipe != null) {
+         this.pipe.setTile(this);
+         this.pipe.readFromNBT(var1);
+      }
+
    }
    
    public ItemStack[] getContents() {
@@ -68,7 +71,10 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
 
    public void h_() {
       this.bindPipe();
-      this.pipe.initialize();
+      if(this.pipe != null) {
+         this.pipe.initialize();
+      }
+
       if(BlockGenericPipe.isValid(this.pipe)) {
          if(this.blockNeighborChange) {
             this.pipe.onNeighborBlockChange();
@@ -80,7 +86,10 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
             var1.update(this);
          }
 
-         this.pipe.updateEntity();
+         if(this.pipe != null) {
+            this.pipe.updateEntity();
+         }
+
       }
    }
 
@@ -197,11 +206,13 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
    }
 
    public void handleDescriptionPacket(Packet230ModLoader var1) {
-      if(this.pipe == null) {
+      if(this.pipe == null && var1.dataInt[3] != 0) {
          this.pipe = BlockGenericPipe.createPipe(var1.dataInt[3]);
          this.pipeBound = false;
          this.bindPipe();
-         this.pipe.initialize();
+         if(this.pipe != null) {
+            this.pipe.initialize();
+         }
       }
 
    }
@@ -229,7 +240,12 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
       var1.dataInt[0] = this.x;
       var1.dataInt[1] = this.y;
       var1.dataInt[2] = this.z;
-      var1.dataInt[3] = this.pipe.itemID;
+      if(this.pipe != null) {
+         var1.dataInt[3] = this.pipe.itemID;
+      } else {
+         var1.dataInt[3] = 0;
+      }
+
       return var1;
    }
 

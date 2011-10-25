@@ -63,7 +63,7 @@ public class BuildCraftTransport {
          initialized = true;
          mod_BuildCraftCore.initialize();
          Property var0 = BuildCraftCore.mainConfiguration.getOrCreateBooleanProperty("loadLegacyPipes", 0, true);
-         var0.comment = "set to true to load pre 2.2.3 worlds pipes";
+         var0.comment = "set to true to load pre 2.2.4 worlds pipes";
          Property var1 = BuildCraftCore.mainConfiguration.getOrCreateBooleanProperty("pipes.alwaysConnect", 0, DefaultProps.PIPES_ALWAYS_CONNECT);
          var1.comment = "set to false to deactivate pipe connection rules, true by default";
          Property var2 = BuildCraftCore.mainConfiguration.getOrCreateProperty("woodenPipe.exclusion", 1, "");
