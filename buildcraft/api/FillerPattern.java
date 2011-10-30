@@ -11,7 +11,6 @@ public abstract class FillerPattern {
 
    public int id;
 
-
    public abstract boolean iteratePattern(TileEntity var1, IBox var2, ItemStack var3);
 
    public abstract String getTextureFile();
@@ -38,7 +37,7 @@ public abstract class FillerPattern {
       }
 
       if(var9 && var7 != null) {
-         var7.getItem().a(var7, (EntityHuman)null, var8, var10, var11 + 1, var12, 0);
+         var7.getItem().a(var7, (EntityHuman)FakePlayer.get(var8), var8, var10, var11 + 1, var12, 0);
       }
 
       return !var9;
@@ -75,4 +74,6 @@ public abstract class FillerPattern {
 
       return var9 == Integer.MAX_VALUE;
    }
+
+
 }

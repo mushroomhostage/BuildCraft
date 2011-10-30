@@ -132,7 +132,7 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
                   for(int var2 = 1; var2 < this.getSize(); ++var2) {
                      if(this.getItem(var2) != null && this.getItem(var2).count > 0 && this.getItem(var2).getItem() instanceof ItemBlock) {
                         ItemStack var3 = this.splitStack(var2, 1);
-                        var3.getItem().a(var3, (EntityHuman)null, this.world, var1.x, var1.y + 1, var1.z, 0);
+                        var3.getItem().a(var3, (EntityHuman)buildcraft.api.FakePlayer.get(this.world), this.world, var1.x, var1.y + 1, var1.z, 0);
                         break;
                      }
                   }
