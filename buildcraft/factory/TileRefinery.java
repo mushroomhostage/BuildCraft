@@ -13,6 +13,7 @@ import buildcraft.factory.RefineryRecipe;
 import buildcraft.factory.TileMachine;
 import java.util.Iterator;
 import java.util.LinkedList;
+import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
@@ -131,7 +132,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
    public void h_() {
       if(APIProxy.isClient(this.world)) {
          this.simpleAnimationIterate();
-      } else if(APIProxy.isServerSide() && this.updateNetworkTime.markTimeIfDelay(this.world, 20L)) {
+      } else if(APIProxy.isServerSide() && this.updateNetworkTime.markTimeIfDelay(this.world, (long)(2 * BuildCraftCore.updateFactor))) {
          this.sendNetworkUpdate();
       }
 

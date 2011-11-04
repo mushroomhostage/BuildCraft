@@ -55,7 +55,7 @@ public class PersistentWorld {
    }
 
    public void removeTile(BlockIndex var1) {
-      if(!this.tiles.containsKey(var1)) {
+      if(this.tiles.containsKey(var1)) {
          ((PersistentTile)this.tiles.remove(var1)).destroy();
       }
 

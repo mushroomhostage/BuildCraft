@@ -11,6 +11,7 @@ import buildcraft.core.Utils;
 import buildcraft.transport.IPipeTransportLiquidsHook;
 import buildcraft.transport.PipeTransport;
 import buildcraft.transport.TileGenericPipe;
+import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityItem;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
@@ -51,7 +52,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
    public void updateEntity() {
       if(!APIProxy.isClient(this.worldObj)) {
          this.moveLiquids();
-         this.container.synchronizeIfDelay(10);
+         this.container.synchronizeIfDelay(1 * BuildCraftCore.updateFactor);
       }
    }
 
@@ -248,7 +249,9 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
       short[] lastQty;
       int lastTotal;
       int emptyTime;
-      @TileNetworkData
+      @TileNetworkData(
+         intKind = 1
+      )
       public int average;
       @TileNetworkData
       public short liquidId;

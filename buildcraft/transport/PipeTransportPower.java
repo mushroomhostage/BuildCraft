@@ -12,6 +12,7 @@ import buildcraft.core.Utils;
 import buildcraft.transport.IPipeTransportPowerHook;
 import buildcraft.transport.PipeTransport;
 import buildcraft.transport.TileGenericPipe;
+import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.Entity;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
@@ -27,7 +28,7 @@ public class PipeTransportPower extends PipeTransport {
    @TileNetworkData(
       staticSize = 6
    )
-   public double[] displayPower = new double[]{0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D};
+   public short[] displayPower = new short[]{(short)0, (short)0, (short)0, (short)0, (short)0, (short)0};
    public double powerResitance = 0.01D;
    SafeTimeTracker tracker = new SafeTimeTracker();
 
@@ -57,7 +58,7 @@ public class PipeTransportPower extends PipeTransport {
             }
          }
 
-         this.displayPower = new double[]{0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D};
+         this.displayPower = new short[]{(short)0, (short)0, (short)0, (short)0, (short)0, (short)0};
 
          for(var2 = 0; var2 < 6; ++var2) {
             if(this.internalPower[var2] > 0.0D) {
@@ -78,14 +79,14 @@ public class PipeTransportPower extends PipeTransport {
                         TileGenericPipe var10 = (TileGenericPipe)var1[var7];
                         PipeTransportPower var11 = (PipeTransportPower)var10.pipe.transport;
                         var11.receiveEnergy(Orientations.values()[var7].reverse(), var8);
-                        this.displayPower[var7] += var8 / 2.0D;
-                        this.displayPower[var2] += var8 / 2.0D;
+                        this.displayPower[var7] = (short)((int)((double)this.displayPower[var7] + var8 / 2.0D));
+                        this.displayPower[var2] = (short)((int)((double)this.displayPower[var2] + var8 / 2.0D));
                         this.internalPower[var2] -= var8;
                      } else if(var1[var7] instanceof IPowerReceptor) {
                         IPowerReceptor var19 = (IPowerReceptor)var1[var7];
                         var19.getPowerProvider().receiveEnergy((int)var8);
-                        this.displayPower[var7] += var8 / 2.0D;
-                        this.displayPower[var2] += var8 / 2.0D;
+                        this.displayPower[var7] = (short)((int)((double)this.displayPower[var7] + var8 / 2.0D));
+                        this.displayPower[var2] = (short)((int)((double)this.displayPower[var2] + var8 / 2.0D));
                         this.internalPower[var2] -= var8;
                      }
                   }
@@ -128,7 +129,7 @@ public class PipeTransportPower extends PipeTransport {
             }
          }
 
-         if(APIProxy.isServerSide() && this.tracker.markTimeIfDelay(this.worldObj, 10L)) {
+         if(APIProxy.isServerSide() && this.tracker.markTimeIfDelay(this.worldObj, (long)(2 * BuildCraftCore.updateFactor))) {
             CoreProxy.sendToPlayers(this.container.getUpdatePacket(), this.xCoord, this.yCoord, this.zCoord, 40, mod_BuildCraftCore.instance);
          }
 

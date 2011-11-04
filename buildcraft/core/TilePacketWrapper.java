@@ -1,5 +1,6 @@
 package buildcraft.core;
 
+import buildcraft.core.ByteBuffer;
 import buildcraft.core.ClassMapping;
 import buildcraft.core.PacketIds;
 import net.minecraft.server.Packet230ModLoader;
@@ -31,31 +32,34 @@ public class TilePacketWrapper {
       var2.modId = mod_BuildCraftCore.instance.getId();
       var2.k = true;
       var2.packetType = this.packetType.ordinal();
-      int var3 = 3;
+      int var3 = 0;
       int var4 = 0;
-      int var5 = 0;
 
-      for(int var6 = 0; var6 < this.rootMappings.length; ++var6) {
-         int[] var7 = this.rootMappings[var6].getSize();
-         var3 += var7[0];
-         var4 += var7[1];
-         var5 += var7[2];
+      for(int var5 = 0; var5 < this.rootMappings.length; ++var5) {
+         int[] var6 = this.rootMappings[var5].getSize();
+         var3 += var6[1];
+         var4 += var6[2];
       }
 
-      var2.dataInt = new int[var3];
-      var2.dataFloat = new float[var4];
-      var2.dataString = new String[var5];
-      var2.dataInt[0] = var1.x;
-      var2.dataInt[1] = var1.y;
-      var2.dataInt[2] = var1.z;
+      var2.dataFloat = new float[var3];
+      var2.dataString = new String[var4];
+      ByteBuffer var8 = new ByteBuffer();
+      var8.writeInt(var1.x);
+      var8.writeInt(var1.y);
+      var8.writeInt(var1.z);
 
       try {
-         this.rootMappings[0].setData(var1, var2.dataInt, var2.dataFloat, var2.dataString, new ClassMapping.Indexes(3, 0, 0));
+         this.rootMappings[0].setData(var1, var8, var2.dataFloat, var2.dataString, new ClassMapping.Indexes(0, 0));
+         var2.dataInt = var8.readIntArray();
          return var2;
-      } catch (Exception var8) {
-         var8.printStackTrace();
+      } catch (Exception var7) {
+         var7.printStackTrace();
          return null;
       }
+   }
+
+   public Packet230ModLoader toPacket(int var1, int var2, int var3, Object var4) {
+      return this.toPacket(var1, var2, var3, new Object[]{var4});
    }
 
    public Packet230ModLoader toPacket(int var1, int var2, int var3, Object[] var4) {
@@ -63,31 +67,30 @@ public class TilePacketWrapper {
       var5.modId = mod_BuildCraftCore.instance.getId();
       var5.k = true;
       var5.packetType = this.packetType.ordinal();
-      int var6 = 3;
+      int var6 = 0;
       int var7 = 0;
-      int var8 = 0;
 
-      for(int var9 = 0; var9 < this.rootMappings.length; ++var9) {
-         int[] var10 = this.rootMappings[var9].getSize();
-         var6 += var10[0];
-         var7 += var10[1];
-         var8 += var10[2];
+      for(int var8 = 0; var8 < this.rootMappings.length; ++var8) {
+         int[] var9 = this.rootMappings[var8].getSize();
+         var6 += var9[1];
+         var7 += var9[2];
       }
 
-      var5.dataInt = new int[var6];
-      var5.dataFloat = new float[var7];
-      var5.dataString = new String[var8];
-      var5.dataInt[0] = var1;
-      var5.dataInt[1] = var2;
-      var5.dataInt[2] = var3;
+      var5.dataFloat = new float[var6];
+      var5.dataString = new String[var7];
+      ByteBuffer var12 = new ByteBuffer();
+      var12.writeInt(var1);
+      var12.writeInt(var2);
+      var12.writeInt(var3);
 
       try {
-         ClassMapping.Indexes var12 = new ClassMapping.Indexes(3, 0, 0);
+         ClassMapping.Indexes var13 = new ClassMapping.Indexes(0, 0);
 
-         for(int var13 = 0; var13 < this.rootMappings.length; ++var13) {
-            this.rootMappings[var13].setData(var4[var13], var5.dataInt, var5.dataFloat, var5.dataString, var12);
+         for(int var10 = 0; var10 < this.rootMappings.length; ++var10) {
+            this.rootMappings[var10].setData(var4[var10], var12, var5.dataFloat, var5.dataString, var13);
          }
 
+         var5.dataInt = var12.readIntArray();
          return var5;
       } catch (Exception var11) {
          var11.printStackTrace();
@@ -95,22 +98,39 @@ public class TilePacketWrapper {
       }
    }
 
+   public void updateFromPacket(Object var1, Packet230ModLoader var2) {
+      this.updateFromPacket(new Object[]{var1}, var2);
+   }
+
    public void updateFromPacket(Object[] var1, Packet230ModLoader var2) {
       try {
-         ClassMapping.Indexes var3 = new ClassMapping.Indexes(3, 0, 0);
+         ByteBuffer var3 = new ByteBuffer();
+         var3.writeIntArray(var2.dataInt);
+         var3.readInt();
+         var3.readInt();
+         var3.readInt();
+         ClassMapping.Indexes var4 = new ClassMapping.Indexes(0, 0);
 
-         for(int var4 = 0; var4 < this.rootMappings.length; ++var4) {
-            this.rootMappings[var4].updateFromData(var1[var4], var2.dataInt, var2.dataFloat, var2.dataString, var3);
+         for(int var5 = 0; var5 < this.rootMappings.length; ++var5) {
+            this.rootMappings[var5].updateFromData(var1[var5], var3, var2.dataFloat, var2.dataString, var4);
          }
-      } catch (Exception var5) {
-         var5.printStackTrace();
+
+         var2.dataInt = var3.readIntArray();
+      } catch (Exception var6) {
+         var6.printStackTrace();
       }
 
    }
 
    public void updateFromPacket(TileEntity var1, Packet230ModLoader var2) {
       try {
-         this.rootMappings[0].updateFromData(var1, var2.dataInt, var2.dataFloat, var2.dataString, new ClassMapping.Indexes(3, 0, 0));
+         ByteBuffer var3 = new ByteBuffer();
+         var3.writeIntArray(var2.dataInt);
+         var3.readInt();
+         var3.readInt();
+         var3.readInt();
+         this.rootMappings[0].updateFromData(var1, var3, var2.dataFloat, var2.dataString, new ClassMapping.Indexes(0, 0));
+         var2.dataInt = var3.readIntArray();
       } catch (Exception var4) {
          var4.printStackTrace();
       }

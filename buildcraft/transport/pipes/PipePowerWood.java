@@ -64,7 +64,7 @@ public class PipePowerWood extends Pipe implements IPowerReceptor {
 
                int var6 = this.powerProvider.useEnergy(1, var7, true);
                var4.receiveEnergy(var2.orientation.reverse(), (double)var6);
-               ((PipeTransportPower)this.transport).displayPower[var1] += (double)var6;
+               ((PipeTransportPower)this.transport).displayPower[var1] = (short)(((PipeTransportPower)this.transport).displayPower[var1] + var6);
             }
          }
       }

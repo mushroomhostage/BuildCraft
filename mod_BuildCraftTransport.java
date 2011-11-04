@@ -15,6 +15,6 @@ public class mod_BuildCraftTransport extends BaseModMp {
    }
 
    public String Version() {
-      return "2.2.4";
+      return "2.2.5";
    }
 }

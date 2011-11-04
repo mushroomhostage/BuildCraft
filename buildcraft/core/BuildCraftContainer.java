@@ -21,9 +21,11 @@ public class BuildCraftContainer extends Container {
          ItemStack var4 = var3.getItem();
          var2 = var4.cloneItemStack();
          if(var1 < this.inventorySize) {
-            this.a(var4, this.inventorySize, this.e.size(), true);
-         } else {
-            this.a(var4, 0, this.inventorySize, false);
+            if(!this.a(var4, this.inventorySize, this.e.size(), true)) {
+               return null;
+            }
+         } else if(!this.a(var4, 0, this.inventorySize, false)) {
+            return null;
          }
 
          if(var4.count == 0) {

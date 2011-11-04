@@ -18,7 +18,7 @@ public class BuildCraftBlockUtil {
       } else {
          int var5 = var0.getData(var1, var2, var3);
          int var6 = var4.a(var5, var0.random);
-         int var7 = var4.a(var0.random);
+         int var7 = var4.quantityDropped(var5, var0.random);
          int var8 = var4.a_(var5);
          return var6 > 0 && var7 != 0?new ItemStack(var6, var7, var8):null;
       }

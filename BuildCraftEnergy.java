@@ -52,8 +52,9 @@ public class BuildCraftEnergy {
          Property var2 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("oilMoving.id", DefaultProps.OIL_MOVING_ID);
          Property var3 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("bucketOil.id", 2, DefaultProps.BUCKET_OIL_ID);
          Property var4 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("bucketFuel.id", 2, DefaultProps.BUCKET_FUEL_ID);
+         Property var5 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("fuel.id", 2, DefaultProps.FUEL_ID);
          BuildCraftCore.mainConfiguration.save();
-         CraftingManager var5 = CraftingManager.getInstance();
+         CraftingManager var6 = CraftingManager.getInstance();
 
          engineBlock = new BlockEngine(Integer.parseInt(var0.value));
          ModLoader.RegisterBlock(engineBlock);
@@ -62,9 +63,9 @@ public class BuildCraftEnergy {
          CoreProxy.addName(new ItemStack(engineBlock, 1, 0), "Redstone Engine");
          CoreProxy.addName(new ItemStack(engineBlock, 1, 1), "Steam Engine");
          CoreProxy.addName(new ItemStack(engineBlock, 1, 2), "Combustion Engine");
-         var5.registerShapedRecipe(new ItemStack(engineBlock, 1, 0), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.WOOD, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.woodenGearItem, Character.valueOf('p'), Block.PISTON});
-         var5.registerShapedRecipe(new ItemStack(engineBlock, 1, 1), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.COBBLESTONE, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.stoneGearItem, Character.valueOf('p'), Block.PISTON});
-         var5.registerShapedRecipe(new ItemStack(engineBlock, 1, 2), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Item.IRON_INGOT, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.ironGearItem, Character.valueOf('p'), Block.PISTON});
+         var6.registerShapedRecipe(new ItemStack(engineBlock, 1, 0), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.WOOD, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.woodenGearItem, Character.valueOf('p'), Block.PISTON});
+         var6.registerShapedRecipe(new ItemStack(engineBlock, 1, 1), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.COBBLESTONE, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.stoneGearItem, Character.valueOf('p'), Block.PISTON});
+         var6.registerShapedRecipe(new ItemStack(engineBlock, 1, 2), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Item.IRON_INGOT, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.ironGearItem, Character.valueOf('p'), Block.PISTON});
 
          oilMoving = (new BlockOilFlowing(Integer.parseInt(var2.value), Material.WATER)).c(100.0F).f(3).a("oil");
          CoreProxy.addName(oilMoving.a("oilMoving"), "Oil");
@@ -78,11 +79,11 @@ public class BuildCraftEnergy {
             MinecraftForge.registerCustomBucketHandler(new OilBucketHandler());
             bucketOil = (new ItemBucketOil(Integer.parseInt(var3.value))).a("bucketOil").a(Item.BUCKET);
             CoreProxy.addName(bucketOil, "Oil Bucket");
-            fuel = new ItemFuel(DefaultProps.FUEL_ID);
+            fuel = new ItemFuel(Integer.parseInt(var5.value));
             bucketFuel = (new ItemBuildCraftTexture(Integer.parseInt(var4.value))).b(3).a("bucketFuel").c(1).a(Item.BUCKET);
             CoreProxy.addName(bucketFuel, "Fuel Bucket");
             TileRefinery.addRecipe(new RefineryRecipe(oilStill.id, 1, 0, 0, 10, fuel.id, 1, 1));
-            API.ironEngineFuel.put(Integer.valueOf(Block.STATIONARY_LAVA.id), new IronEngineFuel(oilStill.id, 1, 2000));
+            API.ironEngineFuel.put(Integer.valueOf(Block.STATIONARY_LAVA.id), new IronEngineFuel(oilStill.id, 1, 20000));
             API.ironEngineFuel.put(Integer.valueOf(oilStill.id), new IronEngineFuel(oilStill.id, 2, 10000));
             API.ironEngineFuel.put(Integer.valueOf(fuel.id), new IronEngineFuel(fuel.id, 5, '\uc350'));
             API.liquids.add(new LiquidData(oilStill.id, bucketOil.id));

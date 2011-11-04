@@ -3,8 +3,10 @@ package buildcraft.factory;
 import buildcraft.api.APIProxy;
 import buildcraft.api.ILiquidContainer;
 import buildcraft.api.Orientations;
+import buildcraft.api.SafeTimeTracker;
 import buildcraft.api.TileNetworkData;
 import buildcraft.core.TileBuildCraft;
+import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
 
@@ -14,6 +16,8 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer {
    public int stored = 0;
    @TileNetworkData
    public int liquidId = 0;
+   public boolean hasUpdate = false;
+   public SafeTimeTracker tracker = new SafeTimeTracker();
 
 
    public int fill(Orientations var1, int var2, int var3, boolean var4) {
@@ -36,6 +40,7 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer {
          if(this.stored + var2 <= this.getCapacity()) {
             if(var4) {
                this.stored += var2;
+               this.hasUpdate = true;
             }
 
             var6 = var2;
@@ -43,11 +48,8 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer {
             var6 = this.getCapacity() - this.stored;
             if(var4) {
                this.stored = this.getCapacity();
+               this.hasUpdate = true;
             }
-         }
-
-         if(var4 && APIProxy.isServerSide() && var6 > 0) {
-            this.sendNetworkUpdate();
          }
 
          if(var6 < var2 && var5 instanceof TileTank) {
@@ -96,6 +98,7 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer {
       if(this.stored >= var1) {
          if(var2) {
             this.stored -= var1;
+            this.hasUpdate = true;
          }
 
          return var1;
@@ -103,6 +106,7 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer {
          int var3 = this.stored;
          if(var2) {
             this.stored = 0;
+            this.hasUpdate = true;
          }
 
          TileEntity var4 = this.world.getTileEntity(this.x, this.y - 1, this.z);
@@ -116,5 +120,14 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer {
 
    public int getLiquidId() {
       return this.liquidId;
+   }
+
+   @TileNetworkData
+   public void h_() {
+      if(APIProxy.isServerSide() && this.hasUpdate && this.tracker.markTimeIfDelay(this.world, (long)(2 * BuildCraftCore.updateFactor))) {
+         this.sendNetworkUpdate();
+         this.hasUpdate = false;
+      }
+
    }
 }

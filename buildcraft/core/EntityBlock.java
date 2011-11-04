@@ -8,6 +8,9 @@ public class EntityBlock extends Entity {
 
    public int texture;
    public float shadowSize;
+   public float rotationX;
+   public float rotationY;
+   public float rotationZ;
    public double iSize;
    public double jSize;
    public double kSize;
@@ -17,6 +20,9 @@ public class EntityBlock extends Entity {
       super(var1);
       this.texture = -1;
       this.shadowSize = 0.0F;
+      this.rotationX = 0.0F;
+      this.rotationY = 0.0F;
+      this.rotationZ = 0.0F;
       this.aY = false;
       this.bJ = true;
       this.fireProof = true;

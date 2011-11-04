@@ -17,11 +17,14 @@ import net.minecraft.server.CraftingManager;
 import net.minecraft.server.Item;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.ModLoader;
+import net.minecraft.server.mod_BuildCraftCore;
 
 public class BuildCraftCore {
 
    public static boolean debugMode = false;
    public static boolean modifyWorld = false;
+   public static boolean trackNetworkUsage = false;
+   public static int updateFactor = 10;
    public static BuildCraftConfiguration mainConfiguration;
    public static TreeMap bufferedDescriptions = new TreeMap();
    public static final int trackedPassiveEntityId = 156;
@@ -48,6 +51,12 @@ public class BuildCraftCore {
 
    public static void initialize() {
       if(!initialized) {
+         ModLoader.getLogger().fine("Starting BuildCraft " + mod_BuildCraftCore.version());
+         ModLoader.getLogger().fine("Copyright (c) SpaceToad, 2011");
+         ModLoader.getLogger().fine("http://www.mod-buildcraft.com");
+         System.out.println("Starting BuildCraft " + mod_BuildCraftCore.version());
+         System.out.println("Copyright (c) SpaceToad, 2011");
+         System.out.println("http://www.mod-buildcraft.com");
          initialized = true;
          mainConfiguration = new BuildCraftConfiguration(new File(CoreProxy.getBuildCraftBase(), "config/buildcraft.cfg"), true);
          mainConfiguration.load();
@@ -58,21 +67,26 @@ public class BuildCraftCore {
          Property var0 = mainConfiguration.getOrCreateBooleanProperty("current.continuous", 0, DefaultProps.CURRENT_CONTINUOUS);
          var0.comment = "set to true for allowing machines to be driven by continuous current";
          continuousCurrentModel = Boolean.parseBoolean(var0.value);
-         Property var1 = mainConfiguration.getOrCreateProperty("power.framework", 0, "buildcraft.energy.PneumaticPowerFramework");
+         Property var1 = mainConfiguration.getOrCreateBooleanProperty("trackNetworkUsage", 0, false);
+         trackNetworkUsage = Boolean.parseBoolean(var1.value);
+         Property var2 = mainConfiguration.getOrCreateProperty("power.framework", 0, "buildcraft.energy.PneumaticPowerFramework");
+         Property var3 = mainConfiguration.getOrCreateIntProperty("network.updateFactor", 0, 10);
+         var0.comment = "increasing this number will decrease network update frequency, useful for overloaded servers";
+         updateFactor = Integer.parseInt(var3.value);
 
          try {
-            PowerFramework.currentFramework = (PowerFramework)Class.forName(var1.value).getConstructor((Class[])null).newInstance((Object[])null);
-         } catch (Throwable var4) {
-            var4.printStackTrace();
+            PowerFramework.currentFramework = (PowerFramework)Class.forName(var2.value).getConstructor((Class[])null).newInstance((Object[])null);
+         } catch (Throwable var6) {
+            var6.printStackTrace();
             PowerFramework.currentFramework = new RedstonePowerFramework();
          }
 
-         Property var2 = mainConfiguration.getOrCreateIntProperty("wrench.id", 2, DefaultProps.WRENCH_ID);
+         Property var4 = mainConfiguration.getOrCreateIntProperty("wrench.id", 2, DefaultProps.WRENCH_ID);
          mainConfiguration.save();
          initializeGears();
-         CraftingManager var3 = CraftingManager.getInstance();
-         wrenchItem = (new ItemBuildCraftTexture(Integer.parseInt(var2.value))).b(2).a("wrenchItem");
-         var3.registerShapedRecipe(new ItemStack(wrenchItem), new Object[]{"I I", " G ", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem});
+         CraftingManager var5 = CraftingManager.getInstance();
+         wrenchItem = (new ItemBuildCraftTexture(Integer.parseInt(var4.value))).b(2).a("wrenchItem");
+         var5.registerShapedRecipe(new ItemStack(wrenchItem), new Object[]{"I I", " G ", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem});
          CoreProxy.addName(wrenchItem, "Wrench");
          API.liquids.add(new LiquidData(Block.STATIONARY_WATER.id, Item.WATER_BUCKET.id));
          API.liquids.add(new LiquidData(Block.STATIONARY_LAVA.id, Item.LAVA_BUCKET.id));

@@ -9,6 +9,7 @@ import buildcraft.transport.BlockGenericPipe;
 import buildcraft.transport.PipeLogic;
 import buildcraft.transport.TransportProxy;
 import net.minecraft.server.Block;
+import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
@@ -64,7 +65,7 @@ public class PipeLogicDiamond extends PipeLogic {
    }
 
    public void updateEntity() {
-      if(this.tracker.markTimeIfDelay(this.worldObj, 200L) && APIProxy.isServerSide()) {
+      if(this.tracker.markTimeIfDelay(this.worldObj, (long)(20 * BuildCraftCore.updateFactor)) && APIProxy.isServerSide()) {
          CoreProxy.sendToPlayers((Packet230ModLoader)this.getContentsPacket(), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
       }
 
