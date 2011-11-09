@@ -56,7 +56,7 @@ public class FillerFlattener extends FillerPattern {
       }
 
       if(var13 != Integer.MAX_VALUE && var3 != null) {
-         var3.getItem().a(var3, (EntityHuman)null, var1.world, var13, var14 + 1, var15, 0);
+         var3.getItem().a(var3, (EntityHuman)buildcraft.api.FakePlayer.get(var1.world), var1.world, var13, var14 + 1, var15, 0);
       }
 
       if(var13 != Integer.MAX_VALUE) {

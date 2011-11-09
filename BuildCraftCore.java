@@ -81,6 +81,12 @@ public class BuildCraftCore {
             PowerFramework.currentFramework = new RedstonePowerFramework();
          }
 
+         // MaeEdit start
+         Property fakeplayer = mainConfiguration.getOrCreateProperty("blocks.placedby", 0, "fakeplayer");
+         fakeplayer.comment = "Configures BLOCK_PLACE events for builders and fillers. Options are 'null' and 'fakeplayer'";
+         buildcraft.api.FakePlayer.setMethod(fakeplayer.value);
+         // MaeEdit end
+
          Property var4 = mainConfiguration.getOrCreateIntProperty("wrench.id", 2, DefaultProps.WRENCH_ID);
          mainConfiguration.save();
          initializeGears();
