@@ -7,6 +7,10 @@ import java.util.LinkedList;
 import net.minecraft.server.Block;
 import net.minecraft.server.World;
 
+// MaeEdit start
+import org.bukkit.event.block.BlockBreakEvent;
+// MaeEdit end
+
 public class API {
 
    public static LinkedList liquids = new LinkedList();
@@ -55,6 +59,14 @@ public class API {
    public static void breakBlock(World var0, int var1, int var2, int var3) {
       int var4 = var0.getTypeId(var1, var2, var3);
       if(var4 != 0) {
+         // MaeEdit begin
+         org.bukkit.block.Block block = var0.getWorld().getBlockAt(var1, var2, var3);
+         BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.api.FakePlayer.getBukkitEntity(var0));
+         var0.getServer().getPluginManager().callEvent(event);
+         if (event.isCancelled()) {
+            return;
+         }
+         // MaeEdit end
          Block.byId[var4].g(var0, var1, var2, var3, var0.getData(var1, var2, var3));
       }
 

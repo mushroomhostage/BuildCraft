@@ -28,6 +28,13 @@ import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.Packet230ModLoader;
 
+// MaeEdit start
+import org.bukkit.craftbukkit.block.CraftBlockState;
+import org.bukkit.craftbukkit.event.CraftEventFactory;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+// MaeEdit end
+
 public class TileQuarry extends TileMachine implements IArmListener, IMachine, IPowerReceptor {
 
    BlockContents nextBlockForBluePrint = null;
@@ -142,10 +149,34 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                         BlockContents var1 = this.bluePrintBuilder.findNextBlock(this.world);
                         int var2 = this.world.getTypeId(var1.x, var1.y, var1.z);
                         if(var1 != null) {
+						   // MaeEdit begin: Send events for quarry setup
+						   // If the old block isn't air, send a block break event for it.
+						   if (var2 != 0) {
+						      org.bukkit.block.Block block = this.world.getWorld().getBlockAt(var1.x, var1.y, var1.z);
+						      BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.api.FakePlayer.getBukkitEntity(this.world));
+						      this.world.getServer().getPluginManager().callEvent(event);
+						      if (event.isCancelled()) {
+						         return;
+						      }
+						   }
+ 					       // MaeEdit end
+
                            if(!API.softBlock(var2)) {
                               this.world.setTypeId(var1.x, var1.y, var1.z, 0);
                            } else if(var1.blockId != 0) {
-                              this.world.setTypeId(var1.x, var1.y, var1.z, var1.blockId);
+                              // MaeEdit begin: Send events for quarry setup
+                              CraftBlockState replacedBlockState = CraftBlockState.getBlockState(world, var1.x, var1.y, var1.z);
+                              this.world.setRawTypeId(var1.x, var1.y, var1.z, var1.blockId);
+                              BlockPlaceEvent event = CraftEventFactory.callBlockPlaceEvent(world,
+                                 buildcraft.api.FakePlayer.get(this.world), replacedBlockState, var1.x, var1.y, var1.z, Block.byId[var1.blockId]);
+                              if (event.isCancelled() || !event.canBuild()) {
+                                 this.world.setTypeIdAndData(var1.x, var1.y, var1.z, replacedBlockState.getTypeId(), replacedBlockState.getRawData());
+                                 return;
+                              }
+                              //world.update(var1.x, var1.y, var1.z, var1.blockId); Why does it not let us do this when ItemBlock can?
+                              this.world.notify(var1.x, var1.y, var1.z);
+                              this.world.applyPhysics(var1.x, var1.y, var1.z, var1.blockId);
+                              // MaeEdit end
                            }
                         }
 
@@ -291,6 +322,14 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
          int var4 = this.targetZ;
          int var5 = this.world.getTypeId(var2, var3, var4);
          if(this.canDig(var5)) {
+            // MaeEdit begin: Send events for quarry digging
+            org.bukkit.block.Block block = this.world.getWorld().getBlockAt(var2, var3, var4);
+            BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.api.FakePlayer.getBukkitEntity(this.world));
+            this.world.getServer().getPluginManager().callEvent(event);
+            if (event.isCancelled()) {
+               return;
+            }
+            // MaeEdit end
             this.powerProvider.timeTracker.markTime(this.world);
             ItemStack var6 = BuildCraftBlockUtil.getItemStackFromBlock(this.world, var2, var3, var4);
             if(var6 != null) {

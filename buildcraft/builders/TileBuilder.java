@@ -26,6 +26,10 @@ import net.minecraft.server.NBTTagList;
 import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.mod_BuildCraftBuilders;
 
+// MaeEdit start
+import org.bukkit.event.block.BlockBreakEvent;
+// MaeEdit end
+
 public class TileBuilder extends TileBuildCraft implements IInventory, IPowerReceptor {
 
    private ItemStack[] items = new ItemStack[28];
@@ -126,6 +130,14 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
                }
 
                if(!API.softBlock(var1.blockId)) {
+                  // MaeEdit begin: Block break events for builders
+                  org.bukkit.block.Block block = this.world.getWorld().getBlockAt(var1.x, var1.y, var1.z);
+                  BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.api.FakePlayer.getBukkitEntity(this.world));
+                  this.world.getServer().getPluginManager().callEvent(event);
+                  if (event.isCancelled()) {
+                     return;
+                  }
+                  // MaeEdit end
                   Block.byId[var1.blockId].g(this.world, var1.x, var1.y, var1.z, this.world.getData(var1.x, var1.y, var1.z));
                   this.world.setTypeId(var1.x, var1.y, var1.z, 0);
                } else {

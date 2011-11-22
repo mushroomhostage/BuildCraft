@@ -1,6 +1,7 @@
 package buildcraft.api;
 
 import net.minecraft.server.*;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 public class FakePlayer {
 	enum Method { NULL, FAKEPLAYER };
@@ -29,6 +30,12 @@ public class FakePlayer {
 			}
 			return fakePlayer;
 		}
+		return null;
+	}
+	
+	public static CraftPlayer getBukkitEntity(World world) {
+		EntityPlayer player = get(world);
+		if (player != null) return (CraftPlayer)player.getBukkitEntity();
 		return null;
 	}
 }
