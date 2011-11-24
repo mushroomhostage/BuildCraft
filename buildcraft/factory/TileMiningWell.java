@@ -15,6 +15,13 @@ import net.minecraft.server.EntityItem;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.World;
 
+// MaeEdit start
+import org.bukkit.craftbukkit.block.CraftBlockState;
+import org.bukkit.craftbukkit.event.CraftEventFactory;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+// MaeEdit end
+
 public class TileMiningWell extends TileMachine implements IMachine, IPowerReceptor {
 
    boolean isDigging = true;
@@ -37,6 +44,18 @@ public class TileMiningWell extends TileMachine implements IMachine, IPowerRecep
 
          if(var2 >= 0 && var1.getTypeId(this.x, var2, this.z) != Block.BEDROCK.id && var1.getTypeId(this.x, var2, this.z) != Block.LAVA.id && var1.getTypeId(this.x, var2, this.z) != Block.STATIONARY_LAVA.id) {
             int var3 = var1.getTypeId(this.x, var2, this.z);
+            // MaeEdit begin: Send events for miners
+            // If the old block isn't air, send a block break event for it.
+            // Since miners only go straight down, this is probably enough, don't need to worry about a place event.
+            if (var3 != 0) {
+               org.bukkit.block.Block block = this.world.getWorld().getBlockAt(this.x, var2, this.z);
+               BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.api.FakePlayer.getBukkitEntity(this.world));
+               this.world.getServer().getPluginManager().callEvent(event);
+               if (event.isCancelled()) {
+                  return;
+               }
+            }
+            // MaeEdit end
             ItemStack var4 = BuildCraftBlockUtil.getItemStackFromBlock(var1, this.x, var2, this.z);
             var1.setTypeId(this.x, var2, this.z, BuildCraftFactory.plainPipeBlock.id);
             if(var3 != 0) {
