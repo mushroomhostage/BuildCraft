@@ -85,6 +85,9 @@ public class BuildCraftCore {
          Property fakeplayer = mainConfiguration.getOrCreateProperty("blocks.placedby", 0, "fakeplayer");
          fakeplayer.comment = "Configures BLOCK_PLACE events for builders and fillers. Options are 'null' and 'fakeplayer'";
          buildcraft.api.FakePlayer.setMethod(fakeplayer.value);
+         Property fakename = mainConfiguration.getOrCreateProperty("blocks.fakeplayername", 0, "[BuildCraft]");
+         fakename.comment = "Configures the name of the fake player used when blocks.placedby=fakeplayer";
+         buildcraft.api.FakePlayer.name = fakename.value;
          // MaeEdit end
 
          Property var4 = mainConfiguration.getOrCreateIntProperty("wrench.id", 2, DefaultProps.WRENCH_ID);

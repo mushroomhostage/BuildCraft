@@ -8,6 +8,7 @@ public class FakePlayer {
 	
 	private static Method method = Method.FAKEPLAYER;
 	private static EntityPlayer fakePlayer = null;
+	public static String name = "[BuildCraft]";
 	
 	public static void setMethod(String value) {
 		if (value.equalsIgnoreCase("null")) {
@@ -26,7 +27,7 @@ public class FakePlayer {
 		case FAKEPLAYER:
 			if (fakePlayer == null) {
 				fakePlayer = new EntityPlayer(ModLoader.getMinecraftServerInstance(), world, 
-					"[BuildCraft]", new ItemInWorldManager(world));
+					name, new ItemInWorldManager(world));
 			}
 			return fakePlayer;
 		}
