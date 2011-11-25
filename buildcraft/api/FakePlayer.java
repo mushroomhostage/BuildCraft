@@ -2,6 +2,7 @@ package buildcraft.api;
 
 import net.minecraft.server.*;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.event.player.*;
 
 public class FakePlayer {
 	enum Method { NULL, FAKEPLAYER };
@@ -9,6 +10,7 @@ public class FakePlayer {
 	private static Method method = Method.FAKEPLAYER;
 	private static EntityPlayer fakePlayer = null;
 	public static String name = "[BuildCraft]";
+	public static boolean doLogin = false;
 	
 	public static void setMethod(String value) {
 		if (value.equalsIgnoreCase("null")) {
@@ -28,6 +30,17 @@ public class FakePlayer {
 			if (fakePlayer == null) {
 				fakePlayer = new EntityPlayer(ModLoader.getMinecraftServerInstance(), world, 
 					name, new ItemInWorldManager(world));
+
+				if (doLogin) {
+					PlayerLoginEvent ple = new PlayerLoginEvent((CraftPlayer)fakePlayer.getBukkitEntity());
+					world.getServer().getPluginManager().callEvent(ple);
+					if (ple.getResult() != PlayerLoginEvent.Result.ALLOWED) {
+						System.err.println("[BuildCraft] FakePlayer login event was disallowed. Ignoring, but this may cause confused plugins.");
+					}
+					
+					PlayerJoinEvent pje = new PlayerJoinEvent((CraftPlayer)fakePlayer.getBukkitEntity(), "");
+					world.getServer().getPluginManager().callEvent(pje);
+				}
 			}
 			return fakePlayer;
 		}

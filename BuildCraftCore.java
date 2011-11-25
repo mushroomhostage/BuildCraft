@@ -88,6 +88,9 @@ public class BuildCraftCore {
          Property fakename = mainConfiguration.getOrCreateProperty("blocks.fakeplayername", 0, "[BuildCraft]");
          fakename.comment = "Configures the name of the fake player used when blocks.placedby=fakeplayer";
          buildcraft.api.FakePlayer.name = fakename.value;
+         Property fakelogin = mainConfiguration.getOrCreateBooleanProperty("blocks.fakeplayerlogin", 0, false);
+         fakelogin.comment = "Some plugins require PlayerLoginEvent and PlayerJoinEvent. Enabling this will cause them to be sent.";
+         buildcraft.api.FakePlayer.doLogin = Boolean.parseBoolean(fakelogin.value);
          // MaeEdit end
 
          Property var4 = mainConfiguration.getOrCreateIntProperty("wrench.id", 2, DefaultProps.WRENCH_ID);
