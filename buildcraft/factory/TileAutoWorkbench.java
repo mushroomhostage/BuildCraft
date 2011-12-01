@@ -34,6 +34,9 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
    }
 
    public ItemStack splitStack(int var1, int var2) {
+      if (var2 > this.stackList[var1].count) {
+         var2 = this.stackList[var1].count;
+      }
       ItemStack var3 = this.stackList[var1].cloneItemStack();
       var3.count = var2;
       this.stackList[var1].count -= var2;
