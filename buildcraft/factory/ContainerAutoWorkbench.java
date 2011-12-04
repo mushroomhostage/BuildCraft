@@ -7,6 +7,9 @@ import net.minecraft.server.InventoryPlayer;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.World;
 
+import java.util.*;
+import net.minecraft.server.*;
+
 public class ContainerAutoWorkbench extends ContainerWorkbench {
 
    TileAutoWorkbench tile;
@@ -43,4 +46,14 @@ public class ContainerAutoWorkbench extends ContainerWorkbench {
    public boolean b(EntityHuman var1) {
       return true;
    }
+
+    // MaeEdit: Try to prevent infinite items bug.
+    public ItemStack a(int i, int j, boolean flag, EntityHuman entityhuman) {
+		ItemStack ret = super.a(i, j, flag, entityhuman);
+		if (ret != null && ret.count <= 0) {
+			ret = null;
+			entityhuman.inventory.b((ItemStack)null);
+		}
+		return ret;
+	}
 }
