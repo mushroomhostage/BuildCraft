@@ -17,12 +17,23 @@ import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.NBTTagList;
 import net.minecraft.server.TileEntity;
 
+import net.minecraft.server.*;
+
 public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
 
    private ItemStack[] stackList = new ItemStack[9];
+   private LinkedList<ContainerAutoWorkbench> containerList = new LinkedList<ContainerAutoWorkbench>();
 
    public ItemStack[] getContents() {
       return stackList;
+   }
+   
+   public void addContainer(ContainerAutoWorkbench container) {
+      if (!containerList.contains(container)) containerList.add(container);
+   }
+   
+   public void delContainer(ContainerAutoWorkbench container) {
+      containerList.remove(container);
    }
 
    public int getSize() {
@@ -49,6 +60,14 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
 
    public void setItem(int var1, ItemStack var2) {
       this.stackList[var1] = var2;
+      for (ContainerAutoWorkbench container : containerList) {
+	     try {
+            container.craftInventory.setItem(var1, var2);
+         } catch (Exception e) {
+            e.printStackTrace();
+            containerList.remove(container);
+         }
+      }
    }
 
    public String getName() {

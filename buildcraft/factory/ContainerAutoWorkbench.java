@@ -23,6 +23,8 @@ public class ContainerAutoWorkbench extends ContainerWorkbench {
          this.craftInventory.setItem(var4, var3.getItem(var4));
       }
 
+      this.tile.addContainer(this);
+
       this.a(this.craftInventory);
    }
 
@@ -37,6 +39,7 @@ public class ContainerAutoWorkbench extends ContainerWorkbench {
          this.tile.setItem(var3, this.craftInventory.getItem(var3));
       }
 
+      this.tile.delContainer(this);
    }
 
    public boolean isUsableByPlayer(EntityHuman var1) {
@@ -50,7 +53,11 @@ public class ContainerAutoWorkbench extends ContainerWorkbench {
     // MaeEdit: Try to prevent infinite items bug.
     public ItemStack a(int i, int j, boolean flag, EntityHuman entityhuman) {
 		ItemStack ret = super.a(i, j, flag, entityhuman);
+
+		if (i > 0 && i <= this.craftInventory.getSize()) this.tile.setItem(i-1, this.craftInventory.getItem(i-1));
+
 		if (ret != null && ret.count <= 0) {
+			System.out.println("[ContainerAutoWorkbench] Entity "+entityhuman.toString()+" tried to take invalid item, overriding.");
 			ret = null;
 			entityhuman.inventory.b((ItemStack)null);
 		}
