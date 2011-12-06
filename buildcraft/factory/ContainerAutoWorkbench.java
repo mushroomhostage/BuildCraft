@@ -56,6 +56,11 @@ public class ContainerAutoWorkbench extends ContainerWorkbench {
          ItemStack ret = super.a(i, j, flag, entityhuman);
 
          if (i > 0 && i <= this.craftInventory.getSize()) this.tile.setItem(i-1, this.craftInventory.getItem(i-1));
+         else if (i == 0) {
+            for (int x = 0; x < this.craftInventory.getSize(); x++) {
+               this.tile.setItem(x, this.craftInventory.getItem(x));
+            }
+         }
 
          if (ret != null && ret.count <= 0) {
             System.out.println("[ContainerAutoWorkbench] Entity "+entityhuman.toString()+" tried to take invalid item, overriding.");
