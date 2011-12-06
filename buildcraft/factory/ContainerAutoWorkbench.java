@@ -50,17 +50,20 @@ public class ContainerAutoWorkbench extends ContainerWorkbench {
       return true;
    }
 
-    // MaeEdit: Try to prevent infinite items bug.
-    public ItemStack a(int i, int j, boolean flag, EntityHuman entityhuman) {
-		ItemStack ret = super.a(i, j, flag, entityhuman);
+   // MaeEdit: Try to prevent infinite items bug.
+   public ItemStack a(int i, int j, boolean flag, EntityHuman entityhuman) {
+      synchronized (tile) {
+         ItemStack ret = super.a(i, j, flag, entityhuman);
 
-		if (i > 0 && i <= this.craftInventory.getSize()) this.tile.setItem(i-1, this.craftInventory.getItem(i-1));
+         if (i > 0 && i <= this.craftInventory.getSize()) this.tile.setItem(i-1, this.craftInventory.getItem(i-1));
 
-		if (ret != null && ret.count <= 0) {
-			System.out.println("[ContainerAutoWorkbench] Entity "+entityhuman.toString()+" tried to take invalid item, overriding.");
-			ret = null;
-			entityhuman.inventory.b((ItemStack)null);
-		}
-		return ret;
-	}
+         if (ret != null && ret.count <= 0) {
+            System.out.println("[ContainerAutoWorkbench] Entity "+entityhuman.toString()+" tried to take invalid item, overriding.");
+            ret = null;
+            entityhuman.inventory.b((ItemStack)null);
+         }
+         return ret;
+
+      }
+   }
 }
