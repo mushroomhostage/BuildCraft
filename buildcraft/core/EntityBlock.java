@@ -23,8 +23,8 @@ public class EntityBlock extends Entity {
       this.rotationX = 0.0F;
       this.rotationY = 0.0F;
       this.rotationZ = 0.0F;
-      this.aY = false;
-      this.bJ = true;
+      this.bc = false;
+      this.bN = true;
       this.fireProof = true;
    }
 
@@ -66,18 +66,18 @@ public class EntityBlock extends Entity {
    protected void b() {}
 
    protected void a(NBTTagCompound var1) {
-      this.iSize = var1.h("iSize");
-      this.jSize = var1.h("jSize");
-      this.kSize = var1.h("kSize");
+      this.iSize = var1.getDouble("iSize");
+      this.jSize = var1.getDouble("jSize");
+      this.kSize = var1.getDouble("kSize");
    }
 
    protected void b(NBTTagCompound var1) {
-      var1.a("iSize", this.iSize);
-      var1.a("jSize", this.jSize);
-      var1.a("kSize", this.kSize);
+      var1.setDouble("iSize", this.iSize);
+      var1.setDouble("jSize", this.jSize);
+      var1.setDouble("kSize", this.kSize);
    }
 
-   public boolean r_() {
+   public boolean e_() {
       return !this.dead;
    }
 }

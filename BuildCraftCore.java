@@ -1,150 +1,186 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) braces deadcode fieldsfirst 
+
 package net.minecraft.server;
 
-import buildcraft.api.API;
-import buildcraft.api.LiquidData;
-import buildcraft.api.PowerFramework;
-import buildcraft.core.BuildCraftConfiguration;
-import buildcraft.core.CoreProxy;
-import buildcraft.core.DefaultProps;
-import buildcraft.core.ItemBuildCraftTexture;
-import buildcraft.core.RedstonePowerFramework;
+import buildcraft.api.*;
+import buildcraft.core.*;
 import forge.Property;
 import java.io.File;
+import java.io.PrintStream;
+import java.lang.reflect.Constructor;
+import java.util.LinkedList;
 import java.util.TreeMap;
-import net.minecraft.server.BaseMod;
-import net.minecraft.server.Block;
-import net.minecraft.server.CraftingManager;
-import net.minecraft.server.Item;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.ModLoader;
-import net.minecraft.server.mod_BuildCraftCore;
+import java.util.logging.Logger;
 
-public class BuildCraftCore {
+// Referenced classes of package net.minecraft.src:
+//            ModLoader, mod_BuildCraftCore, CraftingManager, Item, 
+//            ItemStack, Block, BlockGrass, EntityHuman, 
+//            BaseMod, World
 
-   public static boolean debugMode = false;
-   public static boolean modifyWorld = false;
-   public static boolean trackNetworkUsage = false;
-   public static int updateFactor = 10;
-   public static BuildCraftConfiguration mainConfiguration;
-   public static TreeMap bufferedDescriptions = new TreeMap();
-   public static final int trackedPassiveEntityId = 156;
-   public static boolean continuousCurrentModel;
-   private static boolean initialized = false;
-   private static boolean gearsInitialized = false;
-   public static Item woodenGearItem;
-   public static Item stoneGearItem;
-   public static Item ironGearItem;
-   public static Item goldGearItem;
-   public static Item diamondGearItem;
-   public static Item wrenchItem;
-   public static int redLaserTexture;
-   public static int blueLaserTexture;
-   public static int stripesLaserTexture;
-   public static int transparentTexture;
-   public static int blockByEntityModel;
-   public static int pipeModel;
-   public static int markerModel;
-   public static int oilModel;
-   public static String customBuildCraftTexture = "/net/minecraft/src/buildcraft/core/gui/block_textures.png";
-   public static String customBuildCraftSprites = "/net/minecraft/src/buildcraft/core/gui/item_textures.png";
+public class BuildCraftCore
+{
 
+    private static EntityHuman buildCraftPlayer;
+    public static boolean debugMode = false;
+    public static boolean modifyWorld = false;
+    public static boolean trackNetworkUsage = false;
+    public static int updateFactor = 10;
+    public static BuildCraftConfiguration mainConfiguration;
+    public static TreeMap bufferedDescriptions = new TreeMap();
+    public static final int trackedPassiveEntityId = 156;
+    public static boolean continuousCurrentModel;
+    private static boolean initialized = false;
+    private static boolean gearsInitialized = false;
+    public static Item woodenGearItem;
+    public static Item stoneGearItem;
+    public static Item ironGearItem;
+    public static Item goldGearItem;
+    public static Item diamondGearItem;
+    public static Item wrenchItem;
+    public static int redLaserTexture;
+    public static int blueLaserTexture;
+    public static int stripesLaserTexture;
+    public static int transparentTexture;
+    public static int blockByEntityModel;
+    public static int pipeModel;
+    public static int markerModel;
+    public static int oilModel;
+    public static String customBuildCraftTexture = "/net/minecraft/src/buildcraft/core/gui/block_textures.png";
+    public static String customBuildCraftSprites = "/net/minecraft/src/buildcraft/core/gui/item_textures.png";
 
-   public static void initialize() {
-      if(!initialized) {
-         ModLoader.getLogger().fine("Starting BuildCraft " + mod_BuildCraftCore.version());
-         ModLoader.getLogger().fine("Copyright (c) SpaceToad, 2011");
-         ModLoader.getLogger().fine("http://www.mod-buildcraft.com");
-         System.out.println("Starting BuildCraft " + mod_BuildCraftCore.version());
-         System.out.println("Copyright (c) SpaceToad, 2011");
-         System.out.println("http://www.mod-buildcraft.com");
-         initialized = true;
-         mainConfiguration = new BuildCraftConfiguration(new File(CoreProxy.getBuildCraftBase(), "config/buildcraft.cfg"), true);
-         mainConfiguration.load();
-         redLaserTexture = 2;
-         blueLaserTexture = 1;
-         stripesLaserTexture = 3;
-         transparentTexture = 0;
-         Property var0 = mainConfiguration.getOrCreateBooleanProperty("current.continuous", 0, DefaultProps.CURRENT_CONTINUOUS);
-         var0.comment = "set to true for allowing machines to be driven by continuous current";
-         continuousCurrentModel = Boolean.parseBoolean(var0.value);
-         Property var1 = mainConfiguration.getOrCreateBooleanProperty("trackNetworkUsage", 0, false);
-         trackNetworkUsage = Boolean.parseBoolean(var1.value);
-         Property var2 = mainConfiguration.getOrCreateProperty("power.framework", 0, "buildcraft.energy.PneumaticPowerFramework");
-         Property var3 = mainConfiguration.getOrCreateIntProperty("network.updateFactor", 0, 10);
-         var0.comment = "increasing this number will decrease network update frequency, useful for overloaded servers";
-         updateFactor = Integer.parseInt(var3.value);
+    public BuildCraftCore()
+    {
+    }
 
-         try {
-            PowerFramework.currentFramework = (PowerFramework)Class.forName(var2.value).getConstructor((Class[])null).newInstance((Object[])null);
-         } catch (Throwable var6) {
-            var6.printStackTrace();
+    public static void initialize()
+    {
+        if(initialized)
+        {
+            return;
+        }
+        ModLoader.getLogger().fine((new StringBuilder()).append("Starting BuildCraft ").append(mod_BuildCraftCore.version()).toString());
+        ModLoader.getLogger().fine("Copyright (c) SpaceToad, 2011");
+        ModLoader.getLogger().fine("http://www.mod-buildcraft.com");
+        System.out.println((new StringBuilder()).append("Starting BuildCraft ").append(mod_BuildCraftCore.version()).toString());
+        System.out.println("Copyright (c) SpaceToad, 2011");
+        System.out.println("http://www.mod-buildcraft.com");
+        initialized = true;
+        mainConfiguration = new BuildCraftConfiguration(new File(CoreProxy.getBuildCraftBase(), "config/buildcraft.cfg"), true);
+        mainConfiguration.load();
+        redLaserTexture = 2;
+        blueLaserTexture = 1;
+        stripesLaserTexture = 3;
+        transparentTexture = 0;
+        Property property = mainConfiguration.getOrCreateBooleanProperty("current.continuous", 0, DefaultProps.CURRENT_CONTINUOUS);
+        property.comment = "set to true for allowing machines to be driven by continuous current";
+        continuousCurrentModel = Boolean.parseBoolean(property.value);
+        Property property1 = mainConfiguration.getOrCreateBooleanProperty("trackNetworkUsage", 0, false);
+        trackNetworkUsage = Boolean.parseBoolean(property1.value);
+        Property property2 = mainConfiguration.getOrCreateProperty("power.framework", 0, "buildcraft.energy.PneumaticPowerFramework");
+        Property property3 = mainConfiguration.getOrCreateIntProperty("network.updateFactor", 0, 10);
+        property3.comment = "increasing this number will decrease network update frequency, useful for overloaded servers";
+        updateFactor = Integer.parseInt(property3.value);
+        try
+        {
+            PowerFramework.currentFramework = (PowerFramework)Class.forName(property2.value).getConstructor((Class[])null).newInstance((Object[])null);
+        }
+        catch(Throwable throwable)
+        {
+            throwable.printStackTrace();
             PowerFramework.currentFramework = new RedstonePowerFramework();
-         }
+        }
 
-         // MaeEdit start
-         Property fakeplayer = mainConfiguration.getOrCreateProperty("blocks.placedby", 0, "fakeplayer");
-         fakeplayer.comment = "Configures BLOCK_PLACE events for builders and fillers. Options are 'null' and 'fakeplayer'";
-         buildcraft.api.FakePlayer.setMethod(fakeplayer.value);
-         Property fakename = mainConfiguration.getOrCreateProperty("blocks.fakeplayername", 0, "[BuildCraft]");
-         fakename.comment = "Configures the name of the fake player used when blocks.placedby=fakeplayer";
-         buildcraft.api.FakePlayer.name = fakename.value;
-         Property fakelogin = mainConfiguration.getOrCreateBooleanProperty("blocks.fakeplayerlogin", 0, false);
-         fakelogin.comment = "Some plugins require PlayerLoginEvent and PlayerJoinEvent. Enabling this will cause them to be sent.";
-         buildcraft.api.FakePlayer.doLogin = Boolean.parseBoolean(fakelogin.value);
-         // MaeEdit end
+		// MaeEdit start
+		Property fakeplayer = mainConfiguration.getOrCreateProperty("blocks.placedby", 0, "fakeplayer");
+		fakeplayer.comment = "Configures BLOCK_PLACE and BLOCK_BREAK events. Options are 'null' and 'fakeplayer'";
+		buildcraft.core.FakePlayer.setMethod(fakeplayer.value);
+		Property fakename = mainConfiguration.getOrCreateProperty("blocks.fakeplayername", 0, "[BuildCraft]");
+		fakename.comment = "Configures the name of the fake player used when blocks.placedby=fakeplayer";
+		buildcraft.core.FakePlayer.name = fakename.value;
+		Property fakelogin = mainConfiguration.getOrCreateBooleanProperty("blocks.fakeplayerlogin", 0, false);
+		fakelogin.comment = "Causes login and join events to be sent for the fake player. This may help some plugins, but will cause errors with others. YMMV.";
+		buildcraft.core.FakePlayer.doLogin = Boolean.parseBoolean(fakelogin.value);
+		// MaeEdit end
 
-         Property var4 = mainConfiguration.getOrCreateIntProperty("wrench.id", 2, DefaultProps.WRENCH_ID);
-         mainConfiguration.save();
-         initializeGears();
-         CraftingManager var5 = CraftingManager.getInstance();
-         wrenchItem = (new ItemBuildCraftTexture(Integer.parseInt(var4.value))).b(2).a("wrenchItem");
-         var5.registerShapedRecipe(new ItemStack(wrenchItem), new Object[]{"I I", " G ", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem});
-         CoreProxy.addName(wrenchItem, "Wrench");
-         API.liquids.add(new LiquidData(Block.STATIONARY_WATER.id, Item.WATER_BUCKET.id));
-         API.liquids.add(new LiquidData(Block.STATIONARY_LAVA.id, Item.LAVA_BUCKET.id));
-         API.liquids.add(new LiquidData(Block.STATIONARY_WATER.id, Block.STATIONARY_WATER.id));
-         API.liquids.add(new LiquidData(Block.STATIONARY_LAVA.id, Block.STATIONARY_LAVA.id));
-         mainConfiguration.save();
-      }
-   }
+        Property property4 = mainConfiguration.getOrCreateIntProperty("wrench.id", 2, DefaultProps.WRENCH_ID);
+        mainConfiguration.save();
+        initializeGears();
+        CraftingManager craftingmanager = CraftingManager.getInstance();
+        wrenchItem = (new ItemBuildCraftTexture(Integer.parseInt(property4.value))).d(2).a("wrenchItem");
+        craftingmanager.registerShapedRecipe(new ItemStack(wrenchItem), new Object[] {
+            "I I", " G ", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem
+        });
+        CoreProxy.addName(wrenchItem, "Wrench");
+        API.liquids.add(new LiquidData(Block.STATIONARY_WATER.id, Item.WATER_BUCKET.id));
+        API.liquids.add(new LiquidData(Block.STATIONARY_LAVA.id, Item.LAVA_BUCKET.id));
+        API.softBlocks[Block.GRASS.id] = true;
+        API.softBlocks[Block.SNOW.id] = true;
+        API.softBlocks[Block.WATER.id] = true;
+        API.softBlocks[Block.STATIONARY_WATER.id] = true;
+        mainConfiguration.save();
+    }
 
-   public static void initializeGears() {
-      if(!gearsInitialized) {
-         Property var0 = mainConfiguration.getOrCreateIntProperty("woodenGearItem.id", 2, DefaultProps.WOODEN_GEAR_ID);
-         Property var1 = mainConfiguration.getOrCreateIntProperty("stoneGearItem.id", 2, DefaultProps.STONE_GEAR_ID);
-         Property var2 = mainConfiguration.getOrCreateIntProperty("ironGearItem.id", 2, DefaultProps.IRON_GEAR_ID);
-         Property var3 = mainConfiguration.getOrCreateIntProperty("goldenGearItem.id", 2, DefaultProps.GOLDEN_GEAR_ID);
-         Property var4 = mainConfiguration.getOrCreateIntProperty("diamondGearItem.id", 2, DefaultProps.DIAMOND_GEAR_ID);
-         Property var5 = mainConfiguration.getOrCreateBooleanProperty("modifyWorld", 0, true);
-         var5.comment = "set to false if BuildCraft should not generate custom blocks (e.g. oil)";
-         mainConfiguration.save();
-         modifyWorld = var5.value.equals("true");
-         gearsInitialized = true;
-         CraftingManager var6 = CraftingManager.getInstance();
-         woodenGearItem = (new ItemBuildCraftTexture(Integer.parseInt(var0.value))).b(16).a("woodenGearItem");
-         var6.registerShapedRecipe(new ItemStack(woodenGearItem), new Object[]{" S ", "S S", " S ", Character.valueOf('S'), Item.STICK});
-         CoreProxy.addName(woodenGearItem, "Wooden Gear");
-         stoneGearItem = (new ItemBuildCraftTexture(Integer.parseInt(var1.value))).b(17).a("stoneGearItem");
-         var6.registerShapedRecipe(new ItemStack(stoneGearItem), new Object[]{" I ", "IGI", " I ", Character.valueOf('I'), Block.COBBLESTONE, Character.valueOf('G'), woodenGearItem});
-         CoreProxy.addName(stoneGearItem, "Stone Gear");
-         ironGearItem = (new ItemBuildCraftTexture(Integer.parseInt(var2.value))).b(18).a("ironGearItem");
-         var6.registerShapedRecipe(new ItemStack(ironGearItem), new Object[]{" I ", "IGI", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem});
-         CoreProxy.addName(ironGearItem, "Iron Gear");
-         goldGearItem = (new ItemBuildCraftTexture(Integer.parseInt(var3.value))).b(19).a("goldGearItem");
-         var6.registerShapedRecipe(new ItemStack(goldGearItem), new Object[]{" I ", "IGI", " I ", Character.valueOf('I'), Item.GOLD_INGOT, Character.valueOf('G'), ironGearItem});
-         CoreProxy.addName(goldGearItem, "Gold Gear");
-         diamondGearItem = (new ItemBuildCraftTexture(Integer.parseInt(var4.value))).b(20).a("diamondGearItem");
-         var6.registerShapedRecipe(new ItemStack(diamondGearItem), new Object[]{" I ", "IGI", " I ", Character.valueOf('I'), Item.DIAMOND, Character.valueOf('G'), goldGearItem});
-         CoreProxy.addName(diamondGearItem, "Diamond Gear");
-         mainConfiguration.save();
-      }
-   }
+    public static void initializeGears()
+    {
+        if(gearsInitialized)
+        {
+            return;
+        } else
+        {
+            Property property = mainConfiguration.getOrCreateIntProperty("woodenGearItem.id", 2, DefaultProps.WOODEN_GEAR_ID);
+            Property property1 = mainConfiguration.getOrCreateIntProperty("stoneGearItem.id", 2, DefaultProps.STONE_GEAR_ID);
+            Property property2 = mainConfiguration.getOrCreateIntProperty("ironGearItem.id", 2, DefaultProps.IRON_GEAR_ID);
+            Property property3 = mainConfiguration.getOrCreateIntProperty("goldenGearItem.id", 2, DefaultProps.GOLDEN_GEAR_ID);
+            Property property4 = mainConfiguration.getOrCreateIntProperty("diamondGearItem.id", 2, DefaultProps.DIAMOND_GEAR_ID);
+            Property property5 = mainConfiguration.getOrCreateBooleanProperty("modifyWorld", 0, true);
+            property5.comment = "set to false if BuildCraft should not generate custom blocks (e.g. oil)";
+            mainConfiguration.save();
+            modifyWorld = property5.value.equals("true");
+            gearsInitialized = true;
+            CraftingManager craftingmanager = CraftingManager.getInstance();
+            woodenGearItem = (new ItemBuildCraftTexture(Integer.parseInt(property.value))).d(16).a("woodenGearItem");
+            craftingmanager.registerShapedRecipe(new ItemStack(woodenGearItem), new Object[] {
+                " S ", "S S", " S ", Character.valueOf('S'), Item.STICK
+            });
+            CoreProxy.addName(woodenGearItem, "Wooden Gear");
+            stoneGearItem = (new ItemBuildCraftTexture(Integer.parseInt(property1.value))).d(17).a("stoneGearItem");
+            craftingmanager.registerShapedRecipe(new ItemStack(stoneGearItem), new Object[] {
+                " I ", "IGI", " I ", Character.valueOf('I'), Block.COBBLESTONE, Character.valueOf('G'), woodenGearItem
+            });
+            CoreProxy.addName(stoneGearItem, "Stone Gear");
+            ironGearItem = (new ItemBuildCraftTexture(Integer.parseInt(property2.value))).d(18).a("ironGearItem");
+            craftingmanager.registerShapedRecipe(new ItemStack(ironGearItem), new Object[] {
+                " I ", "IGI", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem
+            });
+            CoreProxy.addName(ironGearItem, "Iron Gear");
+            goldGearItem = (new ItemBuildCraftTexture(Integer.parseInt(property3.value))).d(19).a("goldGearItem");
+            craftingmanager.registerShapedRecipe(new ItemStack(goldGearItem), new Object[] {
+                " I ", "IGI", " I ", Character.valueOf('I'), Item.GOLD_INGOT, Character.valueOf('G'), ironGearItem
+            });
+            CoreProxy.addName(goldGearItem, "Gold Gear");
+            diamondGearItem = (new ItemBuildCraftTexture(Integer.parseInt(property4.value))).d(20).a("diamondGearItem");
+            craftingmanager.registerShapedRecipe(new ItemStack(diamondGearItem), new Object[] {
+                " I ", "IGI", " I ", Character.valueOf('I'), Item.DIAMOND, Character.valueOf('G'), goldGearItem
+            });
+            CoreProxy.addName(diamondGearItem, "Diamond Gear");
+            mainConfiguration.save();
+            return;
+        }
+    }
 
-   public static void initializeModel(BaseMod var0) {
-      blockByEntityModel = ModLoader.getUniqueBlockModelID(var0, true);
-      pipeModel = ModLoader.getUniqueBlockModelID(var0, true);
-      markerModel = ModLoader.getUniqueBlockModelID(var0, false);
-      oilModel = ModLoader.getUniqueBlockModelID(var0, false);
-   }
+    public static void initializeModel(BaseMod basemod)
+    {
+        blockByEntityModel = ModLoader.getUniqueBlockModelID(basemod, true);
+        pipeModel = ModLoader.getUniqueBlockModelID(basemod, true);
+        markerModel = ModLoader.getUniqueBlockModelID(basemod, false);
+        oilModel = ModLoader.getUniqueBlockModelID(basemod, false);
+    }
+
+    public static EntityHuman getBuildCraftPlayer(World world)
+    {
+		return buildcraft.core.FakePlayer.get(world);
+    }
 
 }

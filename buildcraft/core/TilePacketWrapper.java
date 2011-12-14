@@ -30,7 +30,7 @@ public class TilePacketWrapper {
    public Packet230ModLoader toPacket(TileEntity var1) {
       Packet230ModLoader var2 = new Packet230ModLoader();
       var2.modId = mod_BuildCraftCore.instance.getId();
-      var2.k = true;
+      var2.l = true;
       var2.packetType = this.packetType.ordinal();
       int var3 = 0;
       int var4 = 0;
@@ -65,7 +65,7 @@ public class TilePacketWrapper {
    public Packet230ModLoader toPacket(int var1, int var2, int var3, Object[] var4) {
       Packet230ModLoader var5 = new Packet230ModLoader();
       var5.modId = mod_BuildCraftCore.instance.getId();
-      var5.k = true;
+      var5.l = true;
       var5.packetType = this.packetType.ordinal();
       int var6 = 0;
       int var7 = 0;

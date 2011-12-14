@@ -17,6 +17,6 @@ public abstract class PersistentTile {
    public void destroy() {}
 
    public boolean isValid() {
-      return this.tile != null && !this.tile.m();
+      return this.tile != null && !this.tile.l();
    }
 }

@@ -35,7 +35,7 @@ public abstract class TileBuildCraft extends TileEntity implements ISynchronized
       this.descriptionPacket = (TilePacketWrapper)descriptionWrappers.get(this.getClass());
    }
 
-   public void h_() {
+   public void l_() {
       if(!this.init) {
          this.initialize();
          this.init = true;
@@ -61,7 +61,7 @@ public abstract class TileBuildCraft extends TileEntity implements ISynchronized
 
    }
 
-   public Packet l() {
+   public Packet k() {
       return this.descriptionPacket.toPacket(this);
    }
 

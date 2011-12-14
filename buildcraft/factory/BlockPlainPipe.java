@@ -35,7 +35,7 @@ public class BlockPlainPipe extends Block implements IPipeConnection, IBlockPipe
       return false;
    }
 
-   public int a(int var1, Random var2) {
+   public int idDropped(int var1, Random var2) {
       return 0;
    }
 

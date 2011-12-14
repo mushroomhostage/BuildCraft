@@ -15,9 +15,9 @@ public abstract class PowerFramework {
    public void loadPowerProvider(IPowerReceptor var1, NBTTagCompound var2) {
       PowerProvider var3 = this.createPowerProvider();
       if(var2.hasKey(baseNBTName)) {
-         NBTTagCompound var4 = var2.k(baseNBTName);
+         NBTTagCompound var4 = var2.getCompound(baseNBTName);
          if(var4.getString("class").equals(this.getClass().getName())) {
-            var3.readFromNBT(var4.k("contents"));
+            var3.readFromNBT(var4.getCompound("contents"));
          }
       }
 
@@ -31,8 +31,8 @@ public abstract class PowerFramework {
          var4.setString("class", this.getClass().getName());
          NBTTagCompound var5 = new NBTTagCompound();
          var3.writeToNBT(var5);
-         var4.a("contents", var5);
-         var2.a(baseNBTName, var4);
+         var4.set("contents", var5);
+         var2.set(baseNBTName, var4);
       }
    }
 

@@ -13,6 +13,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 public class API {
 
+   public static boolean[] softBlocks = new boolean[Block.byId.length];
    public static LinkedList liquids = new LinkedList();
    public static final int BUCKET_VOLUME = 1000;
    public static HashMap ironEngineFuel = new HashMap();
@@ -49,7 +50,7 @@ public class API {
    }
 
    public static boolean softBlock(int var0) {
-      return var0 == 0 || var0 == Block.STATIONARY_WATER.id || var0 == Block.WATER.id || Block.byId[var0] == null;
+      return var0 == 0 || softBlocks[var0] || Block.byId[var0] == null;
    }
 
    public static boolean unbreakableBlock(int var0) {
@@ -61,16 +62,22 @@ public class API {
       if(var4 != 0) {
          // MaeEdit begin
          org.bukkit.block.Block block = var0.getWorld().getBlockAt(var1, var2, var3);
-         BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.api.FakePlayer.getBukkitEntity(var0));
+         BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.core.FakePlayer.getBukkitEntity(var0));
          var0.getServer().getPluginManager().callEvent(event);
          if (event.isCancelled()) {
             return;
          }
          // MaeEdit end
-         Block.byId[var4].g(var0, var1, var2, var3, var0.getData(var1, var2, var3));
+         Block.byId[var4].b(var0, var1, var2, var3, var0.getData(var1, var2, var3), 0);
       }
 
       var0.setTypeId(var1, var2, var3, 0);
    }
 
+   static {
+      for(int var0 = 0; var0 < softBlocks.length; ++var0) {
+         softBlocks[var0] = false;
+      }
+
+   }
 }

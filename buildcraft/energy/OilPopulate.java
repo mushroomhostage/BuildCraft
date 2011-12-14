@@ -39,7 +39,7 @@ public class OilPopulate {
             }
          }
 
-         boolean var15 = rand.nextDouble() <= 0.002D;
+         boolean var15 = rand.nextDouble() <= 0.0015D;
          boolean var16 = rand.nextDouble() <= 5.0E-5D;
          if(BuildCraftCore.debugMode && var1 == 0 && var2 == 0) {
             var16 = true;

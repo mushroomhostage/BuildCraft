@@ -79,18 +79,18 @@ public class EngineStone extends Engine {
          return 0;
       } else {
          int var2 = var1.getItem().id;
-         return var2 < 256 && Block.byId[var2].material == Material.WOOD?300:(var2 == Item.STICK.id?100:(var2 == Item.COAL.id?1600:(var2 == Item.LAVA_BUCKET.id?20000:(var2 == Block.SAPLING.id?100:CoreProxy.addFuel(var2, var1.getData())))));
+         return var2 < Block.byId.length && Block.byId[var2].material == Material.WOOD?300:(var2 == Item.STICK.id?100:(var2 == Item.COAL.id?1600:(var2 == Item.LAVA_BUCKET.id?20000:(var2 == Block.SAPLING.id?100:CoreProxy.addFuel(var2, var1.getData())))));
       }
    }
 
    public void readFromNBT(NBTTagCompound var1) {
-      this.burnTime = var1.e("burnTime");
-      this.totalBurnTime = var1.e("totalBurnTime");
+      this.burnTime = var1.getInt("burnTime");
+      this.totalBurnTime = var1.getInt("totalBurnTime");
    }
 
    public void writeToNBT(NBTTagCompound var1) {
-      var1.a("burnTime", this.burnTime);
-      var1.a("totalBurnTime", this.totalBurnTime);
+      var1.setInt("burnTime", this.burnTime);
+      var1.setInt("totalBurnTime", this.totalBurnTime);
    }
 
    public void delete() {

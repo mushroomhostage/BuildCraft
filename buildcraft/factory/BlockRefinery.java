@@ -34,7 +34,7 @@ public class BlockRefinery extends BlockContainer {
       return false;
    }
 
-   public int getRenderType() {
+   public int c() {
       return BuildCraftCore.blockByEntityModel;
    }
 
@@ -49,27 +49,27 @@ public class BlockRefinery extends BlockContainer {
    }
 
    public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5) {
-      if(var5.K() != null) {
+      if(var5.P() != null) {
          int var6;
-         if(var5.K().getItem() == BuildCraftCore.wrenchItem) {
+         if(var5.P().getItem() == BuildCraftCore.wrenchItem) {
             var6 = var1.getData(var2, var3, var4);
-            switch(BlockRefinery.NamelessClass1531034163.$SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.values()[var6].ordinal()]) {
-            case 1:
+            switch(Orientations.values()[var6]) {
+            case XNeg:
                var1.setRawData(var2, var3, var4, Orientations.ZPos.ordinal());
                break;
-            case 2:
+            case XPos:
                var1.setRawData(var2, var3, var4, Orientations.ZNeg.ordinal());
                break;
-            case 3:
+            case ZNeg:
                var1.setRawData(var2, var3, var4, Orientations.XNeg.ordinal());
                break;
-            case 4:
+            case ZPos:
                var1.setRawData(var2, var3, var4, Orientations.XPos.ordinal());
             }
 
             var1.notify(var2, var3, var4);
          } else {
-            var6 = API.getLiquidForBucket(var5.K().id);
+            var6 = API.getLiquidForBucket(var5.P().id);
             if(var6 != 0) {
                int var7 = ((TileRefinery)var1.getTileEntity(var2, var3, var4)).fill(Orientations.Unknown, 1000, var6, true);
                if(var7 != 0 && !BuildCraftCore.debugMode) {
@@ -84,38 +84,4 @@ public class BlockRefinery extends BlockContainer {
       return false;
    }
 
-   // $FF: synthetic class
-   static class NamelessClass1531034163 {
-
-      // $FF: synthetic field
-      static final int[] $SwitchMap$net$minecraft$src$buildcraft$api$Orientations = new int[Orientations.values().length];
-
-
-      static {
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.XNeg.ordinal()] = 1;
-         } catch (NoSuchFieldError var4) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.XPos.ordinal()] = 2;
-         } catch (NoSuchFieldError var3) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.ZNeg.ordinal()] = 3;
-         } catch (NoSuchFieldError var2) {
-            ;
-         }
-
-         try {
-            $SwitchMap$net$minecraft$src$buildcraft$api$Orientations[Orientations.ZPos.ordinal()] = 4;
-         } catch (NoSuchFieldError var1) {
-            ;
-         }
-
-      }
-   }
 }

@@ -7,6 +7,7 @@ import buildcraft.api.SafeTimeTracker;
 import java.util.TreeMap;
 import net.minecraft.server.EntityItem;
 import net.minecraft.server.ItemStack;
+import net.minecraft.server.MathHelper;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.World;
@@ -64,21 +65,21 @@ public class EntityPassiveItem {
    }
 
    public void readFromNBT(NBTTagCompound var1) {
-      this.posX = var1.h("x");
-      this.posY = var1.h("y");
-      this.posZ = var1.h("z");
-      this.speed = var1.g("speed");
-      this.item = ItemStack.a(var1.k("Item"));
+      this.posX = var1.getDouble("x");
+      this.posY = var1.getDouble("y");
+      this.posZ = var1.getDouble("z");
+      this.speed = var1.getFloat("speed");
+      this.item = ItemStack.a(var1.getCompound("Item"));
    }
 
    public void writeToNBT(NBTTagCompound var1) {
-      var1.a("x", this.posX);
-      var1.a("y", this.posY);
-      var1.a("z", this.posZ);
-      var1.a("speed", this.speed);
+      var1.setDouble("x", this.posX);
+      var1.setDouble("y", this.posY);
+      var1.setDouble("z", this.posZ);
+      var1.setFloat("speed", this.speed);
       NBTTagCompound var2 = new NBTTagCompound();
       this.item.b(var2);
-      var1.a("Item", var2);
+      var1.setCompound("Item", var2);
    }
 
    public EntityItem toEntityItem(Orientations var1) {
@@ -104,6 +105,19 @@ public class EntityPassiveItem {
          allEntities.remove(Integer.valueOf(this.entityId));
       }
 
+   }
+
+   public float getEntityBrightness(float var1) {
+      int var2 = MathHelper.floor(this.posX);
+      int var3 = MathHelper.floor(this.posZ);
+      this.worldObj.getClass();
+      if(this.worldObj.isLoaded(var2, 64, var3)) {
+         double var4 = 0.66D;
+         int var6 = MathHelper.floor(this.posY + var4);
+         return this.worldObj.m(var2, var6, var3);
+      } else {
+         return 0.0F;
+      }
    }
 
 }

@@ -14,7 +14,7 @@ public class BlockOilStill extends BlockStationary implements ITextureProvider, 
       super(var1, var2);
    }
 
-   public int getRenderType() {
+   public int c() {
       return BuildCraftCore.oilModel;
    }
 

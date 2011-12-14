@@ -28,14 +28,6 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
       return stackList;
    }
    
-   public void addContainer(ContainerAutoWorkbench container) {
-      if (!containerList.contains(container)) containerList.add(container);
-   }
-   
-   public void delContainer(ContainerAutoWorkbench container) {
-      containerList.remove(container);
-   }
-
    public int getSize() {
       return this.stackList.length;
    }
@@ -45,9 +37,6 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
    }
 
    public ItemStack splitStack(int var1, int var2) {
-      if (var2 > this.stackList[var1].count) {
-         var2 = this.stackList[var1].count;
-      }
       ItemStack var3 = this.stackList[var1].cloneItemStack();
       var3.count = var2;
       this.stackList[var1].count -= var2;
@@ -60,14 +49,6 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
 
    public void setItem(int var1, ItemStack var2) {
       this.stackList[var1] = var2;
-      for (ContainerAutoWorkbench container : containerList) {
-	     try {
-            container.craftInventory.setItem(var1, var2);
-         } catch (Exception e) {
-            e.printStackTrace();
-            containerList.remove(container);
-         }
-      }
    }
 
    public String getName() {
@@ -84,12 +65,12 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
 
    public void a(NBTTagCompound var1) {
       super.a(var1);
-      NBTTagList var2 = var1.l("stackList");
-      this.stackList = new ItemStack[var2.c()];
+      NBTTagList var2 = var1.getList("stackList");
+      this.stackList = new ItemStack[var2.size()];
 
       for(int var3 = 0; var3 < this.stackList.length; ++var3) {
-         NBTTagCompound var4 = (NBTTagCompound)var2.a(var3);
-         if(!var4.m("isNull")) {
+         NBTTagCompound var4 = (NBTTagCompound)var2.get(var3);
+         if(!var4.getBoolean("isNull")) {
             this.stackList[var3] = ItemStack.a(var4);
          }
       }
@@ -102,16 +83,16 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
 
       for(int var3 = 0; var3 < this.stackList.length; ++var3) {
          NBTTagCompound var4 = new NBTTagCompound();
-         var2.a(var4);
+         var2.add(var4);
          if(this.stackList[var3] == null) {
-            var4.a("isNull", true);
+            var4.setBoolean("isNull", true);
          } else {
-            var4.a("isNull", false);
+            var4.setBoolean("isNull", false);
             this.stackList[var3].b(var4);
          }
       }
 
-      var1.a("stackList", var2);
+      var1.set("stackList", var2);
    }
 
    public boolean addItem(ItemStack var1, boolean var2, Orientations var3) {
@@ -142,7 +123,26 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
       }
    }
 
-   public ItemStack extractItem(boolean var1, Orientations var2) {
+   public ItemStack findRecipe() {
+      InventoryCrafting var1 = new InventoryCrafting(new Container() {
+         public boolean isUsableByPlayer(EntityHuman var1) {
+            return false;
+         }
+         public boolean b(EntityHuman var1) {
+            return false;
+         }
+      }, 3, 3);
+      new LinkedList();
+
+      for(int var3 = 0; var3 < this.getSize(); ++var3) {
+         ItemStack var4 = this.getItem(var3);
+         var1.setItem(var3, var4);
+      }
+
+      return CraftingManager.getInstance().craft(var1);
+   }
+
+   public ItemStack extractItem(boolean var1, boolean var2) {
       InventoryCrafting var3 = new InventoryCrafting(new Container() {
          public boolean isUsableByPlayer(EntityHuman var1) {
             return false;
@@ -152,47 +152,52 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
          }
       }, 3, 3);
       LinkedList var4 = new LinkedList();
+      int var5 = var2?0:1;
 
-      TileAutoWorkbench.StackPointer var7;
-      for(int var5 = 0; var5 < this.getSize(); ++var5) {
-         ItemStack var6 = this.getItem(var5);
-         if(var6 != null) {
-            if(var6.count <= 1) {
-               var7 = this.getNearbyItem(var6.id, var6.getData());
-               if(var7 == null) {
+      TileAutoWorkbench.StackPointer var8;
+      for(int var6 = 0; var6 < this.getSize(); ++var6) {
+         ItemStack var7 = this.getItem(var6);
+         if(var7 != null) {
+            if(var7.count <= var5) {
+               var8 = this.getNearbyItem(var7.id, var7.getData());
+               if(var8 == null) {
                   this.resetPointers(var4);
                   return null;
                }
 
-               var4.add(var7);
+               var4.add(var8);
             } else {
-               var7 = new TileAutoWorkbench.StackPointer();
-               var7.inventory = this;
-               var7.item = this.splitStack(var5, 1);
-               var7.index = var5;
-               var4.add(var7);
+               var8 = new TileAutoWorkbench.StackPointer();
+               var8.inventory = this;
+               var8.item = this.splitStack(var6, 1);
+               var8.index = var6;
+               var4.add(var8);
             }
          }
 
-         var3.setItem(var5, var6);
+         var3.setItem(var6, var7);
       }
 
-      ItemStack var9 = CraftingManager.getInstance().craft(var3);
-      if(var9 != null && var1) {
-         Iterator var10 = var4.iterator();
+      ItemStack var10 = CraftingManager.getInstance().craft(var3);
+      if(var10 != null && var1) {
+         Iterator var11 = var4.iterator();
 
-         while(var10.hasNext()) {
-            var7 = (TileAutoWorkbench.StackPointer)var10.next();
-            if(var7.item.getItem().h() != null) {
-               ItemStack var8 = new ItemStack(var7.item.getItem().h(), 1);
-               var7.inventory.setItem(var7.index, var8);
+         while(var11.hasNext()) {
+            var8 = (TileAutoWorkbench.StackPointer)var11.next();
+            if(var8.item.getItem().i() != null) {
+               ItemStack var9 = new ItemStack(var8.item.getItem().i(), 1);
+               var8.inventory.setItem(var8.index, var9);
             }
          }
       } else {
          this.resetPointers(var4);
       }
 
-      return var9;
+      return var10;
+   }
+
+   public ItemStack extractItem(boolean var1, Orientations var2) {
+      return this.extractItem(var1, false);
    }
 
    public void resetPointers(LinkedList var1) {
@@ -259,9 +264,9 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
       return null;
    }
 
-   public void e() {}
+   public void f() {}
 
-   public void t_() {}
+   public void g() {}
 
    class StackPointer {
 

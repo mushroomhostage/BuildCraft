@@ -49,7 +49,7 @@ public class TileMiningWell extends TileMachine implements IMachine, IPowerRecep
             // Since miners only go straight down, this is probably enough, don't need to worry about a place event.
             if (var3 != 0) {
                org.bukkit.block.Block block = this.world.getWorld().getBlockAt(this.x, var2, this.z);
-               BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.api.FakePlayer.getBukkitEntity(this.world));
+               BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.core.FakePlayer.getBukkitEntity(this.world));
                this.world.getServer().getPluginManager().callEvent(event);
                if (event.isCancelled()) {
                   return;

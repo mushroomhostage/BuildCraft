@@ -19,14 +19,6 @@ public class APIProxy {
       return true;
    }
 
-   public static Entity getEntity(World var0, int var1) {
-      return null;
-   }
-
-   public static void storeEntity(World var0, Entity var1) {
-      var0.addEntity(var1);
-   }
-
    public static void removeEntity(Entity var0) {
       var0.die();
    }

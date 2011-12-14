@@ -33,8 +33,8 @@ public class TileTemplate extends TileBuildCraft implements IInventory {
       return items;
    }
 
-   public void h_() {
-      super.h_();
+   public void l_() {
+      super.l_();
       if(this.isComputing) {
          if(this.computingTime < 200) {
             ++this.computingTime;
@@ -106,10 +106,10 @@ public class TileTemplate extends TileBuildCraft implements IInventory {
          ItemStack var8 = new ItemStack(BuildCraftBuilders.templateItem);
          if(var3.equals(BuildCraftBuilders.bluePrints[this.lastTemplateId])) {
             BluePrint var10000 = BuildCraftBuilders.bluePrints[this.lastTemplateId];
-            var8.b(this.lastTemplateId);
+            var8.setData(this.lastTemplateId);
          } else {
             var6 = BuildCraftBuilders.storeBluePrint(var3);
-            var8.b(var6);
+            var8.setData(var6);
             CoreProxy.addName(var8, "Template #" + var6);
             this.lastTemplateId = var6;
          }
@@ -162,19 +162,19 @@ public class TileTemplate extends TileBuildCraft implements IInventory {
 
    public void a(NBTTagCompound var1) {
       super.a(var1);
-      this.lastTemplateId = var1.e("lastTemplateId");
-      this.computingTime = var1.e("computingTime");
-      this.isComputing = var1.m("isComputing");
+      this.lastTemplateId = var1.getInt("lastTemplateId");
+      this.computingTime = var1.getInt("computingTime");
+      this.isComputing = var1.getBoolean("isComputing");
       if(var1.hasKey("box")) {
-         this.box.initialize(var1.k("box"));
+         this.box.initialize(var1.getCompound("box"));
       }
 
-      NBTTagList var2 = var1.l("Items");
+      NBTTagList var2 = var1.getList("Items");
       this.items = new ItemStack[this.getSize()];
 
-      for(int var3 = 0; var3 < var2.c(); ++var3) {
-         NBTTagCompound var4 = (NBTTagCompound)var2.a(var3);
-         int var5 = var4.c("Slot") & 255;
+      for(int var3 = 0; var3 < var2.size(); ++var3) {
+         NBTTagCompound var4 = (NBTTagCompound)var2.get(var3);
+         int var5 = var4.getByte("Slot") & 255;
          if(var5 >= 0 && var5 < this.items.length) {
             this.items[var5] = ItemStack.a(var4);
          }
@@ -184,13 +184,13 @@ public class TileTemplate extends TileBuildCraft implements IInventory {
 
    public void b(NBTTagCompound var1) {
       super.b(var1);
-      var1.a("lastTemplateId", this.lastTemplateId);
-      var1.a("computingTime", this.computingTime);
-      var1.a("isComputing", this.isComputing);
+      var1.setInt("lastTemplateId", this.lastTemplateId);
+      var1.setInt("computingTime", this.computingTime);
+      var1.setBoolean("isComputing", this.isComputing);
       if(this.box.isInitialized()) {
          NBTTagCompound var2 = new NBTTagCompound();
          this.box.writeToNBT(var2);
-         var1.a("box", var2);
+         var1.set("box", var2);
       }
 
       NBTTagList var5 = new NBTTagList();
@@ -198,13 +198,13 @@ public class TileTemplate extends TileBuildCraft implements IInventory {
       for(int var3 = 0; var3 < this.items.length; ++var3) {
          if(this.items[var3] != null) {
             NBTTagCompound var4 = new NBTTagCompound();
-            var4.a("Slot", (byte)var3);
+            var4.setByte("Slot", (byte)var3);
             this.items[var3].b(var4);
-            var5.a(var4);
+            var5.add(var4);
          }
       }
 
-      var1.a("Items", var5);
+      var1.set("Items", var5);
    }
 
    public void i() {
@@ -258,7 +258,7 @@ public class TileTemplate extends TileBuildCraft implements IInventory {
 
    }
 
-   public void e() {}
+   public void f() {}
 
-   public void t_() {}
+   public void g() {}
 }

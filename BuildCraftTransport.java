@@ -77,13 +77,13 @@ public class BuildCraftTransport {
 
          BuildCraftCore.mainConfiguration.save();
          CraftingManager var13 = CraftingManager.getInstance();
-         pipeWaterproof = (new ItemBuildCraftTexture(DefaultProps.PIPE_WATERPROOF_ID)).b(33);
+         pipeWaterproof = (new ItemBuildCraftTexture(DefaultProps.PIPE_WATERPROOF_ID)).d(33);
          pipeWaterproof.a("pipeWaterproof");
          CoreProxy.addName(pipeWaterproof, "Pipe Waterproof");
          var13.registerShapedRecipe(new ItemStack(pipeWaterproof, 1), new Object[]{"W ", "  ", Character.valueOf('W'), new ItemStack(Item.INK_SACK, 1, 2)});
          genericPipeBlock = new BlockGenericPipe(Integer.parseInt(var3.value));
          ModLoader.RegisterBlock(genericPipeBlock);
-         ModLoader.RegisterTileEntity(TileGenericPipe.class, "net.minecraft.server.buildcraft.transport.TileGenericPipe");
+         ModLoader.RegisterTileEntity(TileGenericPipe.class, "net.minecraft.server.buildcraft.GenericPipe");
          pipeItemsWood = createPipe(DefaultProps.PIPE_ITEMS_WOOD_ID, PipeItemsWood.class, "Wooden Transport Pipe", Block.WOOD, Block.GLASS, Block.WOOD);
          pipeItemsCobblestone = createPipe(DefaultProps.PIPE_ITEMS_COBBLESTONE_ID, PipeItemsCobblestone.class, "Cobblestone Transport Pipe", Block.COBBLESTONE, Block.GLASS, Block.COBBLESTONE);
          pipeItemsStone = createPipe(DefaultProps.PIPE_ITEMS_STONE_ID, PipeItemsStone.class, "Stone Transport Pipe", Block.STONE, Block.GLASS, Block.STONE);

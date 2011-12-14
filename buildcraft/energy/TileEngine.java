@@ -59,8 +59,8 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
 
    }
 
-   public void h_() {
-      super.h_();
+   public void l_() {
+      super.l_();
       if(this.engine != null) {
          if(APIProxy.isClient(this.world)) {
             if(this.progressPart != 0) {
@@ -155,7 +155,7 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
 
    public void a(NBTTagCompound var1) {
       super.a(var1);
-      int var2 = var1.e("kind");
+      int var2 = var1.getInt("kind");
       if(var2 == 0) {
          this.engine = new EngineWood(this);
       } else if(var2 == 1) {
@@ -164,12 +164,12 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
          this.engine = new EngineIron(this);
       }
 
-      this.orientation = var1.e("orientation");
-      this.engine.progress = var1.g("progress");
-      this.engine.energy = var1.e("energy");
+      this.orientation = var1.getInt("orientation");
+      this.engine.progress = var1.getFloat("progress");
+      this.engine.energy = var1.getInt("energy");
       this.engine.orientation = Orientations.values()[this.orientation];
       if(var1.hasKey("itemInInventory")) {
-         NBTTagCompound var3 = var1.k("itemInInventory");
+         NBTTagCompound var3 = var1.getCompound("itemInInventory");
          this.itemInInventory = ItemStack.a(var3);
       }
 
@@ -178,14 +178,14 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
 
    public void b(NBTTagCompound var1) {
       super.b(var1);
-      var1.a("kind", this.world.getData(this.x, this.y, this.z));
-      var1.a("orientation", this.orientation);
-      var1.a("progress", this.engine.progress);
-      var1.a("energy", this.engine.energy);
+      var1.setInt("kind", this.world.getData(this.x, this.y, this.z));
+      var1.setInt("orientation", this.orientation);
+      var1.setFloat("progress", this.engine.progress);
+      var1.setInt("energy", this.engine.energy);
       if(this.itemInInventory != null) {
          NBTTagCompound var2 = new NBTTagCompound();
          this.itemInInventory.b(var2);
-         var1.a("itemInInventory", var2);
+         var1.set("itemInInventory", var2);
       }
 
       this.engine.writeToNBT(var1);
@@ -232,9 +232,9 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
       return this.engine.getScaledBurnTime(var1);
    }
 
-   public Packet l() {
+   public Packet k() {
       this.createEngineIfNeeded();
-      return super.l();
+      return super.k();
    }
 
    public Packet230ModLoader getUpdatePacket() {
@@ -296,9 +296,9 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
       return 0;
    }
 
-   public void e() {}
+   public void f() {}
 
-   public void t_() {}
+   public void g() {}
 
    public int powerRequest() {
       return 0;

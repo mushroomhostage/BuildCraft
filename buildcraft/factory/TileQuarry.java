@@ -111,8 +111,8 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
       this.loadArm = true;
    }
 
-   public void h_() {
-      super.h_();
+   public void l_() {
+      super.l_();
       if(this.inProcess && this.arm != null) {
          this.arm.speed = 0.0D;
          int var1 = 2 + this.powerProvider.energyStored / 1000;
@@ -153,7 +153,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
 						   // If the old block isn't air, send a block break event for it.
 						   if (var2 != 0) {
 						      org.bukkit.block.Block block = this.world.getWorld().getBlockAt(var1.x, var1.y, var1.z);
-						      BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.api.FakePlayer.getBukkitEntity(this.world));
+						      BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.core.FakePlayer.getBukkitEntity(this.world));
 						      this.world.getServer().getPluginManager().callEvent(event);
 						      if (event.isCancelled()) {
 						         return;
@@ -168,7 +168,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                               CraftBlockState replacedBlockState = CraftBlockState.getBlockState(world, var1.x, var1.y, var1.z);
                               this.world.setRawTypeId(var1.x, var1.y, var1.z, var1.blockId);
                               BlockPlaceEvent event = CraftEventFactory.callBlockPlaceEvent(world,
-                                 buildcraft.api.FakePlayer.get(this.world), replacedBlockState, var1.x, var1.y, var1.z, Block.byId[var1.blockId]);
+                                 buildcraft.core.FakePlayer.get(this.world), replacedBlockState, var1.x, var1.y, var1.z, Block.byId[var1.blockId]);
                               if (event.isCancelled() || !event.canBuild()) {
                                  this.world.setTypeIdAndData(var1.x, var1.y, var1.z, replacedBlockState.getTypeId(), replacedBlockState.getRawData());
                                  return;
@@ -267,25 +267,25 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
       super.a(var1);
       PowerFramework.currentFramework.loadPowerProvider(this, var1);
       if(var1.hasKey("box")) {
-         this.box.initialize(var1.k("box"));
+         this.box.initialize(var1.getCompound("box"));
          this.loadDefaultBoundaries = false;
       } else if(var1.hasKey("xSize")) {
-         int var2 = var1.e("xMin");
-         int var3 = var1.e("zMin");
-         int var4 = var1.e("xSize");
-         int var5 = var1.e("ySize");
-         int var6 = var1.e("zSize");
+         int var2 = var1.getInt("xMin");
+         int var3 = var1.getInt("zMin");
+         int var4 = var1.getInt("xSize");
+         int var5 = var1.getInt("ySize");
+         int var6 = var1.getInt("zSize");
          this.box.initialize(var2, this.y, var3, var2 + var4 - 1, this.y + var5 - 1, var3 + var6 - 1);
          this.loadDefaultBoundaries = false;
       } else {
          this.loadDefaultBoundaries = true;
       }
 
-      this.targetX = var1.e("targetX");
-      this.targetY = var1.e("targetY");
-      this.targetZ = var1.e("targetZ");
-      if(var1.m("hasArm")) {
-         NBTTagCompound var7 = var1.k("arm");
+      this.targetX = var1.getInt("targetX");
+      this.targetY = var1.getInt("targetY");
+      this.targetZ = var1.getInt("targetZ");
+      if(var1.getBoolean("hasArm")) {
+         NBTTagCompound var7 = var1.getCompound("arm");
          if(this.world == null) this.world = APIProxy.getWorld();
          this.arm = new EntityMechanicalArm(this.world);
          this.arm.e(var7);
@@ -298,20 +298,20 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
    public void b(NBTTagCompound var1) {
       super.b(var1);
       PowerFramework.currentFramework.savePowerProvider(this, var1);
-      var1.a("targetX", this.targetX);
-      var1.a("targetY", this.targetY);
-      var1.a("targetZ", this.targetZ);
-      var1.a("hasArm", this.arm != null);
+      var1.setInt("targetX", this.targetX);
+      var1.setInt("targetY", this.targetY);
+      var1.setInt("targetZ", this.targetZ);
+      var1.setBoolean("hasArm", this.arm != null);
       NBTTagCompound var2;
       if(this.arm != null) {
          var2 = new NBTTagCompound();
-         var1.a("arm", var2);
+         var1.set("arm", var2);
          this.arm.d(var2);
       }
 
       var2 = new NBTTagCompound();
       this.box.writeToNBT(var2);
-      var1.a("box", var2);
+      var1.set("box", var2);
    }
 
    public void positionReached(EntityMechanicalArm var1) {
@@ -324,7 +324,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
          if(this.canDig(var5)) {
             // MaeEdit begin: Send events for quarry digging
             org.bukkit.block.Block block = this.world.getWorld().getBlockAt(var2, var3, var4);
-            BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.api.FakePlayer.getBukkitEntity(this.world));
+            BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.core.FakePlayer.getBukkitEntity(this.world));
             this.world.getServer().getPluginManager().callEvent(event);
             if (event.isCancelled()) {
                return;
@@ -364,7 +364,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
    }
 
    private boolean canDig(int var1) {
-      return !this.blockDig(var1) && !API.softBlock(var1) && var1 != Block.SNOW.id;
+      return !this.blockDig(var1) && !API.softBlock(var1);
    }
 
    public void i() {

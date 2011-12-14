@@ -45,7 +45,7 @@ public class BlockMarker extends BlockContainer implements ITextureProvider {
       }
    }
 
-   public int getRenderType() {
+   public int c() {
       return BuildCraftCore.markerModel;
    }
 
@@ -109,7 +109,7 @@ public class BlockMarker extends BlockContainer implements ITextureProvider {
          }
 
          if(var7) {
-            this.g(var1, var2, var3, var4, BuildCraftBuilders.markerBlock.id);
+            this.b(var1, var2, var3, var4, BuildCraftBuilders.markerBlock.id, 0);
             var1.setTypeId(var2, var3, var4, 0);
          }
       }
@@ -154,8 +154,8 @@ public class BlockMarker extends BlockContainer implements ITextureProvider {
       var1.setData(var2, var3, var4, var6);
    }
 
-   public void a(World var1, int var2, int var3, int var4) {
-      super.a(var1, var2, var3, var4);
+   public void onPlace(World var1, int var2, int var3, int var4) {
+      super.onPlace(var1, var2, var3, var4);
       if(BuildersProxy.canPlaceTorch(var1, var2 - 1, var3, var4)) {
          var1.setData(var2, var3, var4, 1);
       } else if(BuildersProxy.canPlaceTorch(var1, var2 + 1, var3, var4)) {
@@ -175,7 +175,7 @@ public class BlockMarker extends BlockContainer implements ITextureProvider {
 
    private boolean dropTorchIfCantStay(World var1, int var2, int var3, int var4) {
       if(!this.canPlace(var1, var2, var3, var4)) {
-         this.g(var1, var2, var3, var4, BuildCraftBuilders.markerBlock.id);
+         this.b(var1, var2, var3, var4, BuildCraftBuilders.markerBlock.id, 0);
          var1.setTypeId(var2, var3, var4, 0);
          return false;
       } else {

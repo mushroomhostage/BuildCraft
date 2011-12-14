@@ -187,21 +187,21 @@ public class EngineIron extends Engine {
    }
 
    public void readFromNBT(NBTTagCompound var1) {
-      this.liquidId = var1.e("liquidId");
-      this.liquidQty = var1.e("liquidQty");
-      this.burnTime = var1.e("burnTime");
-      this.coolantId = var1.e("coolantId");
-      this.coolantQty = var1.e("coolantQty");
-      this.heat = var1.e("heat");
+      this.liquidId = var1.getInt("liquidId");
+      this.liquidQty = var1.getInt("liquidQty");
+      this.burnTime = var1.getInt("burnTime");
+      this.coolantId = var1.getInt("coolantId");
+      this.coolantQty = var1.getInt("coolantQty");
+      this.heat = var1.getInt("heat");
    }
 
    public void writeToNBT(NBTTagCompound var1) {
-      var1.a("liquidId", this.liquidId);
-      var1.a("liquidQty", this.liquidQty);
-      var1.a("burnTime", this.burnTime);
-      var1.a("coolantId", this.coolantId);
-      var1.a("coolantQty", this.coolantQty);
-      var1.a("heat", this.heat);
+      var1.setInt("liquidId", this.liquidId);
+      var1.setInt("liquidQty", this.liquidQty);
+      var1.setInt("burnTime", this.burnTime);
+      var1.setInt("coolantId", this.coolantId);
+      var1.setInt("coolantQty", this.coolantQty);
+      var1.setInt("heat", this.heat);
     }
  
    public int getScaledCoolant(int var1) {

@@ -34,9 +34,9 @@ public class Position {
    }
 
    public Position(NBTTagCompound var1) {
-      this.x = var1.h("i");
-      this.y = var1.h("j");
-      this.z = var1.h("k");
+      this.x = var1.getDouble("i");
+      this.y = var1.getDouble("j");
+      this.z = var1.getDouble("k");
       this.orientation = Orientations.Unknown;
    }
 
@@ -110,9 +110,9 @@ public class Position {
    }
 
    public void writeToNBT(NBTTagCompound var1) {
-      var1.a("i", this.x);
-      var1.a("j", this.y);
-      var1.a("k", this.z);
+      var1.setDouble("i", this.x);
+      var1.setDouble("j", this.y);
+      var1.setDouble("k", this.z);
    }
 
    public String toString() {

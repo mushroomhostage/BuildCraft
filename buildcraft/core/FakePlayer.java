@@ -1,4 +1,4 @@
-package buildcraft.api;
+package buildcraft.core;
 
 import net.minecraft.server.*;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -35,7 +35,7 @@ public class FakePlayer {
 					PlayerLoginEvent ple = new PlayerLoginEvent((CraftPlayer)fakePlayer.getBukkitEntity());
 					world.getServer().getPluginManager().callEvent(ple);
 					if (ple.getResult() != PlayerLoginEvent.Result.ALLOWED) {
-						System.err.println("[BuildCraft] FakePlayer login event was disallowed. Ignoring, but this may cause confused plugins.");
+						System.err.println("[BuildCraft] Warning: FakePlayer login event was disallowed. Ignoring, but this may cause confused plugins.");
 					}
 					
 					PlayerJoinEvent pje = new PlayerJoinEvent((CraftPlayer)fakePlayer.getBukkitEntity(), "");

@@ -47,12 +47,12 @@ public class Box implements IBox {
    }
 
    public void initialize(NBTTagCompound var1) {
-      this.xMin = var1.e("xMin");
-      this.yMin = var1.e("yMin");
-      this.zMin = var1.e("zMin");
-      this.xMax = var1.e("xMax");
-      this.yMax = var1.e("yMax");
-      this.zMax = var1.e("zMax");
+      this.xMin = var1.getInt("xMin");
+      this.yMin = var1.getInt("yMin");
+      this.zMin = var1.getInt("zMin");
+      this.xMax = var1.getInt("xMax");
+      this.yMax = var1.getInt("yMax");
+      this.zMax = var1.getInt("zMax");
    }
 
    public Box() {
@@ -107,12 +107,12 @@ public class Box implements IBox {
    }
 
    public void writeToNBT(NBTTagCompound var1) {
-      var1.a("xMin", this.xMin);
-      var1.a("yMin", this.yMin);
-      var1.a("zMin", this.zMin);
-      var1.a("xMax", this.xMax);
-      var1.a("yMax", this.yMax);
-      var1.a("zMax", this.zMax);
+      var1.setInt("xMin", this.xMin);
+      var1.setInt("yMin", this.yMin);
+      var1.setInt("zMin", this.zMin);
+      var1.setInt("xMax", this.xMax);
+      var1.setInt("yMax", this.yMax);
+      var1.setInt("zMax", this.zMax);
    }
 
    public int sizeX() {

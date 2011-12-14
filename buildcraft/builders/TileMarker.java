@@ -311,24 +311,24 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider {
             TileMarker.TileWrapper var5 = var2[var4];
             if(var5.isSet()) {
                this.world.setTypeId(var5.x, var5.y, var5.z, 0);
-               BuildCraftBuilders.markerBlock.g(this.world, var5.x, var5.y, var5.z, BuildCraftBuilders.markerBlock.id);
+               BuildCraftBuilders.markerBlock.b(this.world, var5.x, var5.y, var5.z, BuildCraftBuilders.markerBlock.id, 0);
             }
          }
 
          this.world.setTypeId(var1.vectO.x, var1.vectO.y, var1.vectO.z, 0);
-         BuildCraftBuilders.markerBlock.g(this.world, var1.vectO.x, var1.vectO.y, var1.vectO.z, BuildCraftBuilders.markerBlock.id);
+         BuildCraftBuilders.markerBlock.b(this.world, var1.vectO.x, var1.vectO.y, var1.vectO.z, BuildCraftBuilders.markerBlock.id, 0);
       }
    }
 
    public void a(NBTTagCompound var1) {
       super.a(var1);
       if(var1.hasKey("vectO")) {
-         this.initVectO = new Position(var1.k("vectO"));
+         this.initVectO = new Position(var1.getCompound("vectO"));
          this.initVect = new Position[3];
 
          for(int var2 = 0; var2 < 3; ++var2) {
             if(var1.hasKey("vect" + var2)) {
-               this.initVect[var2] = new Position(var1.k("vect" + var2));
+               this.initVect[var2] = new Position(var1.getCompound("vect" + var2));
             }
          }
       }
@@ -340,21 +340,21 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider {
       if(this.origin.isSet() && this.origin.vectO.getMarker(this.world) == this) {
          NBTTagCompound var2 = new NBTTagCompound();
          (new Position(this.origin.vectO.getMarker(this.world))).writeToNBT(var2);
-         var1.a("vectO", var2);
+         var1.set("vectO", var2);
 
          for(int var3 = 0; var3 < 3; ++var3) {
             if(this.origin.vect[var3].isSet()) {
                NBTTagCompound var4 = new NBTTagCompound();
                (new Position((double)this.origin.vect[var3].x, (double)this.origin.vect[var3].y, (double)this.origin.vect[var3].z)).writeToNBT(var4);
-               var1.a("vect" + var3, var4);
+               var1.set("vect" + var3, var4);
             }
          }
       }
 
    }
 
-   public Packet l() {
-      return this.origin.vectO.getMarker(this.world) == this?super.l():null;
+   public Packet k() {
+      return this.origin.vectO.getMarker(this.world) == this?super.k():null;
    }
 
    public Packet230ModLoader getUpdatePacket() {

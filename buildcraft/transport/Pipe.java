@@ -145,4 +145,8 @@ public abstract class Pipe extends PersistentTile implements IPipe {
 
    public void randomDisplayTick(Random var1) {}
 
+   public void dropContents() {
+      this.transport.dropContents();
+   }
+
 }

@@ -39,7 +39,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
    public void b(NBTTagCompound var1) {
       super.b(var1);
       if(this.pipe != null) {
-         var1.a("pipeId", this.pipe.itemID);
+         var1.setInt("pipeId", this.pipe.itemID);
          this.pipe.writeToNBT(var1);
       }
 
@@ -47,7 +47,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
 
    public void a(NBTTagCompound var1) {
       super.a(var1);
-      this.pipe = BlockGenericPipe.createPipe(var1.e("pipeId"));
+      this.pipe = BlockGenericPipe.createPipe(var1.getInt("pipeId"));
       if(this.pipe != null) {
          this.pipe.setTile(this);
          this.pipe.readFromNBT(var1);
@@ -65,11 +65,16 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
        }
    }
 
-   public void n() {
+   public void i() {
+      super.i();
+      PersistentWorld.getWorld(this.world).removeTile(new BlockIndex(this.x, this.y, this.z));
+   }
+
+   public void m() {
       this.bindPipe();
    }
 
-   public void h_() {
+   public void l_() {
       this.bindPipe();
       if(this.pipe != null) {
          this.pipe.initialize();
@@ -230,11 +235,11 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
       return this.pipe.getNetworkPacket();
    }
 
-   public Packet l() {
+   public Packet k() {
       this.bindPipe();
       Packet230ModLoader var1 = new Packet230ModLoader();
       var1.modId = mod_BuildCraftCore.instance.getId();
-      var1.k = true;
+      var1.l = true;
       var1.packetType = PacketIds.TileDescription.ordinal();
       var1.dataInt = new int[4];
       var1.dataInt[0] = this.x;
@@ -249,9 +254,9 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
       return var1;
    }
 
-   public void e() {}
+   public void f() {}
 
-   public void t_() {}
+   public void g() {}
 
    public int powerRequest() {
       return this.getPowerProvider().maxEnergyReceived;

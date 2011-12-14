@@ -59,7 +59,7 @@ public class BuildCraftEnergy {
          engineBlock = new BlockEngine(Integer.parseInt(var0.value));
          ModLoader.RegisterBlock(engineBlock);
          Item.byId[engineBlock.id] = null;
-         Item.byId[engineBlock.id] = new ItemEngine(engineBlock.id - 256);
+         Item.byId[engineBlock.id] = new ItemEngine(engineBlock.id - Block.byId.length);
          CoreProxy.addName(new ItemStack(engineBlock, 1, 0), "Redstone Engine");
          CoreProxy.addName(new ItemStack(engineBlock, 1, 1), "Steam Engine");
          CoreProxy.addName(new ItemStack(engineBlock, 1, 2), "Combustion Engine");
@@ -67,10 +67,10 @@ public class BuildCraftEnergy {
          var6.registerShapedRecipe(new ItemStack(engineBlock, 1, 1), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.COBBLESTONE, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.stoneGearItem, Character.valueOf('p'), Block.PISTON});
          var6.registerShapedRecipe(new ItemStack(engineBlock, 1, 2), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Item.IRON_INGOT, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.ironGearItem, Character.valueOf('p'), Block.PISTON});
 
-         oilMoving = (new BlockOilFlowing(Integer.parseInt(var2.value), Material.WATER)).c(100.0F).f(3).a("oil");
+         oilMoving = (new BlockOilFlowing(Integer.parseInt(var2.value), Material.WATER)).c(100.0F).g(3).a("oil");
          CoreProxy.addName(oilMoving.a("oilMoving"), "Oil");
          ModLoader.RegisterBlock(oilMoving);
-         oilStill = (new BlockOilStill(Integer.parseInt(var1.value), Material.WATER)).c(100.0F).f(3).a("oil");
+         oilStill = (new BlockOilStill(Integer.parseInt(var1.value), Material.WATER)).c(100.0F).g(3).a("oil");
          CoreProxy.addName(oilStill.a("oilStill"), "Oil");
          ModLoader.RegisterBlock(oilStill);
          if(oilMoving.id + 1 != oilStill.id) {
@@ -80,7 +80,7 @@ public class BuildCraftEnergy {
             bucketOil = (new ItemBucketOil(Integer.parseInt(var3.value))).a("bucketOil").a(Item.BUCKET);
             CoreProxy.addName(bucketOil, "Oil Bucket");
             fuel = new ItemFuel(Integer.parseInt(var5.value));
-            bucketFuel = (new ItemBuildCraftTexture(Integer.parseInt(var4.value))).b(3).a("bucketFuel").c(1).a(Item.BUCKET);
+            bucketFuel = (new ItemBuildCraftTexture(Integer.parseInt(var4.value))).d(3).a("bucketFuel").e(1).a(Item.BUCKET);
             CoreProxy.addName(bucketFuel, "Fuel Bucket");
             TileRefinery.addRecipe(new RefineryRecipe(oilStill.id, 1, 0, 0, 10, fuel.id, 1, 1));
             API.ironEngineFuel.put(Integer.valueOf(Block.STATIONARY_LAVA.id), new IronEngineFuel(oilStill.id, 1, 20000));
@@ -88,6 +88,8 @@ public class BuildCraftEnergy {
             API.ironEngineFuel.put(Integer.valueOf(fuel.id), new IronEngineFuel(fuel.id, 5, '\uc350'));
             API.liquids.add(new LiquidData(oilStill.id, bucketOil.id));
             API.liquids.add(new LiquidData(fuel.id, bucketFuel.id));
+            API.softBlocks[oilMoving.id] = true;
+            API.softBlocks[oilStill.id] = true;
          }
       }
    }

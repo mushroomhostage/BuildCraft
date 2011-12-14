@@ -51,7 +51,7 @@ public class PipeItemsDiamond extends Pipe implements IPipeTransportItemsHook {
             }
 
             if(var10 != null && var10.id == var3.item.id) {
-               if(Item.byId[var3.item.id].f()) {
+               if(Item.byId[var3.item.id].g()) {
                   var4.add(var7);
                } else if(var10.getData() == var3.item.getData()) {
                   var4.add(var7);

@@ -56,7 +56,7 @@ public class PipeLogicWood extends PipeLogic {
 
          for(int var3 = 0; var3 < var2; ++var3) {
             String var4 = var1[var3];
-            if(var4.equals(var0.l()) || var4.equals(Integer.toString(var0.id))) {
+            if(var4.equals(var0.n()) || var4.equals(Integer.toString(var0.id))) {
                return true;
             }
          }
@@ -66,7 +66,7 @@ public class PipeLogicWood extends PipeLogic {
    }
 
    public boolean blockActivated(EntityHuman var1) {
-      if(var1.K() != null && var1.K().getItem() == BuildCraftCore.wrenchItem) {
+      if(var1.P() != null && var1.P().getItem() == BuildCraftCore.wrenchItem) {
          this.switchSource();
          return true;
       } else {

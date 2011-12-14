@@ -14,10 +14,10 @@ public class BuildCraftContainer extends Container {
       this.inventorySize = var1;
    }
 
-   public final ItemStack a(int var1) {
+   public ItemStack a(int var1) {
       ItemStack var2 = null;
       Slot var3 = (Slot)this.e.get(var1);
-      if(var3 != null && var3.b()) {
+      if(var3 != null && var3.c()) {
          ItemStack var4 = var3.getItem();
          var2 = var4.cloneItemStack();
          if(var1 < this.inventorySize) {
@@ -31,7 +31,7 @@ public class BuildCraftContainer extends Container {
          if(var4.count == 0) {
             var3.c((ItemStack)null);
          } else {
-            var3.c();
+            var3.d();
          }
       }
 

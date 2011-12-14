@@ -85,21 +85,21 @@ public abstract class PowerProvider {
    }
 
    public void readFromNBT(NBTTagCompound var1) {
-      this.latency = var1.e("latency");
-      this.minEnergyReceived = var1.e("minEnergyReceived");
-      this.maxEnergyReceived = var1.e("maxEnergyReceived");
-      this.maxEnergyStored = var1.e("maxStoreEnergy");
-      this.minActivationEnergy = var1.e("minActivationEnergy");
-      this.energyStored = var1.e("storedEnergy");
+      this.latency = var1.getInt("latency");
+      this.minEnergyReceived = var1.getInt("minEnergyReceived");
+      this.maxEnergyReceived = var1.getInt("maxEnergyReceived");
+      this.maxEnergyStored = var1.getInt("maxStoreEnergy");
+      this.minActivationEnergy = var1.getInt("minActivationEnergy");
+      this.energyStored = var1.getInt("storedEnergy");
    }
 
    public void writeToNBT(NBTTagCompound var1) {
-      var1.a("latency", this.latency);
-      var1.a("minEnergyReceived", this.minEnergyReceived);
-      var1.a("maxEnergyReceived", this.maxEnergyReceived);
-      var1.a("maxStoreEnergy", this.maxEnergyStored);
-      var1.a("minActivationEnergy", this.minActivationEnergy);
-      var1.a("storedEnergy", this.energyStored);
+      var1.setInt("latency", this.latency);
+      var1.setInt("minEnergyReceived", this.minEnergyReceived);
+      var1.setInt("maxEnergyReceived", this.maxEnergyReceived);
+      var1.setInt("maxStoreEnergy", this.maxEnergyStored);
+      var1.setInt("minActivationEnergy", this.minActivationEnergy);
+      var1.setInt("storedEnergy", this.energyStored);
    }
 
    public void receiveEnergy(int var1) {

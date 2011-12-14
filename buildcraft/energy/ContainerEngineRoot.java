@@ -4,7 +4,7 @@ import buildcraft.core.BuildCraftContainer;
 import buildcraft.energy.EngineStone;
 import buildcraft.energy.TileEngine;
 import net.minecraft.server.EntityHuman;
-import net.minecraft.server.InventoryPlayer;
+import net.minecraft.server.PlayerInventory;
 import net.minecraft.server.Slot;
 
 public class ContainerEngineRoot extends BuildCraftContainer {
@@ -12,7 +12,7 @@ public class ContainerEngineRoot extends BuildCraftContainer {
    protected TileEngine engine;
 
 
-   public ContainerEngineRoot(InventoryPlayer var1, TileEngine var2) {
+   public ContainerEngineRoot(PlayerInventory var1, TileEngine var2) {
       super(var2.getSize());
       this.engine = var2;
       if(var2.engine instanceof EngineStone) {

@@ -12,7 +12,6 @@ import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
 import buildcraft.transport.TileGenericPipe;
 import forge.ITextureProvider;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeMap;
@@ -41,7 +40,7 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
       super(var1, Material.SHATTERABLE);
    }
 
-   public int getRenderType() {
+   public int c() {
       return BuildCraftCore.pipeModel;
    }
 
@@ -188,21 +187,22 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
       return new TileGenericPipe();
    }
 
-   public void dropNaturally(World var1, int var2, int var3, int var4, int var5, float var6) {
+   public void dropNaturally(World var1, int var2, int var3, int var4, int var5, float var6, int var7) {
       if(!APIProxy.isClient(var1)) {
-         int var7 = this.a(var1.random);
+         int var8 = this.a(var1.random);
 
-         for(int var8 = 0; var8 < var7; ++var8) {
+         for(int var9 = 0; var9 < var8; ++var9) {
             if(var1.random.nextFloat() <= var6) {
-               Pipe var9 = getPipe(var1, var2, var3, var4);
-               if(var9 == null) {
-                  var9 = (Pipe)pipeRemoved.get(new BlockIndex(var2, var3, var4));
+               Pipe var10 = getPipe(var1, var2, var3, var4);
+               if(var10 == null) {
+                  var10 = (Pipe)pipeRemoved.get(new BlockIndex(var2, var3, var4));
                }
 
-               if(var9 != null) {
-                  int var10 = var9.itemID;
-                  if(var10 > 0) {
-                     this.a(var1, var2, var3, var4, new ItemStack(var10, 1, this.a_(var5)));
+               if(var10 != null) {
+                  int var11 = var10.itemID;
+                  if(var11 > 0) {
+                     var10.dropContents();
+                     this.a(var1, var2, var3, var4, new ItemStack(var11, 1, this.getDropData(var5)));
                   }
                }
             }
@@ -211,7 +211,7 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
       }
    }
 
-   public int a(int var1, Random var2) {
+   public int getDropType(int var1, Random var2, int var3) {
       return 0;
    }
 
@@ -299,21 +299,10 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
    public static Pipe createPipe(int var0) {
       try {
          return (Pipe)((Class)pipes.get(Integer.valueOf(var0))).getConstructor(new Class[]{Integer.TYPE}).newInstance(new Object[]{Integer.valueOf(var0)});
-      } catch (SecurityException var2) {
+      } catch (Throwable var2) {
          var2.printStackTrace();
-      } catch (NoSuchMethodException var3) {
-         var3.printStackTrace();
-      } catch (IllegalArgumentException var4) {
-         var4.printStackTrace();
-      } catch (InstantiationException var5) {
-         var5.printStackTrace();
-      } catch (IllegalAccessException var6) {
-         var6.printStackTrace();
-      } catch (InvocationTargetException var7) {
-         var7.printStackTrace();
+         return null;
       }
-
-      return null;
    }
 
    public static Pipe createPipe(IBlockAccess var0, int var1, int var2, int var3, int var4) {

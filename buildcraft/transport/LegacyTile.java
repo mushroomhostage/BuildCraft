@@ -8,7 +8,7 @@ import net.minecraft.server.TileEntity;
 
 public class LegacyTile extends TileEntity {
 
-   public void h_() {
+   public void l_() {
       int var1 = this.world.getData(this.x, this.y, this.z);
       int var2 = ((LegacyBlock)Block.byId[this.world.getTypeId(this.x, this.y, this.z)]).newPipeId;
       BlockGenericPipe.createPipe(this.world, this.x, this.y, this.z, var2);

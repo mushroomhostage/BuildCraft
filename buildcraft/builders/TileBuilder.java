@@ -17,6 +17,7 @@ import buildcraft.core.CoreProxy;
 import buildcraft.core.TileBuildCraft;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftBuilders;
+import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemBlock;
@@ -132,19 +133,19 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
                if(!API.softBlock(var1.blockId)) {
                   // MaeEdit begin: Block break events for builders
                   org.bukkit.block.Block block = this.world.getWorld().getBlockAt(var1.x, var1.y, var1.z);
-                  BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.api.FakePlayer.getBukkitEntity(this.world));
+                  BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.core.FakePlayer.getBukkitEntity(this.world));
                   this.world.getServer().getPluginManager().callEvent(event);
                   if (event.isCancelled()) {
                      return;
                   }
                   // MaeEdit end
-                  Block.byId[var1.blockId].g(this.world, var1.x, var1.y, var1.z, this.world.getData(var1.x, var1.y, var1.z));
+                  Block.byId[var1.blockId].b(this.world, var1.x, var1.y, var1.z, this.world.getData(var1.x, var1.y, var1.z), 0);
                   this.world.setTypeId(var1.x, var1.y, var1.z, 0);
                } else {
                   for(int var2 = 1; var2 < this.getSize(); ++var2) {
                      if(this.getItem(var2) != null && this.getItem(var2).count > 0 && this.getItem(var2).getItem() instanceof ItemBlock) {
                         ItemStack var3 = this.splitStack(var2, 1);
-                        var3.getItem().a(var3, (EntityHuman)buildcraft.api.FakePlayer.get(this.world), this.world, var1.x, var1.y + 1, var1.z, 0);
+                        var3.getItem().a(var3, (EntityHuman)buildcraft.core.FakePlayer.get(this.world), this.world, var1.x, var1.y + 1, var1.z, 0);
                         break;
                      }
                   }
@@ -204,19 +205,19 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
 
    public void a(NBTTagCompound var1) {
       super.a(var1);
-      NBTTagList var2 = var1.l("Items");
+      NBTTagList var2 = var1.getList("Items");
       this.items = new ItemStack[this.getSize()];
 
-      for(int var3 = 0; var3 < var2.c(); ++var3) {
-         NBTTagCompound var4 = (NBTTagCompound)var2.a(var3);
-         int var5 = var4.c("Slot") & 255;
+      for(int var3 = 0; var3 < var2.size(); ++var3) {
+         NBTTagCompound var4 = (NBTTagCompound)var2.get(var3);
+         int var5 = var4.getByte("Slot") & 255;
          if(var5 >= 0 && var5 < this.items.length) {
             this.items[var5] = ItemStack.a(var4);
          }
       }
 
       if(var1.hasKey("box")) {
-         this.box.initialize(var1.k("box"));
+         this.box.initialize(var1.getCompound("box"));
       }
 
    }
@@ -228,17 +229,17 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
       for(int var3 = 0; var3 < this.items.length; ++var3) {
          if(this.items[var3] != null) {
             NBTTagCompound var4 = new NBTTagCompound();
-            var4.a("Slot", (byte)var3);
+            var4.setByte("Slot", (byte)var3);
             this.items[var3].b(var4);
-            var2.a(var4);
+            var2.add(var4);
          }
       }
 
-      var1.a("Items", var2);
+      var1.set("Items", var2);
       if(this.box.isInitialized()) {
          NBTTagCompound var5 = new NBTTagCompound();
          this.box.writeToNBT(var5);
-         var1.a("box", var5);
+         var1.set("box", var5);
       }
 
    }
@@ -280,9 +281,9 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
 
    }
 
-   public void e() {}
+   public void f() {}
 
-   public void t_() {}
+   public void g() {}
 
    public int powerRequest() {
       return this.powerProvider.maxEnergyReceived;

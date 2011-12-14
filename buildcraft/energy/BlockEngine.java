@@ -35,7 +35,7 @@ public class BlockEngine extends BlockContainer implements IPipeConnection {
       return false;
    }
 
-   public int getRenderType() {
+   public int c() {
       return BuildCraftCore.blockByEntityModel;
    }
 
@@ -50,7 +50,7 @@ public class BlockEngine extends BlockContainer implements IPipeConnection {
 
    public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5) {
       TileEngine var6 = (TileEngine)var1.getTileEntity(var2, var3, var4);
-      if(var5.K() != null && var5.K().getItem() == BuildCraftCore.wrenchItem) {
+      if(var5.P() != null && var5.P().getItem() == BuildCraftCore.wrenchItem) {
          var6.switchOrientation();
          return true;
       } else if(var6.engine instanceof EngineStone) {
@@ -70,7 +70,7 @@ public class BlockEngine extends BlockContainer implements IPipeConnection {
       var6.switchOrientation();
    }
 
-   protected int a_(int var1) {
+   protected int getDropData(int var1) {
       return var1;
    }
 

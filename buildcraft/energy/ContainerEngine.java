@@ -3,11 +3,11 @@ package buildcraft.energy;
 import buildcraft.energy.ContainerEngineRoot;
 import buildcraft.energy.TileEngine;
 import net.minecraft.server.ICrafting;
-import net.minecraft.server.InventoryPlayer;
+import net.minecraft.server.PlayerInventory;
 
 public class ContainerEngine extends ContainerEngineRoot {
 
-   public ContainerEngine(InventoryPlayer var1, TileEngine var2) {
+   public ContainerEngine(PlayerInventory var1, TileEngine var2) {
       super(var1, var2);
    }
 

@@ -59,4 +59,6 @@ public class PipeTransport {
    }
 
    public void entityEntering(EntityPassiveItem var1, Orientations var2) {}
+
+   public void dropContents() {}
 }

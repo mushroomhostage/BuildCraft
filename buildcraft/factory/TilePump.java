@@ -42,8 +42,8 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor {
       this.powerProvider.configure(20, 10, 10, 10, 100);
    }
 
-   public void h_() {
-      super.h_();
+   public void l_() {
+      super.l_();
       if(this.tube != null) {
          if(!APIProxy.isClient(this.world)) {
             if(this.tube.locY - (double)this.aimY > 0.01D) {
@@ -224,10 +224,10 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor {
 
    public void a(NBTTagCompound var1) {
       super.a(var1);
-      this.internalLiquid = var1.e("internalLiquid");
-      this.aimY = var1.e("aimY");
-      this.tubeY = (double)var1.g("tubeY");
-      this.liquidId = var1.e("liquidId");
+      this.internalLiquid = var1.getInt("internalLiquid");
+      this.aimY = var1.getInt("aimY");
+      this.tubeY = (double)var1.getFloat("tubeY");
+      this.liquidId = var1.getInt("liquidId");
       PowerFramework.currentFramework.loadPowerProvider(this, var1);
       this.powerProvider.configure(20, 10, 10, 10, 100);
    }
@@ -235,15 +235,15 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor {
    public void b(NBTTagCompound var1) {
       super.b(var1);
       PowerFramework.currentFramework.savePowerProvider(this, var1);
-      var1.a("internalLiquid", this.internalLiquid);
-      var1.a("aimY", this.aimY);
+      var1.setInt("internalLiquid", this.internalLiquid);
+      var1.setInt("aimY", this.aimY);
       if(this.tube != null) {
-         var1.a("tubeY", (float)this.tube.locY);
+         var1.setFloat("tubeY", (float)this.tube.locY);
       } else {
-         var1.a("tubeY", (float)this.y);
+         var1.setFloat("tubeY", (float)this.y);
       }
 
-      var1.a("liquidId", this.liquidId);
+      var1.setInt("liquidId", this.liquidId);
    }
 
    public boolean isActive() {

@@ -36,11 +36,11 @@ public class BlockFrame extends Block implements IPipeConnection, IBlockPipe, IT
       return false;
    }
 
-   public int a(int var1, Random var2) {
+   public int idDropped(int var1, Random var2) {
       return -1;
    }
 
-   public int getRenderType() {
+   public int c() {
       return BuildCraftCore.pipeModel;
    }
 

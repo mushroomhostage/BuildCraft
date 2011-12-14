@@ -39,12 +39,12 @@ public class RedstonePowerProvider extends PowerProvider {
 
    public void readFromNBT(NBTTagCompound var1) {
       super.readFromNBT(var1);
-      this.lastPower = var1.m("lastPower");
+      this.lastPower = var1.getBoolean("lastPower");
    }
 
    public void writeToNBT(NBTTagCompound var1) {
       super.readFromNBT(var1);
-      var1.a("lastPower", this.lastPower);
+      var1.setBoolean("lastPower", this.lastPower);
    }
 
    public void configure(int var1, int var2, int var3, int var4, int var5) {

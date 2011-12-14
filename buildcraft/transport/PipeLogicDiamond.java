@@ -25,7 +25,7 @@ public class PipeLogicDiamond extends PipeLogic {
 
 
    public boolean blockActivated(EntityHuman var1) {
-      if(var1.K() != null && var1.K().id < Block.byId.length && Block.byId[var1.K().id] instanceof BlockGenericPipe) {
+      if(var1.P() != null && var1.P().id < Block.byId.length && Block.byId[var1.P().id] instanceof BlockGenericPipe) {
          return false;
       } else {
          TransportProxy.displayGUIFilter(var1, this.container);
@@ -57,11 +57,20 @@ public class PipeLogicDiamond extends PipeLogic {
    }
 
    public void setInventorySlotContents(int var1, ItemStack var2) {
-      this.items[var1] = var2;
-      if(APIProxy.isServerSide()) {
-         CoreProxy.sendToPlayers((Packet230ModLoader)this.getContentsPacket(), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
-      }
+      if(this.items[var1] != null || var2 != null) {
+         if(this.items[var1] == null || var2 == null || !this.items[var1].c(var2)) {
+            if(var2 != null) {
+               this.items[var1] = var2.cloneItemStack();
+            } else {
+               this.items[var1] = null;
+            }
 
+            if(APIProxy.isServerSide()) {
+               CoreProxy.sendToPlayers((Packet230ModLoader)this.getContentsPacket(), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
+            }
+
+         }
+      }
    }
 
    public void updateEntity() {
@@ -85,11 +94,11 @@ public class PipeLogicDiamond extends PipeLogic {
 
    public void readFromNBT(NBTTagCompound var1) {
       super.readFromNBT(var1);
-      NBTTagList var2 = var1.l("items");
+      NBTTagList var2 = var1.getList("items");
 
-      for(int var3 = 0; var3 < var2.c(); ++var3) {
-         NBTTagCompound var4 = (NBTTagCompound)var2.a(var3);
-         int var5 = var4.e("index");
+      for(int var3 = 0; var3 < var2.size(); ++var3) {
+         NBTTagCompound var4 = (NBTTagCompound)var2.get(var3);
+         int var5 = var4.getInt("index");
          this.items[var5] = ItemStack.a(var4);
       }
 
@@ -102,13 +111,13 @@ public class PipeLogicDiamond extends PipeLogic {
       for(int var3 = 0; var3 < this.items.length; ++var3) {
          if(this.items[var3] != null && this.items[var3].count > 0) {
             NBTTagCompound var4 = new NBTTagCompound();
-            var2.a(var4);
-            var4.a("index", var3);
+            var2.add(var4);
+            var4.setInt("index", var3);
             this.items[var3].b(var4);
          }
       }
 
-      var1.a("items", var2);
+      var1.set("items", var2);
    }
 
    public boolean addItem(ItemStack var1, boolean var2, Orientations var3) {
@@ -123,7 +132,7 @@ public class PipeLogicDiamond extends PipeLogic {
       Packet230ModLoader var1 = new Packet230ModLoader();
       var1.modId = mod_BuildCraftTransport.instance.getId();
       var1.packetType = PacketIds.DiamondPipeContents.ordinal();
-      var1.k = true;
+      var1.l = true;
       var1.dataInt = new int[3 + this.items.length * 2];
       var1.dataInt[0] = this.xCoord;
       var1.dataInt[1] = this.yCoord;

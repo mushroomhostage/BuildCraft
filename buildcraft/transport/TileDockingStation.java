@@ -46,9 +46,9 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
       return true;
    }
 
-   public void e() {}
+   public void f() {}
 
-   public void t_() {}
+   public void g() {}
 
    private AxisAlignedBB getCheckBox(Orientations var1, int var2) {
       if(var1 == Orientations.Unknown) {

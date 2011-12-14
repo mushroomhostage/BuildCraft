@@ -239,16 +239,16 @@ public class PipeTransportItems extends PipeTransport {
 
    public void readFromNBT(NBTTagCompound var1) {
       super.readFromNBT(var1);
-      NBTTagList var2 = var1.l("travelingEntities");
+      NBTTagList var2 = var1.getList("travelingEntities");
 
-      for(int var3 = 0; var3 < var2.c(); ++var3) {
+      for(int var3 = 0; var3 < var2.size(); ++var3) {
          try {
-            NBTTagCompound var4 = (NBTTagCompound)var2.a(var3);
+            NBTTagCompound var4 = (NBTTagCompound)var2.get(var3);
             EntityPassiveItem var5 = new EntityPassiveItem(APIProxy.getWorld());
             var5.readFromNBT(var4);
             var5.container = this.container;
-            PipeTransportItems.EntityData var6 = new PipeTransportItems.EntityData(var5, Orientations.values()[var4.e("orientation")]);
-            var6.toCenter = var4.m("toCenter");
+            PipeTransportItems.EntityData var6 = new PipeTransportItems.EntityData(var5, Orientations.values()[var4.getInt("orientation")]);
+            var6.toCenter = var4.getBoolean("toCenter");
             this.entitiesToLoad.add(var6);
          } catch (Throwable var7) {
             var7.printStackTrace();
@@ -265,13 +265,13 @@ public class PipeTransportItems extends PipeTransport {
       while(var3.hasNext()) {
          PipeTransportItems.EntityData var4 = (PipeTransportItems.EntityData)var3.next();
          NBTTagCompound var5 = new NBTTagCompound();
-         var2.a(var5);
+         var2.add(var5);
          var4.item.writeToNBT(var5);
-         var5.a("toCenter", var4.toCenter);
-         var5.a("orientation", var4.orientation.ordinal());
+         var5.setBoolean("toCenter", var4.toCenter);
+         var5.setInt("orientation", var4.orientation.ordinal());
       }
 
-      var1.a("travelingEntities", var2);
+      var1.set("travelingEntities", var2);
    }
 
    public Orientations resolveDestination(PipeTransportItems.EntityData var1) {
@@ -366,6 +366,16 @@ public class PipeTransportItems extends PipeTransport {
 
    public boolean acceptItems() {
       return true;
+   }
+
+   public void dropContents() {
+      Iterator var1 = this.travelingEntities.values().iterator();
+
+      while(var1.hasNext()) {
+         PipeTransportItems.EntityData var2 = (PipeTransportItems.EntityData)var1.next();
+         Utils.dropItems(this.worldObj, var2.item.item, this.xCoord, this.yCoord, this.zCoord);
+      }
+
    }
 
 

@@ -242,18 +242,21 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor {
    }
 
    public boolean canSuck(Entity var1, int var2) {
-      if(var1.dead) {
+      if(!var1.isAlive()) {
          return false;
       } else if(var1 instanceof EntityItem) {
          EntityItem var3 = (EntityItem)var1;
-
-         for(int var4 = 0; var4 < this.entitiesDropped.length; ++var4) {
-            if(var3.id == this.entitiesDropped[var4]) {
-               return false;
+         if(var3.itemStack.count <= 0) {
+            return false;
+         } else {
+            for(int var4 = 0; var4 < this.entitiesDropped.length; ++var4) {
+               if(var3.id == this.entitiesDropped[var4]) {
+                  return false;
+               }
             }
-         }
 
-         return this.powerProvider.useEnergy(1, var2, false) >= var2;
+            return this.powerProvider.useEnergy(1, var2, false) >= var2;
+         }
       } else {
          return var1 instanceof EntityArrow?this.powerProvider.useEnergy(1, var2, false) >= var2:false;
       }

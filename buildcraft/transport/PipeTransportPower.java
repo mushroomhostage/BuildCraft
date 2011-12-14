@@ -183,10 +183,10 @@ public class PipeTransportPower extends PipeTransport {
       super.readFromNBT(var1);
 
       for(int var2 = 0; var2 < 6; ++var2) {
-         this.powerQuery[var2] = var1.e("powerQuery[" + var2 + "]");
-         this.nextPowerQuery[var2] = var1.e("nextPowerQuery[" + var2 + "]");
-         this.internalPower[var2] = var1.h("internalPower[" + var2 + "]");
-         this.internalNextPower[var2] = var1.h("internalNextPower[" + var2 + "]");
+         this.powerQuery[var2] = var1.getInt("powerQuery[" + var2 + "]");
+         this.nextPowerQuery[var2] = var1.getInt("nextPowerQuery[" + var2 + "]");
+         this.internalPower[var2] = var1.getDouble("internalPower[" + var2 + "]");
+         this.internalNextPower[var2] = var1.getDouble("internalNextPower[" + var2 + "]");
       }
 
    }
@@ -195,10 +195,10 @@ public class PipeTransportPower extends PipeTransport {
       super.writeToNBT(var1);
 
       for(int var2 = 0; var2 < 6; ++var2) {
-         var1.a("powerQuery[" + var2 + "]", this.powerQuery[var2]);
-         var1.a("nextPowerQuery[" + var2 + "]", this.nextPowerQuery[var2]);
-         var1.a("internalPower[" + var2 + "]", this.internalPower[var2]);
-         var1.a("internalNextPower[" + var2 + "]", this.internalNextPower[var2]);
+         var1.setInt("powerQuery[" + var2 + "]", this.powerQuery[var2]);
+         var1.setInt("nextPowerQuery[" + var2 + "]", this.nextPowerQuery[var2]);
+         var1.setDouble("internalPower[" + var2 + "]", this.internalPower[var2]);
+         var1.setDouble("internalNextPower[" + var2 + "]", this.internalNextPower[var2]);
       }
 
    }

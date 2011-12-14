@@ -70,8 +70,8 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer {
 
    public void a(NBTTagCompound var1) {
       super.a(var1);
-      this.stored = var1.e("stored");
-      this.liquidId = var1.e("liquidId");
+      this.stored = var1.getInt("stored");
+      this.liquidId = var1.getInt("liquidId");
       if(this.liquidId == 0) {
          this.stored = 0;
       }
@@ -80,8 +80,8 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer {
 
    public void b(NBTTagCompound var1) {
       super.b(var1);
-      var1.a("stored", this.stored);
-      var1.a("liquidId", this.liquidId);
+      var1.setInt("stored", this.stored);
+      var1.setInt("liquidId", this.liquidId);
    }
 
    public int empty(int var1, boolean var2) {
@@ -123,7 +123,7 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer {
    }
 
    @TileNetworkData
-   public void h_() {
+   public void l_() {
       if(APIProxy.isServerSide() && this.hasUpdate && this.tracker.markTimeIfDelay(this.world, (long)(2 * BuildCraftCore.updateFactor))) {
          this.sendNetworkUpdate();
          this.hasUpdate = false;

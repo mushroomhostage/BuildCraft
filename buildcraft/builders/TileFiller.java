@@ -65,8 +65,8 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
       this.computeRecipe();
    }
 
-   public void h_() {
-      super.h_();
+   public void l_() {
+      super.l_();
       if(this.box.isInitialized()) {
          this.box.createLasers(this.world, LaserKind.Stripes);
       } else {
@@ -188,22 +188,22 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
 
    public void a(NBTTagCompound var1) {
       super.a(var1);
-      NBTTagList var2 = var1.l("Items");
+      NBTTagList var2 = var1.getList("Items");
       this.contents = new ItemStack[this.getSize()];
 
-      for(int var3 = 0; var3 < var2.c(); ++var3) {
-         NBTTagCompound var4 = (NBTTagCompound)var2.a(var3);
-         int var5 = var4.c("Slot") & 255;
+      for(int var3 = 0; var3 < var2.size(); ++var3) {
+         NBTTagCompound var4 = (NBTTagCompound)var2.get(var3);
+         int var5 = var4.getByte("Slot") & 255;
          if(var5 >= 0 && var5 < this.contents.length) {
             this.contents[var5] = ItemStack.a(var4);
          }
       }
 
       if(var1.hasKey("box")) {
-         this.box.initialize(var1.k("box"));
+         this.box.initialize(var1.getCompound("box"));
       }
 
-      this.done = var1.m("done");
+      this.done = var1.getBoolean("done");
       this.forceDone = this.done;
    }
 
@@ -214,20 +214,20 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
       for(int var3 = 0; var3 < this.contents.length; ++var3) {
          if(this.contents[var3] != null) {
             NBTTagCompound var4 = new NBTTagCompound();
-            var4.a("Slot", (byte)var3);
+            var4.setByte("Slot", (byte)var3);
             this.contents[var3].b(var4);
-            var2.a(var4);
+            var2.add(var4);
          }
       }
 
-      var1.a("Items", var2);
+      var1.set("Items", var2);
       if(this.box != null) {
          NBTTagCompound var5 = new NBTTagCompound();
          this.box.writeToNBT(var5);
-         var1.a("box", var5);
+         var1.set("box", var5);
       }
 
-      var1.a("done", this.done);
+      var1.setBoolean("done", this.done);
    }
 
    public int getMaxStackSize() {
@@ -351,9 +351,9 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
       return true;
    }
 
-   public void e() {}
+   public void f() {}
 
-   public void t_() {}
+   public void g() {}
 
    public int powerRequest() {
       return this.powerProvider.maxEnergyReceived;

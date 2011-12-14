@@ -129,7 +129,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
 
    public void doWork() {}
 
-   public void h_() {
+   public void l_() {
       if(APIProxy.isClient(this.world)) {
          this.simpleAnimationIterate();
       } else if(APIProxy.isServerSide() && this.updateNetworkTime.markTimeIfDelay(this.world, (long)(2 * BuildCraftCore.updateFactor))) {
@@ -214,13 +214,13 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
    public void a(NBTTagCompound var1) {
       super.a(var1);
       if(var1.hasKey("slot1")) {
-         this.slot1.readFromNBT(var1.k("slot1"));
-         this.slot2.readFromNBT(var1.k("slot2"));
-         this.result.readFromNBT(var1.k("result"));
+         this.slot1.readFromNBT(var1.getCompound("slot1"));
+         this.slot2.readFromNBT(var1.getCompound("slot2"));
+         this.result.readFromNBT(var1.getCompound("result"));
       }
 
-      this.animationStage = var1.e("animationStage");
-      this.animationSpeed = var1.g("animationSpeed");
+      this.animationStage = var1.getInt("animationStage");
+      this.animationSpeed = var1.getFloat("animationSpeed");
       PowerFramework.currentFramework.loadPowerProvider(this, var1);
       this.powerProvider.configure(20, 25, 25, 25, 1000);
    }
@@ -233,11 +233,11 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
       this.slot1.writeFromNBT(var2);
       this.slot2.writeFromNBT(var3);
       this.result.writeFromNBT(var4);
-      var1.a("slot1", var2);
-      var1.a("slot2", var3);
-      var1.a("result", var4);
-      var1.a("animationStage", this.animationStage);
-      var1.a("animationSpeed", this.animationSpeed);
+      var1.set("slot1", var2);
+      var1.set("slot2", var3);
+      var1.set("result", var4);
+      var1.setInt("animationStage", this.animationStage);
+      var1.setFloat("animationSpeed", this.animationSpeed);
       PowerFramework.currentFramework.savePowerProvider(this, var1);
    }
 
@@ -284,9 +284,9 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
 
    }
 
-   public void e() {}
+   public void f() {}
 
-   public void t_() {}
+   public void g() {}
 
 
    public static class Slot {
@@ -319,14 +319,14 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
       }
 
       public void writeFromNBT(NBTTagCompound var1) {
-         var1.a("liquidId", this.liquidId);
-         var1.a("quantity", this.quantity);
+         var1.setInt("liquidId", this.liquidId);
+         var1.setInt("quantity", this.quantity);
       }
 
       public void readFromNBT(NBTTagCompound var1) {
-         this.liquidId = var1.e("liquidId");
+         this.liquidId = var1.getInt("liquidId");
          if(this.liquidId != 0) {
-            this.quantity = var1.e("quantity");
+            this.quantity = var1.getInt("quantity");
          } else {
             this.quantity = 0;
          }

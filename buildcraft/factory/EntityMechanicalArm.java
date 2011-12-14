@@ -44,7 +44,7 @@ public class EntityMechanicalArm extends Entity {
       this.lastZ = var6;
       this.sizeX = var10;
       this.sizeZ = var8;
-      this.bJ = true;
+      this.bN = true;
       this.baseY = var4;
       this.headPosX = var2;
       this.headPosY = var4 - 2.0D;
@@ -71,23 +71,23 @@ public class EntityMechanicalArm extends Entity {
    protected void b() {}
 
    protected void a(NBTTagCompound var1) {
-      this.sizeX = var1.h("sizeX");
-      this.sizeZ = var1.h("sizeZ");
-      this.targetX = var1.h("targetX");
-      this.targetY = var1.h("targetY");
-      this.targetZ = var1.h("targetZ");
-      this.angle = var1.h("angle");
-      this.headPosX = var1.h("headPosX");
-      this.headPosY = var1.h("headPosY");
-      this.headPosZ = var1.h("headPosZ");
-      this.baseY = var1.h("baseY");
-      this.speed = var1.h("speed");
-      this.inProgressionXZ = var1.m("progressionXY");
-      this.inProgressionY = var1.m("progressionY");
-      NBTTagCompound var2 = var1.k("xArm");
-      NBTTagCompound var3 = var1.k("yArm");
-      NBTTagCompound var4 = var1.k("zArm");
-      NBTTagCompound var5 = var1.k("head");
+      this.sizeX = var1.getDouble("sizeX");
+      this.sizeZ = var1.getDouble("sizeZ");
+      this.targetX = var1.getDouble("targetX");
+      this.targetY = var1.getDouble("targetY");
+      this.targetZ = var1.getDouble("targetZ");
+      this.angle = var1.getDouble("angle");
+      this.headPosX = var1.getDouble("headPosX");
+      this.headPosY = var1.getDouble("headPosY");
+      this.headPosZ = var1.getDouble("headPosZ");
+      this.baseY = var1.getDouble("baseY");
+      this.speed = var1.getDouble("speed");
+      this.inProgressionXZ = var1.getBoolean("progressionXY");
+      this.inProgressionY = var1.getBoolean("progressionY");
+      NBTTagCompound var2 = var1.getCompound("xArm");
+      NBTTagCompound var3 = var1.getCompound("yArm");
+      NBTTagCompound var4 = var1.getCompound("zArm");
+      NBTTagCompound var5 = var1.getCompound("head");
       this.xArm = new EntityBlock(this.world);
       this.yArm = new EntityBlock(this.world);
       this.zArm = new EntityBlock(this.world);
@@ -103,27 +103,27 @@ public class EntityMechanicalArm extends Entity {
    }
 
    protected void b(NBTTagCompound var1) {
-      var1.a("sizeX", this.sizeX);
-      var1.a("sizeZ", this.sizeZ);
-      var1.a("targetX", this.targetX);
-      var1.a("targetY", this.targetY);
-      var1.a("targetZ", this.targetZ);
-      var1.a("angle", this.angle);
-      var1.a("headPosX", this.headPosX);
-      var1.a("headPosY", this.headPosY);
-      var1.a("headPosZ", this.headPosZ);
-      var1.a("baseY", this.baseY);
-      var1.a("speed", this.speed);
-      var1.a("progressionXY", this.inProgressionXZ);
-      var1.a("progressionY", this.inProgressionY);
+      var1.setDouble("sizeX", this.sizeX);
+      var1.setDouble("sizeZ", this.sizeZ);
+      var1.setDouble("targetX", this.targetX);
+      var1.setDouble("targetY", this.targetY);
+      var1.setDouble("targetZ", this.targetZ);
+      var1.setDouble("angle", this.angle);
+      var1.setDouble("headPosX", this.headPosX);
+      var1.setDouble("headPosY", this.headPosY);
+      var1.setDouble("headPosZ", this.headPosZ);
+      var1.setDouble("baseY", this.baseY);
+      var1.setDouble("speed", this.speed);
+      var1.setBoolean("progressionXY", this.inProgressionXZ);
+      var1.setBoolean("progressionY", this.inProgressionY);
       NBTTagCompound var2 = new NBTTagCompound();
       NBTTagCompound var3 = new NBTTagCompound();
       NBTTagCompound var4 = new NBTTagCompound();
       NBTTagCompound var5 = new NBTTagCompound();
-      var1.a("xArm", var2);
-      var1.a("yArm", var3);
-      var1.a("zArm", var4);
-      var1.a("head", var5);
+      var1.set("xArm", var2);
+      var1.set("yArm", var3);
+      var1.set("zArm", var4);
+      var1.set("head", var5);
       this.xArm.d(var2);
       this.yArm.d(var3);
       this.zArm.d(var4);
@@ -145,7 +145,7 @@ public class EntityMechanicalArm extends Entity {
       return new double[]{this.targetX, this.targetY, this.targetZ};
    }
 
-   public void s_() {
+   public void w_() {
       if(this.speed > 0.0D) {
          this.doMove(this.speed);
       }
@@ -153,7 +153,7 @@ public class EntityMechanicalArm extends Entity {
    }
 
    public void doMove(double var1) {
-      super.s_();
+      super.w_();
       if(this.inProgressionXZ) {
          if(Math.abs(this.targetX - this.headPosX) < var1 * 2.0D && Math.abs(this.targetZ - this.headPosZ) < var1 * 2.0D) {
             this.headPosX = this.targetX;

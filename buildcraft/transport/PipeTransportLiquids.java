@@ -61,19 +61,19 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
 
       for(int var2 = 0; var2 < 6; ++var2) {
          if(var1.hasKey("side[" + var2 + "]")) {
-            this.side[var2].readFromNBT(var1.k("side[" + var2 + "]"));
+            this.side[var2].readFromNBT(var1.getCompound("side[" + var2 + "]"));
          }
 
-         this.isInput[var2] = var1.m("isInput[" + var2 + "]");
+         this.isInput[var2] = var1.getBoolean("isInput[" + var2 + "]");
       }
 
       if(var1.hasKey("center")) {
-         this.center.readFromNBT(var1.k("center"));
+         this.center.readFromNBT(var1.getCompound("center"));
       }
 
       NBTTagCompound var3 = new NBTTagCompound();
       this.center.writeToNBT(var3);
-      var1.a("center", var3);
+      var1.set("center", var3);
    }
 
    public void writeToNBT(NBTTagCompound var1) {
@@ -82,13 +82,13 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
       for(int var2 = 0; var2 < 6; ++var2) {
          NBTTagCompound var3 = new NBTTagCompound();
          this.side[var2].writeToNBT(var3);
-         var1.a("side[" + var2 + "]", var3);
-         var1.a("isInput[" + var2 + "]", this.isInput[var2]);
+         var1.set("side[" + var2 + "]", var3);
+         var1.setBoolean("isInput[" + var2 + "]", this.isInput[var2]);
       }
 
       NBTTagCompound var4 = new NBTTagCompound();
       this.center.writeToNBT(var4);
-      var1.a("center", var4);
+      var1.set("center", var4);
    }
 
    protected void doWork() {}
@@ -421,24 +421,24 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
 
       public void readFromNBT(NBTTagCompound var1) {
          for(int var2 = 0; var2 < PipeTransportLiquids.this.travelDelay; ++var2) {
-            this.in[var2] = var1.d("in[" + var2 + "]");
-            this.out[var2] = var1.d("out[" + var2 + "]");
+            this.in[var2] = var1.getShort("in[" + var2 + "]");
+            this.out[var2] = var1.getShort("out[" + var2 + "]");
          }
 
-         this.ready = var1.d("ready");
-         this.qty = var1.d("qty");
-         this.liquidId = var1.d("liquidId");
+         this.ready = var1.getShort("ready");
+         this.qty = var1.getShort("qty");
+         this.liquidId = var1.getShort("liquidId");
       }
 
       public void writeToNBT(NBTTagCompound var1) {
          for(int var2 = 0; var2 < PipeTransportLiquids.this.travelDelay; ++var2) {
-            var1.a("in[" + var2 + "]", this.in[var2]);
-            var1.a("out[" + var2 + "]", this.out[var2]);
+            var1.setShort("in[" + var2 + "]", this.in[var2]);
+            var1.setShort("out[" + var2 + "]", this.out[var2]);
          }
 
-         var1.a("ready", this.ready);
-         var1.a("qty", this.qty);
-         var1.a("liquidId", this.liquidId);
+         var1.setShort("ready", this.ready);
+         var1.setShort("qty", this.qty);
+         var1.setShort("liquidId", this.liquidId);
       }
    }
 }

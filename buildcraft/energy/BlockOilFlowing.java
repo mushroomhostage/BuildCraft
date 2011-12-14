@@ -21,7 +21,7 @@ public class BlockOilFlowing extends BlockFluids {
       super(var1, var2);
    }
 
-   public int getRenderType() {
+   public int c() {
       return BuildCraftCore.oilModel;
    }
 
@@ -68,7 +68,7 @@ public class BlockOilFlowing extends BlockFluids {
                var1.setTypeId(var2, var3, var4, 0);
             } else {
                var1.setData(var2, var3, var4, var10);
-               var1.c(var2, var3, var4, this.id, this.c());
+               var1.c(var2, var3, var4, this.id, this.d());
                var1.applyPhysics(var2, var3, var4, this.id);
             }
          } else if(var8) {
@@ -118,7 +118,7 @@ public class BlockOilFlowing extends BlockFluids {
       if(this.liquidCanDisplaceBlock(var1, var2, var3, var4)) {
          int var6 = var1.getTypeId(var2, var3, var4);
          if(var6 > 0) {
-            Block.byId[var6].g(var1, var2, var3, var4, var1.getData(var2, var3, var4));
+            Block.byId[var6].b(var1, var2, var3, var4, var1.getData(var2, var3, var4), 0);
          }
 
          var1.setTypeIdAndData(var2, var3, var4, this.id, var5);
@@ -246,10 +246,10 @@ public class BlockOilFlowing extends BlockFluids {
       return var5 == this.material?false:!this.blockBlocksFlow(var1, var2, var3, var4);
    }
 
-   public void a(World var1, int var2, int var3, int var4) {
-      super.a(var1, var2, var3, var4);
+   public void onPlace(World var1, int var2, int var3, int var4) {
+      super.onPlace(var1, var2, var3, var4);
       if(var1.getTypeId(var2, var3, var4) == this.id) {
-         var1.c(var2, var3, var4, this.id, this.c());
+         var1.c(var2, var3, var4, this.id, this.d());
       }
 
    }
