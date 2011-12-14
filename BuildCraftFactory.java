@@ -98,8 +98,11 @@ public class BuildCraftFactory {
          ModLoader.RegisterTileEntity(TileMiningWell.class, "MiningWell");
          ModLoader.RegisterTileEntity(TileAutoWorkbench.class, "AutoWorkbench");
          ModLoader.RegisterTileEntity(TilePump.class, "net.minecraft.server.buildcraft.factory.TilePump");
+         ModLoader.RegisterTileEntity(TilePump.class, "net.minecraft.src.buildcraft.factory.TilePump");
          ModLoader.RegisterTileEntity(TileTank.class, "net.minecraft.server.buildcraft.factory.TileTank");
+         ModLoader.RegisterTileEntity(TileTank.class, "net.minecraft.src.buildcraft.factory.TileTank");
          ModLoader.RegisterTileEntity(TileRefinery.class, "net.minecraft.server.buildcraft.factory.Refinery");
+         ModLoader.RegisterTileEntity(TileRefinery.class, "net.minecraft.src.buildcraft.factory.Refinery");
          drillTexture = 33;
          BuildCraftCore.mainConfiguration.save();
       }

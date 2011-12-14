@@ -75,7 +75,9 @@ public class BuildCraftBuilders {
          ModLoader.RegisterTileEntity(TileMarker.class, "Marker");
          ModLoader.RegisterTileEntity(TileFiller.class, "Filler");
          ModLoader.RegisterTileEntity(TileBuilder.class, "net.minecraft.server.builders.TileBuilder");
+         ModLoader.RegisterTileEntity(TileBuilder.class, "net.minecraft.src.builders.TileBuilder");
          ModLoader.RegisterTileEntity(TileTemplate.class, "net.minecraft.server.builders.TileTemplate");
+         ModLoader.RegisterTileEntity(TileTemplate.class, "net.minecraft.src.builders.TileTemplate");
          FillerRegistry.addRecipe(new FillerFillAll(), new Object[]{"bbb", "bbb", "bbb", Character.valueOf('b'), new ItemStack(Block.BRICK, 1)});
          FillerRegistry.addRecipe(new FillerFlattener(), new Object[]{"   ", "ggg", "bbb", Character.valueOf('g'), Block.GLASS, Character.valueOf('b'), Block.BRICK});
          FillerRegistry.addRecipe(new FillerRemover(), new Object[]{"ggg", "ggg", "ggg", Character.valueOf('g'), Block.GLASS});

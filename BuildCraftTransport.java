@@ -84,6 +84,7 @@ public class BuildCraftTransport {
          genericPipeBlock = new BlockGenericPipe(Integer.parseInt(var3.value));
          ModLoader.RegisterBlock(genericPipeBlock);
          ModLoader.RegisterTileEntity(TileGenericPipe.class, "net.minecraft.server.buildcraft.GenericPipe");
+         ModLoader.RegisterTileEntity(TileGenericPipe.class, "net.minecraft.src.buildcraft.GenericPipe");
          pipeItemsWood = createPipe(DefaultProps.PIPE_ITEMS_WOOD_ID, PipeItemsWood.class, "Wooden Transport Pipe", Block.WOOD, Block.GLASS, Block.WOOD);
          pipeItemsCobblestone = createPipe(DefaultProps.PIPE_ITEMS_COBBLESTONE_ID, PipeItemsCobblestone.class, "Cobblestone Transport Pipe", Block.COBBLESTONE, Block.GLASS, Block.COBBLESTONE);
          pipeItemsStone = createPipe(DefaultProps.PIPE_ITEMS_STONE_ID, PipeItemsStone.class, "Stone Transport Pipe", Block.STONE, Block.GLASS, Block.STONE);
@@ -121,6 +122,7 @@ public class BuildCraftTransport {
             ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var11.value), pipeItemsObsidian.id));
             ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var12.value), pipeItemsCobblestone.id));
             ModLoader.RegisterTileEntity(LegacyTile.class, "net.buildcraft.server.buildcraft.transport.legacy.LegacyTile");
+            ModLoader.RegisterTileEntity(LegacyTile.class, "net.buildcraft.src.buildcraft.transport.legacy.LegacyTile");
          }
 
          BuildCraftCore.mainConfiguration.save();
