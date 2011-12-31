@@ -63,6 +63,7 @@ public class ClassMapping {
 	private LinkedList<Field> shortArrayFields = new LinkedList<Field>();
 	private LinkedList<Field> intArrayFields = new LinkedList<Field>();
 	private LinkedList<Field> booleanArrayFields = new LinkedList<Field>();
+	private LinkedList<Field> unsignedByteArrayFields = new LinkedList<Field>();
 	private LinkedList<ClassMapping> objectArrayFields = new LinkedList<ClassMapping>();
 	
 	private int sizeBytes;
@@ -161,8 +162,15 @@ public class ClassMapping {
 						sizeBytes += updateAnnotation.staticSize() * 2;
 						shortArrayFields.add(f);
 					} else if (cptClass.equals(int.class)) {
-						sizeBytes += updateAnnotation.staticSize() * 4;
-						intArrayFields.add(f);
+						updateAnnotation = f.getAnnotation(TileNetworkData.class);
+						
+						if (updateAnnotation.intKind() == TileNetworkData.UNSIGNED_BYTE) {
+							sizeBytes += updateAnnotation.staticSize();
+							unsignedByteArrayFields.add(f);
+						} else {
+							sizeBytes += updateAnnotation.staticSize() * 4;
+							intArrayFields.add(f);
+						}
 					} else if (cptClass.equals(boolean.class)) {
 						sizeBytes += updateAnnotation.staticSize();
 						booleanArrayFields.add(f);
@@ -327,6 +335,16 @@ public class ClassMapping {
 			}
 		}
 		
+		for (Field f : unsignedByteFields) {
+			TileNetworkData updateAnnotation = f.getAnnotation(TileNetworkData.class);
+			
+			for (int i = 0; i < updateAnnotation.staticSize(); ++i) {
+				byteBuffer.writeUnsignedByte(((int []) f.get (obj)) [i]);
+				r.bytes += 1;
+				r.dataInt += 1;
+			}
+		}
+		
 		for (ClassMapping c : objectArrayFields) {
 			TileNetworkData updateAnnotation = c.field.getAnnotation(TileNetworkData.class);
 			
@@ -463,7 +481,7 @@ public class ClassMapping {
 			for (int i = 0; i < updateAnnotation.staticSize(); ++i) {
 				((short []) f.get (obj)) [i] = byteBuffer.readShort();
 				r.bytes += 2;
-				r.dataFloat += 1;
+				r.dataInt += 1;
 
 			}
 		}
@@ -474,7 +492,7 @@ public class ClassMapping {
 			for (int i = 0; i < updateAnnotation.staticSize(); ++i) {
 				((int []) f.get (obj)) [i] = byteBuffer.readInt();
 				r.bytes += 4;
-				r.dataFloat += 1;
+				r.dataInt += 1;
 
 			}
 		}
@@ -484,6 +502,16 @@ public class ClassMapping {
 			
 			for (int i = 0; i < updateAnnotation.staticSize(); ++i) {
 				((boolean []) f.get (obj)) [i] = byteBuffer.readUnsignedByte() == 1;
+				r.bytes += 1;
+				r.dataInt += 1;
+			}
+		}
+		
+		for (Field f : unsignedByteArrayFields) {
+			TileNetworkData updateAnnotation = f.getAnnotation(TileNetworkData.class);
+			
+			for (int i = 0; i < updateAnnotation.staticSize(); ++i) {
+				((int []) f.get (obj)) [i] = byteBuffer.readUnsignedByte();
 				r.bytes += 1;
 				r.dataInt += 1;
 			}

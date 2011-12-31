@@ -3,8 +3,10 @@ package buildcraft.transport;
 import buildcraft.api.APIProxy;
 import buildcraft.api.Orientations;
 import buildcraft.api.SafeTimeTracker;
+import buildcraft.api.TileNetworkData;
 import buildcraft.core.CoreProxy;
 import buildcraft.core.PacketIds;
+import buildcraft.core.TilePacketWrapper;
 import buildcraft.transport.BlockGenericPipe;
 import buildcraft.transport.PipeLogic;
 import buildcraft.transport.TransportProxy;
@@ -21,8 +23,16 @@ import net.minecraft.server.mod_BuildCraftTransport;
 public class PipeLogicDiamond extends PipeLogic {
 
    ItemStack[] items = new ItemStack[54];
+   private static TilePacketWrapper networkPacket;
    private SafeTimeTracker tracker = new SafeTimeTracker();
 
+
+   public PipeLogicDiamond() {
+      if(networkPacket == null) {
+         networkPacket = new TilePacketWrapper(new Class[]{PipeLogicDiamond.PacketStack.class}, PacketIds.DiamondPipeContents);
+      }
+
+   }
 
    public boolean blockActivated(EntityHuman var1) {
       if(var1.P() != null && var1.P().id < Block.byId.length && Block.byId[var1.P().id] instanceof BlockGenericPipe) {
@@ -50,7 +60,9 @@ public class PipeLogicDiamond extends PipeLogic {
       }
 
       if(APIProxy.isServerSide()) {
-         CoreProxy.sendToPlayers((Packet230ModLoader)this.getContentsPacket(), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
+         for(int var4 = 0; var4 < 6; ++var4) {
+            CoreProxy.sendToPlayers((Packet230ModLoader)this.getContentsPacket(var4), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
+         }
       }
 
       return var3;
@@ -66,7 +78,9 @@ public class PipeLogicDiamond extends PipeLogic {
             }
 
             if(APIProxy.isServerSide()) {
-               CoreProxy.sendToPlayers((Packet230ModLoader)this.getContentsPacket(), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
+               for(int var3 = 0; var3 < 6; ++var3) {
+                  CoreProxy.sendToPlayers((Packet230ModLoader)this.getContentsPacket(var3), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
+               }
             }
 
          }
@@ -75,7 +89,9 @@ public class PipeLogicDiamond extends PipeLogic {
 
    public void updateEntity() {
       if(this.tracker.markTimeIfDelay(this.worldObj, (long)(20 * BuildCraftCore.updateFactor)) && APIProxy.isServerSide()) {
-         CoreProxy.sendToPlayers((Packet230ModLoader)this.getContentsPacket(), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
+         for(int var1 = 0; var1 < 6; ++var1) {
+            CoreProxy.sendToPlayers((Packet230ModLoader)this.getContentsPacket(var1), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
+         }
       }
 
    }
@@ -128,39 +144,54 @@ public class PipeLogicDiamond extends PipeLogic {
       return null;
    }
 
-   public Packet getContentsPacket() {
-      Packet230ModLoader var1 = new Packet230ModLoader();
-      var1.modId = mod_BuildCraftTransport.instance.getId();
-      var1.packetType = PacketIds.DiamondPipeContents.ordinal();
-      var1.l = true;
-      var1.dataInt = new int[3 + this.items.length * 2];
-      var1.dataInt[0] = this.xCoord;
-      var1.dataInt[1] = this.yCoord;
-      var1.dataInt[2] = this.zCoord;
+   public Packet getContentsPacket(int var1) {
+      PipeLogicDiamond.PacketStack var2 = new PipeLogicDiamond.PacketStack();
+      var2.num = var1;
 
-      for(int var2 = 0; var2 < this.items.length; ++var2) {
-         if(this.items[var2] == null) {
-            var1.dataInt[3 + var2 * 2 + 0] = -1;
-            var1.dataInt[3 + var2 * 2 + 1] = -1;
+      for(int var3 = 0; var3 < 9; ++var3) {
+         if(this.items[var3 + var1 * 9] == null) {
+            var2.ids[var3] = -1;
+            var2.dmg[var3] = -1;
          } else {
-            var1.dataInt[3 + var2 * 2 + 0] = this.items[var2].id;
-            var1.dataInt[3 + var2 * 2 + 1] = this.items[var2].getData();
+            var2.ids[var3] = (short)this.items[var3 + var1 * 9].id;
+            var2.dmg[var3] = this.items[var3 + var1 * 9].getData();
          }
       }
 
-      return var1;
+      return networkPacket.toPacket(this.xCoord, this.yCoord, this.zCoord, (Object)var2);
    }
 
    public void handleContentsPacket(Packet230ModLoader var1) {
-      if(var1.packetType == PacketIds.DiamondPipeContents.ordinal()) {
-         for(int var2 = 0; var2 < this.items.length; ++var2) {
-            if(var1.dataInt[3 + var2 * 2 + 0] == -1) {
-               this.items[var2] = null;
-            } else {
-               this.items[var2] = new ItemStack(var1.dataInt[3 + var2 * 2 + 0], 1, var1.dataInt[3 + var2 * 2 + 1]);
-            }
-         }
+      PipeLogicDiamond.PacketStack var2 = new PipeLogicDiamond.PacketStack();
+      networkPacket.updateFromPacket((Object)var2, var1);
+      int var3 = var2.num;
 
+      for(int var4 = 0; var4 < 9; ++var4) {
+         if(var2.ids[var4] == -1) {
+            this.items[var3 * 9 + var4] = null;
+         } else {
+            this.items[var3 * 9 + var4] = new ItemStack(var2.ids[var4], 1, var2.dmg[var4]);
+         }
       }
+
+   }
+
+   public class PacketStack {
+
+      @TileNetworkData(
+         intKind = 1
+      )
+      public int num;
+      @TileNetworkData(
+         staticSize = 9
+      )
+      public short[] ids = new short[9];
+      @TileNetworkData(
+         staticSize = 9,
+         intKind = 1
+      )
+      public int[] dmg = new int[9];
+
+
    }
 }

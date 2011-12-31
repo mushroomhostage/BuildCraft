@@ -33,7 +33,7 @@ public class mod_BuildCraftCore extends BaseModMp {
    }
 
    public static String version() {
-      return "2.2.8";
+      return "2.2.10";
    }
 
    public void OnTickInGame(MinecraftServer var1) {

@@ -67,6 +67,10 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
 
    public void i() {
       super.i();
+      if(BlockGenericPipe.isValid(this.pipe)) {
+         BlockGenericPipe.removePipe(this.pipe);
+      }
+
       PersistentWorld.getWorld(this.world).removeTile(new BlockIndex(this.x, this.y, this.z));
    }
 

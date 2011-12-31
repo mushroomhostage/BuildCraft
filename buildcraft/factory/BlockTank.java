@@ -22,7 +22,7 @@ public class BlockTank extends BlockContainer implements ITextureProvider {
       this.c(1.0F);
    }
 
-   public boolean renderAsNormalBlock() {
+   public boolean b() {
       return false;
    }
 
@@ -30,7 +30,7 @@ public class BlockTank extends BlockContainer implements ITextureProvider {
       return false;
    }
 
-   public boolean b() {
+   public boolean isACube() {
       return false;
    }
 

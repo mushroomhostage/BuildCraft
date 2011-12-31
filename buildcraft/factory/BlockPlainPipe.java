@@ -27,11 +27,11 @@ public class BlockPlainPipe extends Block implements IPipeConnection, IBlockPipe
       return false;
    }
 
-   public boolean renderAsNormalBlock() {
+   public boolean b() {
       return false;
    }
 
-   public boolean b() {
+   public boolean isACube() {
       return false;
    }
 

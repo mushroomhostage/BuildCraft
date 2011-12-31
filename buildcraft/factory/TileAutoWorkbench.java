@@ -124,33 +124,19 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
    }
 
    public ItemStack findRecipe() {
-      InventoryCrafting var1 = new InventoryCrafting(new Container() {
-         public boolean isUsableByPlayer(EntityHuman var1) {
-            return false;
-         }
-         public boolean b(EntityHuman var1) {
-            return false;
-         }
-      }, 3, 3);
-      new LinkedList();
+      TileAutoWorkbench.LocalInventoryCrafting var1 = new TileAutoWorkbench.LocalInventoryCrafting();
 
-      for(int var3 = 0; var3 < this.getSize(); ++var3) {
-         ItemStack var4 = this.getItem(var3);
-         var1.setItem(var3, var4);
+      for(int var2 = 0; var2 < this.getSize(); ++var2) {
+         ItemStack var3 = this.getItem(var2);
+         var1.setItem(var2, var3);
       }
 
-      return CraftingManager.getInstance().craft(var1);
+      ItemStack var4 = CraftingManager.getInstance().craft(var1);
+      return var4;
    }
 
    public ItemStack extractItem(boolean var1, boolean var2) {
-      InventoryCrafting var3 = new InventoryCrafting(new Container() {
-         public boolean isUsableByPlayer(EntityHuman var1) {
-            return false;
-         }
-         public boolean b(EntityHuman var1) {
-            return false;
-         }
-      }, 3, 3);
+      TileAutoWorkbench.LocalInventoryCrafting var3 = new TileAutoWorkbench.LocalInventoryCrafting();
       LinkedList var4 = new LinkedList();
       int var5 = var2?0:1;
 
@@ -171,6 +157,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
                var8.inventory = this;
                var8.item = this.splitStack(var6, 1);
                var8.index = var6;
+               var7 = var8.item;
                var4.add(var8);
             }
          }
@@ -267,6 +254,20 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory {
    public void f() {}
 
    public void g() {}
+
+   class LocalInventoryCrafting extends InventoryCrafting {
+
+      public LocalInventoryCrafting() {
+         super(new Container() {
+            public boolean isUsableByPlayer(EntityHuman var1) {
+               return false;
+            }
+            public boolean b(EntityHuman var1) {
+               return false;
+            }
+         }, 3, 3);
+      }
+   }
 
    class StackPointer {
 

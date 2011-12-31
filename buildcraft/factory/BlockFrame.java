@@ -28,11 +28,11 @@ public class BlockFrame extends Block implements IPipeConnection, IBlockPipe, IT
       return false;
    }
 
-   public boolean renderAsNormalBlock() {
+   public boolean b() {
       return false;
    }
 
-   public boolean b() {
+   public boolean isACube() {
       return false;
    }
 

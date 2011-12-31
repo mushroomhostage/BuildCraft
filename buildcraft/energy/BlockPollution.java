@@ -19,7 +19,7 @@ public class BlockPollution extends BlockContainer implements ITextureProvider {
       return BuildCraftCore.customBuildCraftTexture;
    }
 
-   public boolean renderAsNormalBlock() {
+   public boolean b() {
       return false;
    }
 

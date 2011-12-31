@@ -49,7 +49,7 @@ public class BlockMarker extends BlockContainer implements ITextureProvider {
       return BuildCraftCore.markerModel;
    }
 
-   public boolean b() {
+   public boolean isACube() {
       return false;
    }
 
@@ -75,7 +75,7 @@ public class BlockMarker extends BlockContainer implements ITextureProvider {
       return Block.TORCH.a();
    }
 
-   public boolean renderAsNormalBlock() {
+   public boolean b() {
       return false;
    }
 

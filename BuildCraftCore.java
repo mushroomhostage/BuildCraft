@@ -16,8 +16,8 @@ import java.util.logging.Logger;
 
 // Referenced classes of package net.minecraft.src:
 //            ModLoader, mod_BuildCraftCore, CraftingManager, Item, 
-//            ItemStack, Block, BlockGrass, EntityHuman, 
-//            BaseMod, World
+//            ItemStack, Block, EntityHuman, BaseMod, 
+//            World
 
 public class BuildCraftCore
 {
@@ -115,8 +115,6 @@ public class BuildCraftCore
         CoreProxy.addName(wrenchItem, "Wrench");
         API.liquids.add(new LiquidData(Block.STATIONARY_WATER.id, Item.WATER_BUCKET.id));
         API.liquids.add(new LiquidData(Block.STATIONARY_LAVA.id, Item.LAVA_BUCKET.id));
-        API.softBlocks[Block.GRASS.id] = true;
-        API.softBlocks[Block.SNOW.id] = true;
         API.softBlocks[Block.WATER.id] = true;
         API.softBlocks[Block.STATIONARY_WATER.id] = true;
         mainConfiguration.save();

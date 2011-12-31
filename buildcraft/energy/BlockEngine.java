@@ -27,11 +27,11 @@ public class BlockEngine extends BlockContainer implements IPipeConnection {
       return false;
    }
 
-   public boolean renderAsNormalBlock() {
+   public boolean b() {
       return false;
    }
 
-   public boolean b() {
+   public boolean isACube() {
       return false;
    }
 
@@ -44,7 +44,11 @@ public class BlockEngine extends BlockContainer implements IPipeConnection {
    }
 
    public void remove(World var1, int var2, int var3, int var4) {
-      ((TileEngine)var1.getTileEntity(var2, var3, var4)).delete();
+      TileEngine var5 = (TileEngine)var1.getTileEntity(var2, var3, var4);
+      if(var5 != null) {
+         var5.delete();
+      }
+
       super.remove(var1, var2, var3, var4);
    }
 

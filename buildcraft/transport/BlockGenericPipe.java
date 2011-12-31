@@ -32,7 +32,7 @@ import net.minecraft.server.World;
 public class BlockGenericPipe extends BlockContainer implements IPipeConnection, IBlockPipe, ITextureProvider {
 
    public static TreeMap pipes = new TreeMap();
-   long lastRemovedDate = -1L;
+   static long lastRemovedDate = -1L;
    public static TreeMap pipeRemoved = new TreeMap();
 
 
@@ -48,11 +48,11 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
       return false;
    }
 
-   public boolean renderAsNormalBlock() {
+   public boolean b() {
       return false;
    }
 
-   public boolean b() {
+   public boolean isACube() {
       return false;
    }
 
@@ -167,15 +167,27 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
       return var13;
    }
 
+   public static void removePipe(Pipe var0) {
+      if(var0 != null) {
+         World var1 = var0.worldObj;
+         if(var1 != null) {
+            int var2 = var0.xCoord;
+            int var3 = var0.yCoord;
+            int var4 = var0.zCoord;
+            if(lastRemovedDate != var1.getTime()) {
+               lastRemovedDate = var1.getTime();
+               pipeRemoved.clear();
+            }
+
+            pipeRemoved.put(new BlockIndex(var2, var3, var4), var0);
+            PersistentWorld.getWorld(var1).removeTile(new BlockIndex(var2, var3, var4));
+         }
+      }
+   }
+
    public void remove(World var1, int var2, int var3, int var4) {
       Utils.preDestroyBlock(var1, var2, var3, var4);
-      if(this.lastRemovedDate != var1.getTime()) {
-         this.lastRemovedDate = var1.getTime();
-         pipeRemoved.clear();
-      }
-
-      pipeRemoved.put(new BlockIndex(var2, var3, var4), getPipe(var1, var2, var3, var4));
-      PersistentWorld.getWorld(var1).removeTile(new BlockIndex(var2, var3, var4));
+      removePipe(getPipe(var1, var2, var3, var4));
       super.remove(var1, var2, var3, var4);
    }
 
@@ -188,20 +200,28 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
    }
 
    public void dropNaturally(World var1, int var2, int var3, int var4, int var5, float var6, int var7) {
+      System.out.println("DROP AS ITEM");
       if(!APIProxy.isClient(var1)) {
+         System.out.println("[1]");
          int var8 = this.a(var1.random);
 
          for(int var9 = 0; var9 < var8; ++var9) {
             if(var1.random.nextFloat() <= var6) {
                Pipe var10 = getPipe(var1, var2, var3, var4);
+               System.out.println("[2]");
                if(var10 == null) {
                   var10 = (Pipe)pipeRemoved.get(new BlockIndex(var2, var3, var4));
+                  System.out.println("GET FROM " + var2 + " , " + var3 + " , " + var4);
                }
 
+               System.out.println("[3]");
+               System.out.println("GET " + var1.getTime());
                if(var10 != null) {
                   int var11 = var10.itemID;
+                  System.out.println("[4]");
                   if(var11 > 0) {
                      var10.dropContents();
+                     System.out.println("DROP DO");
                      this.a(var1, var2, var3, var4, new ItemStack(var11, 1, this.getDropData(var5)));
                   }
                }

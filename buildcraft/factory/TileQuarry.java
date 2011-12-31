@@ -364,7 +364,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
    }
 
    private boolean canDig(int var1) {
-      return !this.blockDig(var1) && !API.softBlock(var1);
+      return !this.blockDig(var1) && !API.softBlock(var1) && var1 != Block.SNOW.id;
    }
 
    public void i() {
