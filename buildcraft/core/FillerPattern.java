@@ -1,4 +1,4 @@
-package buildcraft.api;
+package buildcraft.core;
 
 import buildcraft.api.API;
 import buildcraft.api.IBox;
@@ -10,6 +10,7 @@ import net.minecraft.server.World;
 public abstract class FillerPattern {
 
    public int id;
+
 
    public abstract boolean iteratePattern(TileEntity var1, IBox var2, ItemStack var3);
 
@@ -74,6 +75,4 @@ public abstract class FillerPattern {
 
       return var9 == Integer.MAX_VALUE;
    }
-
-
 }

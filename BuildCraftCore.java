@@ -15,8 +15,8 @@ import java.util.TreeMap;
 import java.util.logging.Logger;
 
 // Referenced classes of package net.minecraft.src:
-//            ModLoader, mod_BuildCraftCore, CraftingManager, Item, 
-//            ItemStack, Block, EntityHuman, BaseMod, 
+//            ModLoader, mod_BuildCraftCore, Item, Block, 
+//            CraftingManager, ItemStack, EntityHuman, BaseMod, 
 //            World
 
 public class BuildCraftCore
@@ -49,6 +49,9 @@ public class BuildCraftCore
     public static int oilModel;
     public static String customBuildCraftTexture = "/net/minecraft/src/buildcraft/core/gui/block_textures.png";
     public static String customBuildCraftSprites = "/net/minecraft/src/buildcraft/core/gui/item_textures.png";
+    public static int refineryInput = 0;
+    public static boolean loadDefaultRecipes = true;
+    public static boolean forcePneumaticPower = false;
 
     public BuildCraftCore()
     {
@@ -82,14 +85,33 @@ public class BuildCraftCore
         Property property3 = mainConfiguration.getOrCreateIntProperty("network.updateFactor", 0, 10);
         property3.comment = "increasing this number will decrease network update frequency, useful for overloaded servers";
         updateFactor = Integer.parseInt(property3.value);
-        try
+        if(forcePneumaticPower)
         {
-            PowerFramework.currentFramework = (PowerFramework)Class.forName(property2.value).getConstructor((Class[])null).newInstance((Object[])null);
-        }
-        catch(Throwable throwable)
-        {
-            throwable.printStackTrace();
-            PowerFramework.currentFramework = new RedstonePowerFramework();
+            try
+            {
+                PowerFramework.currentFramework = (PowerFramework)Class.forName("buildcraft.energy.PneumaticPowerFramework").getConstructor((Class[])null).newInstance((Object[])null);
+            }
+            catch(Throwable throwable)
+            {
+                try
+                {
+                    PowerFramework.currentFramework = (PowerFramework)Class.forName("buildcraft.energy.PneumaticPowerFramework").getConstructor((Class[])null).newInstance((Object[])null);
+                }
+                catch(Throwable throwable2)
+                {
+                    throwable.printStackTrace();
+                }
+            }
+        } else {
+            try
+            {
+                PowerFramework.currentFramework = (PowerFramework)Class.forName(property2.value).getConstructor((Class[])null).newInstance((Object[])null);
+            }
+            catch(Throwable throwable1)
+            {
+                throwable1.printStackTrace();
+                PowerFramework.currentFramework = new RedstonePowerFramework();
+            }
         }
 
 		// MaeEdit start
@@ -107,17 +129,40 @@ public class BuildCraftCore
         Property property4 = mainConfiguration.getOrCreateIntProperty("wrench.id", 2, DefaultProps.WRENCH_ID);
         mainConfiguration.save();
         initializeGears();
-        CraftingManager craftingmanager = CraftingManager.getInstance();
         wrenchItem = (new ItemBuildCraftTexture(Integer.parseInt(property4.value))).d(2).a("wrenchItem");
-        craftingmanager.registerShapedRecipe(new ItemStack(wrenchItem), new Object[] {
-            "I I", " G ", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem
-        });
         CoreProxy.addName(wrenchItem, "Wrench");
         API.liquids.add(new LiquidData(Block.STATIONARY_WATER.id, Item.WATER_BUCKET.id));
         API.liquids.add(new LiquidData(Block.STATIONARY_LAVA.id, Item.LAVA_BUCKET.id));
         API.softBlocks[Block.WATER.id] = true;
         API.softBlocks[Block.STATIONARY_WATER.id] = true;
         mainConfiguration.save();
+        if(loadDefaultRecipes)
+        {
+            loadRecipes();
+        }
+    }
+
+    public static void loadRecipes()
+    {
+        CraftingManager craftingmanager = CraftingManager.getInstance();
+        craftingmanager.registerShapedRecipe(new ItemStack(wrenchItem), new Object[] {
+            "I I", " G ", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem
+        });
+        craftingmanager.registerShapedRecipe(new ItemStack(woodenGearItem), new Object[] {
+            " S ", "S S", " S ", Character.valueOf('S'), Item.STICK
+        });
+        craftingmanager.registerShapedRecipe(new ItemStack(stoneGearItem), new Object[] {
+            " I ", "IGI", " I ", Character.valueOf('I'), Block.COBBLESTONE, Character.valueOf('G'), woodenGearItem
+        });
+        craftingmanager.registerShapedRecipe(new ItemStack(ironGearItem), new Object[] {
+            " I ", "IGI", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem
+        });
+        craftingmanager.registerShapedRecipe(new ItemStack(goldGearItem), new Object[] {
+            " I ", "IGI", " I ", Character.valueOf('I'), Item.GOLD_INGOT, Character.valueOf('G'), ironGearItem
+        });
+        craftingmanager.registerShapedRecipe(new ItemStack(diamondGearItem), new Object[] {
+            " I ", "IGI", " I ", Character.valueOf('I'), Item.DIAMOND, Character.valueOf('G'), goldGearItem
+        });
     }
 
     public static void initializeGears()
@@ -137,31 +182,15 @@ public class BuildCraftCore
             mainConfiguration.save();
             modifyWorld = property5.value.equals("true");
             gearsInitialized = true;
-            CraftingManager craftingmanager = CraftingManager.getInstance();
             woodenGearItem = (new ItemBuildCraftTexture(Integer.parseInt(property.value))).d(16).a("woodenGearItem");
-            craftingmanager.registerShapedRecipe(new ItemStack(woodenGearItem), new Object[] {
-                " S ", "S S", " S ", Character.valueOf('S'), Item.STICK
-            });
             CoreProxy.addName(woodenGearItem, "Wooden Gear");
             stoneGearItem = (new ItemBuildCraftTexture(Integer.parseInt(property1.value))).d(17).a("stoneGearItem");
-            craftingmanager.registerShapedRecipe(new ItemStack(stoneGearItem), new Object[] {
-                " I ", "IGI", " I ", Character.valueOf('I'), Block.COBBLESTONE, Character.valueOf('G'), woodenGearItem
-            });
             CoreProxy.addName(stoneGearItem, "Stone Gear");
             ironGearItem = (new ItemBuildCraftTexture(Integer.parseInt(property2.value))).d(18).a("ironGearItem");
-            craftingmanager.registerShapedRecipe(new ItemStack(ironGearItem), new Object[] {
-                " I ", "IGI", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem
-            });
             CoreProxy.addName(ironGearItem, "Iron Gear");
             goldGearItem = (new ItemBuildCraftTexture(Integer.parseInt(property3.value))).d(19).a("goldGearItem");
-            craftingmanager.registerShapedRecipe(new ItemStack(goldGearItem), new Object[] {
-                " I ", "IGI", " I ", Character.valueOf('I'), Item.GOLD_INGOT, Character.valueOf('G'), ironGearItem
-            });
             CoreProxy.addName(goldGearItem, "Gold Gear");
             diamondGearItem = (new ItemBuildCraftTexture(Integer.parseInt(property4.value))).d(20).a("diamondGearItem");
-            craftingmanager.registerShapedRecipe(new ItemStack(diamondGearItem), new Object[] {
-                " I ", "IGI", " I ", Character.valueOf('I'), Item.DIAMOND, Character.valueOf('G'), goldGearItem
-            });
             CoreProxy.addName(diamondGearItem, "Diamond Gear");
             mainConfiguration.save();
             return;

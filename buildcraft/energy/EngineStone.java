@@ -64,7 +64,10 @@ public class EngineStone extends Engine {
       if(this.burnTime == 0 && this.tile.world.isBlockIndirectlyPowered(this.tile.x, this.tile.y, this.tile.z)) {
          this.burnTime = this.totalBurnTime = this.getItemBurnTime(this.tile.getItem(0));
          if(this.burnTime > 0) {
-            this.tile.splitStack(1, 1);
+            ItemStack var1 = this.tile.splitStack(1, 1);
+            if(var1.getItem().i() != null) {
+               this.tile.setItem(1, new ItemStack(var1.getItem().i(), 1));
+            }
          }
       }
 

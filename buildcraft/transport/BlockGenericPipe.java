@@ -200,28 +200,20 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
    }
 
    public void dropNaturally(World var1, int var2, int var3, int var4, int var5, float var6, int var7) {
-      System.out.println("DROP AS ITEM");
       if(!APIProxy.isClient(var1)) {
-         System.out.println("[1]");
          int var8 = this.a(var1.random);
 
          for(int var9 = 0; var9 < var8; ++var9) {
             if(var1.random.nextFloat() <= var6) {
                Pipe var10 = getPipe(var1, var2, var3, var4);
-               System.out.println("[2]");
                if(var10 == null) {
                   var10 = (Pipe)pipeRemoved.get(new BlockIndex(var2, var3, var4));
-                  System.out.println("GET FROM " + var2 + " , " + var3 + " , " + var4);
                }
 
-               System.out.println("[3]");
-               System.out.println("GET " + var1.getTime());
                if(var10 != null) {
                   int var11 = var10.itemID;
-                  System.out.println("[4]");
                   if(var11 > 0) {
                      var10.dropContents();
-                     System.out.println("DROP DO");
                      this.a(var1, var2, var3, var4, new ItemStack(var11, 1, this.getDropData(var5)));
                   }
                }

@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Random;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
+import net.minecraft.server.EntityItem;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.TileEntity;
@@ -148,5 +149,7 @@ public abstract class Pipe extends PersistentTile implements IPipe {
    public void dropContents() {
       this.transport.dropContents();
    }
+
+   public void onDropped(EntityItem var1) {}
 
 }

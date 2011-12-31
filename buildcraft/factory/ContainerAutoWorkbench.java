@@ -46,11 +46,13 @@ public class ContainerAutoWorkbench extends BuildCraftContainer {
       this.a(var2);
    }
 
-   public void a(IInventory var1) {
+   public void a() {
+      super.a();
       this.craftResult.setItem(0, this.tile.findRecipe());
    }
 
    public ItemStack a(int var1, int var2, boolean var3, EntityHuman var4) {
+      this.craftResult.setItem(0, this.tile.findRecipe());
       ItemStack var5 = super.a(var1, var2, var3, var4);
       this.a(this.tile);
       return var5;

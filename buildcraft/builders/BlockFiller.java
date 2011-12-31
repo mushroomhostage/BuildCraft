@@ -1,9 +1,9 @@
 package buildcraft.builders;
 
 import buildcraft.api.APIProxy;
-import buildcraft.api.FillerPattern;
 import buildcraft.builders.BuildersProxy;
 import buildcraft.builders.TileFiller;
+import buildcraft.core.FillerPattern;
 import buildcraft.core.Utils;
 import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;

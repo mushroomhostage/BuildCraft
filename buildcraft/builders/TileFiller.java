@@ -1,8 +1,6 @@
 package buildcraft.builders;
 
 import buildcraft.api.APIProxy;
-import buildcraft.api.FillerPattern;
-import buildcraft.api.FillerRegistry;
 import buildcraft.api.IAreaProvider;
 import buildcraft.api.IPowerReceptor;
 import buildcraft.api.ISpecialInventory;
@@ -13,6 +11,8 @@ import buildcraft.api.PowerProvider;
 import buildcraft.api.TileNetworkData;
 import buildcraft.builders.TileMarker;
 import buildcraft.core.Box;
+import buildcraft.core.FillerPattern;
+import buildcraft.core.FillerRegistry;
 import buildcraft.core.IMachine;
 import buildcraft.core.StackUtil;
 import buildcraft.core.TileBuildCraft;

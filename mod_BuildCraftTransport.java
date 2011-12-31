@@ -2,6 +2,7 @@ package net.minecraft.server;
 
 import net.minecraft.server.BaseModMp;
 import net.minecraft.server.BuildCraftTransport;
+import net.minecraft.server.ModLoader;
 
 public class mod_BuildCraftTransport extends BaseModMp {
 
@@ -15,6 +16,10 @@ public class mod_BuildCraftTransport extends BaseModMp {
    }
 
    public String Version() {
-      return "2.2.10";
+      return "2.2.11";
+   }
+
+   public static void registerTilePipe(Class var0, String var1) {
+      ModLoader.RegisterTileEntity(var0, var1);
    }
 }

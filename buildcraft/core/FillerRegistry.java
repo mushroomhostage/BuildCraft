@@ -1,6 +1,6 @@
-package buildcraft.api;
+package buildcraft.core;
 
-import buildcraft.api.FillerPattern;
+import buildcraft.core.FillerPattern;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;

@@ -21,7 +21,7 @@ public class mod_BuildCraftEnergy extends BaseModMp {
    }
 
    public String Version() {
-      return "2.2.10";
+      return "2.2.11";
    }
 
    public void GenerateSurface(World var1, Random var2, int var3, int var4) {

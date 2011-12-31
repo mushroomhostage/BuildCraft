@@ -8,6 +8,8 @@ import buildcraft.transport.BlockGenericPipe;
 import buildcraft.transport.LegacyBlock;
 import buildcraft.transport.LegacyTile;
 import buildcraft.transport.PipeLogicWood;
+import buildcraft.transport.TileDummyGenericPipe;
+import buildcraft.transport.TileDummyGenericPipe2;
 import buildcraft.transport.TileGenericPipe;
 import buildcraft.transport.pipes.PipeItemsCobblestone;
 import buildcraft.transport.pipes.PipeItemsDiamond;
@@ -25,6 +27,8 @@ import buildcraft.transport.pipes.PipePowerGold;
 import buildcraft.transport.pipes.PipePowerStone;
 import buildcraft.transport.pipes.PipePowerWood;
 import forge.Property;
+import java.util.Iterator;
+import java.util.LinkedList;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.CraftingManager;
@@ -32,6 +36,7 @@ import net.minecraft.server.Item;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.ModLoader;
 import net.minecraft.server.mod_BuildCraftCore;
+import net.minecraft.server.mod_BuildCraftTransport;
 
 public class BuildCraftTransport {
 
@@ -56,6 +61,7 @@ public class BuildCraftTransport {
    public static Item pipePowerWood;
    public static Item pipePowerStone;
    public static Item pipePowerGold;
+   private static LinkedList pipeRecipes = new LinkedList();
 
 
    public static void initialize() {
@@ -71,20 +77,23 @@ public class BuildCraftTransport {
          Property var3 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("pipe.id", DefaultProps.GENERIC_PIPE_ID);
          Property var4 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("dockingStation.id", DefaultProps.DOCKING_STATION_ID);
 
-         for(int var5 = 0; var5 < PipeLogicWood.excludedBlocks.length; ++var5) {
+         int var5;
+         for(var5 = 0; var5 < PipeLogicWood.excludedBlocks.length; ++var5) {
             PipeLogicWood.excludedBlocks[var5] = PipeLogicWood.excludedBlocks[var5].trim();
          }
 
          BuildCraftCore.mainConfiguration.save();
-         CraftingManager var13 = CraftingManager.getInstance();
          pipeWaterproof = (new ItemBuildCraftTexture(DefaultProps.PIPE_WATERPROOF_ID)).d(33);
          pipeWaterproof.a("pipeWaterproof");
          CoreProxy.addName(pipeWaterproof, "Pipe Waterproof");
-         var13.registerShapedRecipe(new ItemStack(pipeWaterproof, 1), new Object[]{"W ", "  ", Character.valueOf('W'), new ItemStack(Item.INK_SACK, 1, 2)});
          genericPipeBlock = new BlockGenericPipe(Integer.parseInt(var3.value));
          ModLoader.RegisterBlock(genericPipeBlock);
-         ModLoader.RegisterTileEntity(TileGenericPipe.class, "net.minecraft.server.buildcraft.GenericPipe");
-         ModLoader.RegisterTileEntity(TileGenericPipe.class, "net.minecraft.src.buildcraft.GenericPipe");
+         mod_BuildCraftTransport.registerTilePipe(TileDummyGenericPipe.class, "net.minecraft.server.buildcraft.GenericPipe");
+         mod_BuildCraftTransport.registerTilePipe(TileDummyGenericPipe.class, "net.minecraft.src.buildcraft.GenericPipe");
+         mod_BuildCraftTransport.registerTilePipe(TileDummyGenericPipe2.class, "net.minecraft.server.buildcraft.transport.TileGenericPipe");
+         mod_BuildCraftTransport.registerTilePipe(TileDummyGenericPipe2.class, "net.minecraft.src.buildcraft.transport.TileGenericPipe");
+         mod_BuildCraftTransport.registerTilePipe(TileGenericPipe.class, "net.minecraft.server.buildcraft.transport.GenericPipe");
+         mod_BuildCraftTransport.registerTilePipe(TileGenericPipe.class, "net.minecraft.src.buildcraft.transport.GenericPipe");
          pipeItemsWood = createPipe(DefaultProps.PIPE_ITEMS_WOOD_ID, PipeItemsWood.class, "Wooden Transport Pipe", Block.WOOD, Block.GLASS, Block.WOOD);
          pipeItemsCobblestone = createPipe(DefaultProps.PIPE_ITEMS_COBBLESTONE_ID, PipeItemsCobblestone.class, "Cobblestone Transport Pipe", Block.COBBLESTONE, Block.GLASS, Block.COBBLESTONE);
          pipeItemsStone = createPipe(DefaultProps.PIPE_ITEMS_STONE_ID, PipeItemsStone.class, "Stone Transport Pipe", Block.STONE, Block.GLASS, Block.STONE);
@@ -101,32 +110,48 @@ public class BuildCraftTransport {
          pipePowerStone = createPipe(DefaultProps.PIPE_POWER_STONE_ID, PipePowerStone.class, "Stone Conductive Pipe", Item.REDSTONE, pipeItemsStone, (Object)null);
          pipePowerGold = createPipe(DefaultProps.PIPE_POWER_GOLD_ID, PipePowerGold.class, "Golden Conductive Pipe", Item.REDSTONE, pipeItemsGold, (Object)null);
 
-         for(int var6 = 0; var6 < 6; ++var6) {
-            diamondTextures[var6] = 22 + var6;
+         for(var5 = 0; var5 < 6; ++var5) {
+            diamondTextures[var5] = 22 + var5;
          }
 
          alwaysConnectPipes = Boolean.parseBoolean(var1.value);
          if(var0.value.equals("true")) {
-            Property var14 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("woodenPipe.id", DefaultProps.WOODEN_PIPE_ID);
-            Property var7 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("stonePipe.id", DefaultProps.STONE_PIPE_ID);
-            Property var8 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("ironPipe.id", DefaultProps.IRON_PIPE_ID);
-            Property var9 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("goldenPipe.id", DefaultProps.GOLDEN_PIPE_ID);
-            Property var10 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("diamondPipe.id", DefaultProps.DIAMOND_PIPE_ID);
-            Property var11 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("obsidianPipe.id", DefaultProps.OBSIDIAN_PIPE_ID);
-            Property var12 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("cobblestonePipe.id", DefaultProps.COBBLESTONE_PIPE_ID);
-            ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var14.value), pipeItemsWood.id));
-            ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var7.value), pipeItemsStone.id));
-            ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var8.value), pipeItemsIron.id));
-            ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var9.value), pipeItemsGold.id));
-            ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var10.value), pipeItemsDiamond.id));
-            ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var11.value), pipeItemsObsidian.id));
-            ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var12.value), pipeItemsCobblestone.id));
+            Property var12 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("woodenPipe.id", DefaultProps.WOODEN_PIPE_ID);
+            Property var6 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("stonePipe.id", DefaultProps.STONE_PIPE_ID);
+            Property var7 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("ironPipe.id", DefaultProps.IRON_PIPE_ID);
+            Property var8 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("goldenPipe.id", DefaultProps.GOLDEN_PIPE_ID);
+            Property var9 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("diamondPipe.id", DefaultProps.DIAMOND_PIPE_ID);
+            Property var10 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("obsidianPipe.id", DefaultProps.OBSIDIAN_PIPE_ID);
+            Property var11 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("cobblestonePipe.id", DefaultProps.COBBLESTONE_PIPE_ID);
+            ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var12.value), pipeItemsWood.id));
+            ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var6.value), pipeItemsStone.id));
+            ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var7.value), pipeItemsIron.id));
+            ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var8.value), pipeItemsGold.id));
+            ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var9.value), pipeItemsDiamond.id));
+            ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var10.value), pipeItemsObsidian.id));
+            ModLoader.RegisterBlock(new LegacyBlock(Integer.parseInt(var11.value), pipeItemsCobblestone.id));
             ModLoader.RegisterTileEntity(LegacyTile.class, "net.buildcraft.server.buildcraft.transport.legacy.LegacyTile");
             ModLoader.RegisterTileEntity(LegacyTile.class, "net.buildcraft.src.buildcraft.transport.legacy.LegacyTile");
          }
 
          BuildCraftCore.mainConfiguration.save();
+         if(BuildCraftCore.loadDefaultRecipes) {
+            loadRecipes();
+         }
+
       }
+   }
+
+   public static void loadRecipes() {
+      CraftingManager var0 = CraftingManager.getInstance();
+      var0.registerShapedRecipe(new ItemStack(pipeWaterproof, 1), new Object[]{"W ", "  ", Character.valueOf('W'), new ItemStack(Item.INK_SACK, 1, 2)});
+      Iterator var1 = pipeRecipes.iterator();
+
+      while(var1.hasNext()) {
+         BuildCraftTransport.PipeRecipe var2 = (BuildCraftTransport.PipeRecipe)var1.next();
+         var0.registerShapedRecipe(var2.result, var2.input);
+      }
+
    }
 
    private static Item createPipe(int var0, Class var1, String var2, Object var3, Object var4, Object var5) {
@@ -136,14 +161,36 @@ public class BuildCraftTransport {
       Item var9 = BlockGenericPipe.registerPipe(var8, var1);
       var9.a(var1.getSimpleName());
       CoreProxy.addName(var9, var2);
-      CraftingManager var10 = CraftingManager.getInstance();
+      BuildCraftTransport.PipeRecipe var10 = new BuildCraftTransport.PipeRecipe((BuildCraftTransport.NamelessClass1222176802)null);
       if(var3 != null && var4 != null && var5 != null) {
-         var10.registerShapedRecipe(new ItemStack(var9, 8), new Object[]{"   ", "ABC", "   ", Character.valueOf('A'), var3, Character.valueOf('B'), var4, Character.valueOf('C'), var5});
+         var10.result = new ItemStack(var9, 8);
+         var10.input = new Object[]{"   ", "ABC", "   ", Character.valueOf('A'), var3, Character.valueOf('B'), var4, Character.valueOf('C'), var5};
+         pipeRecipes.add(var10);
       } else if(var3 != null && var4 != null) {
-         var10.registerShapedRecipe(new ItemStack(var9, 1), new Object[]{"A ", "B ", Character.valueOf('A'), var3, Character.valueOf('B'), var4});
+         var10.result = new ItemStack(var9, 1);
+         var10.input = new Object[]{"A ", "B ", Character.valueOf('A'), var3, Character.valueOf('B'), var4};
+         pipeRecipes.add(var10);
       }
 
       return var9;
    }
 
+
+   // $FF: synthetic class
+   static class NamelessClass1222176802 {
+   }
+
+   private static class PipeRecipe {
+
+      ItemStack result;
+      Object[] input;
+
+
+      private PipeRecipe() {}
+
+      // $FF: synthetic method
+      PipeRecipe(BuildCraftTransport.NamelessClass1222176802 var1) {
+         this();
+      }
+   }
 }

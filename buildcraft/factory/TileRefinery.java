@@ -48,14 +48,18 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
    }
 
    public int fill(Orientations var1, int var2, int var3, boolean var4) {
-      int var5 = this.slot1.fill(var1, var2, var3, var4);
-      var5 += this.slot2.fill(var1, var2 - var5, var3, var4);
-      if(var4 && var5 > 0) {
-         this.updateNetworkTime.markTime(this.world);
-         this.sendNetworkUpdate();
-      }
+      if(var3 != BuildCraftCore.refineryInput) {
+         return 0;
+      } else {
+         int var5 = this.slot1.fill(var1, var2, var3, var4);
+         var5 += this.slot2.fill(var1, var2 - var5, var3, var4);
+         if(var4 && var5 > 0) {
+            this.updateNetworkTime.markTime(this.world);
+            this.sendNetworkUpdate();
+         }
 
-      return var5;
+         return var5;
+      }
    }
 
    public int empty(int var1, boolean var2) {

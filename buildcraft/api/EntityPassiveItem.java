@@ -6,6 +6,7 @@ import buildcraft.api.Position;
 import buildcraft.api.SafeTimeTracker;
 import java.util.TreeMap;
 import net.minecraft.server.EntityItem;
+import net.minecraft.server.Item;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.MathHelper;
 import net.minecraft.server.NBTTagCompound;
@@ -118,6 +119,10 @@ public class EntityPassiveItem {
       } else {
          return 0.0F;
       }
+   }
+
+   public boolean isCorrupted() {
+      return this.item == null || this.item.count <= 0 || Item.byId[this.item.id] == null;
    }
 
 }

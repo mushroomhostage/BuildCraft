@@ -1,8 +1,8 @@
 package buildcraft.builders;
 
 import buildcraft.api.API;
-import buildcraft.api.FillerPattern;
 import buildcraft.api.IBox;
+import buildcraft.core.FillerPattern;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.TileEntity;

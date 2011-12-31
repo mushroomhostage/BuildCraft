@@ -59,28 +59,30 @@ public class PipeTransportItems extends PipeTransport {
    }
 
    public void entityEntering(EntityPassiveItem var1, Orientations var2) {
-      this.readjustSpeed(var1);
-      if(!this.travelingEntities.containsKey(new Integer(var1.entityId))) {
-         this.travelingEntities.put(new Integer(var1.entityId), new PipeTransportItems.EntityData(var1, var2));
-         if(var1.container != null && var1.container != this.container) {
-            ((PipeTransportItems)((TileGenericPipe)var1.container).pipe.transport).scheduleRemoval(var1);
+      if(!var1.isCorrupted()) {
+         this.readjustSpeed(var1);
+         if(!this.travelingEntities.containsKey(new Integer(var1.entityId))) {
+            this.travelingEntities.put(new Integer(var1.entityId), new PipeTransportItems.EntityData(var1, var2));
+            if(var1.container != null && var1.container != this.container) {
+               ((PipeTransportItems)((TileGenericPipe)var1.container).pipe.transport).scheduleRemoval(var1);
+            }
+
+            var1.container = this.container;
          }
 
-         var1.container = this.container;
-      }
+         if(var2 != Orientations.YPos && var2 != Orientations.YNeg) {
+            var1.setPosition(var1.posX, (double)((float)this.yCoord + Utils.getPipeFloorOf(var1.item)), var1.posZ);
+         }
 
-      if(var2 != Orientations.YPos && var2 != Orientations.YNeg) {
-         var1.setPosition(var1.posX, (double)((float)this.yCoord + Utils.getPipeFloorOf(var1.item)), var1.posZ);
-      }
+         if(this.container.pipe instanceof IPipeTransportItemsHook) {
+            ((IPipeTransportItemsHook)this.container.pipe).entityEntered(var1, var2);
+         }
 
-      if(this.container.pipe instanceof IPipeTransportItemsHook) {
-         ((IPipeTransportItemsHook)this.container.pipe).entityEntered(var1, var2);
-      }
+         if(APIProxy.isServerSide() && var1.synchroTracker.markTimeIfDelay(this.worldObj, (long)(6 * BuildCraftCore.updateFactor))) {
+            CoreProxy.sendToPlayers(this.createItemPacket(var1, var2), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
+         }
 
-      if(APIProxy.isServerSide() && var1.synchroTracker.markTimeIfDelay(this.worldObj, (long)(6 * BuildCraftCore.updateFactor))) {
-         CoreProxy.sendToPlayers(this.createItemPacket(var1, var2), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
       }
-
    }
 
    public LinkedList getPossibleMovements(Position var1, EntityPassiveItem var2) {
@@ -167,52 +169,57 @@ public class PipeTransportItems extends PipeTransport {
 
       while(var1.hasNext()) {
          var2 = (PipeTransportItems.EntityData)var1.next();
-         Position var3 = new Position(0.0D, 0.0D, 0.0D, var2.orientation);
-         var3.moveForwards((double)var2.item.speed);
-         var2.item.setPosition(var2.item.posX + var3.x, var2.item.posY + var3.y, var2.item.posZ + var3.z);
-         if((!var2.toCenter || !this.middleReached(var2)) && !this.outOfBounds(var2)) {
-            if(!var2.toCenter && this.endReached(var2)) {
-               this.scheduleRemoval(var2.item);
-               Position var8 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, var2.orientation);
-               var8.moveForwards(1.0D);
-               TileEntity var9 = this.worldObj.getTileEntity((int)var8.x, (int)var8.y, (int)var8.z);
-               if(var9 instanceof IPipeEntry) {
-                  ((IPipeEntry)var9).entityEntering(var2.item, var2.orientation);
-               } else if(var9 instanceof TileGenericPipe && ((TileGenericPipe)var9).pipe.transport instanceof PipeTransportItems) {
-                  TileGenericPipe var10 = (TileGenericPipe)var9;
-                  ((PipeTransportItems)var10.pipe.transport).entityEntering(var2.item, var2.orientation);
-               } else if(var9 instanceof IInventory) {
-                  StackUtil var11 = new StackUtil(var2.item.item);
-                  if(!APIProxy.isClient(this.worldObj)) {
-                     if(var11.checkAvailableSlot((IInventory)var9, true, var8.orientation.reverse()) && var11.items.count == 0) {
-                        var2.item.remove();
-                     } else {
-                        var2.item.item = var11.items;
-                        EntityItem var7 = var2.item.toEntityItem(var2.orientation);
-                        if(var7 != null) {
-                           this.onDropped(var7);
+         if(var2.item.isCorrupted()) {
+            this.scheduleRemoval(var2.item);
+            var2.item.remove();
+         } else {
+            Position var3 = new Position(0.0D, 0.0D, 0.0D, var2.orientation);
+            var3.moveForwards((double)var2.item.speed);
+            var2.item.setPosition(var2.item.posX + var3.x, var2.item.posY + var3.y, var2.item.posZ + var3.z);
+            if((!var2.toCenter || !this.middleReached(var2)) && !this.outOfBounds(var2)) {
+               if(!var2.toCenter && this.endReached(var2)) {
+                  this.scheduleRemoval(var2.item);
+                  Position var8 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, var2.orientation);
+                  var8.moveForwards(1.0D);
+                  TileEntity var9 = this.worldObj.getTileEntity((int)var8.x, (int)var8.y, (int)var8.z);
+                  if(var9 instanceof IPipeEntry) {
+                     ((IPipeEntry)var9).entityEntering(var2.item, var2.orientation);
+                  } else if(var9 instanceof TileGenericPipe && ((TileGenericPipe)var9).pipe.transport instanceof PipeTransportItems) {
+                     TileGenericPipe var10 = (TileGenericPipe)var9;
+                     ((PipeTransportItems)var10.pipe.transport).entityEntering(var2.item, var2.orientation);
+                  } else if(var9 instanceof IInventory) {
+                     StackUtil var11 = new StackUtil(var2.item.item);
+                     if(!APIProxy.isClient(this.worldObj)) {
+                        if(var11.checkAvailableSlot((IInventory)var9, true, var8.orientation.reverse()) && var11.items.count == 0) {
+                           var2.item.remove();
+                        } else {
+                           var2.item.item = var11.items;
+                           EntityItem var7 = var2.item.toEntityItem(var2.orientation);
+                           if(var7 != null) {
+                              this.onDropped(var7);
+                           }
                         }
                      }
+                  } else {
+                     EntityItem var6 = var2.item.toEntityItem(var2.orientation);
+                     if(var6 != null) {
+                        this.onDropped(var6);
+                     }
                   }
-               } else {
-                  EntityItem var6 = var2.item.toEntityItem(var2.orientation);
-                  if(var6 != null) {
-                     this.onDropped(var6);
-                  }
-               }
-            }
-         } else {
-            var2.toCenter = false;
-            var2.item.setPosition((double)this.xCoord + 0.5D, (double)((float)this.yCoord + Utils.getPipeFloorOf(var2.item.item)), (double)this.zCoord + 0.5D);
-            Orientations var4 = this.resolveDestination(var2);
-            if(var4 == Orientations.Unknown) {
-               this.scheduleRemoval(var2.item);
-               EntityItem var5 = var2.item.toEntityItem(var2.orientation);
-               if(var5 != null) {
-                  this.onDropped(var5);
                }
             } else {
-               var2.orientation = var4;
+               var2.toCenter = false;
+               var2.item.setPosition((double)this.xCoord + 0.5D, (double)((float)this.yCoord + Utils.getPipeFloorOf(var2.item.item)), (double)this.zCoord + 0.5D);
+               Orientations var4 = this.resolveDestination(var2);
+               if(var4 == Orientations.Unknown) {
+                  this.scheduleRemoval(var2.item);
+                  EntityItem var5 = var2.item.toEntityItem(var2.orientation);
+                  if(var5 != null) {
+                     this.onDropped(var5);
+                  }
+               } else {
+                  var2.orientation = var4;
+               }
             }
          }
       }
@@ -246,10 +253,14 @@ public class PipeTransportItems extends PipeTransport {
             NBTTagCompound var4 = (NBTTagCompound)var2.get(var3);
             EntityPassiveItem var5 = new EntityPassiveItem(APIProxy.getWorld());
             var5.readFromNBT(var4);
-            var5.container = this.container;
-            PipeTransportItems.EntityData var6 = new PipeTransportItems.EntityData(var5, Orientations.values()[var4.getInt("orientation")]);
-            var6.toCenter = var4.getBoolean("toCenter");
-            this.entitiesToLoad.add(var6);
+            if(var5.isCorrupted()) {
+               var5.remove();
+            } else {
+               var5.container = this.container;
+               PipeTransportItems.EntityData var6 = new PipeTransportItems.EntityData(var5, Orientations.values()[var4.getInt("orientation")]);
+               var6.toCenter = var4.getBoolean("toCenter");
+               this.entitiesToLoad.add(var6);
+            }
          } catch (Throwable var7) {
             var7.printStackTrace();
          }
@@ -356,7 +367,9 @@ public class PipeTransportItems extends PipeTransport {
       return this.travelingEntities.size();
    }
 
-   public void onDropped(EntityItem var1) {}
+   public void onDropped(EntityItem var1) {
+      this.container.pipe.onDropped(var1);
+   }
 
    protected void neighborChange() {}
 

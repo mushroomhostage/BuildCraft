@@ -54,8 +54,6 @@ public class BuildCraftEnergy {
          Property var4 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("bucketFuel.id", 2, DefaultProps.BUCKET_FUEL_ID);
          Property var5 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("fuel.id", 2, DefaultProps.FUEL_ID);
          BuildCraftCore.mainConfiguration.save();
-         CraftingManager var6 = CraftingManager.getInstance();
-
          engineBlock = new BlockEngine(Integer.parseInt(var0.value));
          ModLoader.RegisterBlock(engineBlock);
          Item.byId[engineBlock.id] = null;
@@ -63,10 +61,6 @@ public class BuildCraftEnergy {
          CoreProxy.addName(new ItemStack(engineBlock, 1, 0), "Redstone Engine");
          CoreProxy.addName(new ItemStack(engineBlock, 1, 1), "Steam Engine");
          CoreProxy.addName(new ItemStack(engineBlock, 1, 2), "Combustion Engine");
-         var6.registerShapedRecipe(new ItemStack(engineBlock, 1, 0), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.WOOD, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.woodenGearItem, Character.valueOf('p'), Block.PISTON});
-         var6.registerShapedRecipe(new ItemStack(engineBlock, 1, 1), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.COBBLESTONE, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.stoneGearItem, Character.valueOf('p'), Block.PISTON});
-         var6.registerShapedRecipe(new ItemStack(engineBlock, 1, 2), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Item.IRON_INGOT, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.ironGearItem, Character.valueOf('p'), Block.PISTON});
-
          oilMoving = (new BlockOilFlowing(Integer.parseInt(var2.value), Material.WATER)).c(100.0F).g(3).a("oil");
          CoreProxy.addName(oilMoving.a("oilMoving"), "Oil");
          ModLoader.RegisterBlock(oilMoving);
@@ -90,8 +84,20 @@ public class BuildCraftEnergy {
             API.liquids.add(new LiquidData(fuel.id, bucketFuel.id));
             API.softBlocks[oilMoving.id] = true;
             API.softBlocks[oilStill.id] = true;
+            BuildCraftCore.refineryInput = oilStill.id;
+            if(BuildCraftCore.loadDefaultRecipes) {
+               loadRecipes();
+            }
+
          }
       }
+   }
+
+   public static void loadRecipes() {
+      CraftingManager var0 = CraftingManager.getInstance();
+      var0.registerShapedRecipe(new ItemStack(engineBlock, 1, 0), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.WOOD, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.woodenGearItem, Character.valueOf('p'), Block.PISTON});
+      var0.registerShapedRecipe(new ItemStack(engineBlock, 1, 1), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Block.COBBLESTONE, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.stoneGearItem, Character.valueOf('p'), Block.PISTON});
+      var0.registerShapedRecipe(new ItemStack(engineBlock, 1, 2), new Object[]{"www", " g ", "GpG", Character.valueOf('w'), Item.IRON_INGOT, Character.valueOf('g'), Block.GLASS, Character.valueOf('G'), BuildCraftCore.ironGearItem, Character.valueOf('p'), Block.PISTON});
    }
 
    public static void generateSurface(World var0, Random var1, int var2, int var3) {
