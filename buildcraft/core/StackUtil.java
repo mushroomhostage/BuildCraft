@@ -22,7 +22,7 @@ public class StackUtil {
    }
 
    public boolean addToRandomInventory(TileEntity var1, Orientations var2) {
-      World var3 = APIProxy.getWorld();
+      World var3 = var1.world; //APIProxy.getWorld();
       LinkedList var4 = new LinkedList();
 
       int var5;

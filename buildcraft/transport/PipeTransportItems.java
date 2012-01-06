@@ -251,7 +251,7 @@ public class PipeTransportItems extends PipeTransport {
       for(int var3 = 0; var3 < var2.size(); ++var3) {
          try {
             NBTTagCompound var4 = (NBTTagCompound)var2.get(var3);
-            EntityPassiveItem var5 = new EntityPassiveItem(APIProxy.getWorld());
+            EntityPassiveItem var5 = new EntityPassiveItem(this.worldObj); //APIProxy.getWorld());
             var5.readFromNBT(var4);
             if(var5.isCorrupted()) {
                var5.remove();

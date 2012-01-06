@@ -72,7 +72,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
    }
 
    public void createUtilsIfNeeded() {
-      if(this.world == null) this.world = APIProxy.getWorld();
+      if(this.world == null) { java.lang.Thread.dumpStack(); }
       if(this.box.isInitialized() || !APIProxy.isClient(this.world)) {
          if(this.bluePrintBuilder == null) {
             if(!this.box.isInitialized()) {
@@ -105,7 +105,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
    }
 
    private void createArm() {
-      if(this.world == null) this.world = APIProxy.getWorld();
+      if(this.world == null) { java.lang.Thread.dumpStack(); }
       this.arm = new EntityMechanicalArm(this.world, (double)((float)this.box.xMin + 0.75F), (double)((float)(this.y + this.bluePrintBuilder.bluePrint.sizeY - 1) + 0.25F), (double)((float)this.box.zMin + 0.75F), (double)((float)(this.bluePrintBuilder.bluePrint.sizeX - 2) + 0.5F), (double)((float)(this.bluePrintBuilder.bluePrint.sizeZ - 2) + 0.5F));
       this.arm.listener = this;
       this.loadArm = true;
@@ -284,9 +284,24 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
       this.targetX = var1.getInt("targetX");
       this.targetY = var1.getInt("targetY");
       this.targetZ = var1.getInt("targetZ");
+      
+      // MaeEdit start
+      String worldname = var1.getString("world");
+      for (net.minecraft.server.World w : net.minecraft.server.ModLoader.getMinecraftServerInstance().worlds) {
+         if (worldname.equals(w.worldData.name)) {
+            this.world = w;
+            break;
+         }
+      }
+      if (world == null) {
+         System.out.println("[BuildCraft] Warning: Quarry at "+this.x+","+this.y+","+this.z+" has no saved world, using default.");
+         world = APIProxy.getWorld();
+      }
+      // MaeEdit end
+      
       if(var1.getBoolean("hasArm")) {
          NBTTagCompound var7 = var1.getCompound("arm");
-         if(this.world == null) this.world = APIProxy.getWorld();
+         if(this.world == null) { java.lang.Thread.dumpStack(); }
          this.arm = new EntityMechanicalArm(this.world);
          this.arm.e(var7);
          this.arm.listener = this;
@@ -308,6 +323,10 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
          var1.set("arm", var2);
          this.arm.d(var2);
       }
+
+      // MaeEdit start
+      var1.setString("world", this.world.worldData.name);
+      // MaeEdit end
 
       var2 = new NBTTagCompound();
       this.box.writeToNBT(var2);

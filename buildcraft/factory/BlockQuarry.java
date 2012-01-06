@@ -31,6 +31,15 @@ public class BlockQuarry extends BlockMachineRoot implements ITextureProvider, I
       this.textureTop = 40;
    }
 
+   // MaeEdit start
+   public void onPlace(World world, int i, int j, int k)
+   {
+      super.onPlace(world, i, j, k);
+      TileEntity te = world.getTileEntity(i, j, k);
+      te.world = world;
+   }
+   // MaeEdit end
+
    public void postPlace(World var1, int var2, int var3, int var4, EntityLiving var5) {
       super.postPlace(var1, var2, var3, var4, var5);
       Orientations var6 = Utils.get2dOrientation(new Position(var5.locX, var5.locY, var5.locZ), new Position((double)var2, (double)var3, (double)var4));

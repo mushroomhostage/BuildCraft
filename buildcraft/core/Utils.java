@@ -53,7 +53,7 @@ public class Utils {
    }
 
    public static boolean addToRandomPipeEntry(TileEntity var0, Orientations var1, ItemStack var2) {
-      World var3 = APIProxy.getWorld();
+      World var3 = var0.world; //APIProxy.getWorld();
       LinkedList var4 = new LinkedList();
 
       int var5;
