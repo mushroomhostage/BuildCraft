@@ -32,8 +32,8 @@ public class BlockQuarry extends BlockMachineRoot implements ITextureProvider, I
    }
 
    // MaeEdit start
-   public void onPlace(World world, int i, int j, int k)
-   {
+   @Override
+   public void onPlace(World world, int i, int j, int k) {
       super.onPlace(world, i, j, k);
       TileEntity te = world.getTileEntity(i, j, k);
       te.world = world;
