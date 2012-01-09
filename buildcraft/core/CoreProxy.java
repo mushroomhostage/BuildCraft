@@ -28,9 +28,10 @@ public class CoreProxy {
 
     public static void sendToPlayers(Packet230ModLoader packet230modloader, int i, int j, int k, int l, BaseModMp basemodmp) {
         if(packet230modloader != null) {
-            for(WorldServer world : ModLoader.getMinecraftServerInstance().worlds) {
-                for(Object player : world.players) {
-                    EntityPlayer entityplayer = (EntityPlayer)player;
+            for(int w = 0; w < ModLoader.getMinecraftServerInstance().worlds.size(); w++) {
+                net.minecraft.server.World world = ModLoader.getMinecraftServerInstance().worlds.get(w);
+                for(int p = 0; p < world.players.size(); p++) {
+                    EntityPlayer entityplayer = (EntityPlayer)world.players.get(p);
                     if(Math.abs(entityplayer.locX - (double)i) <= (double)l && Math.abs(entityplayer.locY - (double)j) <= (double)l && Math.abs(entityplayer.locZ - (double)k) <= (double)l) {
                         ModLoaderMp.SendPacketTo(basemodmp, entityplayer, packet230modloader);
                     }
