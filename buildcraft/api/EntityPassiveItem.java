@@ -84,6 +84,10 @@ public class EntityPassiveItem {
    }
 
    public EntityItem toEntityItem(Orientations var1) {
+      if (this.worldObj == null) {
+         java.lang.Thread.dumpStack();
+         this.worldObj = APIProxy.getWorld();
+      }
       if(!APIProxy.isClient(this.worldObj)) {
          Position var2 = new Position(0.0D, 0.0D, 0.0D, var1);
          var2.moveForwards(0.1D + (double)(this.speed * 2.0F));
