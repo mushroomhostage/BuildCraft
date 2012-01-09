@@ -85,7 +85,7 @@ public class EntityPassiveItem {
 
    public EntityItem toEntityItem(Orientations var1) {
       if (this.worldObj == null) {
-         java.lang.Thread.dumpStack();
+         System.out.println("[BuildCraft] EntityItem.toEntityItem: World was null! Using default world.");
          this.worldObj = APIProxy.getWorld();
       }
       if(!APIProxy.isClient(this.worldObj)) {
