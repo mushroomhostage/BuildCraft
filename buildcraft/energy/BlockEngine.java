@@ -68,6 +68,15 @@ public class BlockEngine extends BlockContainer implements IPipeConnection {
       }
    }
 
+   // MaeEdit start
+   @Override
+   public void onPlace(World world, int i, int j, int k) {
+      super.onPlace(world, i, j, k);
+      TileEntity te = world.getTileEntity(i, j, k);
+      te.world = world;
+   }
+   // MaeEdit end
+
    public void postPlace(World var1, int var2, int var3, int var4, int var5) {
       TileEngine var6 = (TileEngine)var1.getTileEntity(var2, var3, var4);
       var6.orientation = Orientations.YPos.ordinal();
