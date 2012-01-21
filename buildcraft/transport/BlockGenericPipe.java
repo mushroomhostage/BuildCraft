@@ -312,7 +312,9 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
       try {
          return (Pipe)((Class)pipes.get(Integer.valueOf(var0))).getConstructor(new Class[]{Integer.TYPE}).newInstance(new Object[]{Integer.valueOf(var0)});
       } catch (Throwable var2) {
-         var2.printStackTrace();
+         Pipe pipe = (Pipe)pipes.get(Integer.valueOf(var0));
+         System.out.println("[BuildCraft] Error creating pipe type "+var0+" (class="+pipe+")");
+         //var2.printStackTrace();
          return null;
       }
    }
