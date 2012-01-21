@@ -85,8 +85,13 @@ public class EntityPassiveItem {
 
    public EntityItem toEntityItem(Orientations var1) {
       if (this.worldObj == null) {
-         System.out.println("[BuildCraft] EntityItem.toEntityItem: World was null! Using default world.");
-         this.worldObj = APIProxy.getWorld();
+         if (container != null && container.world != null) {
+            System.out.println("[BuildCraft] EntityItem.toEntityItem: World was null! Using container's world.");
+            this.worldObj = container.world;
+         } else {
+            System.out.println("[BuildCraft] EntityItem.toEntityItem: World was null! Using default world.");
+            this.worldObj = APIProxy.getWorld();
+         }
       }
       if(!APIProxy.isClient(this.worldObj)) {
          Position var2 = new Position(0.0D, 0.0D, 0.0D, var1);
