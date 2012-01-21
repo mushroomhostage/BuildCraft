@@ -103,6 +103,7 @@ public class Utils {
          ItemStack var6 = var1.getItem(var5);
          if(var6 != null && var6.count > 0) {
             dropItems(var0, var1.getItem(var5).cloneItemStack(), var2, var3, var4);
+            var1.setItem(var5, null);
          }
       }
 
