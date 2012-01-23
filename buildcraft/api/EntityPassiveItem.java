@@ -86,10 +86,12 @@ public class EntityPassiveItem {
    public EntityItem toEntityItem(Orientations var1) {
       if (this.worldObj == null) {
          if (container != null && container.world != null) {
-            System.out.println("[BuildCraft] EntityItem.toEntityItem: World was null! Using container's world.");
+            net.minecraft.server.MinecraftServer.log.fine(
+            	"[BuildCraft] EntityPassiveItem.toEntityItem: World was null! Using container's world.");
             this.worldObj = container.world;
          } else {
-            System.out.println("[BuildCraft] EntityItem.toEntityItem: World was null! Using default world.");
+            net.minecraft.server.MinecraftServer.log.fine(
+            	"[BuildCraft] EntityPassiveItem.toEntityItem: World was null! Using default world.");
             this.worldObj = APIProxy.getWorld();
          }
       }
