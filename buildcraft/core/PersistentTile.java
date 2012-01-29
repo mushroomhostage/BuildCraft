@@ -5,10 +5,8 @@ import net.minecraft.server.TileEntity;
 
 public abstract class PersistentTile
 {
-
     public TileEntity tile;
     public BlockIndex index;
-
 
     public void setTile(TileEntity var1)
     {

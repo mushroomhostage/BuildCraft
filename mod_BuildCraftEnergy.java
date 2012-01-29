@@ -9,9 +9,7 @@ import net.minecraft.server.World;
 
 public class mod_BuildCraftEnergy extends BaseModMp
 {
-
     public static mod_BuildCraftEnergy instance;
-
 
     public void ModsLoaded()
     {
@@ -22,13 +20,15 @@ public class mod_BuildCraftEnergy extends BaseModMp
         instance = this;
     }
 
-    public String Version()
+    public String getVersion()
     {
-        return "2.2.11";
+        return "2.2.12";
     }
 
     public void GenerateSurface(World var1, Random var2, int var3, int var4)
     {
         BuildCraftEnergy.generateSurface(var1, var2, var3, var4);
     }
+
+    public void load() {}
 }

@@ -9,9 +9,7 @@ import net.minecraft.server.Slot;
 
 public class ContainerEngineRoot extends BuildCraftContainer
 {
-
     protected TileEngine engine;
-
 
     public ContainerEngineRoot(PlayerInventory var1, TileEngine var2)
     {
@@ -39,10 +37,14 @@ public class ContainerEngineRoot extends BuildCraftContainer
         {
             this.a(new Slot(var1, var3, 8 + var3 * 18, 142));
         }
-
     }
 
     public boolean isUsableByPlayer(EntityHuman var1)
+    {
+        return this.engine.a(var1);
+    }
+
+    public boolean b(EntityHuman var1)
     {
         return this.engine.a(var1);
     }

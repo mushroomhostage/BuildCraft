@@ -31,13 +31,11 @@ import net.minecraft.server.mod_BuildCraftTransport;
 
 public class PipeTransportItems extends PipeTransport
 {
-
     public boolean allowBouncing = false;
     public TreeMap travelingEntities = new TreeMap();
     LinkedList entitiesToLoad = new LinkedList();
     HashSet toRemove = new HashSet();
     public static TilePacketWrapper networkItemData = null;
-
 
     public void readjustSpeed(EntityPassiveItem var1)
     {
@@ -49,7 +47,6 @@ public class PipeTransportItems extends PipeTransport
         {
             this.defaultReajustSpeed(var1);
         }
-
     }
 
     public void defaultReajustSpeed(EntityPassiveItem var1)
@@ -63,7 +60,6 @@ public class PipeTransportItems extends PipeTransport
         {
             var1.speed = Utils.pipeNormalSpeed;
         }
-
     }
 
     public void entityEntering(EntityPassiveItem var1, Orientations var2)
@@ -96,7 +92,6 @@ public class PipeTransportItems extends PipeTransport
             {
                 CoreProxy.sendToPlayers(this.createItemPacket(var1, var2), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
             }
-
         }
     }
 
@@ -169,7 +164,6 @@ public class PipeTransportItems extends PipeTransport
         {
             this.toRemove.add(Integer.valueOf(var1.entityId));
         }
-
     }
 
     public void performRemoval()
@@ -340,7 +334,6 @@ public class PipeTransportItems extends PipeTransport
                 var7.printStackTrace();
             }
         }
-
     }
 
     public void writeToNBT(NBTTagCompound var1)
@@ -430,7 +423,6 @@ public class PipeTransportItems extends PipeTransport
                 this.travelingEntities.put(new Integer(var3.entityId), new PipeTransportItems.EntityData(var3, var2.orientation));
                 var3.container = this.container;
             }
-
         }
     }
 
@@ -489,17 +481,13 @@ public class PipeTransportItems extends PipeTransport
             PipeTransportItems.EntityData var2 = (PipeTransportItems.EntityData)var1.next();
             Utils.dropItems(this.worldObj, var2.item.item, this.xCoord, this.yCoord, this.zCoord);
         }
-
     }
-
 
     public class EntityData
     {
-
         boolean toCenter = true;
         public EntityPassiveItem item;
         public Orientations orientation;
-
 
         public EntityData(EntityPassiveItem var2, Orientations var3)
         {
@@ -510,7 +498,6 @@ public class PipeTransportItems extends PipeTransport
 
     public class ItemData
     {
-
         @TileNetworkData
         public float posX;
         @TileNetworkData
@@ -537,7 +524,5 @@ public class PipeTransportItems extends PipeTransport
                 intKind = 1
         )
         public int deterministicRandomization;
-
-
     }
 }

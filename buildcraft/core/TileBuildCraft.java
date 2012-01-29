@@ -15,13 +15,11 @@ import net.minecraft.server.mod_BuildCraftCore;
 
 public abstract class TileBuildCraft extends TileEntity implements ISynchronizedTile
 {
-
     private static Map updateWrappers = new HashMap();
     private static Map descriptionWrappers = new HashMap();
     private TilePacketWrapper descriptionPacket;
     private TilePacketWrapper updatePacket;
     private boolean init = false;
-
 
     public TileBuildCraft()
     {
@@ -52,7 +50,6 @@ public abstract class TileBuildCraft extends TileEntity implements ISynchronized
             IPowerReceptor var1 = (IPowerReceptor)this;
             var1.getPowerProvider().update(var1);
         }
-
     }
 
     public void initialize()
@@ -68,7 +65,6 @@ public abstract class TileBuildCraft extends TileEntity implements ISynchronized
         {
             CoreProxy.sendToPlayers(this.getUpdatePacket(), this.x, this.y, this.z, 50, mod_BuildCraftCore.instance);
         }
-
     }
 
     public Packet k()
@@ -92,5 +88,4 @@ public abstract class TileBuildCraft extends TileEntity implements ISynchronized
     }
 
     public void postPacketHandling(Packet230ModLoader var1) {}
-
 }

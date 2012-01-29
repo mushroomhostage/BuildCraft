@@ -7,7 +7,6 @@ import net.minecraft.server.World;
 
 public class APIProxy
 {
-
     public static World getWorld()
     {
         return ModLoader.getMinecraftServerInstance().worlds.get(0);

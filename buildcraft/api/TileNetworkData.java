@@ -8,11 +8,9 @@ import java.lang.annotation.RetentionPolicy;
 @Inherited
 public @interface TileNetworkData
 {
-
     int DEFAULT = 0;
     int UNSIGNED_BYTE = 1;
     int UNSIGNED_SHORT = 2;
-
 
 int staticSize() default -1;
 

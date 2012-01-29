@@ -21,7 +21,6 @@ import net.minecraft.server.NBTTagCompound;
 
 public class TileRefinery extends TileMachine implements ILiquidContainer, IPowerReceptor, IInventory, IMachine
 {
-
     public static LinkedList recipes = new LinkedList();
     public static int LIQUID_PER_SLOT = 4000;
     @TileNetworkData
@@ -37,7 +36,6 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
     SafeTimeTracker updateNetworkTime = new SafeTimeTracker();
     PowerProvider powerProvider;
     private boolean isActive;
-
 
     public TileRefinery()
     {
@@ -246,7 +244,6 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
                         var3.quantity -= var1.sourceQty2;
                     }
                 }
-
             }
         }
     }
@@ -323,7 +320,6 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         {
             --this.animationStage;
         }
-
     }
 
     public void increaseAnimation()
@@ -342,7 +338,6 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         {
             this.animationStage = 100;
         }
-
     }
 
     public void decreaseAnimation()
@@ -360,22 +355,18 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         {
             --this.animationStage;
         }
-
     }
 
     public void f() {}
 
     public void g() {}
 
-
     public static class Slot
     {
-
         @TileNetworkData
         public int liquidId = 0;
         @TileNetworkData
         public int quantity = 0;
-
 
         public int fill(Orientations var1, int var2, int var3, boolean var4)
         {
@@ -423,7 +414,6 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
             {
                 this.quantity = 0;
             }
-
         }
     }
 }

@@ -1,9 +1,7 @@
 package buildcraft.factory;
 
-
 public class RefineryRecipe
 {
-
     public final int sourceId1;
     public final int sourceId2;
     public final int sourceQty1;
@@ -12,7 +10,6 @@ public class RefineryRecipe
     public final int resultId;
     public final int resultQty;
     public final int delay;
-
 
     public RefineryRecipe(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8)
     {

@@ -17,9 +17,7 @@ import net.minecraft.server.World;
 
 public class ItemPipe extends Item implements ITextureProvider
 {
-
     Pipe dummyPipe;
-
 
     protected ItemPipe(int var1)
     {
@@ -75,7 +73,7 @@ public class ItemPipe extends Item implements ITextureProvider
         {
             return false;
         }
-        else if (var3.a(var8, var4, var5, var6, false, var7))
+        else if (var3.mayPlace(var8, var4, var5, var6, false, var7))
         {
             // CraftBukkit Mae - Paraphrased from ItemBlock
             CraftBlockState replacedBlockState = CraftBlockState.getBlockState(var3, var4, var5, var6);

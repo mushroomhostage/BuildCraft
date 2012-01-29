@@ -14,9 +14,7 @@ import net.minecraft.server.World;
 
 public class StackUtil
 {
-
     public ItemStack items;
-
 
     public StackUtil(ItemStack var1)
     {

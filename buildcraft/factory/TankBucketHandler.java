@@ -10,7 +10,6 @@ import net.minecraft.server.World;
 
 public class TankBucketHandler implements IBucketHandler
 {
-
     public ItemStack fillCustomBucket(World var1, int var2, int var3, int var4)
     {
         if (var1.getTypeId(var2, var3, var4) == BuildCraftFactory.tankBlock.id)

@@ -8,9 +8,7 @@ import net.minecraft.server.TileEntity;
 
 public class RedstonePowerProvider extends PowerProvider
 {
-
     private boolean lastPower = false;
-
 
     public RedstonePowerProvider()
     {

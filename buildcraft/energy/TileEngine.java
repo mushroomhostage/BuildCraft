@@ -25,7 +25,6 @@ import net.minecraft.server.TileEntity;
 
 public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInventory, ILiquidContainer, IEngineProvider
 {
-
     @TileNetworkData
     public Engine engine;
     @TileNetworkData
@@ -36,7 +35,6 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
     public int orientation;
     private ItemStack itemInInventory;
     PowerProvider provider;
-
 
     public TileEngine()
     {
@@ -62,7 +60,6 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
             this.engine.orientation = Orientations.values()[this.orientation];
             this.provider.configure(0, 1, this.engine.maxEnergyReceived(), 1, this.engine.maxEnergy);
         }
-
     }
 
     public void l_()
@@ -80,7 +77,6 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
                         this.progressPart = 0;
                     }
                 }
-
             }
             else
             {
@@ -159,7 +155,6 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
 
             this.engine.orientation = Orientations.values()[this.orientation];
         }
-
     }
 
     public void switchOrientation()
@@ -182,7 +177,6 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
                 break;
             }
         }
-
     }
 
     public void delete()
@@ -275,7 +269,7 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
 
     public boolean a(EntityHuman var1)
     {
-        return true;
+        return this.world.getTileEntity(this.x, this.y, this.z) == this;
     }
 
     public boolean isBurning()

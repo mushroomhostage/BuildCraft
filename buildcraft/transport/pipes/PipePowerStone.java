@@ -6,7 +6,6 @@ import buildcraft.transport.PipeTransportPower;
 
 public class PipePowerStone extends Pipe
 {
-
     public PipePowerStone(int var1)
     {
         super(new PipeTransportPower(), new PipeLogicStone(), var1);

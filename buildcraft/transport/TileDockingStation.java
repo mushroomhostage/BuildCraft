@@ -16,7 +16,6 @@ import net.minecraft.server.TileEntity;
 
 public class TileDockingStation extends TileEntity implements ILiquidContainer, ISpecialInventory
 {
-
     public int getSize()
     {
         return 1;
@@ -278,7 +277,6 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
             {
                 ;
             }
-
         }
     }
 }

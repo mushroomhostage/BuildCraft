@@ -17,9 +17,7 @@ import net.minecraft.server.TileEntity;
 
 public class PipeLogicWood extends PipeLogic
 {
-
     public static String[] excludedBlocks = new String[0];
-
 
     public void switchSource()
     {
@@ -45,7 +43,6 @@ public class PipeLogicWood extends PipeLogic
             this.worldObj.setRawData(this.xCoord, this.yCoord, this.zCoord, var2);
             this.worldObj.notify(this.xCoord, this.yCoord, this.zCoord);
         }
-
     }
 
     public boolean isInput(TileEntity var1)
@@ -79,7 +76,7 @@ public class PipeLogicWood extends PipeLogic
 
     public boolean blockActivated(EntityHuman var1)
     {
-        if (var1.P() != null && var1.P().getItem() == BuildCraftCore.wrenchItem)
+        if (var1.Q() != null && var1.Q().getItem() == BuildCraftCore.wrenchItem)
         {
             this.switchSource();
             return true;
@@ -108,7 +105,6 @@ public class PipeLogicWood extends PipeLogic
         {
             this.switchSourceIfNeeded();
         }
-
     }
 
     private void switchSourceIfNeeded()
@@ -128,7 +124,6 @@ public class PipeLogicWood extends PipeLogic
                 this.switchSource();
             }
         }
-
     }
 
     public void onNeighborBlockChange()
@@ -138,7 +133,5 @@ public class PipeLogicWood extends PipeLogic
         {
             this.switchSourceIfNeeded();
         }
-
     }
-
 }

@@ -16,7 +16,6 @@ import net.minecraft.server.World;
 
 public class PipeLiquidsWood extends Pipe implements IPowerReceptor
 {
-
     @TileNetworkData
     public int liquidToExtract;
     private PowerProvider powerProvider;
@@ -25,7 +24,6 @@ public class PipeLiquidsWood extends Pipe implements IPowerReceptor
     private int nextTexture;
     long lastMining;
     boolean lastPower;
-
 
     public PipeLiquidsWood(int var1)
     {
@@ -56,7 +54,6 @@ public class PipeLiquidsWood extends Pipe implements IPowerReceptor
                     {
                         this.liquidToExtract += this.powerProvider.useEnergy(1, 1, true) * 1000;
                     }
-
                 }
             }
         }
@@ -91,7 +88,6 @@ public class PipeLiquidsWood extends Pipe implements IPowerReceptor
                 this.liquidToExtract -= var6;
             }
         }
-
     }
 
     public void prepareTextureFor(Orientations var1)
@@ -112,7 +108,6 @@ public class PipeLiquidsWood extends Pipe implements IPowerReceptor
                 this.nextTexture = this.baseTexture;
             }
         }
-
     }
 
     public int getBlockTexture()

@@ -7,11 +7,9 @@ import buildcraft.transport.PipeTransportItems;
 
 public class PipeItemsIron extends Pipe
 {
-
     private int baseTexture = 18;
     private int plainTexture = 19;
     private int nextTexture;
-
 
     public PipeItemsIron(int var1)
     {
@@ -38,7 +36,6 @@ public class PipeItemsIron extends Pipe
                 this.nextTexture = this.plainTexture;
             }
         }
-
     }
 
     public int getBlockTexture()

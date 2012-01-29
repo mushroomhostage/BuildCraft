@@ -13,7 +13,6 @@ import net.minecraft.server.World;
 
 public class Box implements IBox
 {
-
     @TileNetworkData
     public int xMin;
     @TileNetworkData
@@ -27,7 +26,6 @@ public class Box implements IBox
     @TileNetworkData
     public int zMax;
     private EntityBlock[] lasers;
-
 
     public void initialize(int var1, int var2, int var3, int var4, int var5, int var6)
     {
@@ -100,7 +98,6 @@ public class Box implements IBox
         {
             this.lasers = Utils.createLaserBox(var1, (double)this.xMin, (double)this.yMin, (double)this.zMin, (double)this.xMax, (double)this.yMax, (double)this.zMax, var2);
         }
-
     }
 
     public void deleteLasers()
@@ -118,7 +115,6 @@ public class Box implements IBox
 
             this.lasers = null;
         }
-
     }
 
     public void writeToNBT(NBTTagCompound var1)

@@ -19,7 +19,6 @@ import net.minecraft.server.World;
 
 public class PipeTransportLiquids extends PipeTransport implements ILiquidContainer
 {
-
     public static int LIQUID_IN_PIPE = 250;
     public int travelDelay = 6;
     public int flowRate = 20;
@@ -34,7 +33,6 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
     int lockedTime = 0;
     private static long lastSplit = 0L;
     private static int[] splitVector;
-
 
     public PipeTransportLiquids()
     {
@@ -172,7 +170,6 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
                 this.isInput[var4] = false;
             }
         }
-
     }
 
     private int computeOutputs()
@@ -241,7 +238,6 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
                 this.side[var1].reset();
             }
         }
-
     }
 
     public int getLiquidId()
@@ -284,10 +280,8 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
         }
     }
 
-
     public class LiquidBuffer
     {
-
         short[] in;
         short ready;
         short[] out;
@@ -305,7 +299,6 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
         int totalBounced;
         boolean bouncing;
         private boolean[] filled;
-
 
         public LiquidBuffer(int var2)
         {
@@ -475,7 +468,6 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
             {
                 this.average = 1;
             }
-
         }
 
         private int splitLiquid(int var1, int var2)

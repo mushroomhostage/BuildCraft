@@ -15,9 +15,7 @@ import net.minecraft.server.ItemStack;
 
 public class PipeItemsDiamond extends Pipe implements IPipeTransportItemsHook
 {
-
     int nextTexture = 21;
-
 
     public PipeItemsDiamond(int var1)
     {
@@ -39,7 +37,6 @@ public class PipeItemsDiamond extends Pipe implements IPipeTransportItemsHook
         {
             this.nextTexture = BuildCraftTransport.diamondTextures[var1.ordinal()];
         }
-
     }
 
     public LinkedList filterPossibleMovements(LinkedList var1, Position var2, EntityPassiveItem var3)

@@ -13,12 +13,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 public class API
 {
-
     public static boolean[] softBlocks = new boolean[Block.byId.length];
     public static LinkedList liquids = new LinkedList();
     public static final int BUCKET_VOLUME = 1000;
     public static HashMap ironEngineFuel = new HashMap();
-
 
     public static int getLiquidForBucket(int var0)
     {
@@ -94,6 +92,5 @@ public class API
         {
             softBlocks[var0] = false;
         }
-
     }
 }

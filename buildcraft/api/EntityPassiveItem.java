@@ -15,7 +15,6 @@ import net.minecraft.server.World;
 
 public class EntityPassiveItem
 {
-
     public static TreeMap allEntities = new TreeMap();
     public float speed;
     public ItemStack item;
@@ -28,7 +27,6 @@ public class EntityPassiveItem
     public double posZ;
     public int entityId;
     private static int maxId = 0;
-
 
     public EntityPassiveItem(World var1)
     {
@@ -135,7 +133,6 @@ public class EntityPassiveItem
         {
             allEntities.remove(Integer.valueOf(this.entityId));
         }
-
     }
 
     public float getEntityBrightness(float var1)
@@ -159,5 +156,4 @@ public class EntityPassiveItem
     {
         return this.item == null || this.item.count <= 0 || Item.byId[this.item.id] == null;
     }
-
 }

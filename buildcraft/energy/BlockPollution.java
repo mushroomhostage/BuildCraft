@@ -10,7 +10,6 @@ import net.minecraft.server.TileEntity;
 
 public class BlockPollution extends BlockContainer implements ITextureProvider
 {
-
     public BlockPollution(int var1)
     {
         super(var1, Material.AIR);

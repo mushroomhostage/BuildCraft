@@ -16,7 +16,6 @@ import net.minecraft.server.mod_BuildCraftCore;
 
 public class BluePrint
 {
-
     File file;
     BlockContents[][][] contents;
     public int anchorX;
@@ -25,7 +24,6 @@ public class BluePrint
     public int sizeX;
     public int sizeY;
     public int sizeZ;
-
 
     public BluePrint(File var1)
     {
@@ -53,7 +51,6 @@ public class BluePrint
                 }
             }
         }
-
     }
 
     public BluePrint(int var1, int var2, int var3)
@@ -182,7 +179,6 @@ public class BluePrint
         {
             var12.printStackTrace();
         }
-
     }
 
     public void loadIfNeeded()

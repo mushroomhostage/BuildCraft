@@ -1,9 +1,7 @@
 package buildcraft.core;
 
-
 public class DefaultProps
 {
-
     public static int WOODEN_GEAR_ID = 3800;
     public static int STONE_GEAR_ID = 3801;
     public static int IRON_GEAR_ID = 3802;
@@ -62,6 +60,4 @@ public class DefaultProps
     public static int DOCKING_STATION_ID = 168;
     public static boolean CURRENT_CONTINUOUS = false;
     public static boolean PIPES_ALWAYS_CONNECT = false;
-
-
 }

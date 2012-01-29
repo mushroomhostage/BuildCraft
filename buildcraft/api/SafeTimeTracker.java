@@ -4,9 +4,7 @@ import net.minecraft.server.World;
 
 public class SafeTimeTracker
 {
-
     private long lastMark = 0L;
-
 
     public boolean markTimeIfDelay(World var1, long var2)
     {

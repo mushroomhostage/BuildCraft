@@ -15,7 +15,6 @@ import net.minecraft.server.World;
 
 public class BuildersProxy
 {
-
     public static void displayGUITemplate(EntityHuman var0, TileTemplate var1)
     {
         ModLoader.OpenGUI(var0, Utils.packetIdToInt(PacketIds.TemplateGUI), var1, new CraftingTemplate(var0.inventory, var1));

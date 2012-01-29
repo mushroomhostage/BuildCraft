@@ -1,15 +1,14 @@
 package buildcraft.transport;
 
 import buildcraft.core.BuildCraftContainer;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.Slot;
 
 class CraftingDiamondPipe extends BuildCraftContainer
 {
-
     IInventory playerIInventory;
     IInventory filterIInventory;
-
 
     public CraftingDiamondPipe(IInventory var1, IInventory var2)
     {
@@ -39,6 +38,10 @@ class CraftingDiamondPipe extends BuildCraftContainer
         {
             this.a(new Slot(var1, var3, 8 + var3 * 18, 198));
         }
+    }
 
+    public boolean b(EntityHuman var1)
+    {
+        return this.filterIInventory.a(var1);
     }
 }

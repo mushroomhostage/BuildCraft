@@ -6,12 +6,10 @@ import net.minecraft.server.TileEntity;
 
 public class Position
 {
-
     public double x;
     public double y;
     public double z;
     public Orientations orientation;
-
 
     public Position(double var1, double var3, double var5)
     {
@@ -68,7 +66,6 @@ public class Position
             case 4:
                 this.z -= var1;
         }
-
     }
 
     public void moveLeft(double var1)
@@ -98,7 +95,6 @@ public class Position
             case 6:
                 this.y -= var1;
         }
-
     }
 
     public void moveBackwards(double var1)
@@ -209,7 +205,6 @@ public class Position
             {
                 ;
             }
-
         }
     }
 }

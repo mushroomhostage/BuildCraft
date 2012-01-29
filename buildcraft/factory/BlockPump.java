@@ -11,7 +11,6 @@ import net.minecraft.server.World;
 
 public class BlockPump extends BlockContainer implements ITextureProvider
 {
-
     public BlockPump(int var1)
     {
         super(var1, Material.ORE);

@@ -6,7 +6,6 @@ import buildcraft.transport.PipeTransportItems;
 
 public class PipeItemsCobblestone extends Pipe
 {
-
     public PipeItemsCobblestone(int var1)
     {
         super(new PipeTransportItems(), new PipeLogicCobblestone(), var1);

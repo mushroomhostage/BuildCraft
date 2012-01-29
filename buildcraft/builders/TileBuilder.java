@@ -33,14 +33,12 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 public class TileBuilder extends TileBuildCraft implements IInventory, IPowerReceptor
 {
-
     private ItemStack[] items = new ItemStack[28];
     private BluePrintBuilder bluePrintBuilder;
     private int currentBluePrintId = -1;
     @TileNetworkData
     public Box box = new Box();
     private PowerProvider powerProvider;
-
 
     public TileBuilder()
     {
@@ -82,7 +80,6 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
                         {
                             CoreProxy.sendToPlayers(this.getUpdatePacket(), this.x, this.y, this.z, 50, mod_BuildCraftBuilders.instance);
                         }
-
                     }
                     else
                     {
@@ -115,7 +112,6 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
                         {
                             this.sendNetworkUpdate();
                         }
-
                     }
                 }
             }
@@ -133,7 +129,6 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
                 {
                     this.sendNetworkUpdate();
                 }
-
             }
         }
     }
@@ -187,7 +182,6 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
                         }
                     }
                 }
-
             }
         }
     }
@@ -235,7 +229,6 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
         {
             this.initalizeBluePrint();
         }
-
     }
 
     public String getName()
@@ -250,7 +243,7 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
 
     public boolean a(EntityHuman var1)
     {
-        return true;
+        return this.world.getTileEntity(this.x, this.y, this.z) == this;
     }
 
     public void a(NBTTagCompound var1)
@@ -273,7 +266,6 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
         {
             this.box.initialize(var1.getCompound("box"));
         }
-
     }
 
     public void b(NBTTagCompound var1)
@@ -299,7 +291,6 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
             this.box.writeToNBT(var5);
             var1.set("box", var5);
         }
-
     }
 
     public void i()
@@ -313,7 +304,6 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
         {
             this.box.deleteLasers();
         }
-
     }
 
     public void setPowerProvider(PowerProvider var1)
@@ -334,7 +324,6 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
         {
             this.box.createLasers(this.world, LaserKind.Stripes);
         }
-
     }
 
     public void handleUpdatePacket(Packet230ModLoader var1)
@@ -345,7 +334,6 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
         {
             this.box.createLasers(this.world, LaserKind.Stripes);
         }
-
     }
 
     public void f() {}

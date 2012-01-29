@@ -24,11 +24,9 @@ import net.minecraft.server.ItemStack;
 
 public class PipeItemsObsidian extends Pipe implements IPowerReceptor
 {
-
     private PowerProvider powerProvider;
     private int[] entitiesDropped = new int[32];
     private int entitiesDroppedIndex = 0;
-
 
     public PipeItemsObsidian(int var1)
     {
@@ -58,7 +56,6 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
             {
                 this.pullItemIntoPipe(var1, 0);
             }
-
         }
     }
 
@@ -274,7 +271,6 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
                 EntityPassiveItem var7 = new EntityPassiveItem(this.worldObj, (double)this.xCoord + 0.5D, (double)((float)this.yCoord + Utils.getPipeFloorOf(var4)), (double)this.zCoord + 0.5D, var4);
                 ((PipeTransportItems)this.transport).entityEntering(var7, var3.reverse());
             }
-
         }
     }
 
@@ -402,7 +398,6 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
             {
                 ;
             }
-
         }
     }
 }

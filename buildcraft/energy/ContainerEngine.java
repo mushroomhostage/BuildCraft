@@ -7,7 +7,6 @@ import net.minecraft.server.PlayerInventory;
 
 public class ContainerEngine extends ContainerEngineRoot
 {
-
     public ContainerEngine(PlayerInventory var1, TileEngine var2)
     {
         super(var1, var2);
@@ -26,6 +25,5 @@ public class ContainerEngine extends ContainerEngineRoot
         {
             this.engine.engine.sendGUINetworkData(this, (ICrafting)this.listeners.get(var1));
         }
-
     }
 }

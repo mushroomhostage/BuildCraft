@@ -11,7 +11,6 @@ import net.minecraft.server.mod_BuildCraftCore;
 
 public class BuildCraftConfiguration extends Configuration
 {
-
     public BuildCraftConfiguration(File var1, boolean var2)
     {
         super(var1);
@@ -19,7 +18,6 @@ public class BuildCraftConfiguration extends Configuration
         {
             this.loadLegacyProperties();
         }
-
     }
 
     public void loadLegacyProperties()
@@ -67,7 +65,6 @@ public class BuildCraftConfiguration extends Configuration
         {
             var4.printStackTrace();
         }
-
     }
 
     public void save()

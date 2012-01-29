@@ -12,7 +12,6 @@ import java.util.LinkedList;
 
 public class PipeItemsStone extends Pipe implements IPipeTransportItemsHook
 {
-
     public PipeItemsStone(int var1)
     {
         super(new PipeTransportItems(), new PipeLogicStone(), var1);
@@ -34,7 +33,6 @@ public class PipeItemsStone extends Pipe implements IPipeTransportItemsHook
         {
             var1.speed = Utils.pipeNormalSpeed;
         }
-
     }
 
     public LinkedList filterPossibleMovements(LinkedList var1, Position var2, EntityPassiveItem var3)

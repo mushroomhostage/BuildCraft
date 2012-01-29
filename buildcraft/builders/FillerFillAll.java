@@ -8,7 +8,6 @@ import net.minecraft.server.TileEntity;
 
 public class FillerFillAll extends FillerPattern
 {
-
     public boolean iteratePattern(TileEntity var1, IBox var2, ItemStack var3)
     {
         int var4 = (int)var2.p1().x;

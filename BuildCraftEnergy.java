@@ -112,5 +112,4 @@ public class BuildCraftEnergy
     {
         OilPopulate.doPopulate(var0, var2, var3);
     }
-
 }

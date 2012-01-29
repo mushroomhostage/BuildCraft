@@ -13,10 +13,8 @@ import net.minecraft.server.World;
 
 public class BlockAutoWorkbench extends BlockContainer implements ITextureProvider
 {
-
     int topTexture = 43;
     int sideTexture = 44;
-
 
     public BlockAutoWorkbench(int var1)
     {

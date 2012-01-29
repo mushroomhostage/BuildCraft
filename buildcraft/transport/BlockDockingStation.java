@@ -16,14 +16,12 @@ import net.minecraft.server.World;
 
 public class BlockDockingStation extends BlockContainer implements ITextureProvider, IPipeConnection
 {
-
     int textureSide = 37;
     int textureTopN;
     int textureTopS;
     int textureTopW;
     int textureTopE;
     int textureBottom = 38;
-
 
     public BlockDockingStation(int var1)
     {

@@ -18,7 +18,6 @@ import net.minecraft.server.World;
 
 public class BlockFrame extends Block implements IPipeConnection, IBlockPipe, ITextureProvider
 {
-
     public BlockFrame(int var1)
     {
         super(var1, Material.SHATTERABLE);

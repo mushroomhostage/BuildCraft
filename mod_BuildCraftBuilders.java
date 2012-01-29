@@ -8,7 +8,6 @@ public class mod_BuildCraftBuilders extends BaseModMp
 
     public static mod_BuildCraftBuilders instance;
 
-
     public mod_BuildCraftBuilders()
     {
         instance = this;
@@ -20,8 +19,10 @@ public class mod_BuildCraftBuilders extends BaseModMp
         BuildCraftBuilders.initialize();
     }
 
-    public String Version()
+    public String getVersion()
     {
-        return "2.2.11";
+        return "2.2.12";
     }
+
+    public void load() {}
 }

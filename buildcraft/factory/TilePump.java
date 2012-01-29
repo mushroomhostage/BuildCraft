@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import net.minecraft.server.Block;
+import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.BuildCraftEnergy;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.Packet230ModLoader;
@@ -24,7 +26,6 @@ import net.minecraft.server.TileEntity;
 
 public class TilePump extends TileMachine implements IMachine, IPowerReceptor
 {
-
     EntityBlock tube;
     private TreeMap blocksToPump = new TreeMap();
     @TileNetworkData
@@ -36,7 +37,6 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
     @TileNetworkData
     public int liquidId = 0;
     private PowerProvider powerProvider;
-
 
     public TilePump()
     {
@@ -76,7 +76,11 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
                             if (this.powerProvider.useEnergy(10, 10, true) == 10)
                             {
                                 var1 = this.getNextIndexToPump(true);
+                                if (this.liquidId != Block.STATIONARY_WATER.id || BuildCraftCore.consumeWaterSources)
+                                {
                                 this.world.setTypeId(var1.i, var1.j, var1.k, 0);
+                                }
+
                                 this.internalLiquid = this.internalLiquid += 1000;
                                 if (APIProxy.isServerSide())
                                 {
@@ -125,7 +129,6 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
                     }
                 }
             }
-
         }
     }
 
@@ -154,7 +157,6 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
         {
             this.sendNetworkUpdate();
         }
-
     }
 
     private BlockIndex getNextIndexToPump(boolean var1)
@@ -234,7 +236,6 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
                     this.addToPumpIfLiquid(new BlockIndex(var10.i, var10.j + 1, var10.k), var5, var6, var7, var11);
                 }
             }
-
         }
     }
 
@@ -260,7 +261,6 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
                     var3.add(var1);
                 }
             }
-
         }
     }
 
@@ -341,7 +341,6 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
             this.tube.jSize = (double)this.y - this.tube.locY;
             this.tube.setPosition((double)((float)this.x + 0.25F), this.tubeY, (double)((float)this.z + 0.25F));
         }
-
     }
 
     public void i()
@@ -356,7 +355,6 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
             APIProxy.removeEntity(this.tube);
             this.tube = null;
         }
-
     }
 
     public boolean manageLiquids()

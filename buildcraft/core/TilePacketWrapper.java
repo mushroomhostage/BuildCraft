@@ -9,10 +9,8 @@ import net.minecraft.server.mod_BuildCraftCore;
 
 public class TilePacketWrapper
 {
-
     ClassMapping[] rootMappings;
     PacketIds packetType;
-
 
     public TilePacketWrapper(Class var1, PacketIds var2)
     {
@@ -35,7 +33,7 @@ public class TilePacketWrapper
     {
         Packet230ModLoader var2 = new Packet230ModLoader();
         var2.modId = mod_BuildCraftCore.instance.getId();
-        var2.l = true;
+        var2.lowPriority = true;
         var2.packetType = this.packetType.ordinal();
         int var3 = 0;
         int var4 = 0;
@@ -76,7 +74,7 @@ public class TilePacketWrapper
     {
         Packet230ModLoader var5 = new Packet230ModLoader();
         var5.modId = mod_BuildCraftCore.instance.getId();
-        var5.l = true;
+        var5.lowPriority = true;
         var5.packetType = this.packetType.ordinal();
         int var6 = 0;
         int var7 = 0;
@@ -141,7 +139,6 @@ public class TilePacketWrapper
         {
             var6.printStackTrace();
         }
-
     }
 
     public void updateFromPacket(TileEntity var1, Packet230ModLoader var2)
@@ -160,6 +157,5 @@ public class TilePacketWrapper
         {
             var4.printStackTrace();
         }
-
     }
 }

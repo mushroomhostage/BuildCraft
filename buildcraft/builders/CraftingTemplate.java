@@ -7,7 +7,6 @@ import net.minecraft.server.IInventory;
 
 class CraftingTemplate extends CraftingTemplateRoot
 {
-
     public CraftingTemplate(IInventory var1, TileTemplate var2)
     {
         super(var1, var2);

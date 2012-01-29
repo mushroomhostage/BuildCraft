@@ -14,10 +14,8 @@ import net.minecraft.server.NBTTagCompound;
 
 public class EngineStone extends Engine
 {
-
     int burnTime = 0;
     int totalBurnTime = 0;
-
 
     public EngineStone(TileEngine var1)
     {
@@ -77,13 +75,12 @@ public class EngineStone extends Engine
             if (this.burnTime > 0)
             {
                 ItemStack var1 = this.tile.splitStack(1, 1);
-                if (var1.getItem().i() != null)
+                if (var1.getItem().j() != null)
                 {
-                    this.tile.setItem(1, new ItemStack(var1.getItem().i(), 1));
+                    this.tile.setItem(1, new ItemStack(var1.getItem().j(), 1));
                 }
             }
         }
-
     }
 
     public int getScaledBurnTime(int var1)
@@ -123,7 +120,6 @@ public class EngineStone extends Engine
         {
             Utils.dropItems(this.tile.world, var1, this.tile.x, this.tile.y, this.tile.z);
         }
-
     }
 
     public void getGUINetworkData(int var1, int var2)
@@ -136,7 +132,6 @@ public class EngineStone extends Engine
         {
             this.totalBurnTime = var2;
         }
-
     }
 
     public void sendGUINetworkData(ContainerEngine var1, ICrafting var2)

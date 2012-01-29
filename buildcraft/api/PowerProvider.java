@@ -8,7 +8,6 @@ import net.minecraft.server.TileEntity;
 
 public abstract class PowerProvider
 {
-
     public int latency;
     public int minEnergyReceived;
     public int maxEnergyReceived;
@@ -20,7 +19,6 @@ public abstract class PowerProvider
     protected int powerLossRegularity = 100;
     public SafeTimeTracker timeTracker = new SafeTimeTracker();
     public SafeTimeTracker energyLossTracker = new SafeTimeTracker();
-
 
     public void configure(int var1, int var2, int var3, int var4, int var5)
     {
@@ -132,6 +130,5 @@ public abstract class PowerProvider
         {
             this.energyStored = this.maxEnergyStored;
         }
-
     }
 }

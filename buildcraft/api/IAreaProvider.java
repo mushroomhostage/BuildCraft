@@ -1,9 +1,7 @@
 package buildcraft.api;
 
-
 public interface IAreaProvider
 {
-
     int xMin();
 
     int yMin();

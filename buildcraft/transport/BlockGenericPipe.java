@@ -31,11 +31,9 @@ import net.minecraft.server.World;
 
 public class BlockGenericPipe extends BlockContainer implements IPipeConnection, IBlockPipe, ITextureProvider
 {
-
     public static TreeMap pipes = new TreeMap();
     static long lastRemovedDate = -1L;
     public static TreeMap pipeRemoved = new TreeMap();
-
 
     public BlockGenericPipe(int var1)
     {
@@ -261,7 +259,6 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
                     }
                 }
             }
-
         }
     }
 
@@ -286,7 +283,6 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         {
             var6.onNeighborBlockChange();
         }
-
     }
 
     public void postPlace(World var1, int var2, int var3, int var4, int var5)
@@ -297,7 +293,6 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         {
             var6.onBlockPlaced();
         }
-
     }
 
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
@@ -314,7 +309,6 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         {
             var6.prepareTextureFor(var5);
         }
-
     }
 
     public int getBlockTexture(IBlockAccess var1, int var2, int var3, int var4, int var5)
@@ -331,7 +325,6 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         {
             var6.onEntityCollidedWithBlock(var5);
         }
-
     }
 
     public boolean a(IBlockAccess var1, int var2, int var3, int var4, int var5)
@@ -358,7 +351,6 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         {
             var6.randomDisplayTick(var5);
         }
-
     }
 
     public static Item registerPipe(int var0, Class var1)
@@ -405,5 +397,4 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
     {
         return isFullyDefined(var0) && var0.isValid();
     }
-
 }

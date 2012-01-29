@@ -16,11 +16,9 @@ import net.minecraft.server.World;
 
 public class BlockQuarry extends BlockMachineRoot implements ITextureProvider, IPipeConnection
 {
-
     int textureTop;
     int textureFront;
     int textureSide;
-
 
     public BlockQuarry(int var1)
     {

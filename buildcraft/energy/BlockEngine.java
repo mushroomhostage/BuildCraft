@@ -18,7 +18,6 @@ import net.minecraft.server.World;
 
 public class BlockEngine extends BlockContainer implements IPipeConnection
 {
-
     public BlockEngine(int var1)
     {
         super(var1, Material.ORE);
@@ -64,7 +63,7 @@ public class BlockEngine extends BlockContainer implements IPipeConnection
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
         TileEngine var6 = (TileEngine)var1.getTileEntity(var2, var3, var4);
-        if (var5.P() != null && var5.P().getItem() == BuildCraftCore.wrenchItem)
+        if (var5.Q() != null && var5.Q().getItem() == BuildCraftCore.wrenchItem)
         {
             var6.switchOrientation();
             return true;

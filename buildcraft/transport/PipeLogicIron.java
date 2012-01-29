@@ -14,9 +14,7 @@ import net.minecraft.server.TileEntity;
 
 public class PipeLogicIron extends PipeLogic
 {
-
     boolean lastPower = false;
-
 
     public void switchPower()
     {
@@ -26,7 +24,6 @@ public class PipeLogicIron extends PipeLogic
             this.switchPosition();
             this.lastPower = var1;
         }
-
     }
 
     public void switchPosition()
@@ -51,7 +48,6 @@ public class PipeLogicIron extends PipeLogic
                 return;
             }
         }
-
     }
 
     public void initialize()
@@ -70,7 +66,7 @@ public class PipeLogicIron extends PipeLogic
     public boolean blockActivated(EntityHuman var1)
     {
         super.blockActivated(var1);
-        if (var1.P() != null && var1.P().getItem() == BuildCraftCore.wrenchItem)
+        if (var1.Q() != null && var1.Q().getItem() == BuildCraftCore.wrenchItem)
         {
             this.switchPosition();
             this.worldObj.notify(this.xCoord, this.yCoord, this.zCoord);

@@ -26,7 +26,6 @@ import net.minecraft.server.Packet230ModLoader;
 
 public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPowerReceptor, IMachine
 {
-
     @TileNetworkData
     public Box box = new Box();
     @TileNetworkData
@@ -37,7 +36,6 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
     boolean forceDone = false;
     private ItemStack[] contents = new ItemStack[this.getSize()];
     PowerProvider powerProvider;
-
 
     public TileFiller()
     {
@@ -88,7 +86,6 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         {
             this.doWork();
         }
-
     }
 
     public void doWork()
@@ -129,7 +126,6 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
                 {
                     this.doWork();
                 }
-
             }
         }
     }
@@ -180,7 +176,6 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
                 {
                     this.sendNetworkUpdate();
                 }
-
             }
         }
     }
@@ -304,7 +299,6 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         {
             this.box.deleteLasers();
         }
-
     }
 
     public boolean addItem(ItemStack var1, boolean var2, Orientations var3)
@@ -403,7 +397,6 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         {
             this.box.createLasers(this.world, LaserKind.Stripes);
         }
-
     }
 
     public void handleUpdatePacket(Packet230ModLoader var1)
@@ -416,7 +409,6 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         {
             this.box.createLasers(this.world, LaserKind.Stripes);
         }
-
     }
 
     public void setPowerProvider(PowerProvider var1)

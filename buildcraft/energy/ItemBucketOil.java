@@ -6,7 +6,6 @@ import net.minecraft.server.ItemBucket;
 
 public class ItemBucketOil extends ItemBucket implements ITextureProvider
 {
-
     public ItemBucketOil(int var1)
     {
         super(var1, BuildCraftEnergy.oilMoving.id);

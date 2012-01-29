@@ -37,7 +37,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 public class TileQuarry extends TileMachine implements IArmListener, IMachine, IPowerReceptor
 {
-
     BlockContents nextBlockForBluePrint = null;
     boolean isDigging = false;
     @TileNetworkData
@@ -65,7 +64,6 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
     public PowerProvider powerProvider;
     public static int MAX_ENERGY = 7000;
     private boolean loadDefaultBoundaries = false;
-
 
     public TileQuarry()
     {
@@ -115,7 +113,6 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                 this.box.createLasers(this.world, LaserKind.Stripes);
                 this.isDigging = true;
             }
-
         }
     }
 
@@ -151,7 +148,6 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
             this.headPosZ = this.arm.headPosZ;
             this.speed = this.arm.speed;
         }
-
     }
 
     public void doWork()
@@ -234,7 +230,6 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                             {
                                 this.sendNetworkUpdate();
                             }
-
                         }
                     }
                 }
@@ -379,7 +374,6 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
             this.arm.listener = this;
             this.loadArm = true;
         }
-
     }
 
     public void b(NBTTagCompound var1)
@@ -455,7 +449,6 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
 
                 this.world.setTypeId(var2, var3, var4, 0);
             }
-
         }
     }
 
@@ -606,7 +599,6 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
             this.arm.setTarget((double)this.targetX, (double)this.targetY, (double)this.targetZ);
             this.arm.speed = this.speed;
         }
-
     }
 
     public void initialize()

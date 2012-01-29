@@ -16,7 +16,6 @@ import net.minecraft.server.World;
 
 public class BlockTank extends BlockContainer implements ITextureProvider
 {
-
     public BlockTank(int var1)
     {
         super(var1, Material.SHATTERABLE);
@@ -75,9 +74,9 @@ public class BlockTank extends BlockContainer implements ITextureProvider
 
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
-        if (var5.P() != null)
+        if (var5.Q() != null)
         {
-            int var6 = var5.P().id;
+            int var6 = var5.Q().id;
             int var7 = API.getLiquidForBucket(var6);
             TileTank var8 = (TileTank)var1.getTileEntity(var2, var3, var4);
             if (var7 != 0)

@@ -14,12 +14,10 @@ import net.minecraft.server.TileEntity;
 
 public class PipePowerWood extends Pipe implements IPowerReceptor
 {
-
     private PowerProvider powerProvider;
     private int baseTexture = 118;
     private int plainTexture = 31;
     private int nextTexture;
-
 
     public PipePowerWood(int var1)
     {
@@ -82,7 +80,6 @@ public class PipePowerWood extends Pipe implements IPowerReceptor
                 }
             }
         }
-
     }
 
     public void prepareTextureFor(Orientations var1)
@@ -103,7 +100,6 @@ public class PipePowerWood extends Pipe implements IPowerReceptor
                 this.nextTexture = this.baseTexture;
             }
         }
-
     }
 
     public int powerRequest()

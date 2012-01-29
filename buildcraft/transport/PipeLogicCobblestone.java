@@ -9,7 +9,6 @@ import net.minecraft.server.TileEntity;
 
 public class PipeLogicCobblestone extends PipeLogic
 {
-
     public boolean isPipeConnected(TileEntity var1)
     {
         Pipe var2 = null;

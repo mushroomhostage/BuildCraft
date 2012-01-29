@@ -6,7 +6,6 @@ import net.minecraft.server.World;
 
 public class EntityBlock extends Entity
 {
-
     public int texture;
     public float shadowSize;
     public float rotationX;
@@ -16,7 +15,6 @@ public class EntityBlock extends Entity
     public double jSize;
     public double kSize;
 
-
     public EntityBlock(World var1)
     {
         super(var1);
@@ -25,8 +23,8 @@ public class EntityBlock extends Entity
         this.rotationX = 0.0F;
         this.rotationY = 0.0F;
         this.rotationZ = 0.0F;
-        this.bc = false;
-        this.bN = true;
+        this.bf = false;
+        this.bQ = true;
         this.fireProof = true;
     }
 

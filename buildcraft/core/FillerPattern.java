@@ -9,9 +9,7 @@ import net.minecraft.server.World;
 
 public abstract class FillerPattern
 {
-
     public int id;
-
 
     public abstract boolean iteratePattern(TileEntity var1, IBox var2, ItemStack var3);
 

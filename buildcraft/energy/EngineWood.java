@@ -5,7 +5,6 @@ import buildcraft.energy.TileEngine;
 
 public class EngineWood extends Engine
 {
-
     public EngineWood(TileEngine var1)
     {
         super(var1);
@@ -51,7 +50,6 @@ public class EngineWood extends Engine
         {
             ++this.energy;
         }
-
     }
 
     public boolean isBurning()

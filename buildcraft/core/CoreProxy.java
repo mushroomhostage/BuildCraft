@@ -16,7 +16,6 @@ import net.minecraft.server.WorldServer;
 
 public class CoreProxy
 {
-
     public static void addName(Object var0, String var1) {}
 
     public static void setField804(EntityItem var0, float var1)

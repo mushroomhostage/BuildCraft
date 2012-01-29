@@ -16,7 +16,6 @@ import net.minecraft.server.World;
 
 public class TileMarker extends TileBuildCraft implements IAreaProvider
 {
-
     private static int maxSize = 64;
     @TileNetworkData
     public TileMarker.Origin origin = new TileMarker.Origin();
@@ -24,7 +23,6 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider
     private EntityBlock[] signals;
     private Position initVectO;
     private Position[] initVect;
-
 
     public void switchSignals()
     {
@@ -71,7 +69,6 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider
         {
             this.sendNetworkUpdate();
         }
-
     }
 
     public void initialize()
@@ -91,7 +88,6 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider
                 }
             }
         }
-
     }
 
     public void tryConnection()
@@ -145,7 +141,6 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider
                 var3[var1] += var4;
             }
         }
-
     }
 
     private boolean linkTo(TileMarker var1, int var2)
@@ -375,7 +370,6 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider
         {
             var1.sendNetworkUpdate();
         }
-
     }
 
     public void removeFromWorld()
@@ -417,7 +411,6 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider
                 }
             }
         }
-
     }
 
     public void b(NBTTagCompound var1)
@@ -439,7 +432,6 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider
                 }
             }
         }
-
     }
 
     public Packet k()
@@ -488,10 +480,8 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider
         this.createLasers();
     }
 
-
     public static class TileWrapper
     {
-
         @TileNetworkData
         public int x;
         @TileNetworkData
@@ -499,7 +489,6 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider
         @TileNetworkData
         public int z;
         private TileMarker marker;
-
 
         public TileWrapper()
         {
@@ -547,7 +536,6 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider
 
     public static class Origin
     {
-
         @TileNetworkData
         public TileMarker.TileWrapper vectO = new TileMarker.TileWrapper();
         @TileNetworkData(
@@ -566,7 +554,6 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider
         public int yMax;
         @TileNetworkData
         public int zMax;
-
 
         public boolean isSet()
         {

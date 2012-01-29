@@ -2,16 +2,15 @@ package buildcraft.builders;
 
 import buildcraft.builders.TileTemplate;
 import buildcraft.core.BuildCraftContainer;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.Slot;
 
 class CraftingTemplateRoot extends BuildCraftContainer
 {
-
     IInventory playerIInventory;
     TileTemplate template;
     int computingTime = 0;
-
 
     public CraftingTemplateRoot(IInventory var1, TileTemplate var2)
     {
@@ -34,6 +33,10 @@ class CraftingTemplateRoot extends BuildCraftContainer
         {
             this.a(new Slot(var1, var3, 8 + var3 * 18, 142));
         }
+    }
 
+    public boolean b(EntityHuman var1)
+    {
+        return this.template.a(var1);
     }
 }

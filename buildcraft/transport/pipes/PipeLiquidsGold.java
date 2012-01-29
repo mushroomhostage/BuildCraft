@@ -6,7 +6,6 @@ import buildcraft.transport.PipeTransportLiquids;
 
 public class PipeLiquidsGold extends Pipe
 {
-
     public PipeLiquidsGold(int var1)
     {
         super(new PipeTransportLiquids(), new PipeLogicGold(), var1);

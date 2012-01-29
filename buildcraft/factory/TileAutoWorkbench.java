@@ -70,7 +70,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
 
     public boolean a(EntityHuman var1)
     {
-        return true;
+        return this.world.getTileEntity(this.x, this.y, this.z) == this;
     }
 
     public void a(NBTTagCompound var1)
@@ -87,7 +87,6 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
                 this.stackList[var3] = ItemStack.a(var4);
             }
         }
-
     }
 
     public void b(NBTTagCompound var1)
@@ -210,9 +209,9 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
             while (var11.hasNext())
             {
                 var8 = (TileAutoWorkbench.StackPointer)var11.next();
-                if (var8.item.getItem().i() != null)
+                if (var8.item.getItem().j() != null)
                 {
-                    ItemStack var9 = new ItemStack(var8.item.getItem().i(), 1);
+                    ItemStack var9 = new ItemStack(var8.item.getItem().j(), 1);
                     var8.inventory.setItem(var8.index, var9);
                 }
             }
@@ -247,7 +246,6 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
                 ++var3.inventory.getItem(var3.index).count;
             }
         }
-
     }
 
     public TileAutoWorkbench.StackPointer getNearbyItem(int var1, int var2)
@@ -315,7 +313,6 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
 
     class LocalInventoryCrafting extends InventoryCrafting
     {
-
         public LocalInventoryCrafting()
         {
             super(new Container()
@@ -334,11 +331,8 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
 
     class StackPointer
     {
-
         IInventory inventory;
         int index;
         ItemStack item;
-
-
     }
 }

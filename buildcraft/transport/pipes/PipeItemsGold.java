@@ -15,7 +15,6 @@ import net.minecraft.server.TileEntity;
 
 public class PipeItemsGold extends Pipe implements IPipeTransportItemsHook
 {
-
     public PipeItemsGold(int var1)
     {
         super(new PipeTransportItems(), new PipeLogicGold(), var1);
@@ -55,7 +54,6 @@ public class PipeItemsGold extends Pipe implements IPipeTransportItemsHook
         {
             var1.speed = Utils.pipeNormalSpeed * 20.0F;
         }
-
     }
 
     public void readjustSpeed(EntityPassiveItem var1)

@@ -9,7 +9,6 @@ import net.minecraft.server.World;
 
 public class EntityMechanicalArm extends Entity
 {
-
     double sizeX;
     double sizeZ;
     EntityBlock xArm;
@@ -29,7 +28,6 @@ public class EntityMechanicalArm extends Entity
     boolean inProgressionXZ = false;
     boolean inProgressionY = false;
 
-
     public EntityMechanicalArm(World var1)
     {
         super(var1);
@@ -47,7 +45,7 @@ public class EntityMechanicalArm extends Entity
         this.lastZ = var6;
         this.sizeX = var10;
         this.sizeZ = var8;
-        this.bN = true;
+        this.bQ = true;
         this.baseY = var4;
         this.headPosX = var2;
         this.headPosY = var4 - 2.0D;
@@ -152,18 +150,17 @@ public class EntityMechanicalArm extends Entity
         return new double[] {this.targetX, this.targetY, this.targetZ};
     }
 
-    public void w_()
+    public void y_()
     {
         if (this.speed > 0.0D)
         {
             this.doMove(this.speed);
         }
-
     }
 
     public void doMove(double var1)
     {
-        super.w_();
+        super.y_();
         if (this.inProgressionXZ)
         {
             if (Math.abs(this.targetX - this.headPosX) < var1 * 2.0D && Math.abs(this.targetZ - this.headPosZ) < var1 * 2.0D)

@@ -143,7 +143,6 @@ public class BlockOilFlowing extends BlockFluids
                 this.flowIntoBlock(var1, var2, var3, var4 + 1, var10);
             }
         }
-
     }
 
     private void flowIntoBlock(World var1, int var2, int var3, int var4, int var5)
@@ -158,7 +157,6 @@ public class BlockOilFlowing extends BlockFluids
 
             var1.setTypeIdAndData(var2, var3, var4, this.id, var5);
         }
-
     }
 
     private int calculateFlowCost(World var1, int var2, int var3, int var4, int var5, int var6)
@@ -325,7 +323,6 @@ public class BlockOilFlowing extends BlockFluids
         {
             var1.c(var2, var3, var4, this.id, this.d());
         }
-
     }
 
     public int stillLiquidId()

@@ -5,9 +5,7 @@ import java.util.LinkedList;
 
 public class ByteBuffer
 {
-
     LinkedList bytes = new LinkedList();
-
 
     public void writeUnsignedByte(int var1)
     {
@@ -126,6 +124,5 @@ public class ByteBuffer
             int var5 = var2[var4];
             this.writeInt(var5);
         }
-
     }
 }

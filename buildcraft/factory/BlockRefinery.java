@@ -17,7 +17,6 @@ import net.minecraft.server.World;
 
 public class BlockRefinery extends BlockContainer
 {
-
     public BlockRefinery(int var1)
     {
         super(var1, Material.ORE);
@@ -58,10 +57,10 @@ public class BlockRefinery extends BlockContainer
 
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
-        if (var5.P() != null)
+        if (var5.Q() != null)
         {
             int var6;
-            if (var5.P().getItem() == BuildCraftCore.wrenchItem)
+            if (var5.Q().getItem() == BuildCraftCore.wrenchItem)
             {
                 var6 = var1.getData(var2, var3, var4);
                 switch (Orientations.values()[var6])
@@ -83,7 +82,7 @@ public class BlockRefinery extends BlockContainer
             }
             else
             {
-                var6 = API.getLiquidForBucket(var5.P().id);
+                var6 = API.getLiquidForBucket(var5.Q().id);
                 if (var6 != 0)
                 {
                     int var7 = ((TileRefinery)var1.getTileEntity(var2, var3, var4)).fill(Orientations.Unknown, 1000, var6, true);

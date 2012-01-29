@@ -11,9 +11,7 @@ import net.minecraft.server.ItemStack;
 
 public class FillerRegistry
 {
-
     static LinkedList recipes = new LinkedList();
-
 
     public static void addRecipe(FillerPattern var0, Object[] var1)
     {
@@ -119,15 +117,12 @@ public class FillerRegistry
         return var0 <= 0 ? null : ((FillerRegistry.ShapedPatternRecipe)recipes.get(var0 - 1)).recipeOutput;
     }
 
-
     static class ShapedPatternRecipe
     {
-
         private int recipeWidth;
         private int recipeHeight;
         private ItemStack[] recipeItems;
         private FillerPattern recipeOutput;
-
 
         public ShapedPatternRecipe(int var1, int var2, ItemStack[] var3, FillerPattern var4)
         {

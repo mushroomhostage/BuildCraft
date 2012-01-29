@@ -21,7 +21,6 @@ import net.minecraft.server.World;
 
 public abstract class Pipe extends PersistentTile implements IPipe
 {
-
     public int xCoord;
     public int yCoord;
     public int zCoord;
@@ -33,7 +32,6 @@ public abstract class Pipe extends PersistentTile implements IPipe
     private TilePacketWrapper networkPacket;
     private static Map networkWrappers = new HashMap();
     private boolean initialized = false;
-
 
     public Pipe(PipeTransport var1, PipeLogic var2, int var3)
     {
@@ -65,7 +63,6 @@ public abstract class Pipe extends PersistentTile implements IPipe
             this.transport.setWorld(var1);
             this.logic.setWorld(var1);
         }
-
     }
 
     public void setTile(TileEntity var1)
@@ -132,7 +129,6 @@ public abstract class Pipe extends PersistentTile implements IPipe
             this.logic.initialize();
             this.initialized = true;
         }
-
     }
 
     public boolean inputOpen(Orientations var1)
@@ -175,5 +171,4 @@ public abstract class Pipe extends PersistentTile implements IPipe
     }
 
     public void onDropped(EntityItem var1) {}
-
 }

@@ -9,13 +9,11 @@ import net.minecraft.server.World;
 
 public class PipeTransport
 {
-
     public int xCoord;
     public int yCoord;
     public int zCoord;
     public World worldObj;
     public TileGenericPipe container;
-
 
     public void setPosition(int var1, int var2, int var3)
     {

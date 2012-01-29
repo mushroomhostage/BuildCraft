@@ -14,7 +14,6 @@ import net.minecraft.server.NBTTagCompound;
 
 public class EngineIron extends Engine
 {
-
     public static int MAX_LIQUID = 10000;
     public static int MAX_HEAT = 100000;
     public static int COOLANT_THRESHOLD = '\ubf68';
@@ -24,7 +23,6 @@ public class EngineIron extends Engine
     int coolantQty = 0;
     int coolantId = 0;
     int heat = 0;
-
 
     public EngineIron(TileEngine var1)
     {
@@ -90,7 +88,6 @@ public class EngineIron extends Engine
                 this.addEnergy(var1.powerPerCycle);
                 this.heat += var1.powerPerCycle;
             }
-
         }
     }
 
@@ -135,7 +132,6 @@ public class EngineIron extends Engine
                 --this.heat;
             }
         }
-
     }
 
     public void computeEnergyStage()
@@ -160,7 +156,6 @@ public class EngineIron extends Engine
         {
             this.energyStage = Engine.EnergyStage.Explosion;
         }
-
     }
 
     public int getScaledBurnTime(int var1)
@@ -288,7 +283,6 @@ public class EngineIron extends Engine
             case 3:
                 this.coolantId = var2;
         }
-
     }
 
     public void sendGUINetworkData(ContainerEngine var1, ICrafting var2)

@@ -21,12 +21,10 @@ import net.minecraft.server.World;
 
 public class PipeItemsWood extends Pipe implements IPowerReceptor
 {
-
     private PowerProvider powerProvider;
     private int baseTexture = 16;
     private int plainTexture = 31;
     private int nextTexture;
-
 
     public PipeItemsWood(int var1)
     {
@@ -60,7 +58,6 @@ public class PipeItemsWood extends Pipe implements IPowerReceptor
                 this.nextTexture = this.baseTexture;
             }
         }
-
     }
 
     public void setPowerProvider(PowerProvider var1)
@@ -102,7 +99,6 @@ public class PipeItemsWood extends Pipe implements IPowerReceptor
                         EntityPassiveItem var9 = new EntityPassiveItem(var1, var8.x, var8.y, var8.z, var7);
                         ((PipeTransportItems)this.transport).entityEntering(var9, var8.orientation);
                     }
-
                 }
             }
         }

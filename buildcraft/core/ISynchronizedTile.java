@@ -5,7 +5,6 @@ import net.minecraft.server.Packet230ModLoader;
 
 public interface ISynchronizedTile
 {
-
     void handleDescriptionPacket(Packet230ModLoader var1);
 
     void handleUpdatePacket(Packet230ModLoader var1);

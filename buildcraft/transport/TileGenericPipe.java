@@ -28,14 +28,12 @@ import net.minecraft.server.mod_BuildCraftCore;
 
 public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiquidContainer, ISpecialInventory, IPipeEntry, ISynchronizedTile
 {
-
     public SafeTimeTracker networkSyncTracker = new SafeTimeTracker();
     public Pipe pipe;
     private boolean blockNeighborChange = false;
     private boolean pipeBound = false;
     @TileNetworkData
     public int pipeId = -1;
-
 
     public void b(NBTTagCompound var1)
     {
@@ -45,7 +43,6 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
             var1.setInt("pipeId", this.pipe.itemID);
             this.pipe.writeToNBT(var1);
         }
-
     }
 
     public void a(NBTTagCompound var1)
@@ -115,7 +112,6 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
             {
                 this.pipe.updateEntity();
             }
-
         }
     }
 
@@ -141,7 +137,6 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
                 this.pipeBound = true;
             }
         }
-
     }
 
     public void setPowerProvider(PowerProvider var1)
@@ -150,7 +145,6 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
         {
             ((IPowerReceptor)this.pipe).setPowerProvider(var1);
         }
-
     }
 
     public PowerProvider getPowerProvider()
@@ -164,7 +158,6 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
         {
             ((IPowerReceptor)this.pipe).doWork();
         }
-
     }
 
     public int fill(Orientations var1, int var2, int var3, boolean var4)
@@ -218,7 +211,6 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
         {
             this.pipe.logic.setInventorySlotContents(var1, var2);
         }
-
     }
 
     public String getName()
@@ -233,7 +225,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
 
     public boolean a(EntityHuman var1)
     {
-        return BlockGenericPipe.isFullyDefined(this.pipe) ? this.pipe.logic.canInteractWith(var1) : false;
+        return this.world.getTileEntity(this.x, this.y, this.z) != this ? false : (BlockGenericPipe.isFullyDefined(this.pipe) ? this.pipe.logic.canInteractWith(var1) : false);
     }
 
     public boolean addItem(ItemStack var1, boolean var2, Orientations var3)
@@ -252,7 +244,6 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
         {
             this.pipe.transport.entityEntering(var1, var2);
         }
-
     }
 
     public boolean acceptItems()
@@ -272,7 +263,6 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
                 this.pipe.initialize();
             }
         }
-
     }
 
     public void handleUpdatePacket(Packet230ModLoader var1)
@@ -281,7 +271,6 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
         {
             this.pipe.handlePacket(var1);
         }
-
     }
 
     public void postPacketHandling(Packet230ModLoader var1) {}
@@ -296,7 +285,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
         this.bindPipe();
         Packet230ModLoader var1 = new Packet230ModLoader();
         var1.modId = mod_BuildCraftCore.instance.getId();
-        var1.l = true;
+        var1.lowPriority = true;
         var1.packetType = PacketIds.TileDescription.ordinal();
         var1.dataInt = new int[4];
         var1.dataInt[0] = this.x;

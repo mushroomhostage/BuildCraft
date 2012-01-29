@@ -6,7 +6,6 @@ import net.minecraft.server.World;
 
 public class EntityModel extends Entity
 {
-
     public EntityModel(World var1, double var2, double var4, double var6)
     {
         super(var1);

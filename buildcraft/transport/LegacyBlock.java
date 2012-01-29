@@ -7,9 +7,7 @@ import net.minecraft.server.TileEntity;
 
 public class LegacyBlock extends BlockContainer
 {
-
     public int newPipeId;
-
 
     public LegacyBlock(int var1, int var2)
     {

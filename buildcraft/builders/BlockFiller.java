@@ -16,12 +16,10 @@ import net.minecraft.server.World;
 
 public class BlockFiller extends BlockContainer implements ITextureProvider
 {
-
     int textureSides;
     int textureTopOn;
     int textureTopOff;
     public FillerPattern currentPattern;
-
 
     public BlockFiller(int var1)
     {

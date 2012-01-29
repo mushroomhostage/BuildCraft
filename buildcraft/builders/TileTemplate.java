@@ -21,14 +21,12 @@ import net.minecraft.server.Packet230ModLoader;
 
 public class TileTemplate extends TileBuildCraft implements IInventory
 {
-
     @TileNetworkData
     public Box box = new Box();
     private ItemStack[] items = new ItemStack[2];
     private boolean isComputing = false;
     public int computingTime = 0;
     private int lastTemplateId = 0;
-
 
     public ItemStack[] getContents()
     {
@@ -49,7 +47,6 @@ public class TileTemplate extends TileBuildCraft implements IInventory
                 this.createBluePrint();
             }
         }
-
     }
 
     public void initialize()
@@ -198,7 +195,7 @@ public class TileTemplate extends TileBuildCraft implements IInventory
 
     public boolean a(EntityHuman var1)
     {
-        return true;
+        return this.world.getTileEntity(this.x, this.y, this.z) == this;
     }
 
     public void a(NBTTagCompound var1)
@@ -224,7 +221,6 @@ public class TileTemplate extends TileBuildCraft implements IInventory
                 this.items[var5] = ItemStack.a(var4);
             }
         }
-
     }
 
     public void b(NBTTagCompound var1)
@@ -267,7 +263,6 @@ public class TileTemplate extends TileBuildCraft implements IInventory
         {
             this.box.deleteLasers();
         }
-
     }
 
     private void initializeComputing()
@@ -292,7 +287,6 @@ public class TileTemplate extends TileBuildCraft implements IInventory
                 this.isComputing = false;
                 this.computingTime = 0;
             }
-
         }
     }
 
@@ -309,7 +303,6 @@ public class TileTemplate extends TileBuildCraft implements IInventory
         {
             this.box.createLasers(this.world, LaserKind.Stripes);
         }
-
     }
 
     public void handleUpdatePacket(Packet230ModLoader var1)
@@ -320,7 +313,6 @@ public class TileTemplate extends TileBuildCraft implements IInventory
         {
             this.box.createLasers(this.world, LaserKind.Stripes);
         }
-
     }
 
     public void f() {}

@@ -16,10 +16,8 @@ import net.minecraft.server.Slot;
 
 public class ContainerAutoWorkbench extends BuildCraftContainer
 {
-
     TileAutoWorkbench tile;
     public IInventory craftResult = new InventoryCraftResult();
-
 
     public ContainerAutoWorkbench(PlayerInventory var1, TileAutoWorkbench var2)
     {
@@ -67,9 +65,9 @@ public class ContainerAutoWorkbench extends BuildCraftContainer
         return var5;
     }
 
-    public boolean isUsableByPlayer(EntityHuman var1)
+    public boolean b(EntityHuman var1)
     {
-        return true;
+        return this.tile.a(var1);
     }
 
     public ItemStack a(int var1)
@@ -128,10 +126,8 @@ public class ContainerAutoWorkbench extends BuildCraftContainer
 
     public class SlotAutoCrafting extends Slot
     {
-
         private final IInventory craftMatrix;
         private EntityHuman thePlayer;
-
 
         public SlotAutoCrafting(EntityHuman var2, IInventory var3, IInventory var4, int var5, int var6, int var7)
         {

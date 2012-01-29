@@ -9,11 +9,9 @@ import net.minecraft.server.ModLoader;
 
 public class mod_BuildCraftCore extends BaseModMp
 {
-
     public static mod_BuildCraftCore instance;
     BuildCraftCore proxy = new BuildCraftCore();
     long lastReport = 0L;
-
 
     public mod_BuildCraftCore()
     {
@@ -32,14 +30,14 @@ public class mod_BuildCraftCore extends BaseModMp
         ModLoader.SetInGameHook(this, true, true);
     }
 
-    public String Version()
+    public String getVersion()
     {
         return version();
     }
 
     public static String version()
     {
-        return "2.2.11";
+        return "2.2.12";
     }
 
     public void OnTickInGame(MinecraftServer var1)
@@ -57,4 +55,6 @@ public class mod_BuildCraftCore extends BaseModMp
         }
 
     }
+
+    public void load() {}
 }

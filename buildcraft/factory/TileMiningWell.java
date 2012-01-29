@@ -24,10 +24,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 public class TileMiningWell extends TileMachine implements IMachine, IPowerReceptor
 {
-
     boolean isDigging = true;
     PowerProvider powerProvider;
-
 
     public TileMiningWell()
     {

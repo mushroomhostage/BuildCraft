@@ -1,6 +1,5 @@
 package buildcraft.api;
 
-
 public enum LaserKind
 {
     Red,     // 0

@@ -7,11 +7,9 @@ import net.minecraft.server.TileEntity;
 
 public class TilePollution extends TileEntity
 {
-
     public boolean init = false;
     public SafeTimeTracker timeTracker = new SafeTimeTracker();
     public int saturation = 0;
-
 
     public void l_()
     {
@@ -33,6 +31,5 @@ public class TilePollution extends TileEntity
         {
             ;
         }
-
     }
 }

@@ -1,15 +1,14 @@
 package buildcraft.builders;
 
 import buildcraft.core.BuildCraftContainer;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.Slot;
 
 class CraftingBuilder extends BuildCraftContainer
 {
-
     IInventory playerIInventory;
     IInventory builderInventory;
-
 
     public CraftingBuilder(IInventory var1, IInventory var2)
     {
@@ -40,6 +39,10 @@ class CraftingBuilder extends BuildCraftContainer
         {
             this.a(new Slot(var1, var3, 8 + var3 * 18, 198));
         }
+    }
 
+    public boolean b(EntityHuman var1)
+    {
+        return this.builderInventory.a(var1);
     }
 }

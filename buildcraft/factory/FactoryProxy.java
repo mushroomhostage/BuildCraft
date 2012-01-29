@@ -10,7 +10,6 @@ import net.minecraft.server.World;
 
 public class FactoryProxy
 {
-
     public static void displayGUIAutoCrafting(World var0, EntityHuman var1, int var2, int var3, int var4)
     {
         TileAutoWorkbench var5 = (TileAutoWorkbench)var0.getTileEntity(var2, var3, var4);

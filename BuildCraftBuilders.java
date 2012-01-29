@@ -31,7 +31,6 @@ import net.minecraft.server.mod_BuildCraftCore;
 
 public class BuildCraftBuilders
 {
-
     public static BlockMarker markerBlock;
     public static BlockFiller fillerBlock;
     public static BlockBuilder builderBlock;
@@ -39,7 +38,6 @@ public class BuildCraftBuilders
     public static ItemTemplate templateItem;
     private static boolean initialized = false;
     public static BluePrint[] bluePrints = new BluePrint['\ufe01'];
-
 
     public static void initialize()
     {
@@ -87,7 +85,6 @@ public class BuildCraftBuilders
             {
                 loadRecipes();
             }
-
         }
     }
 
@@ -137,7 +134,5 @@ public class BuildCraftBuilders
                 }
             }
         }
-
     }
-
 }

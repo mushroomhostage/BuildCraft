@@ -6,7 +6,6 @@ import net.minecraft.server.World;
 
 public interface IBox
 {
-
     Position p1();
 
     Position p2();

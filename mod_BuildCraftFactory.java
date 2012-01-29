@@ -5,9 +5,7 @@ import net.minecraft.server.BuildCraftFactory;
 
 public class mod_BuildCraftFactory extends BaseModMp
 {
-
     public static mod_BuildCraftFactory instance;
-
 
     public void ModsLoaded()
     {
@@ -16,8 +14,10 @@ public class mod_BuildCraftFactory extends BaseModMp
         instance = this;
     }
 
-    public String Version()
+    public String getVersion()
     {
-        return "2.2.11";
+        return "2.2.12";
     }
+
+    public void load() {}
 }

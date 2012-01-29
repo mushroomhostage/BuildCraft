@@ -8,7 +8,6 @@ import net.minecraft.server.TileEntity;
 
 public class LegacyTile extends TileEntity
 {
-
     public void l_()
     {
         int var1 = this.world.getData(this.x, this.y, this.z);

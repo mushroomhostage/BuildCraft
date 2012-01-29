@@ -18,12 +18,10 @@ import net.minecraft.server.World;
 
 public class BlockTemplate extends BlockContainer implements ITextureProvider
 {
-
     int blockTextureSides;
     int blockTextureFront;
     int blockTextureTopPos;
     int blockTextureTopNeg;
-
 
     public BlockTemplate(int var1)
     {
@@ -47,7 +45,7 @@ public class BlockTemplate extends BlockContainer implements ITextureProvider
 
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
-        if (var5.P() != null && var5.P().getItem() == BuildCraftCore.wrenchItem)
+        if (var5.Q() != null && var5.Q().getItem() == BuildCraftCore.wrenchItem)
         {
             int var7 = var1.getData(var2, var3, var4);
             switch (Orientations.values()[var7])

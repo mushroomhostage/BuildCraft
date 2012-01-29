@@ -11,7 +11,6 @@ import net.minecraft.server.NBTTagCompound;
 
 public abstract class Engine
 {
-
     public int maxEnergy;
     @TileNetworkData
     public float progress;
@@ -22,7 +21,6 @@ public abstract class Engine
     public Engine.EnergyStage energyStage;
     public int maxEnergyExtracted;
     protected TileEngine tile;
-
 
     public Engine(TileEngine var1)
     {
@@ -53,7 +51,6 @@ public abstract class Engine
         {
             this.energyStage = Engine.EnergyStage.Explosion;
         }
-
     }
 
     public final Engine.EnergyStage getEnergyStage()
@@ -72,7 +69,6 @@ public abstract class Engine
         {
             --this.energy;
         }
-
     }
 
     public abstract String getTextureFile();
@@ -99,7 +95,6 @@ public abstract class Engine
         {
             this.energy = this.maxEnergy;
         }
-
     }
 
     public int extractEnergy(int var1, int var2, boolean var3)
@@ -156,17 +151,14 @@ public abstract class Engine
 
     public static enum EnergyStage
     {
-
         Blue("Blue", 0),
         Green("Green", 1),
         Yellow("Yellow", 2),
         Red("Red", 3),
         Explosion("Explosion", 4);
-        // $FF: synthetic field
+
         private static final Engine.EnergyStage[] $VALUES = new Engine.EnergyStage[]{Blue, Green, Yellow, Red, Explosion};
 
-
         private EnergyStage(String var1, int var2) {}
-
     }
 }

@@ -1,15 +1,12 @@
 package buildcraft.core;
 
 import net.minecraft.server.Container;
-import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.Slot;
 
-public class BuildCraftContainer extends Container
+public abstract class BuildCraftContainer extends Container
 {
-
     private int inventorySize;
-
 
     public BuildCraftContainer(int var1)
     {
@@ -47,10 +44,5 @@ public class BuildCraftContainer extends Container
         }
 
         return var2;
-    }
-
-    public final boolean b(EntityHuman var1)
-    {
-        return true;
     }
 }

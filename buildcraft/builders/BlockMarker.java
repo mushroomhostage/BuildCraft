@@ -18,7 +18,6 @@ import net.minecraft.server.World;
 
 public class BlockMarker extends BlockContainer implements ITextureProvider
 {
-
     public BlockMarker(int var1)
     {
         super(var1, Material.ORIENTABLE);
@@ -134,7 +133,6 @@ public class BlockMarker extends BlockContainer implements ITextureProvider
                 var1.setTypeId(var2, var3, var4, 0);
             }
         }
-
     }
 
     public MovingObjectPosition a(World var1, int var2, int var3, int var4, Vec3D var5, Vec3D var6)

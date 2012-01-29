@@ -6,7 +6,6 @@ import buildcraft.core.RedstonePowerProvider;
 
 public class RedstonePowerFramework extends PowerFramework
 {
-
     public PowerProvider createPowerProvider()
     {
         return new RedstonePowerProvider();

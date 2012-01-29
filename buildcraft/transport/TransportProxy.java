@@ -12,7 +12,6 @@ import net.minecraft.server.World;
 
 public class TransportProxy
 {
-
     public static void displayGUIFilter(EntityHuman var0, TileGenericPipe var1)
     {
         ModLoader.OpenGUI(var0, Utils.packetIdToInt(PacketIds.DiamondPipeGUI), var1, new CraftingDiamondPipe(var0.inventory, var1));

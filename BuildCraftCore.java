@@ -1,7 +1,3 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode fieldsfirst
-
 package net.minecraft.server;
 
 import buildcraft.api.*;
@@ -14,14 +10,8 @@ import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
-// Referenced classes of package net.minecraft.src:
-//            ModLoader, mod_BuildCraftCore, Item, Block,
-//            CraftingManager, ItemStack, EntityHuman, BaseMod,
-//            World
-
 public class BuildCraftCore
 {
-
     private static EntityHuman buildCraftPlayer;
     public static boolean debugMode = false;
     public static boolean modifyWorld = false;
@@ -52,6 +42,7 @@ public class BuildCraftCore
     public static int refineryInput = 0;
     public static boolean loadDefaultRecipes = true;
     public static boolean forcePneumaticPower = false;
+    public static boolean consumeWaterSources = true;
 
     public BuildCraftCore()
     {
@@ -85,6 +76,11 @@ public class BuildCraftCore
         Property property3 = mainConfiguration.getOrCreateIntProperty("network.updateFactor", 0, 10);
         property3.comment = "increasing this number will decrease network update frequency, useful for overloaded servers";
         updateFactor = Integer.parseInt(property3.value);
+        String s = "";
+        if ((net.minecraft.server.BuildCraftCore.class).getName().startsWith("net.minecraft.server."))
+        {
+            s = "net.minecraft.server.";
+        }
         if (forcePneumaticPower)
         {
             try
@@ -93,21 +89,23 @@ public class BuildCraftCore
             }
             catch (Throwable throwable)
             {
-                try
-                {
-                    PowerFramework.currentFramework = (PowerFramework)Class.forName("buildcraft.energy.PneumaticPowerFramework").getConstructor((Class[])null).newInstance((Object[])null);
-                }
-                catch (Throwable throwable2)
-                {
-                    throwable.printStackTrace();
-                }
+                throwable.printStackTrace();
             }
         }
         else
         {
             try
             {
-                PowerFramework.currentFramework = (PowerFramework)Class.forName(property2.value).getConstructor((Class[])null).newInstance((Object[])null);
+                String s1 = property2.value;
+                if (s1.startsWith("net.minecraft.server."))
+                {
+                    s1 = s1.replace("net.minecraft.server.", "");
+                }
+                else if (s1.startsWith("net.minecraft.src."))
+                {
+                    s1 = s1.replace("net.minecraft.src.", "");
+                }
+                PowerFramework.currentFramework = (PowerFramework)Class.forName(s1).getConstructor((Class[])null).newInstance((Object[])null);
             }
             catch (Throwable throwable1)
             {

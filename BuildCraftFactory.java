@@ -29,7 +29,6 @@ import net.minecraft.server.mod_BuildCraftCore;
 
 public class BuildCraftFactory
 {
-
     public static BlockQuarry quarryBlock;
     public static BlockMiningWell miningWellBlock;
     public static BlockAutoWorkbench autoWorkbenchBlock;
@@ -100,7 +99,6 @@ public class BuildCraftFactory
             {
                 loadRecipes();
             }
-
         }
     }
 
@@ -118,5 +116,4 @@ public class BuildCraftFactory
         var0.registerShapedRecipe(new ItemStack(tankBlock), new Object[] {"ggg", "g g", "ggg", Character.valueOf('g'), Block.GLASS});
         var0.registerShapedRecipe(new ItemStack(refineryBlock), new Object[] {"   ", "RTR", "TGT", Character.valueOf('T'), tankBlock, Character.valueOf('G'), BuildCraftCore.diamondGearItem, Character.valueOf('R'), Block.REDSTONE_TORCH_ON});
     }
-
 }

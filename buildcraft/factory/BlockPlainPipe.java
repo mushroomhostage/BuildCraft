@@ -12,7 +12,6 @@ import net.minecraft.server.Material;
 
 public class BlockPlainPipe extends Block implements IPipeConnection, IBlockPipe, ITextureProvider
 {
-
     public BlockPlainPipe(int var1)
     {
         super(var1, Material.SHATTERABLE);

@@ -29,11 +29,9 @@ import net.minecraft.server.World;
 
 public class Utils
 {
-
     public static final float pipeMinPos = 0.25F;
     public static final float pipeMaxPos = 0.75F;
     public static float pipeNormalSpeed = 0.01F;
-
 
     public static float getPipeFloorOf(ItemStack var0)
     {
@@ -300,7 +298,6 @@ public class Utils
                 return;
             }
         }
-
     }
 
     public static void handleBufferedDescription(ISynchronizedTile var0)
@@ -314,7 +311,6 @@ public class Utils
             var0.handleDescriptionPacket(var3);
             var0.postPacketHandling(var3);
         }
-
     }
 
     public static int liquidId(int var0)
@@ -380,7 +376,6 @@ public class Utils
         {
             ((TileBuildCraft)var4).destroy();
         }
-
     }
 
     public static boolean checkPipesConnections(IBlockAccess var0, int var1, int var2, int var3, int var4, int var5, int var6)

@@ -20,7 +20,6 @@ import net.minecraft.server.mod_BuildCraftCore;
 
 public class PipeTransportPower extends PipeTransport
 {
-
     public int[] powerQuery = new int[6];
     public int[] nextPowerQuery = new int[6];
     public long currentDate;
@@ -33,14 +32,12 @@ public class PipeTransportPower extends PipeTransport
     public double powerResitance = 0.01D;
     SafeTimeTracker tracker = new SafeTimeTracker();
 
-
     public PipeTransportPower()
     {
         for (int var1 = 0; var1 < 6; ++var1)
         {
             this.powerQuery[var1] = 0;
         }
-
     }
 
     public boolean isPipeConnected(TileEntity var1)
@@ -159,7 +156,6 @@ public class PipeTransportPower extends PipeTransport
             {
                 CoreProxy.sendToPlayers(this.container.getUpdatePacket(), this.xCoord, this.yCoord, this.zCoord, 40, mod_BuildCraftCore.instance);
             }
-
         }
     }
 
@@ -173,7 +169,6 @@ public class PipeTransportPower extends PipeTransport
             this.internalPower = this.internalNextPower;
             this.internalNextPower = new double[] {0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D};
         }
-
     }
 
     public void receiveEnergy(Orientations var1, double var2)
@@ -193,7 +188,6 @@ public class PipeTransportPower extends PipeTransport
                 this.worldObj.a((Entity)null, (double)this.xCoord, (double)this.yCoord, (double)this.zCoord, 2.0F);
             }
         }
-
     }
 
     public void requestEnergy(Orientations var1, int var2)
@@ -210,7 +204,6 @@ public class PipeTransportPower extends PipeTransport
             int var10001 = var1.ordinal();
             var10000[var10001] += var2;
         }
-
     }
 
     public void initialize()
@@ -229,7 +222,6 @@ public class PipeTransportPower extends PipeTransport
             this.internalPower[var2] = var1.getDouble("internalPower[" + var2 + "]");
             this.internalNextPower[var2] = var1.getDouble("internalNextPower[" + var2 + "]");
         }
-
     }
 
     public void writeToNBT(NBTTagCompound var1)
@@ -243,6 +235,5 @@ public class PipeTransportPower extends PipeTransport
             var1.setDouble("internalPower[" + var2 + "]", this.internalPower[var2]);
             var1.setDouble("internalNextPower[" + var2 + "]", this.internalNextPower[var2]);
         }
-
     }
 }

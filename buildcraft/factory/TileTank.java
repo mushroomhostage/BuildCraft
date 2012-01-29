@@ -12,14 +12,12 @@ import net.minecraft.server.TileEntity;
 
 public class TileTank extends TileBuildCraft implements ILiquidContainer
 {
-
     @TileNetworkData
     public int stored = 0;
     @TileNetworkData
     public int liquidId = 0;
     public boolean hasUpdate = false;
     public SafeTimeTracker tracker = new SafeTimeTracker();
-
 
     public int fill(Orientations var1, int var2, int var3, boolean var4)
     {
@@ -92,7 +90,6 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
         {
             this.stored = 0;
         }
-
     }
 
     public void b(NBTTagCompound var1)
@@ -158,6 +155,5 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
             this.sendNetworkUpdate();
             this.hasUpdate = false;
         }
-
     }
 }

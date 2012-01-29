@@ -22,11 +22,9 @@ import net.minecraft.server.mod_BuildCraftTransport;
 
 public class PipeLogicDiamond extends PipeLogic
 {
-
     ItemStack[] items = new ItemStack[54];
     private static TilePacketWrapper networkPacket;
     private SafeTimeTracker tracker = new SafeTimeTracker();
-
 
     public PipeLogicDiamond()
     {
@@ -34,12 +32,11 @@ public class PipeLogicDiamond extends PipeLogic
         {
             networkPacket = new TilePacketWrapper(new Class[] {PipeLogicDiamond.PacketStack.class}, PacketIds.DiamondPipeContents);
         }
-
     }
 
     public boolean blockActivated(EntityHuman var1)
     {
-        if (var1.P() != null && var1.P().id < Block.byId.length && Block.byId[var1.P().id] instanceof BlockGenericPipe)
+        if (var1.Q() != null && var1.Q().id < Block.byId.length && Block.byId[var1.Q().id] instanceof BlockGenericPipe)
         {
             return false;
         }
@@ -103,7 +100,6 @@ public class PipeLogicDiamond extends PipeLogic
                         CoreProxy.sendToPlayers((Packet230ModLoader)this.getContentsPacket(var3), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
                     }
                 }
-
             }
         }
     }
@@ -117,7 +113,6 @@ public class PipeLogicDiamond extends PipeLogic
                 CoreProxy.sendToPlayers((Packet230ModLoader)this.getContentsPacket(var1), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
             }
         }
-
     }
 
     public String getInvName()
@@ -146,7 +141,6 @@ public class PipeLogicDiamond extends PipeLogic
             int var5 = var4.getInt("index");
             this.items[var5] = ItemStack.a(var4);
         }
-
     }
 
     public void writeToNBT(NBTTagCompound var1)
@@ -217,12 +211,10 @@ public class PipeLogicDiamond extends PipeLogic
                 this.items[var3 * 9 + var4] = new ItemStack(var2.ids[var4], 1, var2.dmg[var4]);
             }
         }
-
     }
 
     public class PacketStack
     {
-
         @TileNetworkData(
                 intKind = 1
         )
@@ -236,7 +228,5 @@ public class PipeLogicDiamond extends PipeLogic
                 intKind = 1
         )
         public int[] dmg = new int[9];
-
-
     }
 }

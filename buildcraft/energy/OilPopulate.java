@@ -10,9 +10,7 @@ import net.minecraft.server.World;
 
 public class OilPopulate
 {
-
     public static Random rand = null;
-
 
     public static void doPopulate(World var0, int var1, int var2)
     {
@@ -126,7 +124,6 @@ public class OilPopulate
                     }
                 }
             }
-
         }
     }
 
@@ -158,7 +155,6 @@ public class OilPopulate
                 }
             }
         }
-
     }
 
     private static boolean isOil(World var0, int var1, int var2, int var3)
@@ -194,7 +190,5 @@ public class OilPopulate
                 var0.setTypeId(var2, var3 - 1, var4, BuildCraftEnergy.oilStill.id);
             }
         }
-
     }
-
 }

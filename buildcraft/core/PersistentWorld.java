@@ -9,12 +9,10 @@ import net.minecraft.server.IBlockAccess;
 
 public class PersistentWorld
 {
-
     private static HashMap worlds = new HashMap();
     private static Long lastBlockAccess = null;
     private static PersistentWorld lastWorld = null;
     private TreeMap tiles = new TreeMap();
-
 
     public PersistentTile createTile(PersistentTile var1, BlockIndex var2)
     {
@@ -73,7 +71,6 @@ public class PersistentWorld
         {
             ((PersistentTile)this.tiles.remove(var1)).destroy();
         }
-
     }
 
     public static PersistentWorld getWorld(IBlockAccess var0)
@@ -92,5 +89,4 @@ public class PersistentWorld
 
         return lastWorld;
     }
-
 }

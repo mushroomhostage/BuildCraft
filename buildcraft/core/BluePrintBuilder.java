@@ -8,13 +8,11 @@ import net.minecraft.server.World;
 
 public class BluePrintBuilder implements IAreaProvider
 {
-
     public BluePrint bluePrint;
     int x;
     int y;
     int z;
     public boolean done;
-
 
     public BluePrintBuilder(BluePrint var1, int var2, int var3, int var4)
     {
@@ -126,14 +124,11 @@ public class BluePrintBuilder implements IAreaProvider
 
     public static enum Mode
     {
-
         Simple("Simple", 0),
         Template("Template", 1);
-        // $FF: synthetic field
+
         private static final BluePrintBuilder.Mode[] $VALUES = new BluePrintBuilder.Mode[]{Simple, Template};
 
-
         private Mode(String var1, int var2) {}
-
     }
 }

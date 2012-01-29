@@ -9,7 +9,6 @@ import net.minecraft.server.ModLoader;
 
 public class EnergyProxy
 {
-
     public static void displayGUISteamEngine(EntityHuman var0, TileEngine var1)
     {
         ModLoader.OpenGUI(var0, Utils.packetIdToInt(PacketIds.EngineSteamGUI), var1, new ContainerEngine(var0.inventory, var1));

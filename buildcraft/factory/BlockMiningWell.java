@@ -16,12 +16,10 @@ import net.minecraft.server.World;
 
 public class BlockMiningWell extends BlockMachineRoot implements ITextureProvider, IPipeConnection
 {
-
     int textureFront;
     int textureSides;
     int textureBack;
     int textureTop;
-
 
     public BlockMiningWell(int var1)
     {

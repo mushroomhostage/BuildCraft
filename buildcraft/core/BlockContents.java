@@ -1,14 +1,11 @@
 package buildcraft.core;
 
-
 public class BlockContents
 {
-
     public int blockId;
     public int x;
     public int y;
     public int z;
-
 
     public BlockContents clone()
     {

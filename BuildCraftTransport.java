@@ -40,7 +40,6 @@ import net.minecraft.server.mod_BuildCraftTransport;
 
 public class BuildCraftTransport
 {
-
     private static boolean initialized = false;
     public static BlockGenericPipe genericPipeBlock;
     public static BlockDockingStation dockingStationBlock;
@@ -63,7 +62,6 @@ public class BuildCraftTransport
     public static Item pipePowerStone;
     public static Item pipePowerGold;
     private static LinkedList pipeRecipes = new LinkedList();
-
 
     public static void initialize()
     {
@@ -145,7 +143,6 @@ public class BuildCraftTransport
             {
                 loadRecipes();
             }
-
         }
     }
 
@@ -160,7 +157,6 @@ public class BuildCraftTransport
             BuildCraftTransport.PipeRecipe var2 = (BuildCraftTransport.PipeRecipe)var1.next();
             var0.registerShapedRecipe(var2.result, var2.input);
         }
-
     }
 
     private static Item createPipe(int var0, Class var1, String var2, Object var3, Object var4, Object var5)
@@ -171,7 +167,7 @@ public class BuildCraftTransport
         Item var9 = BlockGenericPipe.registerPipe(var8, var1);
         var9.a(var1.getSimpleName());
         CoreProxy.addName(var9, var2);
-        BuildCraftTransport.PipeRecipe var10 = new BuildCraftTransport.PipeRecipe((BuildCraftTransport.NamelessClass1222176802)null);
+        BuildCraftTransport.PipeRecipe var10 = new BuildCraftTransport.PipeRecipe((BuildCraftTransport.NamelessClass1864293740)null);
         if (var3 != null && var4 != null && var5 != null)
         {
             var10.result = new ItemStack(var9, 8);
@@ -188,23 +184,18 @@ public class BuildCraftTransport
         return var9;
     }
 
-
-    // $FF: synthetic class
-    static class NamelessClass1222176802
+    static class NamelessClass1864293740
     {
     }
 
     private static class PipeRecipe
     {
-
         ItemStack result;
         Object[] input;
 
-
         private PipeRecipe() {}
 
-        // $FF: synthetic method
-        PipeRecipe(BuildCraftTransport.NamelessClass1222176802 var1)
+        PipeRecipe(BuildCraftTransport.NamelessClass1864293740 var1)
         {
             this();
         }

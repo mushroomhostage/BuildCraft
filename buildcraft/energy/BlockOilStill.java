@@ -10,7 +10,6 @@ import net.minecraft.server.World;
 
 public class BlockOilStill extends BlockStationary implements ITextureProvider, ILiquid
 {
-
     public BlockOilStill(int var1, Material var2)
     {
         super(var1, var2);

@@ -6,7 +6,6 @@ import buildcraft.transport.PipeTransportPower;
 
 public class PipePowerGold extends Pipe
 {
-
     public PipePowerGold(int var1)
     {
         super(new PipeTransportPower(), new PipeLogicGold(), var1);
