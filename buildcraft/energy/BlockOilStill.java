@@ -8,25 +8,31 @@ import net.minecraft.server.BuildCraftEnergy;
 import net.minecraft.server.Material;
 import net.minecraft.server.World;
 
-public class BlockOilStill extends BlockStationary implements ITextureProvider, ILiquid {
+public class BlockOilStill extends BlockStationary implements ITextureProvider, ILiquid
+{
 
-   public BlockOilStill(int var1, Material var2) {
-      super(var1, var2);
-   }
+    public BlockOilStill(int var1, Material var2)
+    {
+        super(var1, var2);
+    }
 
-   public int c() {
-      return BuildCraftCore.oilModel;
-   }
+    public int c()
+    {
+        return BuildCraftCore.oilModel;
+    }
 
-   public String getTextureFile() {
-      return BuildCraftCore.customBuildCraftTexture;
-   }
+    public String getTextureFile()
+    {
+        return BuildCraftCore.customBuildCraftTexture;
+    }
 
-   public int stillLiquidId() {
-      return BuildCraftEnergy.oilStill.id;
-   }
+    public int stillLiquidId()
+    {
+        return BuildCraftEnergy.oilStill.id;
+    }
 
-   public boolean isBlockReplaceable(World var1, int var2, int var3, int var4) {
-      return true;
-   }
+    public boolean isBlockReplaceable(World var1, int var2, int var3, int var4)
+    {
+        return true;
+    }
 }

@@ -1,6 +1,6 @@
 // Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
 // Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode fieldsfirst 
+// Decompiler options: packimports(3) braces deadcode fieldsfirst
 
 package net.minecraft.server;
 
@@ -15,8 +15,8 @@ import java.util.TreeMap;
 import java.util.logging.Logger;
 
 // Referenced classes of package net.minecraft.src:
-//            ModLoader, mod_BuildCraftCore, Item, Block, 
-//            CraftingManager, ItemStack, EntityHuman, BaseMod, 
+//            ModLoader, mod_BuildCraftCore, Item, Block,
+//            CraftingManager, ItemStack, EntityHuman, BaseMod,
 //            World
 
 public class BuildCraftCore
@@ -59,7 +59,7 @@ public class BuildCraftCore
 
     public static void initialize()
     {
-        if(initialized)
+        if (initialized)
         {
             return;
         }
@@ -85,46 +85,48 @@ public class BuildCraftCore
         Property property3 = mainConfiguration.getOrCreateIntProperty("network.updateFactor", 0, 10);
         property3.comment = "increasing this number will decrease network update frequency, useful for overloaded servers";
         updateFactor = Integer.parseInt(property3.value);
-        if(forcePneumaticPower)
+        if (forcePneumaticPower)
         {
             try
             {
                 PowerFramework.currentFramework = (PowerFramework)Class.forName("buildcraft.energy.PneumaticPowerFramework").getConstructor((Class[])null).newInstance((Object[])null);
             }
-            catch(Throwable throwable)
+            catch (Throwable throwable)
             {
                 try
                 {
                     PowerFramework.currentFramework = (PowerFramework)Class.forName("buildcraft.energy.PneumaticPowerFramework").getConstructor((Class[])null).newInstance((Object[])null);
                 }
-                catch(Throwable throwable2)
+                catch (Throwable throwable2)
                 {
                     throwable.printStackTrace();
                 }
             }
-        } else {
+        }
+        else
+        {
             try
             {
                 PowerFramework.currentFramework = (PowerFramework)Class.forName(property2.value).getConstructor((Class[])null).newInstance((Object[])null);
             }
-            catch(Throwable throwable1)
+            catch (Throwable throwable1)
             {
                 throwable1.printStackTrace();
                 PowerFramework.currentFramework = new RedstonePowerFramework();
             }
         }
 
-		// MaeEdit start
-		Property fakeplayer = mainConfiguration.getOrCreateProperty("blocks.placedby", 0, "fakeplayer");
-		fakeplayer.comment = "Configures BLOCK_PLACE and BLOCK_BREAK events. Options are 'null' and 'fakeplayer'";
-		buildcraft.core.FakePlayer.setMethod(fakeplayer.value);
-		Property fakename = mainConfiguration.getOrCreateProperty("blocks.fakeplayername", 0, "[BuildCraft]");
-		fakename.comment = "Configures the name of the fake player used when blocks.placedby=fakeplayer";
-		buildcraft.core.FakePlayer.name = fakename.value;
-		Property fakelogin = mainConfiguration.getOrCreateBooleanProperty("blocks.fakeplayerlogin", 0, false);
-		fakelogin.comment = "Causes login and join events to be sent for the fake player. This may help some plugins, but will cause errors with others. YMMV.";
-		buildcraft.core.FakePlayer.doLogin = Boolean.parseBoolean(fakelogin.value);
-		// MaeEdit end
+        // MaeEdit start
+        Property fakeplayer = mainConfiguration.getOrCreateProperty("blocks.placedby", 0, "fakeplayer");
+        fakeplayer.comment = "Configures BLOCK_PLACE and BLOCK_BREAK events. Options are 'null' and 'fakeplayer'";
+        buildcraft.core.FakePlayer.setMethod(fakeplayer.value);
+        Property fakename = mainConfiguration.getOrCreateProperty("blocks.fakeplayername", 0, "[BuildCraft]");
+        fakename.comment = "Configures the name of the fake player used when blocks.placedby=fakeplayer";
+        buildcraft.core.FakePlayer.name = fakename.value;
+        Property fakelogin = mainConfiguration.getOrCreateBooleanProperty("blocks.fakeplayerlogin", 0, false);
+        fakelogin.comment = "Causes login and join events to be sent for the fake player. This may help some plugins, but will cause errors with others. YMMV.";
+        buildcraft.core.FakePlayer.doLogin = Boolean.parseBoolean(fakelogin.value);
+        // MaeEdit end
 
         Property property4 = mainConfiguration.getOrCreateIntProperty("wrench.id", 2, DefaultProps.WRENCH_ID);
         mainConfiguration.save();
@@ -136,7 +138,7 @@ public class BuildCraftCore
         API.softBlocks[Block.WATER.id] = true;
         API.softBlocks[Block.STATIONARY_WATER.id] = true;
         mainConfiguration.save();
-        if(loadDefaultRecipes)
+        if (loadDefaultRecipes)
         {
             loadRecipes();
         }
@@ -145,32 +147,39 @@ public class BuildCraftCore
     public static void loadRecipes()
     {
         CraftingManager craftingmanager = CraftingManager.getInstance();
-        craftingmanager.registerShapedRecipe(new ItemStack(wrenchItem), new Object[] {
-            "I I", " G ", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem
-        });
-        craftingmanager.registerShapedRecipe(new ItemStack(woodenGearItem), new Object[] {
-            " S ", "S S", " S ", Character.valueOf('S'), Item.STICK
-        });
-        craftingmanager.registerShapedRecipe(new ItemStack(stoneGearItem), new Object[] {
-            " I ", "IGI", " I ", Character.valueOf('I'), Block.COBBLESTONE, Character.valueOf('G'), woodenGearItem
-        });
-        craftingmanager.registerShapedRecipe(new ItemStack(ironGearItem), new Object[] {
-            " I ", "IGI", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem
-        });
-        craftingmanager.registerShapedRecipe(new ItemStack(goldGearItem), new Object[] {
-            " I ", "IGI", " I ", Character.valueOf('I'), Item.GOLD_INGOT, Character.valueOf('G'), ironGearItem
-        });
-        craftingmanager.registerShapedRecipe(new ItemStack(diamondGearItem), new Object[] {
-            " I ", "IGI", " I ", Character.valueOf('I'), Item.DIAMOND, Character.valueOf('G'), goldGearItem
-        });
+        craftingmanager.registerShapedRecipe(new ItemStack(wrenchItem), new Object[]
+                {
+                    "I I", " G ", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem
+                });
+        craftingmanager.registerShapedRecipe(new ItemStack(woodenGearItem), new Object[]
+                {
+                    " S ", "S S", " S ", Character.valueOf('S'), Item.STICK
+                });
+        craftingmanager.registerShapedRecipe(new ItemStack(stoneGearItem), new Object[]
+                {
+                    " I ", "IGI", " I ", Character.valueOf('I'), Block.COBBLESTONE, Character.valueOf('G'), woodenGearItem
+                });
+        craftingmanager.registerShapedRecipe(new ItemStack(ironGearItem), new Object[]
+                {
+                    " I ", "IGI", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem
+                });
+        craftingmanager.registerShapedRecipe(new ItemStack(goldGearItem), new Object[]
+                {
+                    " I ", "IGI", " I ", Character.valueOf('I'), Item.GOLD_INGOT, Character.valueOf('G'), ironGearItem
+                });
+        craftingmanager.registerShapedRecipe(new ItemStack(diamondGearItem), new Object[]
+                {
+                    " I ", "IGI", " I ", Character.valueOf('I'), Item.DIAMOND, Character.valueOf('G'), goldGearItem
+                });
     }
 
     public static void initializeGears()
     {
-        if(gearsInitialized)
+        if (gearsInitialized)
         {
             return;
-        } else
+        }
+        else
         {
             Property property = mainConfiguration.getOrCreateIntProperty("woodenGearItem.id", 2, DefaultProps.WOODEN_GEAR_ID);
             Property property1 = mainConfiguration.getOrCreateIntProperty("stoneGearItem.id", 2, DefaultProps.STONE_GEAR_ID);
@@ -207,7 +216,7 @@ public class BuildCraftCore
 
     public static EntityHuman getBuildCraftPlayer(World world)
     {
-		return buildcraft.core.FakePlayer.get(world);
+        return buildcraft.core.FakePlayer.get(world);
     }
 
 }

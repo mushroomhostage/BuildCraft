@@ -1,19 +1,20 @@
 package buildcraft.api;
 
 
-public interface IAreaProvider {
+public interface IAreaProvider
+{
 
-   int xMin();
+    int xMin();
 
-   int yMin();
+    int yMin();
 
-   int zMin();
+    int zMin();
 
-   int xMax();
+    int xMax();
 
-   int yMax();
+    int yMax();
 
-   int zMax();
+    int zMax();
 
-   void removeFromWorld();
+    void removeFromWorld();
 }

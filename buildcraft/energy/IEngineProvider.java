@@ -2,7 +2,8 @@ package buildcraft.energy;
 
 import buildcraft.energy.Engine;
 
-public interface IEngineProvider {
+public interface IEngineProvider
+{
 
-   Engine getEngine();
+    Engine getEngine();
 }

@@ -22,83 +22,102 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 // MaeEdit end
 
-public class TileMiningWell extends TileMachine implements IMachine, IPowerReceptor {
+public class TileMiningWell extends TileMachine implements IMachine, IPowerReceptor
+{
 
-   boolean isDigging = true;
-   PowerProvider powerProvider;
+    boolean isDigging = true;
+    PowerProvider powerProvider;
 
 
-   public TileMiningWell() {
-      this.powerProvider = PowerFramework.currentFramework.createPowerProvider();
-      this.powerProvider.configure(50, 25, 25, 25, 1000);
-   }
+    public TileMiningWell()
+    {
+        this.powerProvider = PowerFramework.currentFramework.createPowerProvider();
+        this.powerProvider.configure(50, 25, 25, 25, 1000);
+    }
 
-   public void doWork() {
-      if(this.powerProvider.useEnergy(25, 25, true) >= 25) {
-         World var1 = this.world;
+    public void doWork()
+    {
+        if (this.powerProvider.useEnergy(25, 25, true) >= 25)
+        {
+            World var1 = this.world;
 
-         int var2;
-         for(var2 = this.y - 1; var1.getTypeId(this.x, var2, this.z) == BuildCraftFactory.plainPipeBlock.id; --var2) {
-            ;
-         }
-
-         if(var2 >= 0 && var1.getTypeId(this.x, var2, this.z) != Block.BEDROCK.id && var1.getTypeId(this.x, var2, this.z) != Block.LAVA.id && var1.getTypeId(this.x, var2, this.z) != Block.STATIONARY_LAVA.id) {
-            int var3 = var1.getTypeId(this.x, var2, this.z);
-            // MaeEdit begin: Send events for miners
-            // If the old block isn't air, send a block break event for it.
-            // Since miners only go straight down, this is probably enough, don't need to worry about a place event.
-            if (var3 != 0) {
-               org.bukkit.block.Block block = this.world.getWorld().getBlockAt(this.x, var2, this.z);
-               BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.core.FakePlayer.getBukkitEntity(this.world));
-               this.world.getServer().getPluginManager().callEvent(event);
-               if (event.isCancelled()) {
-                  return;
-               }
+            int var2;
+            for (var2 = this.y - 1; var1.getTypeId(this.x, var2, this.z) == BuildCraftFactory.plainPipeBlock.id; --var2)
+            {
+                ;
             }
-            // MaeEdit end
-            ItemStack var4 = BuildCraftBlockUtil.getItemStackFromBlock(var1, this.x, var2, this.z);
-            var1.setTypeId(this.x, var2, this.z, BuildCraftFactory.plainPipeBlock.id);
-            if(var3 != 0) {
-               if(var4 != null) {
-                  StackUtil var5 = new StackUtil(var4);
-                  if(!var5.addToRandomInventory(this, Orientations.Unknown) || var5.items.count != 0) {
-                     if(!Utils.addToRandomPipeEntry(this, Orientations.Unknown, var4) || var5.items.count != 0) {
-                        float var6 = var1.random.nextFloat() * 0.8F + 0.1F;
-                        float var7 = var1.random.nextFloat() * 0.8F + 0.1F;
-                        float var8 = var1.random.nextFloat() * 0.8F + 0.1F;
-                        EntityItem var9 = new EntityItem(var1, (double)((float)this.x + var6), (double)((float)this.y + var7 + 0.5F), (double)((float)this.z + var8), var5.items);
-                        float var10 = 0.05F;
-                        var9.motX = (double)((float)var1.random.nextGaussian() * var10);
-                        var9.motY = (double)((float)var1.random.nextGaussian() * var10 + 1.0F);
-                        var9.motZ = (double)((float)var1.random.nextGaussian() * var10);
-                        var1.addEntity(var9);
-                     }
-                  }
-               }
+
+            if (var2 >= 0 && var1.getTypeId(this.x, var2, this.z) != Block.BEDROCK.id && var1.getTypeId(this.x, var2, this.z) != Block.LAVA.id && var1.getTypeId(this.x, var2, this.z) != Block.STATIONARY_LAVA.id)
+            {
+                int var3 = var1.getTypeId(this.x, var2, this.z);
+                // MaeEdit begin: Send events for miners
+                // If the old block isn't air, send a block break event for it.
+                // Since miners only go straight down, this is probably enough, don't need to worry about a place event.
+                if (var3 != 0)
+                {
+                    org.bukkit.block.Block block = this.world.getWorld().getBlockAt(this.x, var2, this.z);
+                    BlockBreakEvent event = new BlockBreakEvent(block, buildcraft.core.FakePlayer.getBukkitEntity(this.world));
+                    this.world.getServer().getPluginManager().callEvent(event);
+                    if (event.isCancelled())
+                    {
+                        return;
+                    }
+                }
+                // MaeEdit end
+                ItemStack var4 = BuildCraftBlockUtil.getItemStackFromBlock(var1, this.x, var2, this.z);
+                var1.setTypeId(this.x, var2, this.z, BuildCraftFactory.plainPipeBlock.id);
+                if (var3 != 0)
+                {
+                    if (var4 != null)
+                    {
+                        StackUtil var5 = new StackUtil(var4);
+                        if (!var5.addToRandomInventory(this, Orientations.Unknown) || var5.items.count != 0)
+                        {
+                            if (!Utils.addToRandomPipeEntry(this, Orientations.Unknown, var4) || var5.items.count != 0)
+                            {
+                                float var6 = var1.random.nextFloat() * 0.8F + 0.1F;
+                                float var7 = var1.random.nextFloat() * 0.8F + 0.1F;
+                                float var8 = var1.random.nextFloat() * 0.8F + 0.1F;
+                                EntityItem var9 = new EntityItem(var1, (double)((float)this.x + var6), (double)((float)this.y + var7 + 0.5F), (double)((float)this.z + var8), var5.items);
+                                float var10 = 0.05F;
+                                var9.motX = (double)((float)var1.random.nextGaussian() * var10);
+                                var9.motY = (double)((float)var1.random.nextGaussian() * var10 + 1.0F);
+                                var9.motZ = (double)((float)var1.random.nextGaussian() * var10);
+                                var1.addEntity(var9);
+                            }
+                        }
+                    }
+                }
             }
-         } else {
-            this.isDigging = false;
-         }
-      }
-   }
+            else
+            {
+                this.isDigging = false;
+            }
+        }
+    }
 
-   public boolean isActive() {
-      return this.isDigging;
-   }
+    public boolean isActive()
+    {
+        return this.isDigging;
+    }
 
-   public void setPowerProvider(PowerProvider var1) {
-      this.powerProvider = var1;
-   }
+    public void setPowerProvider(PowerProvider var1)
+    {
+        this.powerProvider = var1;
+    }
 
-   public PowerProvider getPowerProvider() {
-      return this.powerProvider;
-   }
+    public PowerProvider getPowerProvider()
+    {
+        return this.powerProvider;
+    }
 
-   public boolean manageLiquids() {
-      return false;
-   }
+    public boolean manageLiquids()
+    {
+        return false;
+    }
 
-   public boolean manageSolids() {
-      return true;
-   }
+    public boolean manageSolids()
+    {
+        return true;
+    }
 }

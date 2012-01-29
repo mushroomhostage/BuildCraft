@@ -3,18 +3,21 @@ package net.minecraft.server;
 import net.minecraft.server.BaseModMp;
 import net.minecraft.server.BuildCraftFactory;
 
-public class mod_BuildCraftFactory extends BaseModMp {
+public class mod_BuildCraftFactory extends BaseModMp
+{
 
-   public static mod_BuildCraftFactory instance;
+    public static mod_BuildCraftFactory instance;
 
 
-   public void ModsLoaded() {
-      super.ModsLoaded();
-      BuildCraftFactory.initialize();
-      instance = this;
-   }
+    public void ModsLoaded()
+    {
+        super.ModsLoaded();
+        BuildCraftFactory.initialize();
+        instance = this;
+    }
 
-   public String Version() {
-      return "2.2.11";
-   }
+    public String Version()
+    {
+        return "2.2.11";
+    }
 }
