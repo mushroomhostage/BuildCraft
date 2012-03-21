@@ -54,6 +54,7 @@ public class BuildCraftCore
         {
             return;
         }
+
         ModLoader.getLogger().fine((new StringBuilder()).append("Starting BuildCraft ").append(mod_BuildCraftCore.version()).toString());
         ModLoader.getLogger().fine("Copyright (c) SpaceToad, 2011");
         ModLoader.getLogger().fine("http://www.mod-buildcraft.com");
@@ -77,10 +78,12 @@ public class BuildCraftCore
         property3.comment = "increasing this number will decrease network update frequency, useful for overloaded servers";
         updateFactor = Integer.parseInt(property3.value);
         String s = "";
+
         if ((net.minecraft.server.BuildCraftCore.class).getName().startsWith("net.minecraft.server."))
         {
             s = "net.minecraft.server.";
         }
+
         if (forcePneumaticPower)
         {
             try
@@ -136,6 +139,7 @@ public class BuildCraftCore
         API.softBlocks[Block.WATER.id] = true;
         API.softBlocks[Block.STATIONARY_WATER.id] = true;
         mainConfiguration.save();
+
         if (loadDefaultRecipes)
         {
             loadRecipes();
@@ -147,27 +151,27 @@ public class BuildCraftCore
         CraftingManager craftingmanager = CraftingManager.getInstance();
         craftingmanager.registerShapedRecipe(new ItemStack(wrenchItem), new Object[]
                 {
-                    "I I", " G ", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem
+                    "I I", " G ", " I ", 'I', Item.IRON_INGOT, 'G', stoneGearItem
                 });
         craftingmanager.registerShapedRecipe(new ItemStack(woodenGearItem), new Object[]
                 {
-                    " S ", "S S", " S ", Character.valueOf('S'), Item.STICK
+                    " S ", "S S", " S ", 'S', Item.STICK
                 });
         craftingmanager.registerShapedRecipe(new ItemStack(stoneGearItem), new Object[]
                 {
-                    " I ", "IGI", " I ", Character.valueOf('I'), Block.COBBLESTONE, Character.valueOf('G'), woodenGearItem
+                    " I ", "IGI", " I ", 'I', Block.COBBLESTONE, 'G', woodenGearItem
                 });
         craftingmanager.registerShapedRecipe(new ItemStack(ironGearItem), new Object[]
                 {
-                    " I ", "IGI", " I ", Character.valueOf('I'), Item.IRON_INGOT, Character.valueOf('G'), stoneGearItem
+                    " I ", "IGI", " I ", 'I', Item.IRON_INGOT, 'G', stoneGearItem
                 });
         craftingmanager.registerShapedRecipe(new ItemStack(goldGearItem), new Object[]
                 {
-                    " I ", "IGI", " I ", Character.valueOf('I'), Item.GOLD_INGOT, Character.valueOf('G'), ironGearItem
+                    " I ", "IGI", " I ", 'I', Item.GOLD_INGOT, 'G', ironGearItem
                 });
         craftingmanager.registerShapedRecipe(new ItemStack(diamondGearItem), new Object[]
                 {
-                    " I ", "IGI", " I ", Character.valueOf('I'), Item.DIAMOND, Character.valueOf('G'), goldGearItem
+                    " I ", "IGI", " I ", 'I', Item.DIAMOND, 'G', goldGearItem
                 });
     }
 

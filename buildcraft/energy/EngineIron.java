@@ -3,9 +3,6 @@ package buildcraft.energy;
 import buildcraft.api.API;
 import buildcraft.api.IronEngineFuel;
 import buildcraft.api.Orientations;
-import buildcraft.energy.ContainerEngine;
-import buildcraft.energy.Engine;
-import buildcraft.energy.TileEngine;
 import net.minecraft.server.Block;
 import net.minecraft.server.ICrafting;
 import net.minecraft.server.Item;
@@ -16,7 +13,7 @@ public class EngineIron extends Engine
 {
     public static int MAX_LIQUID = 10000;
     public static int MAX_HEAT = 100000;
-    public static int COOLANT_THRESHOLD = '\ubf68';
+    public static int COOLANT_THRESHOLD = 49000;
     int burnTime = 0;
     int liquidQty = 0;
     int liquidId = 0;
@@ -71,6 +68,7 @@ public class EngineIron extends Engine
     public void burn()
     {
         IronEngineFuel var1 = (IronEngineFuel)API.ironEngineFuel.get(Integer.valueOf(this.liquidId));
+
         if (var1 != null)
         {
             if (this.tile.world.isBlockIndirectlyPowered(this.tile.x, this.tile.y, this.tile.z) && (this.burnTime > 0 || this.liquidQty > 0))
@@ -96,9 +94,11 @@ public class EngineIron extends Engine
         super.update();
         ItemStack var1 = this.tile.getItem(0);
         int var2;
+
         if (var1 != null)
         {
             var2 = API.getLiquidForBucket(var1.id);
+
             if (var2 != 0 && this.fill(Orientations.Unknown, 1000, var2, false) == 1000)
             {
                 this.fill(Orientations.Unknown, 1000, var2, true);
@@ -109,6 +109,7 @@ public class EngineIron extends Engine
         if (this.heat > COOLANT_THRESHOLD)
         {
             var2 = this.heat - COOLANT_THRESHOLD;
+
             if (this.coolantQty > var2)
             {
                 this.coolantQty -= var2;
@@ -172,6 +173,7 @@ public class EngineIron extends Engine
         else
         {
             boolean var5 = false;
+
             if (this.liquidQty > 0 && this.liquidId != var3)
             {
                 return 0;
@@ -183,6 +185,7 @@ public class EngineIron extends Engine
             else
             {
                 int var6;
+
                 if (this.liquidQty + var2 <= MAX_LIQUID)
                 {
                     if (var4)
@@ -195,6 +198,7 @@ public class EngineIron extends Engine
                 else
                 {
                     var6 = MAX_LIQUID - this.liquidQty;
+
                     if (var4)
                     {
                         this.liquidQty = MAX_LIQUID;
@@ -210,6 +214,7 @@ public class EngineIron extends Engine
     private int fillCoolant(Orientations var1, int var2, int var3, boolean var4)
     {
         boolean var5 = false;
+
         if (this.coolantQty > 0 && this.coolantId != var3)
         {
             return 0;
@@ -217,6 +222,7 @@ public class EngineIron extends Engine
         else
         {
             int var6;
+
             if (this.coolantQty + var2 <= MAX_LIQUID)
             {
                 if (var4)
@@ -229,6 +235,7 @@ public class EngineIron extends Engine
             else
             {
                 var6 = MAX_LIQUID - this.coolantQty;
+
                 if (var4)
                 {
                     this.coolantQty = MAX_LIQUID;
@@ -287,9 +294,9 @@ public class EngineIron extends Engine
 
     public void sendGUINetworkData(ContainerEngine var1, ICrafting var2)
     {
-        var2.a(var1, 0, this.liquidQty);
-        var2.a(var1, 1, this.liquidId);
-        var2.a(var1, 2, this.coolantQty);
-        var2.a(var1, 3, this.coolantId);
+        var2.setContainerData(var1, 0, this.liquidQty);
+        var2.setContainerData(var1, 1, this.liquidId);
+        var2.setContainerData(var1, 2, this.coolantQty);
+        var2.setContainerData(var1, 3, this.coolantId);
     }
 }

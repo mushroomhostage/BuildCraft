@@ -20,6 +20,7 @@ public class FillerFillPyramid extends FillerPattern
         int var11 = var9 - var6 + 1;
         int var12 = 0;
         byte var14;
+
         if (var1.y <= var5)
         {
             var14 = 1;
@@ -30,6 +31,7 @@ public class FillerFillPyramid extends FillerPattern
         }
 
         int var13;
+
         if (var14 == 1)
         {
             var13 = var5;

@@ -13,5 +13,8 @@ public interface ISynchronizedTile
 
     Packet230ModLoader getUpdatePacket();
 
-    Packet k();
+    /**
+     * Overriden in a sign to provide the text
+     */
+    Packet d();
 }

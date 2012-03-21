@@ -5,6 +5,7 @@ import buildcraft.api.ILiquidContainer;
 import buildcraft.api.Orientations;
 import buildcraft.api.SafeTimeTracker;
 import buildcraft.api.TileNetworkData;
+import buildcraft.core.DefaultProps;
 import buildcraft.core.TileBuildCraft;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.NBTTagCompound;
@@ -42,6 +43,7 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
             this.liquidId = var3;
             TileEntity var5 = this.world.getTileEntity(this.x, this.y + 1, this.z);
             int var6 = 0;
+
             if (this.stored + var2 <= this.getCapacity())
             {
                 if (var4)
@@ -55,6 +57,7 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
             else if (this.stored <= this.getCapacity())
             {
                 var6 = this.getCapacity() - this.stored;
+
                 if (var4)
                 {
                     this.stored = this.getCapacity();
@@ -81,17 +84,24 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
         return 16000;
     }
 
+    /**
+     * Reads a tile entity from NBT.
+     */
     public void a(NBTTagCompound var1)
     {
         super.a(var1);
         this.stored = var1.getInt("stored");
         this.liquidId = var1.getInt("liquidId");
+
         if (this.liquidId == 0)
         {
             this.stored = 0;
         }
     }
 
+    /**
+     * Writes a tile entity to NBT.
+     */
     public void b(NBTTagCompound var1)
     {
         super.b(var1);
@@ -103,7 +113,7 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
     {
         TileTank var3 = this;
 
-        for (int var4 = this.y + 1; var4 <= 128 && this.world.getTileEntity(this.x, var4, this.z) instanceof TileTank; ++var4)
+        for (int var4 = this.y + 1; var4 <= DefaultProps.WORLD_HEIGHT && this.world.getTileEntity(this.x, var4, this.z) instanceof TileTank; ++var4)
         {
             var3 = (TileTank)this.world.getTileEntity(this.x, var4, this.z);
         }
@@ -126,6 +136,7 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
         else
         {
             int var3 = this.stored;
+
             if (var2)
             {
                 this.stored = 0;
@@ -133,6 +144,7 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
             }
 
             TileEntity var4 = this.world.getTileEntity(this.x, this.y - 1, this.z);
+
             if (var4 instanceof TileTank)
             {
                 var3 += ((TileTank)var4).actualEmtpy(var1 - var3, var2);
@@ -148,7 +160,12 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
     }
 
     @TileNetworkData
-    public void l_()
+
+    /**
+     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
+     * ticks and creates a new spawn inside its implementation.
+     */
+    public void q_()
     {
         if (APIProxy.isServerSide() && this.hasUpdate && this.tracker.markTimeIfDelay(this.world, (long)(2 * BuildCraftCore.updateFactor)))
         {

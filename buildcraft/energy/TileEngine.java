@@ -9,12 +9,6 @@ import buildcraft.api.PowerFramework;
 import buildcraft.api.PowerProvider;
 import buildcraft.api.TileNetworkData;
 import buildcraft.core.TileBuildCraft;
-import buildcraft.energy.Engine;
-import buildcraft.energy.EngineIron;
-import buildcraft.energy.EngineStone;
-import buildcraft.energy.EngineWood;
-import buildcraft.energy.IEngineProvider;
-import buildcraft.energy.PneumaticPowerProvider;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
@@ -41,12 +35,31 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
         this.provider = PowerFramework.currentFramework.createPowerProvider();
     }
 
+    // CraftBukkit start
+    public java.util.List<org.bukkit.entity.HumanEntity> transaction = 
+            new java.util.ArrayList<org.bukkit.entity.HumanEntity>();
+    
+    public void onOpen(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.add(who);
+    }
+
+    public void onClose(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.remove(who);
+    }
+
+    public java.util.List<org.bukkit.entity.HumanEntity> getViewers() {
+        return transaction;
+    }
+
+    public void setMaxStackSize(int size) {}
+
     public ItemStack[] getContents()
     {
         ItemStack[] ret = new ItemStack[1];
         ret[0] = itemInInventory;
         return ret;
     }
+    // CraftBukkit end
 
     public void initialize()
     {
@@ -62,9 +75,14 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
         }
     }
 
-    public void l_()
+    /**
+     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
+     * ticks and creates a new spawn inside its implementation.
+     */
+    public void q_()
     {
-        super.l_();
+        super.q_();
+
         if (this.engine != null)
         {
             if (APIProxy.isClient(this.world))
@@ -72,6 +90,7 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
                 if (this.progressPart != 0)
                 {
                     this.engine.progress += this.serverPistonSpeed;
+
                     if (this.engine.progress > 1.0F)
                     {
                         this.progressPart = 0;
@@ -85,19 +104,23 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
                 Position var2;
                 TileEntity var3;
                 IPowerReceptor var4;
+
                 if (this.progressPart != 0)
                 {
                     this.engine.progress += this.engine.getPistonSpeed();
+
                     if ((double)this.engine.progress > 0.5D && this.progressPart == 1)
                     {
                         this.progressPart = 2;
                         var2 = new Position((double)this.x, (double)this.y, (double)this.z, this.engine.orientation);
                         var2.moveForwards(1.0D);
                         var3 = this.world.getTileEntity((int)var2.x, (int)var2.y, (int)var2.z);
+
                         if (this.isPoweredTile(var3))
                         {
                             var4 = (IPowerReceptor)var3;
                             int var5 = this.engine.extractEnergy(var4.getPowerProvider().minEnergyReceived, var4.getPowerProvider().maxEnergyReceived, true);
+
                             if (var5 > 0)
                             {
                                 var4.getPowerProvider().receiveEnergy(var5);
@@ -115,9 +138,11 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
                     var2 = new Position((double)this.x, (double)this.y, (double)this.z, this.engine.orientation);
                     var2.moveForwards(1.0D);
                     var3 = this.world.getTileEntity((int)var2.x, (int)var2.y, (int)var2.z);
+
                     if (this.isPoweredTile(var3))
                     {
                         var4 = (IPowerReceptor)var3;
+
                         if (this.engine.extractEnergy(var4.getPowerProvider().minEnergyReceived, var4.getPowerProvider().maxEnergyReceived, false) > 0)
                         {
                             this.progressPart = 1;
@@ -140,6 +165,7 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
         if (this.engine == null)
         {
             int var1 = this.world.getData(this.x, this.y, this.z);
+
             if (var1 == 0)
             {
                 this.engine = new EngineWood(this);
@@ -165,6 +191,7 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
             Position var3 = new Position((double)this.x, (double)this.y, (double)this.z, var2);
             var3.moveForwards(1.0D);
             TileEntity var4 = this.world.getTileEntity((int)var3.x, (int)var3.y, (int)var3.z);
+
             if (this.isPoweredTile(var4))
             {
                 if (this.engine != null)
@@ -173,7 +200,7 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
                 }
 
                 this.orientation = var2.ordinal();
-                this.world.i(this.x, this.y, this.z);
+                this.world.k(this.x, this.y, this.z);
                 break;
             }
         }
@@ -184,10 +211,14 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
         this.engine.delete();
     }
 
+    /**
+     * Reads a tile entity from NBT.
+     */
     public void a(NBTTagCompound var1)
     {
         super.a(var1);
         int var2 = var1.getInt("kind");
+
         if (var2 == 0)
         {
             this.engine = new EngineWood(this);
@@ -205,6 +236,7 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
         this.engine.progress = var1.getFloat("progress");
         this.engine.energy = var1.getInt("energy");
         this.engine.orientation = Orientations.values()[this.orientation];
+
         if (var1.hasKey("itemInInventory"))
         {
             NBTTagCompound var3 = var1.getCompound("itemInInventory");
@@ -214,6 +246,9 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
         this.engine.readFromNBT(var1);
     }
 
+    /**
+     * Writes a tile entity to NBT.
+     */
     public void b(NBTTagCompound var1)
     {
         super.b(var1);
@@ -221,10 +256,11 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
         var1.setInt("orientation", this.orientation);
         var1.setFloat("progress", this.engine.progress);
         var1.setInt("energy", this.engine.energy);
+
         if (this.itemInInventory != null)
         {
             NBTTagCompound var2 = new NBTTagCompound();
-            this.itemInInventory.b(var2);
+            this.itemInInventory.save(var2);
             var1.set("itemInInventory", var2);
         }
 
@@ -236,14 +272,22 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
         return 1;
     }
 
+    /**
+     * Returns the stack in slot i
+     */
     public ItemStack getItem(int var1)
     {
         return this.itemInInventory;
     }
 
+    /**
+     * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
+     * stack.
+     */
     public ItemStack splitStack(int var1, int var2)
     {
         ItemStack var3 = this.itemInInventory.a(var2);
+
         if (this.itemInInventory.count == 0)
         {
             this.itemInInventory = null;
@@ -252,21 +296,34 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
         return var3;
     }
 
+    /**
+     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
+     */
     public void setItem(int var1, ItemStack var2)
     {
         this.itemInInventory = var2;
     }
 
+    /**
+     * Returns the name of the inventory.
+     */
     public String getName()
     {
         return "Engine";
     }
 
+    /**
+     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
+     * this more of a set than a get?*
+     */
     public int getMaxStackSize()
     {
         return 64;
     }
 
+    /**
+     * Do not make give this method the name canInteractWith because it clashes with Container
+     */
     public boolean a(EntityHuman var1)
     {
         return this.world.getTileEntity(this.x, this.y, this.z) == this;
@@ -282,10 +339,13 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
         return this.engine.getScaledBurnTime(var1);
     }
 
-    public Packet k()
+    /**
+     * Overriden in a sign to provide the text
+     */
+    public Packet d()
     {
         this.createEngineIfNeeded();
-        return super.k();
+        return super.d();
     }
 
     public Packet230ModLoader getUpdatePacket()
@@ -375,5 +435,10 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
     public Engine getEngine()
     {
         return this.engine;
+    }
+
+    public ItemStack splitWithoutUpdate(int var1)
+    {
+        return null;
     }
 }

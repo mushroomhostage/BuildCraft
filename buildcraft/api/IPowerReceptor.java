@@ -1,7 +1,5 @@
 package buildcraft.api;
 
-import buildcraft.api.PowerProvider;
-
 public interface IPowerReceptor
 {
     void setPowerProvider(PowerProvider var1);

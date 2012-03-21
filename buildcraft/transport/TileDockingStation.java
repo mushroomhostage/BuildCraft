@@ -21,33 +21,71 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
         return 1;
     }
 
-    public ItemStack[] getContents()
-    {
-        return new ItemStack[0];
+    // CraftBukkit start
+    public java.util.List<org.bukkit.entity.HumanEntity> transaction = 
+            new java.util.ArrayList<org.bukkit.entity.HumanEntity>();
+    
+    public void onOpen(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.add(who);
     }
 
+    public void onClose(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.remove(who);
+    }
+
+    public java.util.List<org.bukkit.entity.HumanEntity> getViewers() {
+        return transaction;
+    }
+
+    public void setMaxStackSize(int size) {}
+
+    public ItemStack[] getContents() {
+        return null;
+    }
+    // CraftBukkit end
+
+    /**
+     * Returns the stack in slot i
+     */
     public ItemStack getItem(int var1)
     {
         return null;
     }
 
+    /**
+     * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
+     * stack.
+     */
     public ItemStack splitStack(int var1, int var2)
     {
         return null;
     }
 
+    /**
+     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
+     */
     public void setItem(int var1, ItemStack var2) {}
 
+    /**
+     * Returns the name of the inventory.
+     */
     public String getName()
     {
         return "DockingStation";
     }
 
+    /**
+     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
+     * this more of a set than a get?*
+     */
     public int getMaxStackSize()
     {
         return 0;
     }
 
+    /**
+     * Do not make give this method the name canInteractWith because it clashes with Container
+     */
     public boolean a(EntityHuman var1)
     {
         return true;
@@ -127,6 +165,7 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
     private EntityMinecart getCart()
     {
         AxisAlignedBB var1 = this.getCheckBox(Orientations.YPos, 1);
+
         if (var1 == null)
         {
             return null;
@@ -154,6 +193,7 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
             if (var1.getItem(var4) != null && var1.getItem(var4).count > 0)
             {
                 ItemStack var5 = var1.getItem(var4);
+
                 if (var5 != null && var5.count > 0)
                 {
                     if (var2)
@@ -197,6 +237,7 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
     public boolean addItem(ItemStack var1, boolean var2, Orientations var3)
     {
         EntityMinecart var4 = this.getCart();
+
         if (var4 != null && !var4.dead && var4.type == 1)
         {
             StackUtil var5 = new StackUtil(var1);
@@ -214,11 +255,13 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
         return var3 != null && !var3.dead && var3.type == 1 ? this.checkExtractGeneric(var3, var1, var2) : null;
     }
 
-    // $FF: synthetic class
+    public ItemStack splitWithoutUpdate(int var1)
+    {
+        return null;
+    }
+
     static class NamelessClass379028053
     {
-
-        // $FF: synthetic field
         static final int[] $SwitchMap$net$minecraft$src$buildcraft$api$Orientations = new int[Orientations.values().length];
 
 

@@ -3,8 +3,6 @@ package buildcraft.builders;
 import buildcraft.api.APIProxy;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
-import buildcraft.builders.BuildersProxy;
-import buildcraft.builders.TileTemplate;
 import buildcraft.core.Utils;
 import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;
@@ -38,16 +36,24 @@ public class BlockTemplate extends BlockContainer implements ITextureProvider
         return BuildCraftCore.customBuildCraftTexture;
     }
 
+    /**
+     * Returns the TileEntity used by this block.
+     */
     public TileEntity a_()
     {
         return new TileTemplate();
     }
 
+    /**
+     * Called upon block activation (left or right click on the block.). The three integers represent x,y,z of the
+     * block.
+     */
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
-        if (var5.Q() != null && var5.Q().getItem() == BuildCraftCore.wrenchItem)
+        if (var5.T() != null && var5.T().getItem() == BuildCraftCore.wrenchItem)
         {
             int var7 = var1.getData(var2, var3, var4);
+
             switch (Orientations.values()[var7])
             {
                 case XNeg:
@@ -74,12 +80,18 @@ public class BlockTemplate extends BlockContainer implements ITextureProvider
         }
     }
 
+    /**
+     * Called whenever the block is removed.
+     */
     public void remove(World var1, int var2, int var3, int var4)
     {
         Utils.preDestroyBlock(var1, var2, var3, var4);
         super.remove(var1, var2, var3, var4);
     }
 
+    /**
+     * Called when a block is using an item and passed in who placed it. Args: x, y, z, entityLiving
+     */
     public void postPlace(World var1, int var2, int var3, int var4, EntityLiving var5)
     {
         super.postPlace(var1, var2, var3, var4, var5);
@@ -90,9 +102,11 @@ public class BlockTemplate extends BlockContainer implements ITextureProvider
     public int getBlockTexture(IBlockAccess var1, int var2, int var3, int var4, int var5)
     {
         int var6 = var1.getData(var2, var3, var4);
+
         if (var5 == 1)
         {
             boolean var7 = false;
+
             if (APIProxy.getWorld() == null)
             {
                 return this.a(var5, var6);
@@ -109,6 +123,9 @@ public class BlockTemplate extends BlockContainer implements ITextureProvider
         }
     }
 
+    /**
+     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
+     */
     public int a(int var1, int var2)
     {
         return var2 == 0 && var1 == 3 ? this.blockTextureFront : (var1 == 1 ? this.blockTextureTopPos : (var1 == var2 ? this.blockTextureFront : this.blockTextureSides));

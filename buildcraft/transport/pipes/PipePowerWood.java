@@ -53,14 +53,17 @@ public class PipePowerWood extends Pipe implements IPowerReceptor
         {
             Position var2 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, Orientations.values()[var1]);
             var2.moveForwards(1.0D);
+
             if (Utils.checkPipesConnections(this.worldObj, this.xCoord, this.yCoord, this.zCoord, (int)var2.x, (int)var2.y, (int)var2.z))
             {
                 TileEntity var3 = this.worldObj.getTileEntity((int)var2.x, (int)var2.y, (int)var2.z);
+
                 if (var3 instanceof TileGenericPipe)
                 {
                     PipeTransportPower var4 = (PipeTransportPower)((TileGenericPipe)var3).pipe.transport;
                     boolean var5 = false;
                     int var7;
+
                     if (this.powerProvider.energyStored > 40)
                     {
                         var7 = this.powerProvider.energyStored / 40 + 4;
@@ -91,6 +94,7 @@ public class PipePowerWood extends Pipe implements IPowerReceptor
         else
         {
             int var2 = this.worldObj.getData(this.xCoord, this.yCoord, this.zCoord);
+
             if (var2 == var1.ordinal())
             {
                 this.nextTexture = this.plainTexture;

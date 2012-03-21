@@ -1,6 +1,5 @@
 package buildcraft.builders;
 
-import buildcraft.builders.TileTemplate;
 import buildcraft.core.BuildCraftContainer;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
@@ -19,8 +18,8 @@ class CraftingTemplateRoot extends BuildCraftContainer
         this.template = var2;
         this.a(new Slot(var2, 0, 55, 35));
         this.a(new Slot(var2, 1, 114, 35));
-
         int var3;
+
         for (var3 = 0; var3 < 3; ++var3)
         {
             for (int var4 = 0; var4 < 9; ++var4)

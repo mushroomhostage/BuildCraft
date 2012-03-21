@@ -1,7 +1,6 @@
 package buildcraft.factory;
 
 import buildcraft.core.EntityBlock;
-import buildcraft.factory.IArmListener;
 import net.minecraft.server.BuildCraftFactory;
 import net.minecraft.server.Entity;
 import net.minecraft.server.NBTTagCompound;
@@ -71,6 +70,9 @@ public class EntityMechanicalArm extends Entity
 
     protected void b() {}
 
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
     protected void a(NBTTagCompound var1)
     {
         this.sizeX = var1.getDouble("sizeX");
@@ -104,6 +106,9 @@ public class EntityMechanicalArm extends Entity
         this.head.e(var5);
     }
 
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
     protected void b(NBTTagCompound var1)
     {
         var1.setDouble("sizeX", this.sizeX);
@@ -150,7 +155,10 @@ public class EntityMechanicalArm extends Entity
         return new double[] {this.targetX, this.targetY, this.targetZ};
     }
 
-    public void y_()
+    /**
+     * Called to update the entity's position/logic.
+     */
+    public void G_()
     {
         if (this.speed > 0.0D)
         {
@@ -160,7 +168,8 @@ public class EntityMechanicalArm extends Entity
 
     public void doMove(double var1)
     {
-        super.y_();
+        super.G_();
+
         if (this.inProgressionXZ)
         {
             if (Math.abs(this.targetX - this.headPosX) < var1 * 2.0D && Math.abs(this.targetZ - this.headPosZ) < var1 * 2.0D)
@@ -168,6 +177,7 @@ public class EntityMechanicalArm extends Entity
                 this.headPosX = this.targetX;
                 this.headPosZ = this.targetZ;
                 this.inProgressionXZ = false;
+
                 if (this.listener != null && !this.inProgressionY)
                 {
                     this.listener.positionReached(this);
@@ -186,6 +196,7 @@ public class EntityMechanicalArm extends Entity
             {
                 this.headPosY = this.targetY;
                 this.inProgressionY = false;
+
                 if (this.listener != null && !this.inProgressionXZ)
                 {
                     this.listener.positionReached(this);
@@ -227,6 +238,9 @@ public class EntityMechanicalArm extends Entity
         var1.addEntity(this.head);
     }
 
+    /**
+     * Will get destroyed next tick
+     */
     public void die()
     {
         this.xArm.die();

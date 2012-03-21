@@ -1,8 +1,5 @@
 package buildcraft.core;
 
-import buildcraft.core.BlockIndex;
-import buildcraft.core.CoreProxy;
-import buildcraft.core.PersistentTile;
 import java.util.HashMap;
 import java.util.TreeMap;
 import net.minecraft.server.IBlockAccess;
@@ -17,6 +14,7 @@ public class PersistentWorld
     public PersistentTile createTile(PersistentTile var1, BlockIndex var2)
     {
         PersistentTile var3 = null;
+
         if (!this.tiles.containsKey(var2))
         {
             this.tiles.put(var2, var1);
@@ -25,6 +23,7 @@ public class PersistentWorld
         else
         {
             var3 = (PersistentTile)this.tiles.get(var2);
+
             if (var3 != var1)
             {
                 if (!var3.getClass().equals(var1.getClass()))
@@ -49,6 +48,7 @@ public class PersistentWorld
         if (this.tiles.containsKey(var2))
         {
             PersistentTile var3 = (PersistentTile)this.tiles.get(var2);
+
             if (var3 == var1)
             {
                 return;
@@ -76,6 +76,7 @@ public class PersistentWorld
     public static PersistentWorld getWorld(IBlockAccess var0)
     {
         Long var1 = Long.valueOf(CoreProxy.getHash(var0));
+
         if (!var1.equals(lastBlockAccess))
         {
             if (!worlds.containsKey(var1))

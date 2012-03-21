@@ -8,9 +8,6 @@ import buildcraft.api.Position;
 import buildcraft.api.TileNetworkData;
 import buildcraft.core.IMachine;
 import buildcraft.core.Utils;
-import buildcraft.transport.IPipeTransportLiquidsHook;
-import buildcraft.transport.PipeTransport;
-import buildcraft.transport.TileGenericPipe;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityItem;
 import net.minecraft.server.NBTTagCompound;
@@ -115,6 +112,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
     {
         this.isOutput = new boolean[] {false, false, false, false, false, false};
         int var1 = this.computeOutputs();
+
         if (var1 == 0)
         {
             ++this.lockedTime;
@@ -135,7 +133,6 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
         }
 
         int[] var5 = getSplitVector(this.worldObj);
-
         int var3;
         int var4;
         for (var3 = 0; var3 < 6; ++var3)
@@ -151,6 +148,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
         {
             var4 = var5[var3];
             this.side[var4].update();
+
             if (this.side[var4].qty != 0)
             {
                 this.side[var4].emptyTime = 0;
@@ -181,6 +179,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
             Position var3 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, Orientations.values()[var2]);
             var3.moveForwards(1.0D);
             this.isOutput[var2] = this.container.pipe.outputOpen(var3.orientation) && this.canReceiveLiquid(var3) && !this.isInput[var2];
+
             if (this.isOutput[var2])
             {
                 ++var1;
@@ -233,6 +232,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
         {
             Position var2 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, Orientations.values()[var1]);
             var2.moveForwards(1.0D);
+
             if (!Utils.checkPipesConnections(this.worldObj, (int)var2.x, (int)var2.y, (int)var2.z, this.xCoord, this.yCoord, this.zCoord))
             {
                 this.side[var1].reset();
@@ -260,8 +260,8 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
         {
             lastSplit = var0.getTime();
             splitVector = new int[6];
-
             int var1;
+
             for (var1 = 0; var1 < 6; splitVector[var1] = var1++)
             {
                 ;
@@ -317,6 +317,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
         public void reset()
         {
             int var1;
+
             for (var1 = 0; var1 < PipeTransportLiquids.this.travelDelay; ++var1)
             {
                 this.in[var1] = 0;
@@ -356,6 +357,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
                 this.liquidId = var3;
                 int var4 = (int)(PipeTransportLiquids.this.worldObj.getTime() % (long)PipeTransportLiquids.this.travelDelay);
                 int var5 = var4 > 0 ? var4 - 1 : PipeTransportLiquids.this.travelDelay - 1;
+
                 if (this.qty + var1 > PipeTransportLiquids.LIQUID_IN_PIPE + PipeTransportLiquids.this.flowRate)
                 {
                     var1 = PipeTransportLiquids.LIQUID_IN_PIPE + PipeTransportLiquids.this.flowRate - this.qty;
@@ -375,6 +377,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
         {
             int var2 = (int)(PipeTransportLiquids.this.worldObj.getTime() % (long)PipeTransportLiquids.this.travelDelay);
             int var3 = var2 > 0 ? var2 - 1 : PipeTransportLiquids.this.travelDelay - 1;
+
             if (this.ready - var1 < 0)
             {
                 var1 = this.ready;
@@ -392,9 +395,11 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
             this.ready += this.in[var1];
             this.in[var1] = 0;
             int var2;
+
             if (this.out[var1] != 0)
             {
                 var2 = 0;
+
                 if (this.orientation < 6)
                 {
                     if (PipeTransportLiquids.this.isInput[this.orientation])
@@ -408,9 +413,11 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
                         var3.moveForwards(1.0D);
                         ILiquidContainer var4 = (ILiquidContainer)Utils.getTile(PipeTransportLiquids.this.worldObj, var3, Orientations.Unknown);
                         var2 = var4.fill(var3.orientation.reverse(), this.out[var1], this.liquidId, true);
+
                         if (var2 == 0)
                         {
                             ++this.totalBounced;
+
                             if (this.totalBounced > 20)
                             {
                                 this.bouncing = true;
@@ -427,8 +434,8 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
                 else
                 {
                     int var5 = 0;
-
                     int var6;
+
                     for (var6 = 0; var6 < 6; ++var6)
                     {
                         if (PipeTransportLiquids.this.isOutput[var6])
@@ -439,6 +446,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
 
                     this.filled = new boolean[] {false, false, false, false, false, false};
                     var2 = this.splitLiquid(this.out[var1], var5);
+
                     if (var2 < this.out[var1])
                     {
                         var5 = 0;
@@ -464,6 +472,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
             this.lastTotal += this.qty - this.lastQty[var2];
             this.lastQty[var2] = this.qty;
             this.average = this.lastTotal / this.lastQty.length;
+
             if (this.qty != 0 && this.average == 0)
             {
                 this.average = 1;
@@ -480,10 +489,12 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
             {
                 int var7 = var4 <= var1 ? var4 : var1;
                 int var8 = var5[var6];
+
                 if (PipeTransportLiquids.this.isOutput[var8] && !this.filled[var8])
                 {
                     var3 += PipeTransportLiquids.this.side[var8].fill(var7, true, this.liquidId);
                     var1 -= var7;
+
                     if (var3 != var7)
                     {
                         this.filled[var8] = true;

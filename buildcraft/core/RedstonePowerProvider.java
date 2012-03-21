@@ -20,6 +20,7 @@ public class RedstonePowerProvider extends PowerProvider
     {
         TileEntity var2 = (TileEntity)var1;
         boolean var3 = var2.world.isBlockIndirectlyPowered(var2.x, var2.y, var2.z);
+
         if (BuildCraftCore.continuousCurrentModel)
         {
             if (var3)
@@ -30,6 +31,7 @@ public class RedstonePowerProvider extends PowerProvider
         else if (var3 != this.lastPower)
         {
             this.lastPower = var3;
+
             if (var3)
             {
                 return true;

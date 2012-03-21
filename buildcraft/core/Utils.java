@@ -8,12 +8,6 @@ import buildcraft.api.IPipeEntry;
 import buildcraft.api.LaserKind;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
-import buildcraft.core.BlockIndex;
-import buildcraft.core.EntityBlock;
-import buildcraft.core.ILiquid;
-import buildcraft.core.ISynchronizedTile;
-import buildcraft.core.PacketIds;
-import buildcraft.core.TileBuildCraft;
 import java.util.LinkedList;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftCore;
@@ -42,7 +36,7 @@ public class Utils
     {
         double var2 = var0.x - var1.x;
         double var4 = var0.z - var1.z;
-        double var6 = Math.atan2(var4, var2) / 3.141592653589793D * 180.0D + 180.0D;
+        double var6 = Math.atan2(var4, var2) / Math.PI * 180.0D + 180.0D;
         return var6 >= 45.0D && var6 <= 315.0D ? (var6 < 135.0D ? Orientations.ZPos : (var6 < 225.0D ? Orientations.XNeg : Orientations.ZNeg)) : Orientations.XPos;
     }
 
@@ -50,7 +44,7 @@ public class Utils
     {
         double var2 = var0.x - var1.x;
         double var4 = var0.y - var1.y;
-        double var6 = Math.atan2(var4, var2) / 3.141592653589793D * 180.0D + 180.0D;
+        double var6 = Math.atan2(var4, var2) / Math.PI * 180.0D + 180.0D;
         return var6 > 45.0D && var6 < 135.0D ? Orientations.YPos : (var6 > 225.0D && var6 < 315.0D ? Orientations.YNeg : get2dOrientation(var0, var1));
     }
 
@@ -68,6 +62,7 @@ public class Utils
                 var6 = new Position((double)var0.x, (double)var0.y, (double)var0.z, Orientations.values()[var5]);
                 var6.moveForwards(1.0D);
                 TileEntity var7 = var3.getTileEntity((int)var6.x, (int)var6.y, (int)var6.z);
+
                 if (var7 instanceof IPipeEntry && ((IPipeEntry)var7).acceptItems())
                 {
                     var4.add(Orientations.values()[var5]);
@@ -113,6 +108,7 @@ public class Utils
         for (int var5 = 0; var5 < var1.getSize(); ++var5)
         {
             ItemStack var6 = var1.getItem(var5);
+
             if (var6 != null && var6.count > 0)
             {
                 dropItems(var0, var1.getItem(var5).cloneItemStack(), var2, var3, var4);
@@ -138,24 +134,28 @@ public class Utils
             Position var2 = new Position((double)var1.x, (double)var1.y, (double)var1.z);
             IInventory var4 = null;
             TileEntity var3 = getTile(var1.world, var2, Orientations.XNeg);
+
             if (var3 instanceof TileEntityChest)
             {
                 var4 = (IInventory)var3;
             }
 
             var3 = getTile(var1.world, var2, Orientations.XPos);
+
             if (var3 instanceof TileEntityChest)
             {
                 var4 = (IInventory)var3;
             }
 
             var3 = getTile(var1.world, var2, Orientations.ZNeg);
+
             if (var3 instanceof TileEntityChest)
             {
                 var4 = (IInventory)var3;
             }
 
             var3 = getTile(var1.world, var2, Orientations.ZPos);
+
             if (var3 instanceof TileEntityChest)
             {
                 var4 = (IInventory)var3;
@@ -195,6 +195,7 @@ public class Utils
             double var10 = var1.x;
             double var12 = var1.y;
             double var14 = var1.z;
+
             if (var4 != 0.0D)
             {
                 var10 += 0.5D;
@@ -263,9 +264,11 @@ public class Utils
         int var1 = var0.dataInt[0];
         int var2 = var0.dataInt[1];
         int var3 = var0.dataInt[2];
+
         if (APIProxy.getWorld().isLoaded(var1, var2, var3))
         {
             TileEntity var4 = APIProxy.getWorld().getTileEntity(var1, var2, var3);
+
             if (var4 instanceof ISynchronizedTile)
             {
                 ((ISynchronizedTile)var4).handleDescriptionPacket(var0);
@@ -275,6 +278,7 @@ public class Utils
         }
 
         BlockIndex var5 = new BlockIndex(var1, var2, var3);
+
         if (BuildCraftCore.bufferedDescriptions.containsKey(var5))
         {
             BuildCraftCore.bufferedDescriptions.remove(var5);
@@ -288,9 +292,11 @@ public class Utils
         int var1 = var0.dataInt[0];
         int var2 = var0.dataInt[1];
         int var3 = var0.dataInt[2];
+
         if (APIProxy.getWorld().isLoaded(var1, var2, var3))
         {
             TileEntity var4 = APIProxy.getWorld().getTileEntity(var1, var2, var3);
+
             if (var4 instanceof ISynchronizedTile)
             {
                 ((ISynchronizedTile)var4).handleUpdatePacket(var0);
@@ -304,6 +310,7 @@ public class Utils
     {
         TileEntity var1 = (TileEntity)var0;
         BlockIndex var2 = new BlockIndex(var1.x, var1.y, var1.z);
+
         if (BuildCraftCore.bufferedDescriptions.containsKey(var2))
         {
             Packet230ModLoader var3 = (Packet230ModLoader)BuildCraftCore.bufferedDescriptions.get(var2);
@@ -367,6 +374,7 @@ public class Utils
     public static void preDestroyBlock(World var0, int var1, int var2, int var3)
     {
         TileEntity var4 = var0.getTileEntity(var1, var2, var3);
+
         if (var4 instanceof IInventory && !APIProxy.isClient(var0))
         {
             dropItems(var0, (IInventory)var4, var1, var2, var3);

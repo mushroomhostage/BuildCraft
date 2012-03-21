@@ -1,8 +1,6 @@
 package buildcraft.energy;
 
 import buildcraft.core.BuildCraftContainer;
-import buildcraft.energy.EngineStone;
-import buildcraft.energy.TileEngine;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.PlayerInventory;
 import net.minecraft.server.Slot;
@@ -15,6 +13,7 @@ public class ContainerEngineRoot extends BuildCraftContainer
     {
         super(var2.getSize());
         this.engine = var2;
+
         if (var2.engine instanceof EngineStone)
         {
             this.a(new Slot(var2, 0, 80, 41));
@@ -25,6 +24,7 @@ public class ContainerEngineRoot extends BuildCraftContainer
         }
 
         int var3;
+
         for (var3 = 0; var3 < 3; ++var3)
         {
             for (int var4 = 0; var4 < 9; ++var4)

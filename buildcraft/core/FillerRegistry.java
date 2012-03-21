@@ -1,6 +1,5 @@
 package buildcraft.core;
 
-import buildcraft.core.FillerPattern;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -19,6 +18,7 @@ public class FillerRegistry
         int var3 = 0;
         int var4 = 0;
         int var5 = 0;
+
         if (var1[var3] instanceof String[])
         {
             String[] var6 = (String[])((String[])var1[var3++]);
@@ -43,10 +43,12 @@ public class FillerRegistry
         }
 
         HashMap var10;
+
         for (var10 = new HashMap(); var3 < var1.length; var3 += 2)
         {
             Character var13 = (Character)var1[var3];
             ItemStack var14 = null;
+
             if (var1[var3 + 1] instanceof Item)
             {
                 var14 = new ItemStack((Item)var1[var3 + 1]);
@@ -68,6 +70,7 @@ public class FillerRegistry
         for (int var15 = 0; var15 < var4 * var5; ++var15)
         {
             char var9 = var2.charAt(var15);
+
             if (var10.containsKey(Character.valueOf(var9)))
             {
                 var12[var15] = ((ItemStack)var10.get(Character.valueOf(var9))).cloneItemStack();
@@ -87,6 +90,7 @@ public class FillerRegistry
         for (int var1 = 0; var1 < recipes.size(); ++var1)
         {
             FillerRegistry.ShapedPatternRecipe var2 = (FillerRegistry.ShapedPatternRecipe)recipes.get(var1);
+
             if (var2.matches(var0))
             {
                 return var2.recipeOutput;
@@ -103,6 +107,7 @@ public class FillerRegistry
         for (Iterator var2 = recipes.iterator(); var2.hasNext(); ++var1)
         {
             FillerRegistry.ShapedPatternRecipe var3 = (FillerRegistry.ShapedPatternRecipe)var2.next();
+
             if (var3.recipeOutput == var0)
             {
                 return var1;
@@ -162,6 +167,7 @@ public class FillerRegistry
                     int var7 = var5 - var2;
                     int var8 = var6 - var3;
                     ItemStack var9 = null;
+
                     if (var7 >= 0 && var8 >= 0 && var7 < this.recipeWidth && var8 < this.recipeHeight)
                     {
                         if (var4)
@@ -175,6 +181,7 @@ public class FillerRegistry
                     }
 
                     ItemStack var10 = var1.getItem(var5 + var6 * 3);
+
                     if (var10 != null || var9 != null)
                     {
                         if (var10 == null && var9 != null || var10 != null && var9 == null)

@@ -34,6 +34,7 @@ public class PipeItemsGold extends Pipe implements IPipeTransportItemsHook
         else
         {
             Pipe var2 = null;
+
             if (var1 instanceof TileGenericPipe)
             {
                 var2 = ((TileGenericPipe)var1).pipe;

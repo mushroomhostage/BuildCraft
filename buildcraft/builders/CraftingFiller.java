@@ -15,9 +15,9 @@ class CraftingFiller extends BuildCraftContainer
         super(var2.getSize());
         this.playerIInventory = var1;
         this.fillerInventory = var2;
-
         int var3;
         int var4;
+
         for (var3 = 0; var3 < 3; ++var3)
         {
             for (var4 = 0; var4 < 3; ++var4)

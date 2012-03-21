@@ -1,8 +1,6 @@
 package buildcraft.factory;
 
 import buildcraft.core.Utils;
-import buildcraft.factory.FactoryProxy;
-import buildcraft.factory.TileAutoWorkbench;
 import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.BuildCraftCore;
@@ -22,11 +20,18 @@ public class BlockAutoWorkbench extends BlockContainer implements ITextureProvid
         this.c(1.0F);
     }
 
+    /**
+     * Returns the block texture based on the side being looked at.  Args: side
+     */
     public int a(int var1)
     {
         return var1 != 1 && var1 != 0 ? this.sideTexture : this.topTexture;
     }
 
+    /**
+     * Called upon block activation (left or right click on the block.). The three integers represent x,y,z of the
+     * block.
+     */
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
         super.interact(var1, var2, var3, var4, var5);
@@ -34,11 +39,17 @@ public class BlockAutoWorkbench extends BlockContainer implements ITextureProvid
         return true;
     }
 
+    /**
+     * Returns the TileEntity used by this block.
+     */
     public TileEntity a_()
     {
         return new TileAutoWorkbench();
     }
 
+    /**
+     * Called whenever the block is removed.
+     */
     public void remove(World var1, int var2, int var3, int var4)
     {
         Utils.preDestroyBlock(var1, var2, var3, var4);

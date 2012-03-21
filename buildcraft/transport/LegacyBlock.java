@@ -1,6 +1,5 @@
 package buildcraft.transport;
 
-import buildcraft.transport.LegacyTile;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.Material;
 import net.minecraft.server.TileEntity;
@@ -15,6 +14,9 @@ public class LegacyBlock extends BlockContainer
         this.newPipeId = var2;
     }
 
+    /**
+     * Returns the TileEntity used by this block.
+     */
     public TileEntity a_()
     {
         return new LegacyTile();

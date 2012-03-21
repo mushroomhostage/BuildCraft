@@ -1,6 +1,5 @@
 package buildcraft.energy;
 
-import buildcraft.energy.TilePollution;
 import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.BuildCraftCore;
@@ -21,16 +20,26 @@ public class BlockPollution extends BlockContainer implements ITextureProvider
         return BuildCraftCore.customBuildCraftTexture;
     }
 
+    /**
+     * If this block doesn't render as an ordinary block it will return false (examples: signs, buttons, stairs, etc)
+     */
     public boolean b()
     {
         return false;
     }
 
+    /**
+     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
+     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
+     */
     public boolean a()
     {
         return false;
     }
 
+    /**
+     * Returns the TileEntity used by this block.
+     */
     public TileEntity a_()
     {
         return new TilePollution();

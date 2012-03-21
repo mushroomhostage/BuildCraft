@@ -1,7 +1,5 @@
 package buildcraft.api;
 
-import buildcraft.api.IPowerReceptor;
-import buildcraft.api.PowerProvider;
 import net.minecraft.server.NBTTagCompound;
 
 public abstract class PowerFramework
@@ -14,9 +12,11 @@ public abstract class PowerFramework
     public void loadPowerProvider(IPowerReceptor var1, NBTTagCompound var2)
     {
         PowerProvider var3 = this.createPowerProvider();
+
         if (var2.hasKey(baseNBTName))
         {
             NBTTagCompound var4 = var2.getCompound(baseNBTName);
+
             if (var4.getString("class").equals(this.getClass().getName()))
             {
                 var3.readFromNBT(var4.getCompound("contents"));
@@ -29,6 +29,7 @@ public abstract class PowerFramework
     public void savePowerProvider(IPowerReceptor var1, NBTTagCompound var2)
     {
         PowerProvider var3 = var1.getPowerProvider();
+
         if (var3 != null)
         {
             NBTTagCompound var4 = new NBTTagCompound();

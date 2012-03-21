@@ -2,11 +2,6 @@ package buildcraft.energy;
 
 import buildcraft.api.IPipeConnection;
 import buildcraft.api.Orientations;
-import buildcraft.energy.EnergyProxy;
-import buildcraft.energy.EngineIron;
-import buildcraft.energy.EngineStone;
-import buildcraft.energy.EngineWood;
-import buildcraft.energy.TileEngine;
 import java.util.Random;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.BuildCraftCore;
@@ -24,11 +19,18 @@ public class BlockEngine extends BlockContainer implements IPipeConnection
         this.c(0.5F);
     }
 
+    /**
+     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
+     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
+     */
     public boolean a()
     {
         return false;
     }
 
+    /**
+     * If this block doesn't render as an ordinary block it will return false (examples: signs, buttons, stairs, etc)
+     */
     public boolean b()
     {
         return false;
@@ -39,19 +41,29 @@ public class BlockEngine extends BlockContainer implements IPipeConnection
         return false;
     }
 
+    /**
+     * The type of render function that is called for this block
+     */
     public int c()
     {
         return BuildCraftCore.blockByEntityModel;
     }
 
+    /**
+     * Returns the TileEntity used by this block.
+     */
     public TileEntity a_()
     {
         return new TileEngine();
     }
 
+    /**
+     * Called whenever the block is removed.
+     */
     public void remove(World var1, int var2, int var3, int var4)
     {
         TileEngine var5 = (TileEngine)var1.getTileEntity(var2, var3, var4);
+
         if (var5 != null)
         {
             var5.delete();
@@ -60,10 +72,15 @@ public class BlockEngine extends BlockContainer implements IPipeConnection
         super.remove(var1, var2, var3, var4);
     }
 
+    /**
+     * Called upon block activation (left or right click on the block.). The three integers represent x,y,z of the
+     * block.
+     */
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
         TileEngine var6 = (TileEngine)var1.getTileEntity(var2, var3, var4);
-        if (var5.Q() != null && var5.Q().getItem() == BuildCraftCore.wrenchItem)
+
+        if (var5.T() != null && var5.T().getItem() == BuildCraftCore.wrenchItem)
         {
             var6.switchOrientation();
             return true;
@@ -94,6 +111,10 @@ public class BlockEngine extends BlockContainer implements IPipeConnection
     }
     // MaeEdit end
 
+    /**
+     * Called when a block is placed using an item. Used often for taking the facing and figuring out how to position
+     * the item. Args: x, y, z, facing
+     */
     public void postPlace(World var1, int var2, int var3, int var4, int var5)
     {
         TileEngine var6 = (TileEngine)var1.getTileEntity(var2, var3, var4);
@@ -101,6 +122,9 @@ public class BlockEngine extends BlockContainer implements IPipeConnection
         var6.switchOrientation();
     }
 
+    /**
+     * Determines the damage on the item the block drops. Used in cloth and wood.
+     */
     protected int getDropData(int var1)
     {
         return var1;
@@ -109,6 +133,7 @@ public class BlockEngine extends BlockContainer implements IPipeConnection
     public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5)
     {
         TileEngine var6 = (TileEngine)var1.getTileEntity(var2, var3, var4);
+
         if (var6.isBurning())
         {
             float var7 = (float)var2 + 0.5F;
@@ -126,6 +151,7 @@ public class BlockEngine extends BlockContainer implements IPipeConnection
     public boolean isPipeConnected(IBlockAccess var1, int var2, int var3, int var4, int var5, int var6, int var7)
     {
         TileEngine var8 = (TileEngine)var1.getTileEntity(var2, var3, var4);
+
         if (var8 == null)
         {
             return false;

@@ -1,6 +1,5 @@
 package buildcraft.api;
 
-import buildcraft.api.LiquidData;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -21,8 +20,8 @@ public class API
     public static int getLiquidForBucket(int var0)
     {
         Iterator var1 = liquids.iterator();
-
         LiquidData var2;
+
         do
         {
             if (!var1.hasNext())
@@ -40,8 +39,8 @@ public class API
     public static int getBucketForLiquid(int var0)
     {
         Iterator var1 = liquids.iterator();
-
         LiquidData var2;
+
         do
         {
             if (!var1.hasNext())

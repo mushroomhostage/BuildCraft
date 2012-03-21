@@ -15,9 +15,9 @@ class CraftingDiamondPipe extends BuildCraftContainer
         super(var2.getSize());
         this.playerIInventory = var1;
         this.filterIInventory = var2;
-
         int var3;
         int var4;
+
         for (var3 = 0; var3 < 6; ++var3)
         {
             for (var4 = 0; var4 < 9; ++var4)

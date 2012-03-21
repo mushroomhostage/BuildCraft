@@ -8,9 +8,6 @@ import buildcraft.core.BlockIndex;
 import buildcraft.core.PersistentTile;
 import buildcraft.core.PersistentWorld;
 import buildcraft.core.Utils;
-import buildcraft.transport.ItemPipe;
-import buildcraft.transport.Pipe;
-import buildcraft.transport.TileGenericPipe;
 import forge.ITextureProvider;
 import java.util.ArrayList;
 import java.util.Random;
@@ -40,16 +37,26 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         super(var1, Material.SHATTERABLE);
     }
 
+    /**
+     * The type of render function that is called for this block
+     */
     public int c()
     {
         return BuildCraftCore.pipeModel;
     }
 
+    /**
+     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
+     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
+     */
     public boolean a()
     {
         return false;
     }
 
+    /**
+     * If this block doesn't render as an ordinary block it will return false (examples: signs, buttons, stairs, etc)
+     */
     public boolean b()
     {
         return false;
@@ -60,10 +67,15 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         return false;
     }
 
+    /**
+     * Adds to the supplied array any colliding bounding boxes with the passed in bounding box. Args: world, x, y, z,
+     * axisAlignedBB, arrayList
+     */
     public void a(World var1, int var2, int var3, int var4, AxisAlignedBB var5, ArrayList var6)
     {
         this.a(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
         super.a(var1, var2, var3, var4, var5, var6);
+
         if (Utils.checkPipesConnections(var1, var2, var3, var4, var2 - 1, var3, var4))
         {
             this.a(0.0F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
@@ -103,6 +115,10 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         this.a(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
+    /**
+     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
+     * cleared to be reused)
+     */
     public AxisAlignedBB e(World var1, int var2, int var3, int var4)
     {
         float var5 = 0.25F;
@@ -111,6 +127,7 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         float var8 = 0.75F;
         float var9 = 0.25F;
         float var10 = 0.75F;
+
         if (Utils.checkPipesConnections(var1, var2, var3, var4, var2 - 1, var3, var4))
         {
             var5 = 0.0F;
@@ -149,6 +166,10 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         return this.e(var1, var2, var3, var4);
     }
 
+    /**
+     * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,
+     * x, y, z, startVec, endVec
+     */
     public MovingObjectPosition a(World var1, int var2, int var3, int var4, Vec3D var5, Vec3D var6)
     {
         float var7 = 0.25F;
@@ -157,6 +178,7 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         float var10 = 0.75F;
         float var11 = 0.25F;
         float var12 = 0.75F;
+
         if (Utils.checkPipesConnections(var1, var2, var3, var4, var2 - 1, var3, var4))
         {
             var7 = 0.0F;
@@ -198,11 +220,13 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         if (var0 != null)
         {
             World var1 = var0.worldObj;
+
             if (var1 != null)
             {
                 int var2 = var0.xCoord;
                 int var3 = var0.yCoord;
                 int var4 = var0.zCoord;
+
                 if (lastRemovedDate != var1.getTime())
                 {
                     lastRemovedDate = var1.getTime();
@@ -215,6 +239,9 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         }
     }
 
+    /**
+     * Called whenever the block is removed.
+     */
     public void remove(World var1, int var2, int var3, int var4)
     {
         Utils.preDestroyBlock(var1, var2, var3, var4);
@@ -227,11 +254,17 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         return BuildCraftCore.customBuildCraftTexture;
     }
 
+    /**
+     * Returns the TileEntity used by this block.
+     */
     public TileEntity a_()
     {
         return new TileGenericPipe();
     }
 
+    /**
+     * Drops the block items with a specified chance of dropping the specified items
+     */
     public void dropNaturally(World var1, int var2, int var3, int var4, int var5, float var6, int var7)
     {
         if (!APIProxy.isClient(var1))
@@ -243,6 +276,7 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
                 if (var1.random.nextFloat() <= var6)
                 {
                     Pipe var10 = getPipe(var1, var2, var3, var4);
+
                     if (var10 == null)
                     {
                         var10 = (Pipe)pipeRemoved.get(new BlockIndex(var2, var3, var4));
@@ -251,6 +285,7 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
                     if (var10 != null)
                     {
                         int var11 = var10.itemID;
+
                         if (var11 > 0)
                         {
                             var10.dropContents();
@@ -262,6 +297,9 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         }
     }
 
+    /**
+     * Returns the ID of the items to drop on destruction.
+     */
     public int getDropType(int var1, Random var2, int var3)
     {
         return 0;
@@ -275,26 +313,40 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         return !isValid(var9) ? false : (isValid(var10) && !var9.transport.getClass().isAssignableFrom(var10.transport.getClass()) && !var10.transport.getClass().isAssignableFrom(var9.transport.getClass()) ? false : (var9 != null ? var9.isPipeConnected(var8) : false));
     }
 
+    /**
+     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
+     * their own) Args: x, y, z, blockID
+     */
     public void doPhysics(World var1, int var2, int var3, int var4, int var5)
     {
         super.doPhysics(var1, var2, var3, var4, var5);
         Pipe var6 = getPipe(var1, var2, var3, var4);
+
         if (isValid(var6))
         {
             var6.onNeighborBlockChange();
         }
     }
 
+    /**
+     * Called when a block is placed using an item. Used often for taking the facing and figuring out how to position
+     * the item. Args: x, y, z, facing
+     */
     public void postPlace(World var1, int var2, int var3, int var4, int var5)
     {
         super.postPlace(var1, var2, var3, var4, var5);
         Pipe var6 = getPipe(var1, var2, var3, var4);
+
         if (isValid(var6))
         {
             var6.onBlockPlaced();
         }
     }
 
+    /**
+     * Called upon block activation (left or right click on the block.). The three integers represent x,y,z of the
+     * block.
+     */
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
         super.interact(var1, var2, var3, var4, var5);
@@ -305,6 +357,7 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
     public void prepareTextureFor(IBlockAccess var1, int var2, int var3, int var4, Orientations var5)
     {
         Pipe var6 = getPipe(var1, var2, var3, var4);
+
         if (isValid(var6))
         {
             var6.prepareTextureFor(var5);
@@ -317,27 +370,40 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
         return isValid(var6) ? var6.getBlockTexture() : 0;
     }
 
+    /**
+     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
+     */
     public void a(World var1, int var2, int var3, int var4, Entity var5)
     {
         super.a(var1, var2, var3, var4, var5);
         Pipe var6 = getPipe(var1, var2, var3, var4);
+
         if (isValid(var6))
         {
             var6.onEntityCollidedWithBlock(var5);
         }
     }
 
+    /**
+     * Is this block powering the block on the specified side
+     */
     public boolean a(IBlockAccess var1, int var2, int var3, int var4, int var5)
     {
         Pipe var6 = getPipe(var1, var2, var3, var4);
         return isValid(var6) ? var6.isPoweringTo(var5) : false;
     }
 
+    /**
+     * Can this block provide power. Only wire currently seems to have this change based on its state.
+     */
     public boolean isPowerSource()
     {
         return true;
     }
 
+    /**
+     * Is this block indirectly powering the block on the specified side
+     */
     public boolean d(World var1, int var2, int var3, int var4, int var5)
     {
         Pipe var6 = getPipe(var1, var2, var3, var4);
@@ -347,6 +413,7 @@ public class BlockGenericPipe extends BlockContainer implements IPipeConnection,
     public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5)
     {
         Pipe var6 = getPipe(var1, var2, var3, var4);
+
         if (isValid(var6))
         {
             var6.randomDisplayTick(var5);

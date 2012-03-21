@@ -4,8 +4,6 @@ import org.bukkit.craftbukkit.block.CraftBlockState;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import buildcraft.transport.BlockGenericPipe;
-import buildcraft.transport.Pipe;
 import forge.ITextureProvider;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftCore;
@@ -24,10 +22,15 @@ public class ItemPipe extends Item implements ITextureProvider
         super(var1);
     }
 
-    public boolean a(ItemStack var1, EntityHuman var2, World var3, int var4, int var5, int var6, int var7)
+    /**
+     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
+     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS !
+     */
+    public boolean interactWith(ItemStack var1, EntityHuman var2, World var3, int var4, int var5, int var6, int var7)
     {
         int clickedX = var4, clickedY = var5, clickedZ = var6; // CraftBukkit Mae
         int var8 = BuildCraftTransport.genericPipeBlock.id;
+
         if (var3.getTypeId(var4, var5, var6) == Block.SNOW.id)
         {
             var7 = 0;
@@ -79,9 +82,10 @@ public class ItemPipe extends Item implements ITextureProvider
             CraftBlockState replacedBlockState = CraftBlockState.getBlockState(var3, var4, var5, var6);
 
             BlockGenericPipe.createPipe(var3, var4, var5, var6, this.id);
+
             if (var3.setRawTypeIdAndData(var4, var5, var6, var8, 0))
             {
-                BlockPlaceEvent event = CraftEventFactory.callBlockPlaceEvent(var3, var2, replacedBlockState, clickedX, clickedY, clickedZ, var8);
+                BlockPlaceEvent event = CraftEventFactory.callBlockPlaceEvent(var3, var2, replacedBlockState, clickedX, clickedY, clickedZ);
                 if (event.isCancelled() || !event.canBuild())
                 {
                     var3.setTypeIdAndData(var4, var5, var6, replacedBlockState.getTypeId(), replacedBlockState.getRawData());

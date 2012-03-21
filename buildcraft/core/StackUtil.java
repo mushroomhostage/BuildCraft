@@ -4,7 +4,6 @@ import buildcraft.api.APIProxy;
 import buildcraft.api.ISpecialInventory;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
-import buildcraft.core.Utils;
 import forge.ISidedInventory;
 import java.util.LinkedList;
 import net.minecraft.server.IInventory;
@@ -36,6 +35,7 @@ public class StackUtil
                 var6 = new Position((double)var1.x, (double)var1.y, (double)var1.z, Orientations.values()[var5]);
                 var6.moveForwards(1.0D);
                 var7 = var3.getTileEntity((int)var6.x, (int)var6.y, (int)var6.z);
+
                 if (var7 instanceof ISpecialInventory && ((ISpecialInventory)var7).addItem(this.items, false, var2))
                 {
                     var4.add(var6.orientation);
@@ -55,6 +55,7 @@ public class StackUtil
             var6.moveForwards(1.0D);
             var7 = var3.getTileEntity((int)var6.x, (int)var6.y, (int)var6.z);
             this.checkAvailableSlot((IInventory)var7, true, var6.orientation.reverse());
+
             if (this.items.count > 0)
             {
                 return this.addToRandomInventory(var7, var2);
@@ -85,6 +86,7 @@ public class StackUtil
             int var8;
             int var9;
             int var10;
+
             if (var1 instanceof ISidedInventory)
             {
                 var5 = Utils.getInventory(var1);
@@ -246,6 +248,7 @@ public class StackUtil
     public boolean tryAdding(IInventory var1, int var2, boolean var3, boolean var4)
     {
         ItemStack var5 = var1.getItem(var2);
+
         if (!var4)
         {
             if (var5 != null && var5.getItem() == this.items.getItem() && var5.getData() == this.items.getData() && var5.count + 1 <= var5.getMaxStackSize())

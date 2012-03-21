@@ -9,8 +9,6 @@ import buildcraft.api.PowerProvider;
 import buildcraft.api.SafeTimeTracker;
 import buildcraft.api.TileNetworkData;
 import buildcraft.core.IMachine;
-import buildcraft.factory.RefineryRecipe;
-import buildcraft.factory.TileMachine;
 import java.util.Iterator;
 import java.util.LinkedList;
 import net.minecraft.server.BuildCraftCore;
@@ -43,10 +41,29 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         this.powerProvider.configure(20, 25, 25, 25, 1000);
     }
 
+    // CraftBukkit start
+    public java.util.List<org.bukkit.entity.HumanEntity> transaction = 
+            new java.util.ArrayList<org.bukkit.entity.HumanEntity>();
+    
+    public void onOpen(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.add(who);
+    }
+
+    public void onClose(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.remove(who);
+    }
+
+    public java.util.List<org.bukkit.entity.HumanEntity> getViewers() {
+        return transaction;
+    }
+
+    public void setMaxStackSize(int size) {}
+
     public ItemStack[] getContents()
     {
-        return new ItemStack[0];
+        return null;
     }
+    // CraftBukkit end
 
     public int fill(Orientations var1, int var2, int var3, boolean var4)
     {
@@ -58,6 +75,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         {
             int var5 = this.slot1.fill(var1, var2, var3, var4);
             var5 += this.slot2.fill(var1, var2 - var5, var3, var4);
+
             if (var4 && var5 > 0)
             {
                 this.updateNetworkTime.markTime(this.world);
@@ -72,9 +90,11 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
     {
         boolean var3 = false;
         int var4;
+
         if (this.result.quantity >= var1)
         {
             var4 = var1;
+
             if (var2)
             {
                 this.result.quantity -= var1;
@@ -83,6 +103,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         else
         {
             var4 = this.result.quantity;
+
             if (var2)
             {
                 this.result.quantity = 0;
@@ -118,28 +139,48 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         return 0;
     }
 
+    /**
+     * Returns the stack in slot i
+     */
     public ItemStack getItem(int var1)
     {
         return null;
     }
 
+    /**
+     * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
+     * stack.
+     */
     public ItemStack splitStack(int var1, int var2)
     {
         return null;
     }
 
+    /**
+     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
+     */
     public void setItem(int var1, ItemStack var2) {}
 
+    /**
+     * Returns the name of the inventory.
+     */
     public String getName()
     {
         return null;
     }
 
+    /**
+     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
+     * this more of a set than a get?*
+     */
     public int getMaxStackSize()
     {
         return 0;
     }
 
+    /**
+     * Do not make give this method the name canInteractWith because it clashes with Container
+     */
     public boolean a(EntityHuman var1)
     {
         return false;
@@ -157,7 +198,11 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
 
     public void doWork() {}
 
-    public void l_()
+    /**
+     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
+     * ticks and creates a new spawn inside its implementation.
+     */
+    public void q_()
     {
         if (APIProxy.isClient(this.world))
         {
@@ -177,6 +222,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         while (var4.hasNext())
         {
             RefineryRecipe var5 = (RefineryRecipe)var4.next();
+
             if (var5.sourceId1 == this.slot1.liquidId && this.slot1.quantity >= var5.sourceQty1)
             {
                 var2 = this.slot1;
@@ -222,6 +268,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         else
         {
             this.isActive = true;
+
             if (this.powerProvider.energyStored >= var1.energy)
             {
                 this.increaseAnimation();
@@ -234,11 +281,13 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
             if (this.time.markTimeIfDelay(this.world, (long)var1.delay))
             {
                 int var6 = this.powerProvider.useEnergy(var1.energy, var1.energy, true);
+
                 if (var6 != 0)
                 {
                     this.result.liquidId = var1.resultId;
                     this.result.quantity += var1.resultQty;
                     var2.quantity -= var1.sourceQty1;
+
                     if (var3 != null)
                     {
                         var3.quantity -= var1.sourceQty2;
@@ -268,9 +317,13 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         recipes.add(var0);
     }
 
+    /**
+     * Reads a tile entity from NBT.
+     */
     public void a(NBTTagCompound var1)
     {
         super.a(var1);
+
         if (var1.hasKey("slot1"))
         {
             this.slot1.readFromNBT(var1.getCompound("slot1"));
@@ -284,6 +337,9 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         this.powerProvider.configure(20, 25, 25, 25, 1000);
     }
 
+    /**
+     * Writes a tile entity to NBT.
+     */
     public void b(NBTTagCompound var1)
     {
         super.b(var1);
@@ -311,6 +367,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         if (this.animationSpeed > 1.0F)
         {
             this.animationStage = (int)((float)this.animationStage + this.animationSpeed);
+
             if (this.animationStage > 300)
             {
                 this.animationStage = 100;
@@ -334,6 +391,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         }
 
         this.animationStage = (int)((float)this.animationStage + this.animationSpeed);
+
         if (this.animationStage > 300)
         {
             this.animationStage = 100;
@@ -346,6 +404,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         {
             this.animationSpeed = (float)((double)this.animationSpeed - 0.1D);
             this.animationStage = (int)((float)this.animationStage + this.animationSpeed);
+
             if (this.animationStage > 300)
             {
                 this.animationStage = 100;
@@ -360,6 +419,11 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
     public void f() {}
 
     public void g() {}
+
+    public ItemStack splitWithoutUpdate(int var1)
+    {
+        return null;
+    }
 
     public static class Slot
     {
@@ -387,6 +451,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
             else
             {
                 int var5 = TileRefinery.LIQUID_PER_SLOT - this.quantity;
+
                 if (var4)
                 {
                     this.quantity = TileRefinery.LIQUID_PER_SLOT;
@@ -406,6 +471,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         public void readFromNBT(NBTTagCompound var1)
         {
             this.liquidId = var1.getInt("liquidId");
+
             if (this.liquidId != 0)
             {
                 this.quantity = var1.getInt("quantity");

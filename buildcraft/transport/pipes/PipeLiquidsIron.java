@@ -26,6 +26,7 @@ public class PipeLiquidsIron extends Pipe
         else
         {
             int var2 = this.worldObj.getData(this.xCoord, this.yCoord, this.zCoord);
+
             if (var2 == var1.ordinal())
             {
                 this.nextTexture = this.baseTexture;

@@ -1,6 +1,5 @@
 package buildcraft.core;
 
-import buildcraft.core.CoreProxy;
 import forge.Configuration;
 import forge.Property;
 import java.io.File;
@@ -14,6 +13,7 @@ public class BuildCraftConfiguration extends Configuration
     public BuildCraftConfiguration(File var1, boolean var2)
     {
         super(var1);
+
         if (var2)
         {
             this.loadLegacyProperties();
@@ -70,6 +70,7 @@ public class BuildCraftConfiguration extends Configuration
     public void save()
     {
         Property var1 = null;
+
         if (!this.generalProperties.containsKey("version"))
         {
             var1 = new Property();

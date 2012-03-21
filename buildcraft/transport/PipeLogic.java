@@ -1,7 +1,6 @@
 package buildcraft.transport;
 
 import buildcraft.api.Orientations;
-import buildcraft.transport.TileGenericPipe;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;

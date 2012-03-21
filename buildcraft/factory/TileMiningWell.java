@@ -7,7 +7,6 @@ import buildcraft.api.PowerProvider;
 import buildcraft.core.IMachine;
 import buildcraft.core.StackUtil;
 import buildcraft.core.Utils;
-import buildcraft.factory.TileMachine;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftBlockUtil;
 import net.minecraft.server.BuildCraftFactory;
@@ -38,8 +37,8 @@ public class TileMiningWell extends TileMachine implements IMachine, IPowerRecep
         if (this.powerProvider.useEnergy(25, 25, true) >= 25)
         {
             World var1 = this.world;
-
             int var2;
+
             for (var2 = this.y - 1; var1.getTypeId(this.x, var2, this.z) == BuildCraftFactory.plainPipeBlock.id; --var2)
             {
                 ;

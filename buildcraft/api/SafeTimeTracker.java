@@ -15,6 +15,7 @@ public class SafeTimeTracker
         else
         {
             long var4 = var1.getTime();
+
             if (var4 < this.lastMark)
             {
                 this.lastMark = var4;

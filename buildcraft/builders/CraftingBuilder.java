@@ -16,9 +16,9 @@ class CraftingBuilder extends BuildCraftContainer
         this.playerIInventory = var1;
         this.builderInventory = var2;
         this.a(new Slot(var2, 0, 80, 27));
-
         int var3;
         int var4;
+
         for (var3 = 0; var3 < 3; ++var3)
         {
             for (var4 = 0; var4 < 9; ++var4)

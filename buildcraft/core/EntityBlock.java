@@ -49,6 +49,9 @@ public class EntityBlock extends Entity
         this.texture = var14;
     }
 
+    /**
+     * Sets the x,y,z of the entity from the given parameters. Also seems to set up a bounding box.
+     */
     public void setPosition(double var1, double var3, double var5)
     {
         this.locX = var1;
@@ -62,6 +65,9 @@ public class EntityBlock extends Entity
         this.boundingBox.f = this.locZ + this.kSize;
     }
 
+    /**
+     * Tries to moves the entity by the passed in displacement. Args: x, y, z
+     */
     public void move(double var1, double var3, double var5)
     {
         this.setPosition(this.locX + var1, this.locY + var3, this.locZ + var5);
@@ -69,6 +75,9 @@ public class EntityBlock extends Entity
 
     protected void b() {}
 
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
     protected void a(NBTTagCompound var1)
     {
         this.iSize = var1.getDouble("iSize");
@@ -76,6 +85,9 @@ public class EntityBlock extends Entity
         this.kSize = var1.getDouble("kSize");
     }
 
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
     protected void b(NBTTagCompound var1)
     {
         var1.setDouble("iSize", this.iSize);
@@ -83,7 +95,7 @@ public class EntityBlock extends Entity
         var1.setDouble("kSize", this.kSize);
     }
 
-    public boolean e_()
+    public boolean o_()
     {
         return !this.dead;
     }

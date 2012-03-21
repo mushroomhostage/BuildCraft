@@ -1,7 +1,6 @@
 package buildcraft.factory;
 
 import buildcraft.core.Utils;
-import buildcraft.factory.TilePump;
 import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.BuildCraftCore;
@@ -17,6 +16,9 @@ public class BlockPump extends BlockContainer implements ITextureProvider
         this.c(5.0F);
     }
 
+    /**
+     * Returns the TileEntity used by this block.
+     */
     public TileEntity a_()
     {
         return new TilePump();
@@ -27,6 +29,9 @@ public class BlockPump extends BlockContainer implements ITextureProvider
         return BuildCraftCore.customBuildCraftTexture;
     }
 
+    /**
+     * Returns the block texture based on the side being looked at.  Args: side
+     */
     public int a(int var1)
     {
         switch (var1)
@@ -40,6 +45,9 @@ public class BlockPump extends BlockContainer implements ITextureProvider
         }
     }
 
+    /**
+     * Called whenever the block is removed.
+     */
     public void remove(World var1, int var2, int var3, int var4)
     {
         Utils.preDestroyBlock(var1, var2, var3, var4);

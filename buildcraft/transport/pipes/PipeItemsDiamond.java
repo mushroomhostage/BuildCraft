@@ -53,6 +53,7 @@ public class PipeItemsDiamond extends Pipe implements IPipeTransportItemsHook
             for (int var9 = 0; var9 < 9; ++var9)
             {
                 ItemStack var10 = this.logic.getStackInSlot(var7.ordinal() * 9 + var9);
+
                 if (var10 != null)
                 {
                     var8 = true;

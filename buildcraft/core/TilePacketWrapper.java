@@ -1,8 +1,5 @@
 package buildcraft.core;
 
-import buildcraft.core.ByteBuffer;
-import buildcraft.core.ClassMapping;
-import buildcraft.core.PacketIds;
 import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.mod_BuildCraftCore;

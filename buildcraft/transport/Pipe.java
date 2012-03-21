@@ -5,9 +5,6 @@ import buildcraft.api.Orientations;
 import buildcraft.core.PacketIds;
 import buildcraft.core.PersistentTile;
 import buildcraft.core.TilePacketWrapper;
-import buildcraft.transport.PipeLogic;
-import buildcraft.transport.PipeTransport;
-import buildcraft.transport.TileGenericPipe;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -38,6 +35,7 @@ public abstract class Pipe extends PersistentTile implements IPipe
         this.transport = var1;
         this.logic = var2;
         this.itemID = var3;
+
         if (!networkWrappers.containsKey(this.getClass()))
         {
             networkWrappers.put(this.getClass(), new TilePacketWrapper(new Class[] {TileGenericPipe.class, this.transport.getClass(), this.logic.getClass()}, PacketIds.TileUpdate));

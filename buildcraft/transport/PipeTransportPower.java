@@ -9,9 +9,6 @@ import buildcraft.api.TileNetworkData;
 import buildcraft.core.CoreProxy;
 import buildcraft.core.IMachine;
 import buildcraft.core.Utils;
-import buildcraft.transport.IPipeTransportPowerHook;
-import buildcraft.transport.PipeTransport;
-import buildcraft.transport.TileGenericPipe;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.Entity;
 import net.minecraft.server.NBTTagCompound;
@@ -51,12 +48,13 @@ public class PipeTransportPower extends PipeTransport
         {
             this.step();
             TileEntity[] var1 = new TileEntity[6];
-
             int var2;
+
             for (var2 = 0; var2 < 6; ++var2)
             {
                 Position var3 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, Orientations.values()[var2]);
                 var3.moveForwards(1.0D);
+
                 if (Utils.checkPipesConnections(this.worldObj, (int)var3.x, (int)var3.y, (int)var3.z, this.xCoord, this.yCoord, this.zCoord))
                 {
                     var1[var2] = this.worldObj.getTileEntity((int)var3.x, (int)var3.y, (int)var3.z);
@@ -86,6 +84,7 @@ public class PipeTransportPower extends PipeTransport
                         if (var7 != var2 && this.powerQuery[var7] > 0)
                         {
                             double var8 = var18 / var12 * (double)this.powerQuery[var7];
+
                             if (var1[var7] instanceof TileGenericPipe)
                             {
                                 TileGenericPipe var10 = (TileGenericPipe)var1[var7];
@@ -109,12 +108,14 @@ public class PipeTransportPower extends PipeTransport
             }
 
             int var4;
+
             for (var2 = 0; var2 < 6; ++var2)
             {
                 if (var1[var2] instanceof IPowerReceptor && !(var1[var2] instanceof TileGenericPipe))
                 {
                     IPowerReceptor var13 = (IPowerReceptor)var1[var2];
                     var4 = var13.powerRequest();
+
                     if (var4 > 0)
                     {
                         this.requestEnergy(Orientations.values()[var2], var4);
@@ -123,8 +124,8 @@ public class PipeTransportPower extends PipeTransport
             }
 
             int[] var14 = new int[] {0, 0, 0, 0, 0, 0};
-
             int var15;
+
             for (var15 = 0; var15 < 6; ++var15)
             {
                 var14[var15] = 0;
@@ -143,6 +144,7 @@ public class PipeTransportPower extends PipeTransport
                 if (var14[var15] != 0 && var1[var15] != null)
                 {
                     TileEntity var16 = var1[var15];
+
                     if (var16 instanceof TileGenericPipe)
                     {
                         TileGenericPipe var17 = (TileGenericPipe)var16;
@@ -174,6 +176,7 @@ public class PipeTransportPower extends PipeTransport
     public void receiveEnergy(Orientations var1, double var2)
     {
         this.step();
+
         if (this.container.pipe instanceof IPipeTransportPowerHook)
         {
             ((IPipeTransportPowerHook)this.container.pipe).receiveEnergy(var1, var2);
@@ -183,9 +186,10 @@ public class PipeTransportPower extends PipeTransport
             double[] var10000 = this.internalNextPower;
             int var10001 = var1.ordinal();
             var10000[var10001] += var2 * (1.0D - this.powerResitance);
+
             if (this.internalNextPower[var1.ordinal()] >= 1000.0D)
             {
-                this.worldObj.a((Entity)null, (double)this.xCoord, (double)this.yCoord, (double)this.zCoord, 2.0F);
+                this.worldObj.explode((Entity)null, (double)this.xCoord, (double)this.yCoord, (double)this.zCoord, 2.0F);
             }
         }
     }
@@ -193,6 +197,7 @@ public class PipeTransportPower extends PipeTransport
     public void requestEnergy(Orientations var1, int var2)
     {
         this.step();
+
         if (this.container.pipe instanceof IPipeTransportPowerHook)
         {
             ((IPipeTransportPowerHook)this.container.pipe).requestEnergy(var1, var2);

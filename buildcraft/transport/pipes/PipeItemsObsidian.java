@@ -50,6 +50,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
     public void onEntityCollidedWithBlock(Entity var1)
     {
         super.onEntityCollidedWithBlock(var1);
+
         if (!var1.dead)
         {
             if (this.canSuck(var1, 0))
@@ -70,9 +71,11 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
             Position var5 = new Position(var1);
             var5.orientation = Orientations.values()[var4];
             var5.moveForwards(1.0D);
+
             if (Utils.checkPipesConnections(this.worldObj, (int)var5.x, (int)var5.y, (int)var5.z, this.xCoord, this.yCoord, this.zCoord))
             {
                 ++var2;
+
                 if (var2 == 1)
                 {
                     var3 = new Position(var5);
@@ -173,6 +176,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
     private boolean trySucc(int var1)
     {
         AxisAlignedBB var2 = this.getSuckingBox(this.getSuckingOrientation(), var1);
+
         if (var2 == null)
         {
             return false;
@@ -186,6 +190,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
                 if (var3.get(var4) instanceof Entity)
                 {
                     Entity var5 = (Entity)var3.get(var4);
+
                     if (this.canSuck(var5, var1))
                     {
                         this.pullItemIntoPipe(var5, var1);
@@ -195,12 +200,14 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
                     if (var1 == 1 && var3.get(var4) instanceof EntityMinecart)
                     {
                         EntityMinecart var6 = (EntityMinecart)var3.get(var4);
+
                         if (!var6.dead && var6.type == 1)
                         {
                             ItemStack var7 = this.checkExtractGeneric(var6, true, this.getSuckingOrientation().reverse());
+
                             if (var7 != null && this.powerProvider.useEnergy(1, 1, true) == 1)
                             {
-                                EntityItem var8 = new EntityItem(this.worldObj, var6.locX, var6.locY + 0.30000001192092896D, var6.locZ, var7);
+                                EntityItem var8 = new EntityItem(this.worldObj, var6.locX, var6.locY + 0.3D, var6.locZ, var7);
                                 var8.pickupDelay = 10;
                                 this.worldObj.addEntity(var8);
                                 this.pullItemIntoPipe(var8, 1);
@@ -222,6 +229,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
             if (var1.getItem(var4) != null && var1.getItem(var4).count > 0)
             {
                 ItemStack var5 = var1.getItem(var4);
+
                 if (var5 != null && var5.count > 0)
                 {
                     if (var2)
@@ -242,15 +250,18 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
         if (!APIProxy.isClient(this.worldObj))
         {
             Orientations var3 = this.getSuckingOrientation();
+
             if (var3 != Orientations.Unknown)
             {
                 this.worldObj.makeSound(var1, "random.pop", 0.2F, ((this.worldObj.random.nextFloat() - this.worldObj.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 ItemStack var4 = null;
+
                 if (var1 instanceof EntityItem)
                 {
                     EntityItem var5 = (EntityItem)var1;
                     TransportProxy.obsidianPipePickup(this.worldObj, var5, this.container);
                     int var6 = this.powerProvider.useEnergy(var2, var5.itemStack.count * var2, true);
+
                     if (var2 != 0 && var6 / var2 != var5.itemStack.count)
                     {
                         var4 = var5.itemStack.a(var6 / var2);
@@ -297,6 +308,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
         else if (var1 instanceof EntityItem)
         {
             EntityItem var3 = (EntityItem)var1;
+
             if (var3.itemStack.count <= 0)
             {
                 return false;

@@ -4,8 +4,6 @@ import buildcraft.api.IPipeConnection;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
 import buildcraft.core.Utils;
-import buildcraft.factory.BlockMachineRoot;
-import buildcraft.factory.TileQuarry;
 import forge.ITextureProvider;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityLiving;
@@ -41,6 +39,9 @@ public class BlockQuarry extends BlockMachineRoot implements ITextureProvider, I
     }
     // MaeEdit end
 
+    /**
+     * Called when a block is using an item and passed in who placed it. Args: x, y, z, entityLiving
+     */
     public void postPlace(World var1, int var2, int var3, int var4, EntityLiving var5)
     {
         super.postPlace(var1, var2, var3, var4, var5);
@@ -48,6 +49,9 @@ public class BlockQuarry extends BlockMachineRoot implements ITextureProvider, I
         var1.setData(var2, var3, var4, var6.reverse().ordinal());
     }
 
+    /**
+     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
+     */
     public int a(int var1, int var2)
     {
         if (var2 == 0 && var1 == 3)
@@ -70,11 +74,17 @@ public class BlockQuarry extends BlockMachineRoot implements ITextureProvider, I
         }
     }
 
+    /**
+     * Returns the TileEntity used by this block.
+     */
     public TileEntity a_()
     {
         return new TileQuarry();
     }
 
+    /**
+     * Called whenever the block is removed.
+     */
     public void remove(World var1, int var2, int var3, int var4)
     {
         Utils.preDestroyBlock(var1, var2, var3, var4);

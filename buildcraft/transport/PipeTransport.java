@@ -2,7 +2,6 @@ package buildcraft.transport;
 
 import buildcraft.api.EntityPassiveItem;
 import buildcraft.api.Orientations;
-import buildcraft.transport.TileGenericPipe;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.World;

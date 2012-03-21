@@ -1,8 +1,5 @@
 package buildcraft.energy;
 
-import buildcraft.energy.Engine;
-import buildcraft.energy.TileEngine;
-
 public class EngineWood extends Engine
 {
     public EngineWood(TileEngine var1)
@@ -46,6 +43,7 @@ public class EngineWood extends Engine
     public void update()
     {
         super.update();
+
         if (this.tile.world.isBlockIndirectlyPowered(this.tile.x, this.tile.y, this.tile.z) && this.tile.world.getTime() % 20L == 0L)
         {
             ++this.energy;

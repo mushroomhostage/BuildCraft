@@ -1,8 +1,6 @@
 package buildcraft.builders;
 
 import buildcraft.api.APIProxy;
-import buildcraft.builders.BuildersProxy;
-import buildcraft.builders.TileFiller;
 import buildcraft.core.FillerPattern;
 import buildcraft.core.Utils;
 import forge.ITextureProvider;
@@ -30,6 +28,10 @@ public class BlockFiller extends BlockContainer implements ITextureProvider
         this.textureTopOff = 65;
     }
 
+    /**
+     * Called upon block activation (left or right click on the block.). The three integers represent x,y,z of the
+     * block.
+     */
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
         TileFiller var6 = (TileFiller)var1.getTileEntity(var2, var3, var4);
@@ -40,6 +42,7 @@ public class BlockFiller extends BlockContainer implements ITextureProvider
     public int getBlockTexture(IBlockAccess var1, int var2, int var3, int var4, int var5)
     {
         int var6 = var1.getData(var2, var3, var4);
+
         if (APIProxy.getWorld() == null)
         {
             return this.a(var2, var6);
@@ -47,6 +50,7 @@ public class BlockFiller extends BlockContainer implements ITextureProvider
         else
         {
             TileEntity var7 = APIProxy.getWorld().getTileEntity(var2, var3, var4);
+
             if (var7 != null && var7 instanceof TileFiller)
             {
                 TileFiller var8 = (TileFiller)var7;
@@ -59,16 +63,25 @@ public class BlockFiller extends BlockContainer implements ITextureProvider
         }
     }
 
+    /**
+     * Returns the block texture based on the side being looked at.  Args: side
+     */
     public int a(int var1)
     {
         return var1 != 0 && var1 != 1 ? this.textureSides : this.textureTopOn;
     }
 
+    /**
+     * Returns the TileEntity used by this block.
+     */
     public TileEntity a_()
     {
         return new TileFiller();
     }
 
+    /**
+     * Called whenever the block is removed.
+     */
     public void remove(World var1, int var2, int var3, int var4)
     {
         Utils.preDestroyBlock(var1, var2, var3, var4);

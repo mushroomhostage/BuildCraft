@@ -9,7 +9,6 @@ import buildcraft.api.Orientations;
 import buildcraft.api.PowerFramework;
 import buildcraft.api.PowerProvider;
 import buildcraft.api.TileNetworkData;
-import buildcraft.builders.TileMarker;
 import buildcraft.core.Box;
 import buildcraft.core.FillerPattern;
 import buildcraft.core.FillerRegistry;
@@ -44,20 +43,42 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         this.powerProvider.configurePowerPerdition(25, 40);
     }
 
+    // CraftBukkit start
+    public java.util.List<org.bukkit.entity.HumanEntity> transaction = 
+            new java.util.ArrayList<org.bukkit.entity.HumanEntity>();
+    
+    public void onOpen(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.add(who);
+    }
+
+    public void onClose(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.remove(who);
+    }
+
+    public java.util.List<org.bukkit.entity.HumanEntity> getViewers() {
+        return transaction;
+    }
+
+    public void setMaxStackSize(int size) {}
+
     public ItemStack[] getContents()
     {
         return contents;
     }
+    // CraftBukkit end
 
     public void initialize()
     {
         super.initialize();
+
         if (!APIProxy.isClient(this.world))
         {
             IAreaProvider var1 = Utils.getNearbyAreaProvider(this.world, this.x, this.y, this.z);
+
             if (var1 != null)
             {
                 this.box.initialize(var1);
+
                 if (var1 instanceof TileMarker)
                 {
                     ((TileMarker)var1).removeFromWorld();
@@ -70,9 +91,14 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         this.computeRecipe();
     }
 
-    public void l_()
+    /**
+     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
+     * ticks and creates a new spawn inside its implementation.
+     */
+    public void q_()
     {
-        super.l_();
+        super.q_();
+
         if (this.box.isInitialized())
         {
             this.box.createLasers(this.world, LaserKind.Stripes);
@@ -110,6 +136,7 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
                     }
 
                     this.done = this.currentPattern.iteratePattern(this, this.box, var1);
+
                     if (var1 != null && var1.count == 0)
                     {
                         this.contents[var2] = null;
@@ -117,7 +144,7 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
 
                     if (this.done)
                     {
-                        this.world.i(this.x, this.y, this.z);
+                        this.world.k(this.x, this.y, this.z);
                         this.sendNetworkUpdate();
                     }
                 }
@@ -135,6 +162,9 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         return 36;
     }
 
+    /**
+     * Returns the stack in slot i
+     */
     public ItemStack getItem(int var1)
     {
         return this.contents[var1];
@@ -145,9 +175,11 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         if (!APIProxy.isClient(this.world))
         {
             FillerPattern var1 = FillerRegistry.findMatchingRecipe(this);
+
             if (var1 != this.currentPattern)
             {
                 this.currentPattern = var1;
+
                 if (this.currentPattern != null && !this.forceDone)
                 {
                     this.done = false;
@@ -160,7 +192,7 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
 
                 if (this.world != null)
                 {
-                    this.world.i(this.x, this.y, this.z);
+                    this.world.k(this.x, this.y, this.z);
                 }
 
                 if (this.currentPattern == null)
@@ -180,11 +212,16 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         }
     }
 
+    /**
+     * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
+     * stack.
+     */
     public ItemStack splitStack(int var1, int var2)
     {
         if (this.contents[var1] != null)
         {
             ItemStack var3;
+
             if (this.contents[var1].count <= var2)
             {
                 var3 = this.contents[var1];
@@ -195,6 +232,7 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
             else
             {
                 var3 = this.contents[var1].a(var2);
+
                 if (this.contents[var1].count == 0)
                 {
                     this.contents[var1] = null;
@@ -210,9 +248,13 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         }
     }
 
+    /**
+     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
+     */
     public void setItem(int var1, ItemStack var2)
     {
         this.contents[var1] = var2;
+
         if (var2 != null && var2.count > this.getMaxStackSize())
         {
             var2.count = this.getMaxStackSize();
@@ -221,11 +263,17 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         this.computeRecipe();
     }
 
+    /**
+     * Returns the name of the inventory.
+     */
     public String getName()
     {
         return "Filler";
     }
 
+    /**
+     * Reads a tile entity from NBT.
+     */
     public void a(NBTTagCompound var1)
     {
         super.a(var1);
@@ -236,6 +284,7 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         {
             NBTTagCompound var4 = (NBTTagCompound)var2.get(var3);
             int var5 = var4.getByte("Slot") & 255;
+
             if (var5 >= 0 && var5 < this.contents.length)
             {
                 this.contents[var5] = ItemStack.a(var4);
@@ -251,6 +300,9 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         this.forceDone = this.done;
     }
 
+    /**
+     * Writes a tile entity to NBT.
+     */
     public void b(NBTTagCompound var1)
     {
         super.b(var1);
@@ -262,12 +314,13 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
             {
                 NBTTagCompound var4 = new NBTTagCompound();
                 var4.setByte("Slot", (byte)var3);
-                this.contents[var3].b(var4);
+                this.contents[var3].save(var4);
                 var2.add(var4);
             }
         }
 
         var1.set("Items", var2);
+
         if (this.box != null)
         {
             NBTTagCompound var5 = new NBTTagCompound();
@@ -278,17 +331,27 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         var1.setBoolean("done", this.done);
     }
 
+    /**
+     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
+     * this more of a set than a get?*
+     */
     public int getMaxStackSize()
     {
         return 64;
     }
 
+    /**
+     * Do not make give this method the name canInteractWith because it clashes with Container
+     */
     public boolean a(EntityHuman var1)
     {
         return this.world.getTileEntity(this.x, this.y, this.z) != this ? false : var1.e((double)this.x + 0.5D, (double)this.y + 0.5D, (double)this.z + 0.5D) <= 64.0D;
     }
 
-    public void i()
+    /**
+     * invalidates a tile entity
+     */
+    public void j()
     {
         this.destroy();
     }
@@ -305,8 +368,8 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
     {
         StackUtil var4 = new StackUtil(var1);
         boolean var5 = false;
-
         int var6;
+
         for (var6 = 9; var6 < this.contents.length; ++var6)
         {
             if (var4.tryAdding(this, var6, var2, false))
@@ -392,7 +455,8 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         boolean var2 = this.box.isInitialized();
         super.handleDescriptionPacket(var1);
         this.currentPattern = FillerRegistry.getPattern(this.currentPatternId);
-        this.world.i(this.x, this.y, this.z);
+        this.world.k(this.x, this.y, this.z);
+
         if (!var2 && this.box.isInitialized())
         {
             this.box.createLasers(this.world, LaserKind.Stripes);
@@ -404,7 +468,8 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         boolean var2 = this.box.isInitialized();
         super.handleUpdatePacket(var1);
         this.currentPattern = FillerRegistry.getPattern(this.currentPatternId);
-        this.world.i(this.x, this.y, this.z);
+        this.world.k(this.x, this.y, this.z);
+
         if (!var2 && this.box.isInitialized())
         {
             this.box.createLasers(this.world, LaserKind.Stripes);
@@ -443,5 +508,19 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
     public int powerRequest()
     {
         return this.powerProvider.maxEnergyReceived;
+    }
+
+    public ItemStack splitWithoutUpdate(int var1)
+    {
+        if (this.contents[var1] == null)
+        {
+            return null;
+        }
+        else
+        {
+            ItemStack var2 = this.contents[var1];
+            this.contents[var1] = null;
+            return var2;
+        }
     }
 }

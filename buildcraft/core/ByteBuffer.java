@@ -35,6 +35,7 @@ public class ByteBuffer
     public short readUnsignedByte()
     {
         byte var1 = 0;
+
         if (this.bytes.size() == 0)
         {
             return var1;
@@ -49,6 +50,7 @@ public class ByteBuffer
     public int readUnsignedShort()
     {
         byte var1 = 0;
+
         if (this.bytes.size() == 0)
         {
             return var1;
@@ -64,6 +66,7 @@ public class ByteBuffer
     public short readShort()
     {
         byte var1 = 0;
+
         if (this.bytes.size() == 0)
         {
             return var1;
@@ -79,6 +82,7 @@ public class ByteBuffer
     public int readInt()
     {
         byte var1 = 0;
+
         if (this.bytes.size() == 0)
         {
             return var1;

@@ -12,7 +12,6 @@ import buildcraft.core.BlockIndex;
 import buildcraft.core.EntityBlock;
 import buildcraft.core.IMachine;
 import buildcraft.core.Utils;
-import buildcraft.factory.TileMachine;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeMap;
@@ -44,9 +43,14 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
         this.powerProvider.configure(20, 10, 10, 10, 100);
     }
 
-    public void l_()
+    /**
+     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
+     * ticks and creates a new spawn inside its implementation.
+     */
+    public void q_()
     {
-        super.l_();
+        super.q_();
+
         if (this.tube != null)
         {
             if (!APIProxy.isClient(this.world))
@@ -55,6 +59,7 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
                 {
                     this.tubeY = this.tube.locY - 0.01D;
                     this.setTubePosition();
+
                     if (APIProxy.isServerSide())
                     {
                         this.sendNetworkUpdate();
@@ -67,21 +72,26 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
                 {
                     BlockIndex var1 = this.getNextIndexToPump(false);
                     int var2;
+
                     if (this.isPumpableLiquid(var1))
                     {
                         var2 = Utils.liquidId(this.world.getTypeId(var1.i, var1.j, var1.k));
+
                         if (this.internalLiquid == 0 || this.liquidId == var2)
                         {
                             this.liquidId = var2;
+
                             if (this.powerProvider.useEnergy(10, 10, true) == 10)
                             {
                                 var1 = this.getNextIndexToPump(true);
+
                                 if (this.liquidId != Block.STATIONARY_WATER.id || BuildCraftCore.consumeWaterSources)
                                 {
                                 this.world.setTypeId(var1.i, var1.j, var1.k, 0);
                                 }
 
                                 this.internalLiquid = this.internalLiquid += 1000;
+
                                 if (APIProxy.isServerSide())
                                 {
                                     this.sendNetworkUpdate();
@@ -92,6 +102,7 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
                     else if (this.world.getTime() % 100L == 0L)
                     {
                         this.initializePumpFromPosition(this.x, this.aimY, this.z);
+
                         if (this.getNextIndexToPump(false) == null)
                         {
                             for (var2 = this.y - 1; var2 > 0; --var2)
@@ -119,9 +130,11 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
                     Position var5 = new Position((double)this.x, (double)this.y, (double)this.z, Orientations.values()[var4]);
                     var5.moveForwards(1.0D);
                     TileEntity var3 = this.world.getTileEntity((int)var5.x, (int)var5.y, (int)var5.z);
+
                     if (var3 instanceof ILiquidContainer)
                     {
                         this.internalLiquid -= ((ILiquidContainer)var3).fill(var5.orientation.reverse(), this.internalLiquid, this.liquidId, true);
+
                         if (this.internalLiquid <= 0)
                         {
                             break;
@@ -136,6 +149,7 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
     {
         this.tube = new EntityBlock(this.world);
         this.tube.texture = 102;
+
         if (!Double.isNaN(this.tubeY))
         {
             this.tube.locY = this.tubeY;
@@ -146,6 +160,7 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
         }
 
         this.tubeY = this.tube.locY;
+
         if (this.aimY == 0)
         {
             this.aimY = this.y;
@@ -153,6 +168,7 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
 
         this.setTubePosition();
         this.world.addEntity(this.tube);
+
         if (APIProxy.isServerSide())
         {
             this.sendNetworkUpdate();
@@ -168,6 +184,7 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
         while (var4.hasNext())
         {
             Integer var5 = (Integer)var4.next();
+
             if (var5.intValue() > var3 && ((LinkedList)this.blocksToPump.get(var5)).size() != 0)
             {
                 var3 = var5.intValue();
@@ -180,6 +197,7 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
             if (var1)
             {
                 BlockIndex var6 = (BlockIndex)var2.pop();
+
                 if (var2.size() == 0)
                 {
                     this.blocksToPump.remove(Integer.valueOf(var3));
@@ -203,6 +221,7 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
         boolean var4 = false;
         TreeSet var5 = new TreeSet();
         TreeSet var6 = new TreeSet();
+
         if (!this.blocksToPump.containsKey(Integer.valueOf(var2)))
         {
             this.blocksToPump.put(Integer.valueOf(var2), new LinkedList());
@@ -210,6 +229,7 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
 
         LinkedList var7 = (LinkedList)this.blocksToPump.get(Integer.valueOf(var2));
         int var11 = this.world.getTypeId(var1, var2, var3);
+
         if (this.isLiquid(new BlockIndex(var1, var2, var3)))
         {
             this.addToPumpIfLiquid(new BlockIndex(var1, var2, var3), var5, var6, var7, var11);
@@ -227,6 +247,7 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
                     this.addToPumpIfLiquid(new BlockIndex(var10.i - 1, var10.j, var10.k), var5, var6, var7, var11);
                     this.addToPumpIfLiquid(new BlockIndex(var10.i, var10.j, var10.k + 1), var5, var6, var7, var11);
                     this.addToPumpIfLiquid(new BlockIndex(var10.i, var10.j, var10.k - 1), var5, var6, var7, var11);
+
                     if (!this.blocksToPump.containsKey(Integer.valueOf(var10.j + 1)))
                     {
                         this.blocksToPump.put(Integer.valueOf(var10.j + 1), new LinkedList());
@@ -246,6 +267,7 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
             if (!var2.contains(var1))
             {
                 var2.add(var1);
+
                 if ((var1.i - this.x) * (var1.i - this.x) + (var1.k - this.z) * (var1.k - this.z) > 4096)
                 {
                     return;
@@ -274,6 +296,9 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
         return var1 != null && Utils.liquidId(this.world.getTypeId(var1.i, var1.j, var1.k)) != 0;
     }
 
+    /**
+     * Reads a tile entity from NBT.
+     */
     public void a(NBTTagCompound var1)
     {
         super.a(var1);
@@ -285,12 +310,16 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
         this.powerProvider.configure(20, 10, 10, 10, 100);
     }
 
+    /**
+     * Writes a tile entity to NBT.
+     */
     public void b(NBTTagCompound var1)
     {
         super.b(var1);
         PowerFramework.currentFramework.savePowerProvider(this, var1);
         var1.setInt("internalLiquid", this.internalLiquid);
         var1.setInt("aimY", this.aimY);
+
         if (this.tube != null)
         {
             var1.setFloat("tubeY", (float)this.tube.locY);
@@ -343,7 +372,10 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
         }
     }
 
-    public void i()
+    /**
+     * invalidates a tile entity
+     */
+    public void j()
     {
         this.destroy();
     }

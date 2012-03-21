@@ -1,6 +1,5 @@
 package buildcraft.api;
 
-import buildcraft.api.Orientations;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
 

@@ -1,11 +1,6 @@
 package buildcraft.core;
 
 import buildcraft.api.IPowerReceptor;
-import buildcraft.core.CoreProxy;
-import buildcraft.core.ISynchronizedTile;
-import buildcraft.core.PacketIds;
-import buildcraft.core.TilePacketWrapper;
-import buildcraft.core.Utils;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.server.Packet;
@@ -37,7 +32,11 @@ public abstract class TileBuildCraft extends TileEntity implements ISynchronized
         this.descriptionPacket = (TilePacketWrapper)descriptionWrappers.get(this.getClass());
     }
 
-    public void l_()
+    /**
+     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
+     * ticks and creates a new spawn inside its implementation.
+     */
+    public void q_()
     {
         if (!this.init)
         {
@@ -67,7 +66,10 @@ public abstract class TileBuildCraft extends TileEntity implements ISynchronized
         }
     }
 
-    public Packet k()
+    /**
+     * Overriden in a sign to provide the text
+     */
+    public Packet d()
     {
         return this.descriptionPacket.toPacket(this);
     }

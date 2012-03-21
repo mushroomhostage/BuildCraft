@@ -1,7 +1,5 @@
 package buildcraft.builders;
 
-import buildcraft.builders.BuildersProxy;
-import buildcraft.builders.TileMarker;
 import buildcraft.core.Utils;
 import forge.ITextureProvider;
 import net.minecraft.server.AxisAlignedBB;
@@ -30,6 +28,7 @@ public class BlockMarker extends BlockContainer implements ITextureProvider
         int var5 = var1.getData(var2, var3, var4);
         double var6 = 0.15D;
         double var8 = 0.65D;
+
         switch (var5)
         {
             case 0:
@@ -48,6 +47,9 @@ public class BlockMarker extends BlockContainer implements ITextureProvider
         }
     }
 
+    /**
+     * The type of render function that is called for this block
+     */
     public int c()
     {
         return BuildCraftCore.markerModel;
@@ -58,45 +60,72 @@ public class BlockMarker extends BlockContainer implements ITextureProvider
         return false;
     }
 
+    /**
+     * Returns the TileEntity used by this block.
+     */
     public TileEntity a_()
     {
         return new TileMarker();
     }
 
+    /**
+     * Called upon block activation (left or right click on the block.). The three integers represent x,y,z of the
+     * block.
+     */
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
         ((TileMarker)var1.getTileEntity(var2, var3, var4)).tryConnection();
         return true;
     }
 
+    /**
+     * Called whenever the block is removed.
+     */
     public void remove(World var1, int var2, int var3, int var4)
     {
         Utils.preDestroyBlock(var1, var2, var3, var4);
         super.remove(var1, var2, var3, var4);
     }
 
+    /**
+     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
+     * cleared to be reused)
+     */
     public AxisAlignedBB e(World var1, int var2, int var3, int var4)
     {
         return null;
     }
 
+    /**
+     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
+     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
+     */
     public boolean a()
     {
         return Block.TORCH.a();
     }
 
+    /**
+     * If this block doesn't render as an ordinary block it will return false (examples: signs, buttons, stairs, etc)
+     */
     public boolean b()
     {
         return false;
     }
 
+    /**
+     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
+     * their own) Args: x, y, z, blockID
+     */
     public void doPhysics(World var1, int var2, int var3, int var4, int var5)
     {
         ((TileMarker)var1.getTileEntity(var2, var3, var4)).switchSignals();
+
         if (this.dropTorchIfCantStay(var1, var2, var3, var4))
         {
             int var6 = var1.getData(var2, var3, var4);
             boolean var7 = false;
+
             if (!BuildersProxy.canPlaceTorch(var1, var2 - 1, var3, var4) && var6 == 1)
             {
                 var7 = true;
@@ -135,20 +164,32 @@ public class BlockMarker extends BlockContainer implements ITextureProvider
         }
     }
 
+    /**
+     * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,
+     * x, y, z, startVec, endVec
+     */
     public MovingObjectPosition a(World var1, int var2, int var3, int var4, Vec3D var5, Vec3D var6)
     {
         return Block.TORCH.a(var1, var2, var3, var4, var5, var6);
     }
 
+    /**
+     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
+     */
     public boolean canPlace(World var1, int var2, int var3, int var4)
     {
         return BuildersProxy.canPlaceTorch(var1, var2 - 1, var3, var4) ? true : (BuildersProxy.canPlaceTorch(var1, var2 + 1, var3, var4) ? true : (BuildersProxy.canPlaceTorch(var1, var2, var3, var4 - 1) ? true : (BuildersProxy.canPlaceTorch(var1, var2, var3, var4 + 1) ? true : (BuildersProxy.canPlaceTorch(var1, var2, var3 - 1, var4) ? true : BuildersProxy.canPlaceTorch(var1, var2, var3 + 1, var4)))));
     }
 
+    /**
+     * Called when a block is placed using an item. Used often for taking the facing and figuring out how to position
+     * the item. Args: x, y, z, facing
+     */
     public void postPlace(World var1, int var2, int var3, int var4, int var5)
     {
         super.postPlace(var1, var2, var3, var4, var5);
         int var6 = var1.getData(var2, var3, var4);
+
         if (var5 == 1 && BuildersProxy.canPlaceTorch(var1, var2, var3 - 1, var4))
         {
             var6 = 5;
@@ -182,9 +223,13 @@ public class BlockMarker extends BlockContainer implements ITextureProvider
         var1.setData(var2, var3, var4, var6);
     }
 
+    /**
+     * Called whenever the block is added into the world. Args: world, x, y, z
+     */
     public void onPlace(World var1, int var2, int var3, int var4)
     {
         super.onPlace(var1, var2, var3, var4);
+
         if (BuildersProxy.canPlaceTorch(var1, var2 - 1, var3, var4))
         {
             var1.setData(var2, var3, var4, 1);

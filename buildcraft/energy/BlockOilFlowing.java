@@ -23,6 +23,9 @@ public class BlockOilFlowing extends BlockFluids
         super(var1, var2);
     }
 
+    /**
+     * The type of render function that is called for this block
+     */
     public int c()
     {
         return BuildCraftCore.oilModel;
@@ -41,12 +44,16 @@ public class BlockOilFlowing extends BlockFluids
         var1.notify(var2, var3, var4);
     }
 
+    /**
+     * Ticks the block if it's been scheduled
+     */
     public void a(World var1, int var2, int var3, int var4, Random var5)
     {
         int var6 = this.g(var1, var2, var3, var4);
         byte var7 = 1;
         boolean var8 = true;
         int var10;
+
         if (var6 > 0)
         {
             byte var9 = -100;
@@ -56,6 +63,7 @@ public class BlockOilFlowing extends BlockFluids
             var12 = this.getSmallestFlowDecay(var1, var2, var3, var4 - 1, var12);
             var12 = this.getSmallestFlowDecay(var1, var2, var3, var4 + 1, var12);
             var10 = var12 + var7;
+
             if (var10 >= 8 || var12 < 0)
             {
                 var10 = -1;
@@ -64,6 +72,7 @@ public class BlockOilFlowing extends BlockFluids
             if (this.g(var1, var2, var3 + 1, var4) >= 0)
             {
                 int var11 = this.g(var1, var2, var3 + 1, var4);
+
                 if (var11 >= 8)
                 {
                     var10 = var11;
@@ -77,6 +86,7 @@ public class BlockOilFlowing extends BlockFluids
             if (var10 != var6)
             {
                 var6 = var10;
+
                 if (var10 < 0)
                 {
                     var1.setTypeId(var2, var3, var4, 0);
@@ -113,6 +123,7 @@ public class BlockOilFlowing extends BlockFluids
         {
             boolean[] var13 = this.getOptimalFlowDirections(var1, var2, var3, var4);
             var10 = var6 + var7;
+
             if (var6 >= 8)
             {
                 var10 = 1;
@@ -150,6 +161,7 @@ public class BlockOilFlowing extends BlockFluids
         if (this.liquidCanDisplaceBlock(var1, var2, var3, var4))
         {
             int var6 = var1.getTypeId(var2, var3, var4);
+
             if (var6 > 0)
             {
                 Block.byId[var6].b(var1, var2, var3, var4, var1.getData(var2, var3, var4), 0);
@@ -169,6 +181,7 @@ public class BlockOilFlowing extends BlockFluids
             {
                 int var9 = var2;
                 int var11 = var4;
+
                 if (var8 == 0)
                 {
                     var9 = var2 - 1;
@@ -199,6 +212,7 @@ public class BlockOilFlowing extends BlockFluids
                     if (var5 < 4)
                     {
                         int var12 = this.calculateFlowCost(var1, var9, var3, var11, var5 + 1, var8);
+
                         if (var12 < var7)
                         {
                             var7 = var12;
@@ -215,11 +229,13 @@ public class BlockOilFlowing extends BlockFluids
     {
         int var5;
         int var6;
+
         for (var5 = 0; var5 < 4; ++var5)
         {
             this.flowCost[var5] = 1000;
             var6 = var2;
             int var8 = var4;
+
             if (var5 == 0)
             {
                 var6 = var2 - 1;
@@ -274,6 +290,7 @@ public class BlockOilFlowing extends BlockFluids
     private boolean blockBlocksFlow(World var1, int var2, int var3, int var4)
     {
         int var5 = var1.getTypeId(var2, var3, var4);
+
         if (var5 != Block.WOODEN_DOOR.id && var5 != Block.IRON_DOOR_BLOCK.id && var5 != Block.SIGN_POST.id && var5 != Block.LADDER.id && var5 != Block.SUGAR_CANE_BLOCK.id)
         {
             if (var5 == 0)
@@ -283,7 +300,7 @@ public class BlockOilFlowing extends BlockFluids
             else
             {
                 Material var6 = Block.byId[var5].material;
-                return var6.isSolid();
+                return var6.isBuildable();
             }
         }
         else
@@ -295,6 +312,7 @@ public class BlockOilFlowing extends BlockFluids
     protected int getSmallestFlowDecay(World var1, int var2, int var3, int var4, int var5)
     {
         int var6 = this.g(var1, var2, var3, var4);
+
         if (var6 < 0)
         {
             return var5;
@@ -316,9 +334,13 @@ public class BlockOilFlowing extends BlockFluids
         return var5 == this.material ? false : !this.blockBlocksFlow(var1, var2, var3, var4);
     }
 
+    /**
+     * Called whenever the block is added into the world. Args: world, x, y, z
+     */
     public void onPlace(World var1, int var2, int var3, int var4)
     {
         super.onPlace(var1, var2, var3, var4);
+
         if (var1.getTypeId(var2, var3, var4) == this.id)
         {
             var1.c(var2, var3, var4, this.id, this.d());

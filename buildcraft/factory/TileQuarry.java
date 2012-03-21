@@ -17,9 +17,6 @@ import buildcraft.core.DefaultAreaProvider;
 import buildcraft.core.IMachine;
 import buildcraft.core.StackUtil;
 import buildcraft.core.Utils;
-import buildcraft.factory.EntityMechanicalArm;
-import buildcraft.factory.IArmListener;
-import buildcraft.factory.TileMachine;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftBlockUtil;
 import net.minecraft.server.BuildCraftFactory;
@@ -90,9 +87,11 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
             }
 
             this.nextBlockForBluePrint = this.bluePrintBuilder.findNextBlock(this.world);
+
             if (this.bluePrintBuilder.done)
             {
                 this.box.deleteLasers();
+
                 if (this.arm == null)
                 {
                     this.createArm();
@@ -102,6 +101,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                 {
                     this.arm.joinToWorld(this.world);
                     this.loadArm = false;
+
                     if (this.findTarget(false))
                     {
                         this.isDigging = true;
@@ -127,14 +127,20 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
         this.loadArm = true;
     }
 
-    public void l_()
+    /**
+     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
+     * ticks and creates a new spawn inside its implementation.
+     */
+    public void q_()
     {
-        super.l_();
+        super.q_();
+
         if (this.inProcess && this.arm != null)
         {
             this.arm.speed = 0.0D;
             int var1 = 2 + this.powerProvider.energyStored / 1000;
             int var2 = this.powerProvider.useEnergy(var1, var1, true);
+
             if (var2 > 0)
             {
                 this.arm.doMove(0.015D + (double)((float)var2 / 200.0F));
@@ -159,6 +165,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                 if (this.isDigging)
                 {
                     this.createUtilsIfNeeded();
+
                     if (this.bluePrintBuilder != null)
                     {
                         if (this.bluePrintBuilder.done && this.nextBlockForBluePrint != null)
@@ -201,7 +208,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                                         CraftBlockState replacedBlockState = CraftBlockState.getBlockState(world, var1.x, var1.y, var1.z);
                                         this.world.setRawTypeId(var1.x, var1.y, var1.z, var1.blockId);
                                         BlockPlaceEvent event = CraftEventFactory.callBlockPlaceEvent(world,
-                                                buildcraft.core.FakePlayer.get(this.world), replacedBlockState, var1.x, var1.y, var1.z, Block.byId[var1.blockId]);
+                                                buildcraft.core.FakePlayer.get(this.world), replacedBlockState, var1.x, var1.y, var1.z);
                                         if (event.isCancelled() || !event.canBuild())
                                         {
                                             this.world.setTypeIdAndData(var1.x, var1.y, var1.z, replacedBlockState.getTypeId(), replacedBlockState.getRawData());
@@ -219,6 +226,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                         else
                         {
                             this.powerProvider.configure(20, 30, 200, 50, MAX_ENERGY);
+
                             if (!this.findTarget(true))
                             {
                                 this.arm.setTarget((double)this.box.xMin + this.arm.sizeX / 2.0D, (double)(this.y + 2), (double)this.box.zMin + this.arm.sizeX / 2.0D);
@@ -226,6 +234,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                             }
 
                             this.inProcess = true;
+
                             if (APIProxy.isServerSide())
                             {
                                 this.sendNetworkUpdate();
@@ -240,9 +249,9 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
     public boolean findTarget(boolean var1)
     {
         boolean[][] var2 = new boolean[this.bluePrintBuilder.bluePrint.sizeX - 2][this.bluePrintBuilder.bluePrint.sizeZ - 2];
-
         int var3;
         int var4;
+
         for (var3 = 0; var3 < this.bluePrintBuilder.bluePrint.sizeX - 2; ++var3)
         {
             for (var4 = 0; var4 < this.bluePrintBuilder.bluePrint.sizeZ - 2; ++var4)
@@ -255,6 +264,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
         {
             int var5;
             byte var6;
+
             if (var3 % 2 == 0)
             {
                 var4 = 0;
@@ -273,6 +283,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                 int var8;
                 int var9;
                 byte var10;
+
                 if (var7 % 2 == var3 % 2)
                 {
                     var8 = 0;
@@ -293,6 +304,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                         int var12 = this.box.xMin + var7 + 1;
                         int var14 = this.box.zMin + var11 + 1;
                         int var15 = this.world.getTypeId(var12, var3, var14);
+
                         if (this.blockDig(var15))
                         {
                             var2[var7][var11] = true;
@@ -317,10 +329,14 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
         return false;
     }
 
+    /**
+     * Reads a tile entity from NBT.
+     */
     public void a(NBTTagCompound var1)
     {
         super.a(var1);
         PowerFramework.currentFramework.loadPowerProvider(this, var1);
+
         if (var1.hasKey("box"))
         {
             this.box.initialize(var1.getCompound("box"));
@@ -376,6 +392,9 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
         }
     }
 
+    /**
+     * Writes a tile entity to NBT.
+     */
     public void b(NBTTagCompound var1)
     {
         super.b(var1);
@@ -385,6 +404,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
         var1.setInt("targetZ", this.targetZ);
         var1.setBoolean("hasArm", this.arm != null);
         NBTTagCompound var2;
+
         if (this.arm != null)
         {
             var2 = new NBTTagCompound();
@@ -462,7 +482,10 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
         return !this.blockDig(var1) && !API.softBlock(var1) && var1 != Block.SNOW.id;
     }
 
-    public void i()
+    /**
+     * invalidates a tile entity
+     */
+    public void j()
     {
         this.destroy();
     }
@@ -486,6 +509,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
     private void setBoundaries(boolean var1)
     {
         Object var2 = null;
+
         if (!var1)
         {
             var2 = Utils.getNearbyAreaProvider(this.world, this.x, this.y, this.z);
@@ -500,6 +524,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
         int var3 = ((IAreaProvider)var2).xMax() - ((IAreaProvider)var2).xMin() + 1;
         int var4 = ((IAreaProvider)var2).yMax() - ((IAreaProvider)var2).yMin() + 1;
         int var5 = ((IAreaProvider)var2).zMax() - ((IAreaProvider)var2).zMin() + 1;
+
         if (var3 < 3 || var5 < 3)
         {
             var2 = new DefaultAreaProvider(this.x, this.y, this.z, this.x + 10, this.y + 4, this.z + 10);
@@ -510,6 +535,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
         var4 = ((IAreaProvider)var2).yMax() - ((IAreaProvider)var2).yMin() + 1;
         var5 = ((IAreaProvider)var2).zMax() - ((IAreaProvider)var2).zMin() + 1;
         this.box.initialize((IAreaProvider)var2);
+
         if (var4 < 5)
         {
             var4 = 5;
@@ -549,9 +575,9 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
     private void initializeBluePrintBuilder()
     {
         BluePrint var1 = new BluePrint(this.box.sizeX(), this.box.sizeY(), this.box.sizeZ());
-
         int var2;
         int var3;
+
         for (var2 = 0; var2 < var1.sizeX; ++var2)
         {
             for (var3 = 0; var3 < var1.sizeY; ++var3)
@@ -593,6 +619,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
     {
         super.postPacketHandling(var1);
         this.createUtilsIfNeeded();
+
         if (this.arm != null)
         {
             this.arm.setHeadPosition(this.headPosX, this.headPosY, this.headPosZ);
@@ -604,6 +631,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
     public void initialize()
     {
         super.initialize();
+
         if (!APIProxy.isClient(this.world))
         {
             this.createUtilsIfNeeded();

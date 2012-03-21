@@ -42,12 +42,14 @@ public class PipeLiquidsWood extends Pipe implements IPowerReceptor
         {
             World var1 = this.worldObj;
             int var2 = this.worldObj.getData(this.xCoord, this.yCoord, this.zCoord);
+
             if (var2 <= 5)
             {
                 Position var3 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, Orientations.values()[var2]);
                 var3.moveForwards(1.0D);
                 int var4 = var1.getTypeId((int)var3.x, (int)var3.y, (int)var3.z);
                 TileEntity var5 = var1.getTileEntity((int)var3.x, (int)var3.y, (int)var3.z);
+
                 if (var5 != null && var5 instanceof ILiquidContainer && !PipeLogicWood.isExcludedFromExtraction(Block.byId[var4]))
                 {
                     if (var5 instanceof ILiquidContainer && this.liquidToExtract <= 1000)
@@ -73,11 +75,13 @@ public class PipeLiquidsWood extends Pipe implements IPowerReceptor
     {
         super.updateEntity();
         int var1 = this.worldObj.getData(this.xCoord, this.yCoord, this.zCoord);
+
         if (this.liquidToExtract > 0 && var1 < 6)
         {
             Position var2 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, Orientations.values()[var1]);
             var2.moveForwards(1.0D);
             TileEntity var3 = this.worldObj.getTileEntity((int)var2.x, (int)var2.y, (int)var2.z);
+
             if (var3 instanceof ILiquidContainer)
             {
                 ILiquidContainer var4 = (ILiquidContainer)var3;
@@ -99,6 +103,7 @@ public class PipeLiquidsWood extends Pipe implements IPowerReceptor
         else
         {
             int var2 = this.worldObj.getData(this.xCoord, this.yCoord, this.zCoord);
+
             if (var2 == var1.ordinal())
             {
                 this.nextTexture = this.plainTexture;

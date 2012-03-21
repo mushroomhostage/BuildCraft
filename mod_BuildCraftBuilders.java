@@ -1,8 +1,5 @@
 package net.minecraft.server;
 
-import net.minecraft.server.BaseModMp;
-import net.minecraft.server.BuildCraftBuilders;
-
 public class mod_BuildCraftBuilders extends BaseModMp
 {
 
@@ -13,15 +10,15 @@ public class mod_BuildCraftBuilders extends BaseModMp
         instance = this;
     }
 
-    public void ModsLoaded()
+    public void modsLoaded()
     {
-        super.ModsLoaded();
+        super.modsLoaded();
         BuildCraftBuilders.initialize();
     }
 
     public String getVersion()
     {
-        return "2.2.12";
+        return "2.2.13";
     }
 
     public void load() {}

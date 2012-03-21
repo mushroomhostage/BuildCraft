@@ -2,9 +2,6 @@ package buildcraft.energy;
 
 import buildcraft.core.CoreProxy;
 import buildcraft.core.Utils;
-import buildcraft.energy.ContainerEngine;
-import buildcraft.energy.Engine;
-import buildcraft.energy.TileEngine;
 import net.minecraft.server.Block;
 import net.minecraft.server.ICrafting;
 import net.minecraft.server.Item;
@@ -72,9 +69,11 @@ public class EngineStone extends Engine
         if (this.burnTime == 0 && this.tile.world.isBlockIndirectlyPowered(this.tile.x, this.tile.y, this.tile.z))
         {
             this.burnTime = this.totalBurnTime = this.getItemBurnTime(this.tile.getItem(0));
+
             if (this.burnTime > 0)
             {
                 ItemStack var1 = this.tile.splitStack(1, 1);
+
                 if (var1.getItem().j() != null)
                 {
                     this.tile.setItem(1, new ItemStack(var1.getItem().j(), 1));
@@ -97,7 +96,7 @@ public class EngineStone extends Engine
         else
         {
             int var2 = var1.getItem().id;
-            return var2 < Block.byId.length && Block.byId[var2].material == Material.WOOD ? 300 : (var2 == Item.STICK.id ? 100 : (var2 == Item.COAL.id ? 1600 : (var2 == Item.LAVA_BUCKET.id ? 20000 : (var2 == Block.SAPLING.id ? 100 : CoreProxy.addFuel(var2, var1.getData())))));
+            return var2 < Block.byId.length && Block.byId[var2] != null && Block.byId[var2].material == Material.WOOD ? 300 : (var2 == Item.STICK.id ? 100 : (var2 == Item.COAL.id ? 1600 : (var2 == Item.LAVA_BUCKET.id ? 20000 : (var2 == Block.SAPLING.id ? 100 : CoreProxy.addFuel(var2, var1.getData())))));
         }
     }
 
@@ -116,6 +115,7 @@ public class EngineStone extends Engine
     public void delete()
     {
         ItemStack var1 = this.tile.getItem(0);
+
         if (var1 != null)
         {
             Utils.dropItems(this.tile.world, var1, this.tile.x, this.tile.y, this.tile.z);
@@ -136,7 +136,7 @@ public class EngineStone extends Engine
 
     public void sendGUINetworkData(ContainerEngine var1, ICrafting var2)
     {
-        var2.a(var1, 0, this.burnTime);
-        var2.a(var1, 1, this.totalBurnTime);
+        var2.setContainerData(var1, 0, this.burnTime);
+        var2.setContainerData(var1, 1, this.totalBurnTime);
     }
 }

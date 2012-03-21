@@ -1,7 +1,5 @@
 package buildcraft.core;
 
-import buildcraft.core.BlockContents;
-import buildcraft.core.CoreProxy;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -81,10 +79,10 @@ public class BluePrint
     {
         this.loadIfNeeded();
         BlockContents[][][] var1 = new BlockContents[this.sizeZ][this.sizeY][this.sizeX];
-
         int var2;
         int var3;
         int var4;
+
         for (var2 = 0; var2 < this.sizeZ; ++var2)
         {
             for (var3 = 0; var3 < this.sizeY; ++var3)
@@ -117,6 +115,7 @@ public class BluePrint
             File var2 = CoreProxy.getBuildCraftBase();
             var2.mkdir();
             File var3 = new File(CoreProxy.getBuildCraftBase(), "blueprints/" + var1 + ".bpt");
+
             if (!var3.exists())
             {
                 var3.createNewFile();
@@ -193,6 +192,7 @@ public class BluePrint
                 while (true)
                 {
                     String var3 = var2.readLine();
+
                     if (var3 == null)
                     {
                         break;
@@ -200,6 +200,7 @@ public class BluePrint
 
                     String[] var4 = var3.split(":");
                     String var5 = var4[0];
+
                     if (var5.equals("sizeX"))
                     {
                         this.sizeX = Integer.parseInt(var4[1]);
@@ -268,6 +269,7 @@ public class BluePrint
     public boolean equals(Object var1)
     {
         this.loadIfNeeded();
+
         if (!(var1 instanceof BluePrint))
         {
             return false;
@@ -276,6 +278,7 @@ public class BluePrint
         {
             BluePrint var2 = (BluePrint)var1;
             var2.loadIfNeeded();
+
             if (this.sizeX == var2.sizeX && this.sizeY == var2.sizeY && this.sizeZ == var2.sizeZ && this.anchorX == var2.anchorX && this.anchorY == var2.anchorY && this.anchorZ == var2.anchorZ)
             {
                 for (int var3 = 0; var3 < this.contents.length; ++var3)

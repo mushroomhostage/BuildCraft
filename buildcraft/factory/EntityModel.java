@@ -20,7 +20,13 @@ public class EntityModel extends Entity
 
     protected void b() {}
 
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
     protected void a(NBTTagCompound var1) {}
 
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
     protected void b(NBTTagCompound var1) {}
 }

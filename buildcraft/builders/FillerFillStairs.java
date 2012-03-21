@@ -22,6 +22,7 @@ public class FillerFillStairs extends FillerPattern
         int var15 = 0;
         int var12;
         byte var13;
+
         if (var1.y <= var5)
         {
             var12 = var5;
@@ -39,6 +40,7 @@ public class FillerFillStairs extends FillerPattern
         int var19 = 0;
         byte var20 = 0;
         byte var21 = 0;
+
         if (var1.x == var4 - 1)
         {
             var17[0] = 1;
@@ -58,6 +60,7 @@ public class FillerFillStairs extends FillerPattern
         else
         {
             var16 = true;
+
             if (var1.x <= var4)
             {
                 var18 = var4;
@@ -100,6 +103,7 @@ public class FillerFillStairs extends FillerPattern
         int var27 = var7;
         int var29 = var6;
         int var28 = var9;
+
         if (var13 == -1)
         {
             if (var17[0] == 1)

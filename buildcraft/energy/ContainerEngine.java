@@ -1,7 +1,5 @@
 package buildcraft.energy;
 
-import buildcraft.energy.ContainerEngineRoot;
-import buildcraft.energy.TileEngine;
 import net.minecraft.server.ICrafting;
 import net.minecraft.server.PlayerInventory;
 
@@ -12,11 +10,14 @@ public class ContainerEngine extends ContainerEngineRoot
         super(var1, var2);
     }
 
-    public void a(ICrafting var1)
+    public void addSlotListener(ICrafting var1)
     {
-        super.a(var1);
+        super.addSlotListener(var1);
     }
 
+    /**
+     * update the crafting matrix
+     */
     public void a()
     {
         super.a();

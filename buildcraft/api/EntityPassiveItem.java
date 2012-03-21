@@ -1,9 +1,5 @@
 package buildcraft.api;
 
-import buildcraft.api.APIProxy;
-import buildcraft.api.Orientations;
-import buildcraft.api.Position;
-import buildcraft.api.SafeTimeTracker;
 import java.util.TreeMap;
 import net.minecraft.server.EntityItem;
 import net.minecraft.server.Item;
@@ -86,7 +82,7 @@ public class EntityPassiveItem
         var1.setDouble("z", this.posZ);
         var1.setFloat("speed", this.speed);
         NBTTagCompound var2 = new NBTTagCompound();
-        this.item.b(var2);
+        this.item.save(var2);
         var1.setCompound("Item", var2);
     }
 
@@ -140,11 +136,12 @@ public class EntityPassiveItem
         int var2 = MathHelper.floor(this.posX);
         int var3 = MathHelper.floor(this.posZ);
         this.worldObj.getClass();
+
         if (this.worldObj.isLoaded(var2, 64, var3))
         {
             double var4 = 0.66D;
             int var6 = MathHelper.floor(this.posY + var4);
-            return this.worldObj.m(var2, var6, var3);
+            return this.worldObj.p(var2, var6, var3);
         }
         else
         {

@@ -25,26 +25,53 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
     private ItemStack[] stackList = new ItemStack[9];
     private LinkedList<ContainerAutoWorkbench> containerList = new LinkedList<ContainerAutoWorkbench>();
 
+    // CraftBukkit start
+    public java.util.List<org.bukkit.entity.HumanEntity> transaction = 
+            new java.util.ArrayList<org.bukkit.entity.HumanEntity>();
+    
+    public void onOpen(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.add(who);
+    }
+
+    public void onClose(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.remove(who);
+    }
+
+    public java.util.List<org.bukkit.entity.HumanEntity> getViewers() {
+        return transaction;
+    }
+
+    public void setMaxStackSize(int size) {}
+
     public ItemStack[] getContents()
     {
         return stackList;
     }
+    // CraftBukkit end
 
     public int getSize()
     {
         return this.stackList.length;
     }
 
+    /**
+     * Returns the stack in slot i
+     */
     public ItemStack getItem(int var1)
     {
         return this.stackList[var1];
     }
 
+    /**
+     * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
+     * stack.
+     */
     public ItemStack splitStack(int var1, int var2)
     {
         ItemStack var3 = this.stackList[var1].cloneItemStack();
         var3.count = var2;
         this.stackList[var1].count -= var2;
+
         if (this.stackList[var1].count == 0)
         {
             this.stackList[var1] = null;
@@ -53,26 +80,42 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
         return var3;
     }
 
+    /**
+     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
+     */
     public void setItem(int var1, ItemStack var2)
     {
         this.stackList[var1] = var2;
     }
 
+    /**
+     * Returns the name of the inventory.
+     */
     public String getName()
     {
         return "";
     }
 
+    /**
+     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
+     * this more of a set than a get?*
+     */
     public int getMaxStackSize()
     {
         return 64;
     }
 
+    /**
+     * Do not make give this method the name canInteractWith because it clashes with Container
+     */
     public boolean a(EntityHuman var1)
     {
         return this.world.getTileEntity(this.x, this.y, this.z) == this;
     }
 
+    /**
+     * Reads a tile entity from NBT.
+     */
     public void a(NBTTagCompound var1)
     {
         super.a(var1);
@@ -82,6 +125,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
         for (int var3 = 0; var3 < this.stackList.length; ++var3)
         {
             NBTTagCompound var4 = (NBTTagCompound)var2.get(var3);
+
             if (!var4.getBoolean("isNull"))
             {
                 this.stackList[var3] = ItemStack.a(var4);
@@ -89,6 +133,9 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
         }
     }
 
+    /**
+     * Writes a tile entity to NBT.
+     */
     public void b(NBTTagCompound var1)
     {
         super.b(var1);
@@ -98,6 +145,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
         {
             NBTTagCompound var4 = new NBTTagCompound();
             var2.add(var4);
+
             if (this.stackList[var3] == null)
             {
                 var4.setBoolean("isNull", true);
@@ -105,7 +153,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
             else
             {
                 var4.setBoolean("isNull", false);
-                this.stackList[var3].b(var4);
+                this.stackList[var3].save(var4);
             }
         }
 
@@ -121,6 +169,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
         for (int var7 = 0; var7 < this.getSize(); ++var7)
         {
             ItemStack var8 = this.getItem(var7);
+
             if (var8 != null && var8.count > 0 && var8.id == var1.id && var8.getData() == var1.getData() && var8.count < var5)
             {
                 var5 = var8.count;
@@ -169,16 +218,18 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
         TileAutoWorkbench.LocalInventoryCrafting var3 = new TileAutoWorkbench.LocalInventoryCrafting();
         LinkedList var4 = new LinkedList();
         int var5 = var2 ? 0 : 1;
-
         TileAutoWorkbench.StackPointer var8;
+
         for (int var6 = 0; var6 < this.getSize(); ++var6)
         {
             ItemStack var7 = this.getItem(var6);
+
             if (var7 != null)
             {
                 if (var7.count <= var5)
                 {
                     var8 = this.getNearbyItem(var7.id, var7.getData());
+
                     if (var8 == null)
                     {
                         this.resetPointers(var4);
@@ -202,6 +253,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
         }
 
         ItemStack var10 = CraftingManager.getInstance().craft(var3);
+
         if (var10 != null && var1)
         {
             Iterator var11 = var4.iterator();
@@ -209,6 +261,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
             while (var11.hasNext())
             {
                 var8 = (TileAutoWorkbench.StackPointer)var11.next();
+
                 if (var8.item.getItem().j() != null)
                 {
                     ItemStack var9 = new ItemStack(var8.item.getItem().j(), 1);
@@ -237,6 +290,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
         {
             TileAutoWorkbench.StackPointer var3 = (TileAutoWorkbench.StackPointer)var2.next();
             ItemStack var4 = var3.inventory.getItem(var3.index);
+
             if (var4 == null)
             {
                 var3.inventory.setItem(var3.index, var3.item);
@@ -252,6 +306,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
     {
         TileAutoWorkbench.StackPointer var3 = null;
         var3 = this.getNearbyItemFromOrientation(var1, var2, Orientations.XNeg);
+
         if (var3 == null)
         {
             var3 = this.getNearbyItemFromOrientation(var1, var2, Orientations.XPos);
@@ -285,6 +340,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
         Position var4 = new Position((double)this.x, (double)this.y, (double)this.z, var3);
         var4.moveForwards(1.0D);
         TileEntity var5 = this.world.getTileEntity((int)var4.x, (int)var4.y, (int)var4.z);
+
         if (!(var5 instanceof ISpecialInventory) && var5 instanceof IInventory)
         {
             IInventory var6 = Utils.getInventory((IInventory)var5);
@@ -292,6 +348,7 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
             for (int var7 = 0; var7 < var6.getSize(); ++var7)
             {
                 ItemStack var8 = var6.getItem(var7);
+
                 if (var8 != null && var8.count > 0 && var8.id == var1 && var8.getData() == var2)
                 {
                     var6.splitStack(var7, 1);
@@ -310,6 +367,20 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
     public void f() {}
 
     public void g() {}
+
+    public ItemStack splitWithoutUpdate(int var1)
+    {
+        if (this.stackList[var1] == null)
+        {
+            return null;
+        }
+        else
+        {
+            ItemStack var2 = this.stackList[var1];
+            this.stackList[var1] = null;
+            return var2;
+        }
+    }
 
     class LocalInventoryCrafting extends InventoryCrafting
     {

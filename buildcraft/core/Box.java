@@ -6,8 +6,6 @@ import buildcraft.api.IBox;
 import buildcraft.api.LaserKind;
 import buildcraft.api.Position;
 import buildcraft.api.TileNetworkData;
-import buildcraft.core.EntityBlock;
-import buildcraft.core.Utils;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.World;
 

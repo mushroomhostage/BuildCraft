@@ -4,9 +4,6 @@ import buildcraft.api.ILiquidContainer;
 import buildcraft.api.IPipeEntry;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
-import buildcraft.transport.PipeLogic;
-import buildcraft.transport.PipeLogicWood;
-import buildcraft.transport.TileGenericPipe;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
@@ -19,6 +16,7 @@ public class PipeLogicIron extends PipeLogic
     public void switchPower()
     {
         boolean var1 = this.worldObj.isBlockIndirectlyPowered(this.xCoord, this.yCoord, this.zCoord);
+
         if (var1 != this.lastPower)
         {
             this.switchPosition();
@@ -34,6 +32,7 @@ public class PipeLogicIron extends PipeLogic
         for (int var3 = 0; var3 < 6; ++var3)
         {
             ++var2;
+
             if (var2 > 5)
             {
                 var2 = 0;
@@ -42,6 +41,7 @@ public class PipeLogicIron extends PipeLogic
             Position var4 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, Orientations.values()[var2]);
             var4.moveForwards(1.0D);
             TileEntity var5 = this.worldObj.getTileEntity((int)var4.x, (int)var4.y, (int)var4.z);
+
             if ((!(var5 instanceof TileGenericPipe) || !(((TileGenericPipe)var5).pipe.logic instanceof PipeLogicWood)) && (var5 instanceof IPipeEntry || var5 instanceof IInventory || var5 instanceof ILiquidContainer || var5 instanceof TileGenericPipe))
             {
                 this.worldObj.setRawData(this.xCoord, this.yCoord, this.zCoord, var2);
@@ -66,7 +66,8 @@ public class PipeLogicIron extends PipeLogic
     public boolean blockActivated(EntityHuman var1)
     {
         super.blockActivated(var1);
-        if (var1.Q() != null && var1.Q().getItem() == BuildCraftCore.wrenchItem)
+
+        if (var1.T() != null && var1.T().getItem() == BuildCraftCore.wrenchItem)
         {
             this.switchPosition();
             this.worldObj.notify(this.xCoord, this.yCoord, this.zCoord);

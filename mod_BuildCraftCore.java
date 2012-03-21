@@ -3,9 +3,6 @@ package net.minecraft.server;
 import buildcraft.core.ClassMapping;
 import java.util.Date;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.BaseModMp;
-import net.minecraft.server.BuildCraftCore;
-import net.minecraft.server.ModLoader;
 
 public class mod_BuildCraftCore extends BaseModMp
 {
@@ -23,11 +20,12 @@ public class mod_BuildCraftCore extends BaseModMp
         BuildCraftCore.initialize();
     }
 
-    public void ModsLoaded()
+    public void modsLoaded()
     {
+        super.modsLoaded();
         initialize();
         BuildCraftCore.initializeModel(this);
-        ModLoader.SetInGameHook(this, true, true);
+        ModLoader.setInGameHook(this, true, true);
     }
 
     public String getVersion()
@@ -37,14 +35,15 @@ public class mod_BuildCraftCore extends BaseModMp
 
     public static String version()
     {
-        return "2.2.12";
+        return "2.2.13";
     }
 
-    public void OnTickInGame(MinecraftServer var1)
+    public void onTickInGame(MinecraftServer var1)
     {
         if (BuildCraftCore.trackNetworkUsage)
         {
             Date var2 = new Date();
+
             if (var2.getTime() - this.lastReport > 10000L)
             {
                 this.lastReport = var2.getTime();

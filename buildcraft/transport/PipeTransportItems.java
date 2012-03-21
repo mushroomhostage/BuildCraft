@@ -12,9 +12,6 @@ import buildcraft.core.PacketIds;
 import buildcraft.core.StackUtil;
 import buildcraft.core.TilePacketWrapper;
 import buildcraft.core.Utils;
-import buildcraft.transport.IPipeTransportItemsHook;
-import buildcraft.transport.PipeTransport;
-import buildcraft.transport.TileGenericPipe;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -67,9 +64,11 @@ public class PipeTransportItems extends PipeTransport
         if (!var1.isCorrupted())
         {
             this.readjustSpeed(var1);
+
             if (!this.travelingEntities.containsKey(new Integer(var1.entityId)))
             {
                 this.travelingEntities.put(new Integer(var1.entityId), new PipeTransportItems.EntityData(var1, var2));
+
                 if (var1.container != null && var1.container != this.container)
                 {
                     ((PipeTransportItems)((TileGenericPipe)var1.container).pipe.transport).scheduleRemoval(var1);
@@ -106,6 +105,7 @@ public class PipeTransportItems extends PipeTransport
                 Position var5 = new Position(var1);
                 var5.orientation = Orientations.values()[var4];
                 var5.moveForwards(1.0D);
+
                 if (this.canReceivePipeObjects(var5, var2))
                 {
                     var3.add(var5.orientation);
@@ -117,6 +117,7 @@ public class PipeTransportItems extends PipeTransport
         {
             Position var6 = new Position(var1);
             var6.orientation = var6.orientation.reverse();
+
             if (this.canReceivePipeObjects(var6, var2))
             {
                 var3.add(var6.orientation);
@@ -134,6 +135,7 @@ public class PipeTransportItems extends PipeTransport
     public boolean canReceivePipeObjects(Position var1, EntityPassiveItem var2)
     {
         TileEntity var3 = this.worldObj.getTileEntity((int)var1.x, (int)var1.y, (int)var1.z);
+
         if (!Utils.checkPipesConnections(this.worldObj, (int)var1.x, (int)var1.y, (int)var1.z, this.xCoord, this.yCoord, this.zCoord))
         {
             return false;
@@ -174,6 +176,7 @@ public class PipeTransportItems extends PipeTransport
         while (var2.hasNext())
         {
             PipeTransportItems.EntityData var3 = (PipeTransportItems.EntityData)var2.next();
+
             if (this.toRemove.contains(Integer.valueOf(var3.item.entityId)))
             {
                 var1.add(var3);
@@ -187,8 +190,8 @@ public class PipeTransportItems extends PipeTransport
     private void moveSolids()
     {
         Iterator var1 = this.entitiesToLoad.iterator();
-
         PipeTransportItems.EntityData var2;
+
         while (var1.hasNext())
         {
             var2 = (PipeTransportItems.EntityData)var1.next();
@@ -202,6 +205,7 @@ public class PipeTransportItems extends PipeTransport
         while (var1.hasNext())
         {
             var2 = (PipeTransportItems.EntityData)var1.next();
+
             if (var2.item.isCorrupted())
             {
                 this.scheduleRemoval(var2.item);
@@ -212,6 +216,7 @@ public class PipeTransportItems extends PipeTransport
                 Position var3 = new Position(0.0D, 0.0D, 0.0D, var2.orientation);
                 var3.moveForwards((double)var2.item.speed);
                 var2.item.setPosition(var2.item.posX + var3.x, var2.item.posY + var3.y, var2.item.posZ + var3.z);
+
                 if ((!var2.toCenter || !this.middleReached(var2)) && !this.outOfBounds(var2))
                 {
                     if (!var2.toCenter && this.endReached(var2))
@@ -220,6 +225,7 @@ public class PipeTransportItems extends PipeTransport
                         Position var8 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, var2.orientation);
                         var8.moveForwards(1.0D);
                         TileEntity var9 = this.worldObj.getTileEntity((int)var8.x, (int)var8.y, (int)var8.z);
+
                         if (var9 instanceof IPipeEntry)
                         {
                             ((IPipeEntry)var9).entityEntering(var2.item, var2.orientation);
@@ -232,6 +238,7 @@ public class PipeTransportItems extends PipeTransport
                         else if (var9 instanceof IInventory)
                         {
                             StackUtil var11 = new StackUtil(var2.item.item);
+
                             if (!APIProxy.isClient(this.worldObj))
                             {
                                 if (var11.checkAvailableSlot((IInventory)var9, true, var8.orientation.reverse()) && var11.items.count == 0)
@@ -242,6 +249,7 @@ public class PipeTransportItems extends PipeTransport
                                 {
                                     var2.item.item = var11.items;
                                     EntityItem var7 = var2.item.toEntityItem(var2.orientation);
+
                                     if (var7 != null)
                                     {
                                         this.onDropped(var7);
@@ -252,6 +260,7 @@ public class PipeTransportItems extends PipeTransport
                         else
                         {
                             EntityItem var6 = var2.item.toEntityItem(var2.orientation);
+
                             if (var6 != null)
                             {
                                 this.onDropped(var6);
@@ -264,10 +273,12 @@ public class PipeTransportItems extends PipeTransport
                     var2.toCenter = false;
                     var2.item.setPosition((double)this.xCoord + 0.5D, (double)((float)this.yCoord + Utils.getPipeFloorOf(var2.item.item)), (double)this.zCoord + 0.5D);
                     Orientations var4 = this.resolveDestination(var2);
+
                     if (var4 == Orientations.Unknown)
                     {
                         this.scheduleRemoval(var2.item);
                         EntityItem var5 = var2.item.toEntityItem(var2.orientation);
+
                         if (var5 != null)
                         {
                             this.onDropped(var5);
@@ -358,6 +369,7 @@ public class PipeTransportItems extends PipeTransport
     public Orientations resolveDestination(PipeTransportItems.EntityData var1)
     {
         LinkedList var2 = this.getPossibleMovements(new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, var1.orientation), var1.item);
+
         if (var2.size() == 0)
         {
             return Orientations.Unknown;
@@ -365,6 +377,7 @@ public class PipeTransportItems extends PipeTransport
         else
         {
             int var3;
+
             if (!APIProxy.isClient(this.worldObj) && !APIProxy.isServerSide())
             {
                 var3 = this.worldObj.random.nextInt(var2.size());
@@ -409,6 +422,7 @@ public class PipeTransportItems extends PipeTransport
             var3.setPosition((double)var2.posX, (double)var2.posY, (double)var2.posZ);
             var3.speed = var2.speed;
             var3.deterministicRandomization = var2.deterministicRandomization;
+
             if (var3.container == this.container && this.travelingEntities.containsKey(Integer.valueOf(var3.entityId)))
             {
                 ((PipeTransportItems.EntityData)this.travelingEntities.get(new Integer(var3.entityId))).orientation = var2.orientation;

@@ -12,6 +12,9 @@ public class ItemEngine extends ItemBlock
         this.a(true);
     }
 
+    /**
+     * returns the argument if the item has metadata, 0 otherwise
+     */
     public int filterData(int var1)
     {
         return this.getPlacedBlockMetadata(var1);

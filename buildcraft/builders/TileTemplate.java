@@ -5,7 +5,6 @@ import buildcraft.api.IAreaProvider;
 import buildcraft.api.LaserKind;
 import buildcraft.api.Orientations;
 import buildcraft.api.TileNetworkData;
-import buildcraft.builders.ItemTemplate;
 import buildcraft.core.BluePrint;
 import buildcraft.core.Box;
 import buildcraft.core.CoreProxy;
@@ -28,14 +27,38 @@ public class TileTemplate extends TileBuildCraft implements IInventory
     public int computingTime = 0;
     private int lastTemplateId = 0;
 
+    // CraftBukkit start
+    public java.util.List<org.bukkit.entity.HumanEntity> transaction = 
+            new java.util.ArrayList<org.bukkit.entity.HumanEntity>();
+    
+    public void onOpen(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.add(who);
+    }
+
+    public void onClose(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.remove(who);
+    }
+
+    public java.util.List<org.bukkit.entity.HumanEntity> getViewers() {
+        return transaction;
+    }
+
+    public void setMaxStackSize(int size) {}
+
     public ItemStack[] getContents()
     {
         return items;
     }
+    // CraftBukkit end
 
-    public void l_()
+    /**
+     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
+     * ticks and creates a new spawn inside its implementation.
+     */
+    public void q_()
     {
-        super.l_();
+        super.q_();
+
         if (this.isComputing)
         {
             if (this.computingTime < 200)
@@ -52,9 +75,11 @@ public class TileTemplate extends TileBuildCraft implements IInventory
     public void initialize()
     {
         super.initialize();
+
         if (!this.box.isInitialized())
         {
             IAreaProvider var1 = Utils.getNearbyAreaProvider(this.world, this.x, this.y, this.z);
+
             if (var1 != null)
             {
                 this.box.initialize(var1);
@@ -76,6 +101,7 @@ public class TileTemplate extends TileBuildCraft implements IInventory
         {
             byte var1 = 1;
             byte var2 = 0;
+
             if (this.world.isBlockIndirectlyPowered(this.x, this.y, this.z))
             {
                 var1 = 0;
@@ -83,8 +109,8 @@ public class TileTemplate extends TileBuildCraft implements IInventory
             }
 
             BluePrint var3 = new BluePrint(this.box.sizeX(), this.box.sizeY(), this.box.sizeZ());
-
             int var6;
+
             for (int var4 = this.box.xMin; var4 <= this.box.xMax; ++var4)
             {
                 for (int var5 = this.box.yMin; var5 <= this.box.yMax; ++var5)
@@ -107,6 +133,7 @@ public class TileTemplate extends TileBuildCraft implements IInventory
             var3.anchorY = this.y - this.box.yMin;
             var3.anchorZ = this.z - this.box.zMin;
             Orientations var7 = Orientations.values()[this.world.getData(this.x, this.y, this.z)].reverse();
+
             if (var7 != Orientations.XPos)
             {
                 if (var7 == Orientations.ZPos)
@@ -127,6 +154,7 @@ public class TileTemplate extends TileBuildCraft implements IInventory
             }
 
             ItemStack var8 = new ItemStack(BuildCraftBuilders.templateItem);
+
             if (var3.equals(BuildCraftBuilders.bluePrints[this.lastTemplateId]))
             {
                 BluePrint var10000 = BuildCraftBuilders.bluePrints[this.lastTemplateId];
@@ -150,14 +178,22 @@ public class TileTemplate extends TileBuildCraft implements IInventory
         return 2;
     }
 
+    /**
+     * Returns the stack in slot i
+     */
     public ItemStack getItem(int var1)
     {
         return this.items[var1];
     }
 
+    /**
+     * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
+     * stack.
+     */
     public ItemStack splitStack(int var1, int var2)
     {
         ItemStack var3;
+
         if (this.items[var1] == null)
         {
             var3 = null;
@@ -177,33 +213,50 @@ public class TileTemplate extends TileBuildCraft implements IInventory
         return var3;
     }
 
+    /**
+     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
+     */
     public void setItem(int var1, ItemStack var2)
     {
         this.items[var1] = var2;
         this.initializeComputing();
     }
 
+    /**
+     * Returns the name of the inventory.
+     */
     public String getName()
     {
         return "Template";
     }
 
+    /**
+     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
+     * this more of a set than a get?*
+     */
     public int getMaxStackSize()
     {
         return 1;
     }
 
+    /**
+     * Do not make give this method the name canInteractWith because it clashes with Container
+     */
     public boolean a(EntityHuman var1)
     {
         return this.world.getTileEntity(this.x, this.y, this.z) == this;
     }
 
+    /**
+     * Reads a tile entity from NBT.
+     */
     public void a(NBTTagCompound var1)
     {
         super.a(var1);
         this.lastTemplateId = var1.getInt("lastTemplateId");
         this.computingTime = var1.getInt("computingTime");
         this.isComputing = var1.getBoolean("isComputing");
+
         if (var1.hasKey("box"))
         {
             this.box.initialize(var1.getCompound("box"));
@@ -216,6 +269,7 @@ public class TileTemplate extends TileBuildCraft implements IInventory
         {
             NBTTagCompound var4 = (NBTTagCompound)var2.get(var3);
             int var5 = var4.getByte("Slot") & 255;
+
             if (var5 >= 0 && var5 < this.items.length)
             {
                 this.items[var5] = ItemStack.a(var4);
@@ -223,12 +277,16 @@ public class TileTemplate extends TileBuildCraft implements IInventory
         }
     }
 
+    /**
+     * Writes a tile entity to NBT.
+     */
     public void b(NBTTagCompound var1)
     {
         super.b(var1);
         var1.setInt("lastTemplateId", this.lastTemplateId);
         var1.setInt("computingTime", this.computingTime);
         var1.setBoolean("isComputing", this.isComputing);
+
         if (this.box.isInitialized())
         {
             NBTTagCompound var2 = new NBTTagCompound();
@@ -244,7 +302,7 @@ public class TileTemplate extends TileBuildCraft implements IInventory
             {
                 NBTTagCompound var4 = new NBTTagCompound();
                 var4.setByte("Slot", (byte)var3);
-                this.items[var3].b(var4);
+                this.items[var3].save(var4);
                 var5.add(var4);
             }
         }
@@ -252,7 +310,10 @@ public class TileTemplate extends TileBuildCraft implements IInventory
         var1.set("Items", var5);
     }
 
-    public void i()
+    /**
+     * invalidates a tile entity
+     */
+    public void j()
     {
         this.destroy();
     }
@@ -299,6 +360,7 @@ public class TileTemplate extends TileBuildCraft implements IInventory
     {
         boolean var2 = this.box.isInitialized();
         super.handleDescriptionPacket(var1);
+
         if (!var2 && this.box.isInitialized())
         {
             this.box.createLasers(this.world, LaserKind.Stripes);
@@ -309,6 +371,7 @@ public class TileTemplate extends TileBuildCraft implements IInventory
     {
         boolean var2 = this.box.isInitialized();
         super.handleUpdatePacket(var1);
+
         if (!var2 && this.box.isInitialized())
         {
             this.box.createLasers(this.world, LaserKind.Stripes);
@@ -318,4 +381,18 @@ public class TileTemplate extends TileBuildCraft implements IInventory
     public void f() {}
 
     public void g() {}
+
+    public ItemStack splitWithoutUpdate(int var1)
+    {
+        if (this.items[var1] == null)
+        {
+            return null;
+        }
+        else
+        {
+            ItemStack var2 = this.items[var1];
+            this.items[var1] = null;
+            return var2;
+        }
+    }
 }

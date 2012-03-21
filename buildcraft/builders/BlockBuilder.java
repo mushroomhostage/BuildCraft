@@ -2,8 +2,6 @@ package buildcraft.builders;
 
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
-import buildcraft.builders.BuildersProxy;
-import buildcraft.builders.TileBuilder;
 import buildcraft.core.Utils;
 import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;
@@ -26,6 +24,9 @@ public class BlockBuilder extends BlockContainer implements ITextureProvider
         this.c(0.7F);
     }
 
+    /**
+     * Returns the TileEntity used by this block.
+     */
     public TileEntity a_()
     {
         return new TileBuilder();
@@ -36,6 +37,9 @@ public class BlockBuilder extends BlockContainer implements ITextureProvider
         return BuildCraftCore.customBuildCraftTexture;
     }
 
+    /**
+     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
+     */
     public int a(int var1, int var2)
     {
         if (var2 == 0 && var1 == 3)
@@ -58,9 +62,13 @@ public class BlockBuilder extends BlockContainer implements ITextureProvider
         }
     }
 
+    /**
+     * Called upon block activation (left or right click on the block.). The three integers represent x,y,z of the
+     * block.
+     */
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
-        if (var5.Q() != null && var5.Q().getItem() == BuildCraftCore.wrenchItem)
+        if (var5.T() != null && var5.T().getItem() == BuildCraftCore.wrenchItem)
         {
             int var7 = var1.getData(var2, var3, var4);
             switch (Orientations.values()[var7])
@@ -89,6 +97,9 @@ public class BlockBuilder extends BlockContainer implements ITextureProvider
         }
     }
 
+    /**
+     * Called when a block is using an item and passed in who placed it. Args: x, y, z, entityLiving
+     */
     public void postPlace(World var1, int var2, int var3, int var4, EntityLiving var5)
     {
         super.postPlace(var1, var2, var3, var4, var5);
@@ -96,6 +107,9 @@ public class BlockBuilder extends BlockContainer implements ITextureProvider
         var1.setData(var2, var3, var4, var6.reverse().ordinal());
     }
 
+    /**
+     * Called whenever the block is removed.
+     */
     public void remove(World var1, int var2, int var3, int var4)
     {
         Utils.preDestroyBlock(var1, var2, var3, var4);

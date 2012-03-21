@@ -2,6 +2,7 @@ package buildcraft.core;
 
 public class DefaultProps
 {
+    public static int WORLD_HEIGHT = 256;
     public static int WOODEN_GEAR_ID = 3800;
     public static int STONE_GEAR_ID = 3801;
     public static int IRON_GEAR_ID = 3802;

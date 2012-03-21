@@ -19,13 +19,6 @@ import buildcraft.factory.TileRefinery;
 import buildcraft.factory.TileTank;
 import forge.MinecraftForge;
 import forge.Property;
-import net.minecraft.server.Block;
-import net.minecraft.server.BuildCraftCore;
-import net.minecraft.server.CraftingManager;
-import net.minecraft.server.Item;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.ModLoader;
-import net.minecraft.server.mod_BuildCraftCore;
 
 public class BuildCraftFactory
 {
@@ -61,40 +54,41 @@ public class BuildCraftFactory
             BuildCraftCore.mainConfiguration.save();
             MinecraftForge.registerCustomBucketHandler(new TankBucketHandler());
             miningWellBlock = new BlockMiningWell(Integer.parseInt(var0.value));
-            ModLoader.RegisterBlock(miningWellBlock);
+            ModLoader.registerBlock(miningWellBlock);
             CoreProxy.addName(miningWellBlock.a("miningWellBlock"), "Mining Well");
             plainPipeBlock = new BlockPlainPipe(Integer.parseInt(var1.value));
-            ModLoader.RegisterBlock(plainPipeBlock);
+            ModLoader.registerBlock(plainPipeBlock);
             CoreProxy.addName(plainPipeBlock.a("plainPipeBlock"), "Mining Pipe");
             autoWorkbenchBlock = new BlockAutoWorkbench(Integer.parseInt(var2.value));
-            ModLoader.RegisterBlock(autoWorkbenchBlock);
+            ModLoader.registerBlock(autoWorkbenchBlock);
             CoreProxy.addName(autoWorkbenchBlock.a("autoWorkbenchBlock"), "Automatic Crafting Table");
             frameBlock = new BlockFrame(Integer.parseInt(var3.value));
-            ModLoader.RegisterBlock(frameBlock);
+            ModLoader.registerBlock(frameBlock);
             CoreProxy.addName(frameBlock.a("frameBlock"), "Frame");
             quarryBlock = new BlockQuarry(Integer.parseInt(var4.value));
-            ModLoader.RegisterBlock(quarryBlock);
+            ModLoader.registerBlock(quarryBlock);
             CoreProxy.addName(quarryBlock.a("machineBlock"), "Quarry");
             tankBlock = new BlockTank(Integer.parseInt(var6.value));
-            ModLoader.RegisterBlock(tankBlock);
+            ModLoader.registerBlock(tankBlock);
             CoreProxy.addName(tankBlock.a("tankBlock"), "Tank");
             pumpBlock = new BlockPump(Integer.parseInt(var5.value));
-            ModLoader.RegisterBlock(pumpBlock);
+            ModLoader.registerBlock(pumpBlock);
             CoreProxy.addName(pumpBlock.a("pumpBlock"), "Pump");
             refineryBlock = new BlockRefinery(Integer.parseInt(var7.value));
-            ModLoader.RegisterBlock(refineryBlock);
+            ModLoader.registerBlock(refineryBlock);
             CoreProxy.addName(refineryBlock.a("refineryBlock"), "Refinery");
-            ModLoader.RegisterTileEntity(TileQuarry.class, "Machine");
-            ModLoader.RegisterTileEntity(TileMiningWell.class, "MiningWell");
-            ModLoader.RegisterTileEntity(TileAutoWorkbench.class, "AutoWorkbench");
-            ModLoader.RegisterTileEntity(TilePump.class, "net.minecraft.server.buildcraft.factory.TilePump");
-            ModLoader.RegisterTileEntity(TilePump.class, "net.minecraft.src.buildcraft.factory.TilePump");
-            ModLoader.RegisterTileEntity(TileTank.class, "net.minecraft.server.buildcraft.factory.TileTank");
-            ModLoader.RegisterTileEntity(TileTank.class, "net.minecraft.src.buildcraft.factory.TileTank");
-            ModLoader.RegisterTileEntity(TileRefinery.class, "net.minecraft.server.buildcraft.factory.Refinery");
-            ModLoader.RegisterTileEntity(TileRefinery.class, "net.minecraft.src.buildcraft.factory.Refinery");
+            ModLoader.registerTileEntity(TileQuarry.class, "Machine");
+            ModLoader.registerTileEntity(TileMiningWell.class, "MiningWell");
+            ModLoader.registerTileEntity(TileAutoWorkbench.class, "AutoWorkbench");
+            ModLoader.registerTileEntity(TilePump.class, "net.minecraft.server.buildcraft.factory.TilePump");
+            ModLoader.registerTileEntity(TilePump.class, "net.minecraft.src.buildcraft.factory.TilePump");
+            ModLoader.registerTileEntity(TileTank.class, "net.minecraft.server.buildcraft.factory.TileTank");
+            ModLoader.registerTileEntity(TileTank.class, "net.minecraft.src.buildcraft.factory.TileTank");
+            ModLoader.registerTileEntity(TileRefinery.class, "net.minecraft.server.buildcraft.factory.Refinery");
+            ModLoader.registerTileEntity(TileRefinery.class, "net.minecraft.src.buildcraft.factory.Refinery");
             drillTexture = 33;
             BuildCraftCore.mainConfiguration.save();
+
             if (BuildCraftCore.loadDefaultRecipes)
             {
                 loadRecipes();
@@ -105,15 +99,16 @@ public class BuildCraftFactory
     public static void loadRecipes()
     {
         CraftingManager var0 = CraftingManager.getInstance();
+
         if (allowMining)
         {
-            var0.registerShapedRecipe(new ItemStack(miningWellBlock, 1), new Object[] {"ipi", "igi", "iPi", Character.valueOf('p'), Item.REDSTONE, Character.valueOf('i'), Item.IRON_INGOT, Character.valueOf('g'), BuildCraftCore.ironGearItem, Character.valueOf('P'), Item.IRON_PICKAXE});
-            var0.registerShapedRecipe(new ItemStack(quarryBlock), new Object[] {"ipi", "gig", "dDd", Character.valueOf('i'), BuildCraftCore.ironGearItem, Character.valueOf('p'), Item.REDSTONE, Character.valueOf('g'), BuildCraftCore.goldGearItem, Character.valueOf('d'), BuildCraftCore.diamondGearItem, Character.valueOf('D'), Item.DIAMOND_PICKAXE});
+            var0.registerShapedRecipe(new ItemStack(miningWellBlock, 1), new Object[] {"ipi", "igi", "iPi", 'p', Item.REDSTONE, 'i', Item.IRON_INGOT, 'g', BuildCraftCore.ironGearItem, 'P', Item.IRON_PICKAXE});
+            var0.registerShapedRecipe(new ItemStack(quarryBlock), new Object[] {"ipi", "gig", "dDd", 'i', BuildCraftCore.ironGearItem, 'p', Item.REDSTONE, 'g', BuildCraftCore.goldGearItem, 'd', BuildCraftCore.diamondGearItem, 'D', Item.DIAMOND_PICKAXE});
         }
 
-        var0.registerShapedRecipe(new ItemStack(autoWorkbenchBlock), new Object[] {" g ", "gwg", " g ", Character.valueOf('w'), Block.WORKBENCH, Character.valueOf('g'), BuildCraftCore.woodenGearItem});
-        var0.registerShapedRecipe(new ItemStack(pumpBlock), new Object[] {"T ", "W ", Character.valueOf('T'), tankBlock, Character.valueOf('W'), miningWellBlock});
-        var0.registerShapedRecipe(new ItemStack(tankBlock), new Object[] {"ggg", "g g", "ggg", Character.valueOf('g'), Block.GLASS});
-        var0.registerShapedRecipe(new ItemStack(refineryBlock), new Object[] {"   ", "RTR", "TGT", Character.valueOf('T'), tankBlock, Character.valueOf('G'), BuildCraftCore.diamondGearItem, Character.valueOf('R'), Block.REDSTONE_TORCH_ON});
+        var0.registerShapedRecipe(new ItemStack(autoWorkbenchBlock), new Object[] {" g ", "gwg", " g ", 'w', Block.WORKBENCH, 'g', BuildCraftCore.woodenGearItem});
+        var0.registerShapedRecipe(new ItemStack(pumpBlock), new Object[] {"T ", "W ", 'T', tankBlock, 'W', miningWellBlock});
+        var0.registerShapedRecipe(new ItemStack(tankBlock), new Object[] {"ggg", "g g", "ggg", 'g', Block.GLASS});
+        var0.registerShapedRecipe(new ItemStack(refineryBlock), new Object[] {"   ", "RTR", "TGT", 'T', tankBlock, 'G', BuildCraftCore.diamondGearItem, 'R', Block.REDSTONE_TORCH_ON});
     }
 }

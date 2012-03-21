@@ -19,8 +19,8 @@ public class FillerFlattener extends FillerPattern
         int var9 = var7 - var4 + 1;
         int var10 = var8 - var6 + 1;
         boolean[][] var11 = new boolean[var9][var10];
-
         int var13;
+
         for (int var12 = 0; var12 < var11.length; ++var12)
         {
             for (var13 = 0; var13 < var11[0].length; ++var13)
@@ -67,7 +67,7 @@ public class FillerFlattener extends FillerPattern
 
         if (var13 != Integer.MAX_VALUE && var3 != null)
         {
-            var3.getItem().a(var3, BuildCraftCore.getBuildCraftPlayer(var1.world), var1.world, var13, var14 + 1, var15, 0);
+            var3.getItem().interactWith(var3, BuildCraftCore.getBuildCraftPlayer(var1.world), var1.world, var13, var14 + 1, var15, 0);
         }
 
         if (var13 != Integer.MAX_VALUE)

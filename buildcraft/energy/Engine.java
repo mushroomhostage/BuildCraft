@@ -3,8 +3,6 @@ package buildcraft.energy;
 import buildcraft.api.APIProxy;
 import buildcraft.api.Orientations;
 import buildcraft.api.TileNetworkData;
-import buildcraft.energy.ContainerEngine;
-import buildcraft.energy.TileEngine;
 import net.minecraft.server.Entity;
 import net.minecraft.server.ICrafting;
 import net.minecraft.server.NBTTagCompound;
@@ -86,9 +84,10 @@ public abstract class Engine
     public void addEnergy(int var1)
     {
         this.energy += var1;
+
         if (this.getEnergyStage() == Engine.EnergyStage.Explosion)
         {
-            this.tile.world.a((Entity)null, (double)this.tile.x, (double)this.tile.y, (double)this.tile.z, (float)this.explosionRange());
+            this.tile.world.explode((Entity)null, (double)this.tile.x, (double)this.tile.y, (double)this.tile.z, (float)this.explosionRange());
         }
 
         if (this.energy > this.maxEnergy)
@@ -106,6 +105,7 @@ public abstract class Engine
         else
         {
             int var4;
+
             if (var2 > this.maxEnergyExtracted)
             {
                 var4 = this.maxEnergyExtracted;
@@ -116,9 +116,11 @@ public abstract class Engine
             }
 
             int var5;
+
             if (this.energy >= var4)
             {
                 var5 = var4;
+
                 if (var3)
                 {
                     this.energy -= var4;
@@ -127,6 +129,7 @@ public abstract class Engine
             else
             {
                 var5 = this.energy;
+
                 if (var3)
                 {
                     this.energy = 0;

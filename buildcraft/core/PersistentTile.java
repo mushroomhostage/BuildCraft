@@ -1,6 +1,5 @@
 package buildcraft.core;
 
-import buildcraft.core.BlockIndex;
 import net.minecraft.server.TileEntity;
 
 public abstract class PersistentTile

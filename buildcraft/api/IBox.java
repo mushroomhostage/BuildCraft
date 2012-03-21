@@ -1,7 +1,5 @@
 package buildcraft.api;
 
-import buildcraft.api.LaserKind;
-import buildcraft.api.Position;
 import net.minecraft.server.World;
 
 public interface IBox

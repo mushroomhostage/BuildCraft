@@ -1,8 +1,5 @@
 package buildcraft.api;
 
-import buildcraft.api.IPowerReceptor;
-import buildcraft.api.SafeTimeTracker;
-import buildcraft.api.TileNetworkData;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
 
@@ -45,6 +42,7 @@ public abstract class PowerProvider
         {
             TileEntity var2 = (TileEntity)var1;
             boolean var3 = false;
+
             if (this.energyStored >= this.minActivationEnergy)
             {
                 if (this.latency == 0)
@@ -62,6 +60,7 @@ public abstract class PowerProvider
             if (this.powerLoss > 0 && this.energyLossTracker.markTimeIfDelay(var2.world, (long)this.powerLossRegularity))
             {
                 this.energyStored -= this.powerLoss;
+
                 if (this.energyStored < 0)
                 {
                     this.energyStored = 0;
@@ -80,11 +79,13 @@ public abstract class PowerProvider
     public int useEnergy(int var1, int var2, boolean var3)
     {
         int var4 = 0;
+
         if (this.energyStored >= var1)
         {
             if (this.energyStored <= var2)
             {
                 var4 = this.energyStored;
+
                 if (var3)
                 {
                     this.energyStored = 0;
@@ -93,6 +94,7 @@ public abstract class PowerProvider
             else
             {
                 var4 = var2;
+
                 if (var3)
                 {
                     this.energyStored -= var2;
@@ -126,6 +128,7 @@ public abstract class PowerProvider
     public void receiveEnergy(int var1)
     {
         this.energyStored += var1;
+
         if (this.energyStored > this.maxEnergyStored)
         {
             this.energyStored = this.maxEnergyStored;

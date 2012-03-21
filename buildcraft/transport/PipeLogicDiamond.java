@@ -7,9 +7,6 @@ import buildcraft.api.TileNetworkData;
 import buildcraft.core.CoreProxy;
 import buildcraft.core.PacketIds;
 import buildcraft.core.TilePacketWrapper;
-import buildcraft.transport.BlockGenericPipe;
-import buildcraft.transport.PipeLogic;
-import buildcraft.transport.TransportProxy;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityHuman;
@@ -36,7 +33,7 @@ public class PipeLogicDiamond extends PipeLogic
 
     public boolean blockActivated(EntityHuman var1)
     {
-        if (var1.Q() != null && var1.Q().id < Block.byId.length && Block.byId[var1.Q().id] instanceof BlockGenericPipe)
+        if (var1.T() != null && var1.T().id < Block.byId.length && Block.byId[var1.T().id] instanceof BlockGenericPipe)
         {
             return false;
         }
@@ -62,6 +59,7 @@ public class PipeLogicDiamond extends PipeLogic
         ItemStack var3 = this.items[var1].cloneItemStack();
         var3.count = var2;
         this.items[var1].count -= var2;
+
         if (this.items[var1].count == 0)
         {
             this.items[var1] = null;
@@ -155,7 +153,7 @@ public class PipeLogicDiamond extends PipeLogic
                 NBTTagCompound var4 = new NBTTagCompound();
                 var2.add(var4);
                 var4.setInt("index", var3);
-                this.items[var3].b(var4);
+                this.items[var3].save(var4);
             }
         }
 

@@ -43,7 +43,7 @@ public abstract class FillerPattern
 
         if (var9 && var7 != null)
         {
-            var7.getItem().a(var7, BuildCraftCore.getBuildCraftPlayer(var8), var8, var10, var11 + 1, var12, 0);
+            var7.getItem().interactWith(var7, BuildCraftCore.getBuildCraftPlayer(var8), var8, var10, var11 + 1, var12, 0);
         }
 
         return !var9;

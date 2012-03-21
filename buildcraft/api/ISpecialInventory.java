@@ -1,6 +1,5 @@
 package buildcraft.api;
 
-import buildcraft.api.Orientations;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
 

@@ -1,7 +1,5 @@
 package buildcraft.builders;
 
-import buildcraft.builders.CraftingTemplateRoot;
-import buildcraft.builders.TileTemplate;
 import net.minecraft.server.ICrafting;
 import net.minecraft.server.IInventory;
 
@@ -12,12 +10,15 @@ class CraftingTemplate extends CraftingTemplateRoot
         super(var1, var2);
     }
 
-    public void a(ICrafting var1)
+    public void addSlotListener(ICrafting var1)
     {
-        super.a(var1);
-        var1.a(this, 0, this.template.computingTime);
+        super.addSlotListener(var1);
+        var1.setContainerData(this, 0, this.template.computingTime);
     }
 
+    /**
+     * update the crafting matrix
+     */
     public void a()
     {
         super.a();
@@ -25,9 +26,10 @@ class CraftingTemplate extends CraftingTemplateRoot
         for (int var1 = 0; var1 < this.listeners.size(); ++var1)
         {
             ICrafting var2 = (ICrafting)this.listeners.get(var1);
+
             if (this.computingTime != this.template.computingTime)
             {
-                var2.a(this, 0, this.template.computingTime);
+                var2.setContainerData(this, 0, this.template.computingTime);
             }
         }
 

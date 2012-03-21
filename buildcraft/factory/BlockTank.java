@@ -2,7 +2,6 @@ package buildcraft.factory;
 
 import buildcraft.api.API;
 import buildcraft.api.Orientations;
-import buildcraft.factory.TileTank;
 import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.BuildCraftCore;
@@ -23,11 +22,18 @@ public class BlockTank extends BlockContainer implements ITextureProvider
         this.c(1.0F);
     }
 
+    /**
+     * If this block doesn't render as an ordinary block it will return false (examples: signs, buttons, stairs, etc)
+     */
     public boolean b()
     {
         return false;
     }
 
+    /**
+     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
+     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
+     */
     public boolean a()
     {
         return false;
@@ -38,6 +44,9 @@ public class BlockTank extends BlockContainer implements ITextureProvider
         return false;
     }
 
+    /**
+     * Returns the TileEntity used by this block.
+     */
     public TileEntity a_()
     {
         return new TileTank();
@@ -48,6 +57,9 @@ public class BlockTank extends BlockContainer implements ITextureProvider
         return BuildCraftCore.customBuildCraftTexture;
     }
 
+    /**
+     * Returns the block texture based on the side being looked at.  Args: side
+     */
     public int a(int var1)
     {
         switch (var1)
@@ -72,16 +84,22 @@ public class BlockTank extends BlockContainer implements ITextureProvider
         }
     }
 
+    /**
+     * Called upon block activation (left or right click on the block.). The three integers represent x,y,z of the
+     * block.
+     */
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
-        if (var5.Q() != null)
+        if (var5.T() != null)
         {
-            int var6 = var5.Q().id;
+            int var6 = var5.T().id;
             int var7 = API.getLiquidForBucket(var6);
             TileTank var8 = (TileTank)var1.getTileEntity(var2, var3, var4);
+
             if (var7 != 0)
             {
                 int var9 = var8.fill(Orientations.Unknown, 1000, var7, true);
+
                 if (var9 != 0 && !BuildCraftCore.debugMode)
                 {
                     var5.inventory.setItem(var5.inventory.itemInHandIndex, new ItemStack(Item.BUCKET, 1));
