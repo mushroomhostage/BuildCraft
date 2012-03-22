@@ -208,6 +208,8 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
             ItemStack var3 = this.getItem(var2);
             var1.setItem(var2, var3);
         }
+        
+        var1.resultInventory = new InventoryCraftResult();
 
         ItemStack var4 = CraftingManager.getInstance().craft(var1);
         return var4;
@@ -251,6 +253,8 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
 
             var3.setItem(var6, var7);
         }
+        
+        var3.resultInventory = new InventoryCraftResult();
 
         ItemStack var10 = CraftingManager.getInstance().craft(var3);
 

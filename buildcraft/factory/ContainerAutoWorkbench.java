@@ -48,7 +48,18 @@ public class ContainerAutoWorkbench extends BuildCraftContainer
         }
 
         this.a(var2);
+
+        // Mae start
+        this.setPlayer(var1.player);
+        // Mae end
     }
+
+    // Mae start
+    @Override
+    public IInventory getInventory() {
+        return this.tile;
+    }
+    // Mae end
 
     /**
      * update the crafting matrix

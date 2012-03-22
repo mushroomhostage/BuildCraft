@@ -37,7 +37,18 @@ public class ContainerEngineRoot extends BuildCraftContainer
         {
             this.a(new Slot(var1, var3, 8 + var3 * 18, 142));
         }
+
+        // Mae start
+        this.setPlayer(var1.player);
+        // Mae end
     }
+
+    // Mae start
+    @Override
+    public net.minecraft.server.IInventory getInventory() {
+        return this.engine;
+    }
+    // Mae end
 
     public boolean isUsableByPlayer(EntityHuman var1)
     {
