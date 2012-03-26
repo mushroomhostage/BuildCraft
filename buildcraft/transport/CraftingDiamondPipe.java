@@ -40,6 +40,18 @@ class CraftingDiamondPipe extends BuildCraftContainer
         }
     }
 
+    // Mae start
+    @Override
+    public EntityHuman getPlayer() {
+        return ((net.minecraft.server.PlayerInventory)playerIInventory).player;
+    }
+
+    @Override
+    public IInventory getInventory() {
+        return this.filterIInventory;
+    }
+    // Mae end
+
     public boolean b(EntityHuman var1)
     {
         return this.filterIInventory.a(var1);
