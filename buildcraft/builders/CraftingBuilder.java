@@ -49,7 +49,7 @@ class CraftingBuilder extends BuildCraftContainer
 
     @Override
     public IInventory getInventory() {
-        return this.builderIInventory;
+        return this.builderInventory;
     }
     // Mae end
 

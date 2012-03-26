@@ -56,7 +56,7 @@ class CraftingFiller extends BuildCraftContainer
 
     @Override
     public IInventory getInventory() {
-        return this.fillerIInventory;
+        return this.fillerInventory;
     }
     // Mae end
 
