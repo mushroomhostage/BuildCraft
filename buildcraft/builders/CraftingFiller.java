@@ -48,6 +48,18 @@ class CraftingFiller extends BuildCraftContainer
         }
     }
 
+    // Mae start
+    @Override
+    public EntityHuman getPlayer() {
+        return ((net.minecraft.server.PlayerInventory)playerIInventory).player;
+    }
+
+    @Override
+    public IInventory getInventory() {
+        return this.fillerIInventory;
+    }
+    // Mae end
+
     public boolean b(EntityHuman var1)
     {
         return this.fillerInventory.a(var1);
