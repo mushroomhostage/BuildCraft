@@ -89,6 +89,16 @@ public class PipeItemsWood extends Pipe implements IPowerReceptor
                 {
                     if (var5 instanceof IInventory)
                     {
+                        // Mae start
+                        org.bukkit.block.Block block = this.worldObj.getWorld().getBlockAt((int)var3.x, (int)var3.y, (int)var3.z);
+                        org.bukkit.block.Block pipe = this.worldObj.getWorld().getBlockAt(this.xCoord, this.yCoord, this.zCoord);
+                        maeyanie.PipeExtractEvent event = new maeyanie.PipeExtractEvent(block, pipe);
+                        this.worldObj.getServer().getPluginManager().callEvent(event);
+                        if (event.isCancelled()) {
+                            return;
+                        }
+                        // Mae end
+                        
                         IInventory var6 = (IInventory)var5;
                         ItemStack var7 = this.checkExtract(var6, true, var3.orientation.reverse());
 
