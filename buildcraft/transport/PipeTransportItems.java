@@ -241,6 +241,19 @@ public class PipeTransportItems extends PipeTransport
 
                             if (!APIProxy.isClient(this.worldObj))
                             {
+                                // Mae start
+                                org.bukkit.block.Block block = this.worldObj.getWorld().getBlockAt((int)var8.x, (int)var8.y, (int)var8.z);
+                                org.bukkit.block.Block pipe = this.worldObj.getWorld().getBlockAt(this.xCoord, this.yCoord, this.zCoord);
+                                maeyanie.PipeExitEvent event = new maeyanie.PipeExitEvent(block, pipe, var2.item.item);
+                                this.worldObj.getServer().getPluginManager().callEvent(event);
+                                if (event.isCancelled()) {
+                                    EntityItem drop = var2.item.toEntityItem(var2.orientation);
+                                    if (drop != null) {
+                                        this.onDropped(drop);
+                                    }
+                                    continue;
+                                }
+                                // Mae end
                                 if (var11.checkAvailableSlot((IInventory)var9, true, var8.orientation.reverse()) && var11.items.count == 0)
                                 {
                                     var2.item.remove();
