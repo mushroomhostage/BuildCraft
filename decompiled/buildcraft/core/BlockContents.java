@@ -16,9 +16,4 @@ public class BlockContents
         var1.blockId = this.blockId;
         return var1;
     }
-
-    public Object clone() throws CloneNotSupportedException
-    {
-        return this.clone();
-    }
 }
