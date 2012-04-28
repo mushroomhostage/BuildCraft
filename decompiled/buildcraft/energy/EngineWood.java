@@ -25,7 +25,7 @@ public class EngineWood extends Engine
 
     public float getPistonSpeed()
     {
-        switch (EngineWood.NamelessClass775222370.$SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[this.getEnergyStage().ordinal()])
+        switch (this.getEnergyStage().ordinal())
         {
             case 1:
                 return 0.01F;

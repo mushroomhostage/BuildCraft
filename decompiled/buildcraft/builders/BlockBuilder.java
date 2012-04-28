@@ -75,7 +75,7 @@ public class BlockBuilder extends BlockContainer implements ITextureProvider
         {
             int var6 = var1.getData(var2, var3, var4);
 
-            switch (BlockBuilder.NamelessClass357617878.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.values()[var6].ordinal()])
+            switch (Orientations.values()[var6].ordinal())
             {
                 case 1:
                     var1.setRawData(var2, var3, var4, Orientations.ZPos.ordinal());

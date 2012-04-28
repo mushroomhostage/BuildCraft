@@ -86,7 +86,7 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
             Position var3 = new Position((double)this.x, (double)this.y, (double)this.z, var1);
             Position var4 = new Position((double)this.x, (double)this.y, (double)this.z, var1);
 
-            switch (TileDockingStation.NamelessClass513503343.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var1.ordinal()])
+            switch (var1.ordinal())
             {
                 case 1:
                     var3.x += (double)var2;
@@ -116,7 +116,7 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
                     var4.z -= (double)var2;
             }
 
-            switch (TileDockingStation.NamelessClass513503343.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var1.ordinal()])
+            switch (var1.ordinal())
             {
                 case 1:
                 case 2:

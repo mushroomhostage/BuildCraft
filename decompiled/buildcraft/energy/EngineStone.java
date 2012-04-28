@@ -38,7 +38,7 @@ public class EngineStone extends Engine
 
     public float getPistonSpeed()
     {
-        switch (EngineStone.NamelessClass492756069.$SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[this.getEnergyStage().ordinal()])
+        switch (this.getEnergyStage().ordinal())
         {
             case 1:
                 return 0.02F;

@@ -477,7 +477,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
             int var7 = 0;
             Orientations var8 = Orientations.values()[this.world.getData(this.x, this.y, this.z)].reverse();
 
-            switch (TileQuarry.NamelessClass658445722.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var8.ordinal()])
+            switch (var8.ordinal())
             {
                 case 1:
                     var6 = this.x + 1;

@@ -223,7 +223,7 @@ public class Utils
 
             int var16 = BuildCraftCore.redLaserTexture;
 
-            switch (Utils.NamelessClass709211172.$SwitchMap$net.minecraft.server$buildcraft$api$LaserKind[var3.ordinal()])
+            switch (var3.ordinal())
             {
                 case 1:
                     var16 = BuildCraftCore.blueLaserTexture;
@@ -283,7 +283,7 @@ public class Utils
 
     public static int packetIdToInt(PacketIds var0)
     {
-        switch (Utils.NamelessClass709211172.$SwitchMap$net.minecraft.server$buildcraft$core$PacketIds[var0.ordinal()])
+        switch (var0.ordinal())
         {
             case 1:
                 return 70;

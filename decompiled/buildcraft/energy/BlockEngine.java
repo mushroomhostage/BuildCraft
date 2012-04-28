@@ -162,7 +162,7 @@ public class BlockEngine extends BlockContainer implements IPipeConnection
         }
         else
         {
-            switch (BlockEngine.NamelessClass533639663.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.values()[var8.orientation].ordinal()])
+            switch (Orientations.values()[var8.orientation].ordinal())
             {
                 case 1:
                     return var3 - var6 != -1;

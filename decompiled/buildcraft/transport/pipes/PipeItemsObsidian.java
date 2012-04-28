@@ -104,7 +104,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
             Position var3 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, var1);
             Position var4 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, var1);
 
-            switch (PipeItemsObsidian.NamelessClass2030317739.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var1.ordinal()])
+            switch (var1.ordinal())
             {
                 case 1:
                     var3.x += (double)var2;
@@ -134,7 +134,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
                     var4.z -= (double)var2;
             }
 
-            switch (PipeItemsObsidian.NamelessClass2030317739.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var1.ordinal()])
+            switch (var1.ordinal())
             {
                 case 1:
                 case 2:

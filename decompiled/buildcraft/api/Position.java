@@ -51,7 +51,7 @@ public class Position
 
     public void moveRight(double var1)
     {
-        switch (Position.NamelessClass549945414.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[this.orientation.ordinal()])
+        switch (this.orientation.ordinal())
         {
             case 1:
                 this.x -= var1;
@@ -77,7 +77,7 @@ public class Position
 
     public void moveForwards(double var1)
     {
-        switch (Position.NamelessClass549945414.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[this.orientation.ordinal()])
+        switch (this.orientation.ordinal())
         {
             case 1:
                 this.z += var1;
@@ -111,7 +111,7 @@ public class Position
 
     public void moveUp(double var1)
     {
-        switch (Position.NamelessClass549945414.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[this.orientation.ordinal()])
+        switch (this.orientation.ordinal())
         {
             case 1:
             case 2:
