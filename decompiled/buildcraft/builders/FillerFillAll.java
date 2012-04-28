@@ -1,0 +1,31 @@
+package buildcraft.builders;
+
+import buildcraft.api.IBox;
+import buildcraft.core.FillerPattern;
+import net.minecraft.server.BuildCraftCore;
+import net.minecraft.server.ItemStack;
+import net.minecraft.server.TileEntity;
+
+public class FillerFillAll extends FillerPattern
+{
+    public boolean iteratePattern(TileEntity var1, IBox var2, ItemStack var3)
+    {
+        int var4 = (int)var2.p1().x;
+        int var5 = (int)var2.p1().y;
+        int var6 = (int)var2.p1().z;
+        int var7 = (int)var2.p2().x;
+        int var8 = (int)var2.p2().y;
+        int var9 = (int)var2.p2().z;
+        return this.fill(var4, var5, var6, var7, var8, var9, var3, var1.worldObj);
+    }
+
+    public String getTextureFile()
+    {
+        return BuildCraftCore.customBuildCraftTexture;
+    }
+
+    public int getTextureIndex()
+    {
+        return 67;
+    }
+}
