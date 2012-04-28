@@ -64,6 +64,29 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
         }
     }
 
+    // CraftBukkit start
+    public java.util.List<org.bukkit.entity.HumanEntity> transaction = 
+            new java.util.ArrayList<org.bukkit.entity.HumanEntity>();
+    
+    public void onOpen(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.add(who);
+    }
+
+    public void onClose(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.remove(who);
+    }
+
+    public java.util.List<org.bukkit.entity.HumanEntity> getViewers() {
+        return transaction;
+    }
+
+    public void setMaxStackSize(int size) {}
+
+    public ItemStack[] getContents() {
+        return null;
+    }
+    // CraftBukkit end
+
     public void synchronizeIfDelay(int var1)
     {
         if (APIProxy.isServerSide() && this.networkSyncTracker.markTimeIfDelay(this.world, (long)var1))
@@ -362,6 +385,4 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
     {
         return null;
     }
-
-    public void setMaxStackSize(int i) {}
 }

@@ -27,6 +27,30 @@ public class TileTemplate extends TileBuildCraft implements IInventory
     public int computingTime = 0;
     private int lastTemplateId = 0;
 
+    // CraftBukkit start
+    public java.util.List<org.bukkit.entity.HumanEntity> transaction = 
+            new java.util.ArrayList<org.bukkit.entity.HumanEntity>();
+    
+    public void onOpen(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.add(who);
+    }
+
+    public void onClose(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.remove(who);
+    }
+
+    public java.util.List<org.bukkit.entity.HumanEntity> getViewers() {
+        return transaction;
+    }
+
+    public void setMaxStackSize(int size) {}
+
+    public ItemStack[] getContents()
+    {
+        return items;
+    }
+    // CraftBukkit end
+
     /**
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
      * ticks and creates a new spawn inside its implementation.
@@ -378,6 +402,4 @@ public class TileTemplate extends TileBuildCraft implements IInventory
             return var2;
         }
     }
-
-    public void setMaxStackSize(int i) {}
 }

@@ -35,6 +35,32 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
         this.provider = PowerFramework.currentFramework.createPowerProvider();
     }
 
+    // CraftBukkit start
+    public java.util.List<org.bukkit.entity.HumanEntity> transaction = 
+            new java.util.ArrayList<org.bukkit.entity.HumanEntity>();
+    
+    public void onOpen(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.add(who);
+    }
+
+    public void onClose(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.remove(who);
+    }
+
+    public java.util.List<org.bukkit.entity.HumanEntity> getViewers() {
+        return transaction;
+    }
+
+    public void setMaxStackSize(int size) {}
+
+    public ItemStack[] getContents()
+    {
+        ItemStack[] ret = new ItemStack[1];
+        ret[0] = itemInInventory;
+        return ret;
+    }
+    // CraftBukkit end
+
     public void initialize()
     {
         if (!APIProxy.isClient(this.world))

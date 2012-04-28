@@ -21,6 +21,30 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
 {
     private ItemStack[] stackList = new ItemStack[9];
 
+    // CraftBukkit start
+    public java.util.List<org.bukkit.entity.HumanEntity> transaction = 
+            new java.util.ArrayList<org.bukkit.entity.HumanEntity>();
+    
+    public void onOpen(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.add(who);
+    }
+
+    public void onClose(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.remove(who);
+    }
+
+    public java.util.List<org.bukkit.entity.HumanEntity> getViewers() {
+        return transaction;
+    }
+
+    public void setMaxStackSize(int size) {}
+
+    public ItemStack[] getContents()
+    {
+        return stackList;
+    }
+    // CraftBukkit end
+
     /**
      * Returns the number of slots in the inventory.
      */
@@ -385,6 +409,4 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
         int index;
         ItemStack item;
     }
-
-    public void setMaxStackSize(int i) {}
 }

@@ -20,7 +20,7 @@ public class CoreProxy
 
     public static void setField804(EntityItem var0, float var1)
     {
-        var0.field_432_ae = var1;
+        var0.d = var1;
     }
 
     public static void onCraftingPickup(World var0, EntityHuman var1, ItemStack var2)

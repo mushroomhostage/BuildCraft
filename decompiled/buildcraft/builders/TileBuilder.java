@@ -43,6 +43,30 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
         this.powerProvider.configurePowerPerdition(25, 1);
     }
 
+    // CraftBukkit start
+    public java.util.List<org.bukkit.entity.HumanEntity> transaction = 
+            new java.util.ArrayList<org.bukkit.entity.HumanEntity>();
+    
+    public void onOpen(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.add(who);
+    }
+
+    public void onClose(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.remove(who);
+    }
+
+    public java.util.List<org.bukkit.entity.HumanEntity> getViewers() {
+        return transaction;
+    }
+
+    public void setMaxStackSize(int size) {}
+
+    public ItemStack[] getContents()
+    {
+        return items;
+    }
+    // CraftBukkit end
+
     public void initialize()
     {
         super.initialize();
@@ -390,6 +414,4 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
             return var2;
         }
     }
-
-    public void setMaxStackSize(int i) {}
 }

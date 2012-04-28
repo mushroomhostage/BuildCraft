@@ -24,6 +24,29 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
         return 1;
     }
 
+    // CraftBukkit start
+    public java.util.List<org.bukkit.entity.HumanEntity> transaction = 
+            new java.util.ArrayList<org.bukkit.entity.HumanEntity>();
+    
+    public void onOpen(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.add(who);
+    }
+
+    public void onClose(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.remove(who);
+    }
+
+    public java.util.List<org.bukkit.entity.HumanEntity> getViewers() {
+        return transaction;
+    }
+
+    public void setMaxStackSize(int size) {}
+
+    public ItemStack[] getContents() {
+        return null;
+    }
+    // CraftBukkit end
+
     /**
      * Returns the stack in slot i
      */
@@ -251,6 +274,4 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
     {
         return null;
     }
-
-    public void setMaxStackSize(int i) {}
 }

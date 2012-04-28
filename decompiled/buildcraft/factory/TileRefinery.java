@@ -41,6 +41,30 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         this.powerProvider.configure(20, 25, 25, 25, 1000);
     }
 
+    // CraftBukkit start
+    public java.util.List<org.bukkit.entity.HumanEntity> transaction = 
+            new java.util.ArrayList<org.bukkit.entity.HumanEntity>();
+    
+    public void onOpen(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.add(who);
+    }
+
+    public void onClose(org.bukkit.craftbukkit.entity.CraftHumanEntity who) {
+        transaction.remove(who);
+    }
+
+    public java.util.List<org.bukkit.entity.HumanEntity> getViewers() {
+        return transaction;
+    }
+
+    public void setMaxStackSize(int size) {}
+
+    public ItemStack[] getContents()
+    {
+        return null;
+    }
+    // CraftBukkit end
+
     public int fill(Orientations var1, int var2, int var3, boolean var4)
     {
         if (var3 != BuildCraftCore.refineryInput)
