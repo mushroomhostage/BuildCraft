@@ -21,7 +21,7 @@ public class OilPopulate
                 rand = APIProxy.createNewRandom(var0);
             }
 
-            BiomeBase var3 = var0.getWorldChunkManager().a(var1, var2);
+            BiomeBase var3 = var0.getWorldChunkManager().getBiome(var1, var2);
             int var6;
             int var7;
             int var8;
