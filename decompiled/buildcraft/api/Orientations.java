@@ -12,7 +12,7 @@ public enum Orientations
 
     public Orientations reverse()
     {
-        switch (this)
+        switch (this.ordinal())
         {
             case 1:
                 return YNeg;
