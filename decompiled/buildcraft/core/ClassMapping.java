@@ -13,6 +13,21 @@ import net.minecraft.server.BuildCraftCore;
 
 public class ClassMapping
 {
+	public static class Reporter {
+		Class <? extends Object> clas;
+		int occurences = 0;
+		int dataInt = 0;
+		int dataFloat = 0;
+		int dataString = 0;
+		int bytes = 0;
+
+		public String toString () {
+			String res = clas + ": " + occurences + " times (" + dataInt + ", "
+					+ dataFloat + ", " + dataString + " = " + bytes + ")";
+
+			return res;
+		}
+	}
 
     private static TreeMap<String, Reporter> report = new TreeMap();
     private LinkedList<Field> floatFields = new LinkedList();
@@ -35,6 +50,16 @@ public class ClassMapping
     private int sizeString;
     private Field field;
     private Class <? extends Object > clas;
+
+	public static class Indexes {
+		public Indexes (int initFloat, int initString) {
+			floatIndex = initFloat;
+			stringIndex = initString;
+		}
+
+		int floatIndex = 0;
+		int stringIndex = 0;
+	}
 
 
     public static int report()
