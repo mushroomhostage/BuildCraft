@@ -252,4 +252,5 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
         return null;
     }
 
+    public void setMaxStackSize(int i) {}
 }

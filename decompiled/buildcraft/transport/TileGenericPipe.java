@@ -362,4 +362,6 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
     {
         return null;
     }
+
+    public void setMaxStackSize(int i) {}
 }

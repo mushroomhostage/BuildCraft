@@ -390,4 +390,6 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
             return var2;
         }
     }
+
+    public void setMaxStackSize(int i) {}
 }

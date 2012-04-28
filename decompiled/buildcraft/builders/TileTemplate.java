@@ -378,4 +378,6 @@ public class TileTemplate extends TileBuildCraft implements IInventory
             return var2;
         }
     }
+
+    public void setMaxStackSize(int i) {}
 }

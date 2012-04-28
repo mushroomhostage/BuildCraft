@@ -385,4 +385,6 @@ public class TileAutoWorkbench extends TileEntity implements ISpecialInventory
         int index;
         ItemStack item;
     }
+
+    public void setMaxStackSize(int i) {}
 }
