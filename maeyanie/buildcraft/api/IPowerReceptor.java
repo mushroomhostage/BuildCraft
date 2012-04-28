@@ -2,13 +2,14 @@ package buildcraft.api;
 
 import buildcraft.api.PowerProvider;
 
-public interface IPowerReceptor {
+public interface IPowerReceptor
+{
 
-   void setPowerProvider(PowerProvider var1);
+    void setPowerProvider(PowerProvider var1);
 
-   PowerProvider getPowerProvider();
+    PowerProvider getPowerProvider();
 
-   void doWork();
+    void doWork();
 
-   int powerRequest();
+    int powerRequest();
 }

@@ -6,14 +6,15 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface TileNetworkData {
+public @interface TileNetworkData
+{
 
-   int DEFAULT = 0;
-   int UNSIGNED_BYTE = 1;
-   int UNSIGNED_SHORT = 2;
+    int DEFAULT = 0;
+    int UNSIGNED_BYTE = 1;
+    int UNSIGNED_SHORT = 2;
 
 
-   int staticSize() default -1;
+int staticSize() default -1;
 
-   int intKind() default 0;
+int intKind() default 0;
 }

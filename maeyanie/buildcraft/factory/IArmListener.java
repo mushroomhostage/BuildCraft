@@ -2,7 +2,8 @@ package buildcraft.factory;
 
 import buildcraft.factory.EntityMechanicalArm;
 
-public interface IArmListener {
+public interface IArmListener
+{
 
-   void positionReached(EntityMechanicalArm var1);
+    void positionReached(EntityMechanicalArm var1);
 }

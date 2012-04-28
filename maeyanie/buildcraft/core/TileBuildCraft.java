@@ -14,74 +14,89 @@ import net.minecraft.server.Packet;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.mod_BuildCraftCore;
 
-public abstract class TileBuildCraft extends TileEntity implements ISynchronizedTile {
+public abstract class TileBuildCraft extends TileEntity implements ISynchronizedTile
+{
 
-   private static Map updateWrappers = new HashMap();
-   private static Map descriptionWrappers = new HashMap();
-   private TilePacketWrapper descriptionPacket;
-   private TilePacketWrapper updatePacket;
-   private boolean init = false;
+    private static Map updateWrappers = new HashMap();
+    private static Map descriptionWrappers = new HashMap();
+    private TilePacketWrapper descriptionPacket;
+    private TilePacketWrapper updatePacket;
+    private boolean init = false;
 
 
-   public TileBuildCraft() {
-      if(!updateWrappers.containsKey(this.getClass())) {
-         updateWrappers.put(this.getClass(), new TilePacketWrapper(this.getClass()));
-      }
+    public TileBuildCraft()
+    {
+        if (!updateWrappers.containsKey(this.getClass()))
+        {
+            updateWrappers.put(this.getClass(), new TilePacketWrapper(this.getClass()));
+        }
 
-      if(!descriptionWrappers.containsKey(this.getClass())) {
-         descriptionWrappers.put(this.getClass(), new TilePacketWrapper(this.getClass()));
-      }
+        if (!descriptionWrappers.containsKey(this.getClass()))
+        {
+            descriptionWrappers.put(this.getClass(), new TilePacketWrapper(this.getClass()));
+        }
 
-      this.updatePacket = (TilePacketWrapper)updateWrappers.get(this.getClass());
-      this.descriptionPacket = (TilePacketWrapper)descriptionWrappers.get(this.getClass());
-   }
+        this.updatePacket = (TilePacketWrapper)updateWrappers.get(this.getClass());
+        this.descriptionPacket = (TilePacketWrapper)descriptionWrappers.get(this.getClass());
+    }
 
-   public void q_() {
-      if(!this.init) {
-         this.initialize();
-         this.init = true;
-      }
+    public void q_()
+    {
+        if (!this.init)
+        {
+            this.initialize();
+            this.init = true;
+        }
 
-      if(this instanceof IPowerReceptor) {
-         IPowerReceptor var1 = (IPowerReceptor)this;
-         var1.getPowerProvider().update(var1);
-      }
+        if (this instanceof IPowerReceptor)
+        {
+            IPowerReceptor var1 = (IPowerReceptor)this;
+            var1.getPowerProvider().update(var1);
+        }
 
-   }
+    }
 
-   public void initialize() {
-      Utils.handleBufferedDescription(this);
-   }
+    public void initialize()
+    {
+        Utils.handleBufferedDescription(this);
+    }
 
-   public void destroy() {}
+    public void destroy() {}
 
-   public void sendNetworkUpdate() {
-      if(this instanceof ISynchronizedTile) {
-         CoreProxy.sendToPlayers(this.getUpdatePacket(), this.x, this.y, this.z, 50, mod_BuildCraftCore.instance);
-      }
+    public void sendNetworkUpdate()
+    {
+        if (this instanceof ISynchronizedTile)
+        {
+            CoreProxy.sendToPlayers(this.getUpdatePacket(), this.x, this.y, this.z, 50, mod_BuildCraftCore.instance);
+        }
 
-   }
+    }
 
-   public Packet d() {
-      return (new PacketTileUpdate(this)).getPacket();
-   }
+    public Packet d()
+    {
+        return (new PacketTileUpdate(this)).getPacket();
+    }
 
-   public PacketPayload getPacketPayload() {
-      return this.updatePacket.toPayload(this);
-   }
+    public PacketPayload getPacketPayload()
+    {
+        return this.updatePacket.toPayload(this);
+    }
 
-   public Packet getUpdatePacket() {
-      return (new PacketTileUpdate(this)).getPacket();
-   }
+    public Packet getUpdatePacket()
+    {
+        return (new PacketTileUpdate(this)).getPacket();
+    }
 
-   public void handleDescriptionPacket(PacketUpdate var1) {
-      this.descriptionPacket.fromPayload((TileEntity)this, var1.payload);
-   }
+    public void handleDescriptionPacket(PacketUpdate var1)
+    {
+        this.descriptionPacket.fromPayload((TileEntity)this, var1.payload);
+    }
 
-   public void handleUpdatePacket(PacketUpdate var1) {
-      this.updatePacket.fromPayload((TileEntity)this, var1.payload);
-   }
+    public void handleUpdatePacket(PacketUpdate var1)
+    {
+        this.updatePacket.fromPayload((TileEntity)this, var1.payload);
+    }
 
-   public void postPacketHandling(PacketUpdate var1) {}
+    public void postPacketHandling(PacketUpdate var1) {}
 
 }

@@ -1,7 +1,8 @@
 package buildcraft.core;
 
 
-public interface ILiquid {
+public interface ILiquid
+{
 
-   int stillLiquidId();
+    int stillLiquidId();
 }

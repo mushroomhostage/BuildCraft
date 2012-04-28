@@ -2,7 +2,8 @@ package buildcraft.api;
 
 import buildcraft.api.Orientations;
 
-public interface IPipe {
+public interface IPipe
+{
 
-   void prepareTextureFor(Orientations var1);
+    void prepareTextureFor(Orientations var1);
 }
