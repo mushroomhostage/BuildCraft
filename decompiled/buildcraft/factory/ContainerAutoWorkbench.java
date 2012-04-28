@@ -5,12 +5,12 @@ import buildcraft.core.CoreProxy;
 import forge.ForgeHooks;
 import net.minecraft.server.AchievementList;
 import net.minecraft.server.Block;
-import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.InventoryCraftResult;
-import net.minecraft.server.InventoryPlayer;
 import net.minecraft.server.Item;
 import net.minecraft.server.ItemStack;
+import net.minecraft.server.PlayerInventory;
 import net.minecraft.server.Slot;
 
 public class ContainerAutoWorkbench extends BuildCraftContainer
@@ -18,11 +18,11 @@ public class ContainerAutoWorkbench extends BuildCraftContainer
     TileAutoWorkbench tile;
     public IInventory craftResult = new InventoryCraftResult();
 
-    public ContainerAutoWorkbench(InventoryPlayer var1, TileAutoWorkbench var2)
+    public ContainerAutoWorkbench(PlayerInventory var1, TileAutoWorkbench var2)
     {
         super(3);
         this.tile = var2;
-        this.addSlot(new ContainerAutoWorkbench.SlotAutoCrafting(var1.player, var2, this.craftResult, 0, 124, 35));
+        this.a(new ContainerAutoWorkbench.SlotAutoCrafting(var1.player, var2, this.craftResult, 0, 124, 35));
         int var3;
         int var4;
 
@@ -30,7 +30,7 @@ public class ContainerAutoWorkbench extends BuildCraftContainer
         {
             for (var4 = 0; var4 < 3; ++var4)
             {
-                this.addSlot(new Slot(var2, var4 + var3 * 3, 30 + var4 * 18, 17 + var3 * 18));
+                this.a(new Slot(var2, var4 + var3 * 3, 30 + var4 * 18, 17 + var3 * 18));
             }
         }
 
@@ -38,94 +38,94 @@ public class ContainerAutoWorkbench extends BuildCraftContainer
         {
             for (var4 = 0; var4 < 9; ++var4)
             {
-                this.addSlot(new Slot(var1, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
+                this.a(new Slot(var1, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
             }
         }
 
         for (var3 = 0; var3 < 9; ++var3)
         {
-            this.addSlot(new Slot(var1, var3, 8 + var3 * 18, 142));
+            this.a(new Slot(var1, var3, 8 + var3 * 18, 142));
         }
 
-        this.onCraftMatrixChanged(var2);
+        this.a(var2);
     }
 
     /**
      * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
      */
-    public void updateCraftingResults()
+    public void a()
     {
-        super.updateCraftingResults();
-        this.craftResult.setInventorySlotContents(0, this.tile.findRecipe());
+        super.a();
+        this.craftResult.setItem(0, this.tile.findRecipe());
     }
 
-    public ItemStack slotClick(int var1, int var2, boolean var3, EntityPlayer var4)
+    public ItemStack clickItem(int var1, int var2, boolean var3, EntityHuman var4)
     {
-        this.craftResult.setInventorySlotContents(0, this.tile.findRecipe());
-        ItemStack var5 = super.slotClick(var1, var2, var3, var4);
-        this.onCraftMatrixChanged(this.tile);
+        this.craftResult.setItem(0, this.tile.findRecipe());
+        ItemStack var5 = super.clickItem(var1, var2, var3, var4);
+        this.a(this.tile);
         return var5;
     }
 
-    public boolean canInteractWith(EntityPlayer var1)
+    public boolean b(EntityHuman var1)
     {
-        return this.tile.isUseableByPlayer(var1);
+        return this.tile.a(var1);
     }
 
     /**
      * Called to transfer a stack from one inventory to the other eg. when shift clicking.
      */
-    public ItemStack transferStackInSlot(int var1)
+    public ItemStack a(int var1)
     {
         ItemStack var2 = null;
-        Slot var3 = (Slot)this.inventorySlots.get(var1);
+        Slot var3 = (Slot)this.e.get(var1);
 
-        if (var3 != null && var3.getHasStack())
+        if (var3 != null && var3.c())
         {
-            ItemStack var4 = var3.getStack();
-            var2 = var4.copy();
+            ItemStack var4 = var3.getItem();
+            var2 = var4.cloneItemStack();
 
             if (var1 == 0)
             {
-                if (!this.mergeItemStack(var4, 10, 46, true))
+                if (!this.a(var4, 10, 46, true))
                 {
                     return null;
                 }
             }
             else if (var1 >= 10 && var1 < 37)
             {
-                if (!this.mergeItemStack(var4, 37, 46, false))
+                if (!this.a(var4, 37, 46, false))
                 {
                     return null;
                 }
             }
             else if (var1 >= 37 && var1 < 46)
             {
-                if (!this.mergeItemStack(var4, 10, 37, false))
+                if (!this.a(var4, 10, 37, false))
                 {
                     return null;
                 }
             }
-            else if (!this.mergeItemStack(var4, 10, 46, false))
+            else if (!this.a(var4, 10, 46, false))
             {
                 return null;
             }
 
-            if (var4.stackSize == 0)
+            if (var4.count == 0)
             {
-                var3.putStack((ItemStack)null);
+                var3.set((ItemStack)null);
             }
             else
             {
-                var3.onSlotChanged();
+                var3.d();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.count == var2.count)
             {
                 return null;
             }
 
-            var3.onPickupFromSlot(var4);
+            var3.c(var4);
         }
 
         return var2;
@@ -134,63 +134,63 @@ public class ContainerAutoWorkbench extends BuildCraftContainer
     public class SlotAutoCrafting extends Slot
     {
         private final IInventory craftMatrix;
-        private EntityPlayer thePlayer;
+        private EntityHuman thePlayer;
 
-        public SlotAutoCrafting(EntityPlayer var2, IInventory var3, IInventory var4, int var5, int var6, int var7)
+        public SlotAutoCrafting(EntityHuman var2, IInventory var3, IInventory var4, int var5, int var6, int var7)
         {
             super(var4, var5, var6, var7);
             this.thePlayer = var2;
             this.craftMatrix = var3;
         }
 
-        public boolean isItemValid(ItemStack var1)
+        public boolean isAllowed(ItemStack var1)
         {
             return false;
         }
 
-        public void onPickupFromSlot(ItemStack var1)
+        public void c(ItemStack var1)
         {
-            CoreProxy.onCraftingPickup(this.thePlayer.worldObj, this.thePlayer, var1);
+            CoreProxy.onCraftingPickup(this.thePlayer.world, this.thePlayer, var1);
 
-            if (var1.itemID == Block.workbench.blockID)
+            if (var1.id == Block.WORKBENCH.id)
             {
-                this.thePlayer.addStat(AchievementList.buildWorkBench, 1);
+                this.thePlayer.a(AchievementList.h, 1);
             }
-            else if (var1.itemID == Item.pickaxeWood.shiftedIndex)
+            else if (var1.id == Item.WOOD_PICKAXE.id)
             {
-                this.thePlayer.addStat(AchievementList.buildPickaxe, 1);
+                this.thePlayer.a(AchievementList.i, 1);
             }
-            else if (var1.itemID == Block.stoneOvenIdle.blockID)
+            else if (var1.id == Block.FURNACE.id)
             {
-                this.thePlayer.addStat(AchievementList.buildFurnace, 1);
+                this.thePlayer.a(AchievementList.j, 1);
             }
-            else if (var1.itemID == Item.hoeWood.shiftedIndex)
+            else if (var1.id == Item.WOOD_HOE.id)
             {
-                this.thePlayer.addStat(AchievementList.buildHoe, 1);
+                this.thePlayer.a(AchievementList.l, 1);
             }
-            else if (var1.itemID == Item.bread.shiftedIndex)
+            else if (var1.id == Item.BREAD.id)
             {
-                this.thePlayer.addStat(AchievementList.makeBread, 1);
+                this.thePlayer.a(AchievementList.m, 1);
             }
-            else if (var1.itemID == Item.cake.shiftedIndex)
+            else if (var1.id == Item.CAKE.id)
             {
-                this.thePlayer.addStat(AchievementList.bakeCake, 1);
+                this.thePlayer.a(AchievementList.n, 1);
             }
-            else if (var1.itemID == Item.pickaxeStone.shiftedIndex)
+            else if (var1.id == Item.STONE_PICKAXE.id)
             {
-                this.thePlayer.addStat(AchievementList.buildBetterPickaxe, 1);
+                this.thePlayer.a(AchievementList.o, 1);
             }
-            else if (var1.itemID == Item.swordWood.shiftedIndex)
+            else if (var1.id == Item.WOOD_SWORD.id)
             {
-                this.thePlayer.addStat(AchievementList.buildSword, 1);
+                this.thePlayer.a(AchievementList.r, 1);
             }
-            else if (var1.itemID == Block.enchantmentTable.blockID)
+            else if (var1.id == Block.ENCHANTMENT_TABLE.id)
             {
-                this.thePlayer.addStat(AchievementList.enchantments, 1);
+                this.thePlayer.a(AchievementList.D, 1);
             }
-            else if (var1.itemID == Block.bookShelf.blockID)
+            else if (var1.id == Block.BOOKSHELF.id)
             {
-                this.thePlayer.addStat(AchievementList.bookcase, 1);
+                this.thePlayer.a(AchievementList.F, 1);
             }
 
             CoreProxy.TakenFromCrafting(this.thePlayer, var1, this.craftMatrix);

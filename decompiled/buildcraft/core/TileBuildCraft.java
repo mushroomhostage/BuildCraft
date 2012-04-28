@@ -40,7 +40,7 @@ public abstract class TileBuildCraft extends TileEntity implements ISynchronized
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
      * ticks and creates a new spawn inside its implementation.
      */
-    public void updateEntity()
+    public void q_()
     {
         if (!this.init)
         {
@@ -66,14 +66,14 @@ public abstract class TileBuildCraft extends TileEntity implements ISynchronized
     {
         if (this instanceof ISynchronizedTile)
         {
-            CoreProxy.sendToPlayers(this.getUpdatePacket(), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftCore.instance);
+            CoreProxy.sendToPlayers(this.getUpdatePacket(), this.x, this.y, this.z, 50, mod_BuildCraftCore.instance);
         }
     }
 
     /**
      * Overriden in a sign to provide the text
      */
-    public Packet getDescriptionPacket()
+    public Packet d()
     {
         return (new PacketTileUpdate(this)).getPacket();
     }

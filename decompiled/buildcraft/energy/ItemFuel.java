@@ -9,7 +9,7 @@ public class ItemFuel extends Item implements ITextureProvider
     public ItemFuel(int var1)
     {
         super(var1);
-        this.iconIndex = 48;
+        this.textureId = 48;
     }
 
     public String getTextureFile()

@@ -15,13 +15,13 @@ public class TilePollution extends TileEntity
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
      * ticks and creates a new spawn inside its implementation.
      */
-    public void updateEntity()
+    public void q_()
     {
         if (!this.init)
         {
             this.init = true;
-            this.timeTracker.markTime(this.worldObj);
-            BlockIndex var1 = new BlockIndex(this.xCoord, this.yCoord, this.zCoord);
+            this.timeTracker.markTime(this.world);
+            BlockIndex var1 = new BlockIndex(this.x, this.y, this.z);
 
             if (BuildCraftEnergy.saturationStored.containsKey(var1))
             {
@@ -32,7 +32,7 @@ public class TilePollution extends TileEntity
                 this.saturation = 1;
             }
         }
-        else if (this.timeTracker.markTimeIfDelay(this.worldObj, 20L))
+        else if (this.timeTracker.markTimeIfDelay(this.world, 20L))
         {
             ;
         }

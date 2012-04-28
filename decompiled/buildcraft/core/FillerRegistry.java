@@ -73,7 +73,7 @@ public class FillerRegistry
 
             if (var10.containsKey(Character.valueOf(var9)))
             {
-                var12[var15] = ((ItemStack)var10.get(Character.valueOf(var9))).copy();
+                var12[var15] = ((ItemStack)var10.get(Character.valueOf(var9))).cloneItemStack();
             }
             else
             {
@@ -180,7 +180,7 @@ public class FillerRegistry
                         }
                     }
 
-                    ItemStack var10 = var1.getStackInSlot(var5 + var6 * 3);
+                    ItemStack var10 = var1.getItem(var5 + var6 * 3);
 
                     if (var10 != null || var9 != null)
                     {
@@ -189,12 +189,12 @@ public class FillerRegistry
                             return false;
                         }
 
-                        if (var9.itemID != var10.itemID)
+                        if (var9.id != var10.id)
                         {
                             return false;
                         }
 
-                        if (var9.getItemDamage() != -1 && var9.getItemDamage() != var10.getItemDamage())
+                        if (var9.getData() != -1 && var9.getData() != var10.getData())
                         {
                             return false;
                         }

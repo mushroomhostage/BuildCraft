@@ -15,7 +15,7 @@ public interface ISynchronizedTile
     /**
      * Overriden in a sign to provide the text
      */
-    Packet getDescriptionPacket();
+    Packet d();
 
     PacketPayload getPacketPayload();
 }

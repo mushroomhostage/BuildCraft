@@ -1,7 +1,7 @@
 package buildcraft.transport;
 
 import buildcraft.api.Orientations;
-import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
@@ -27,7 +27,7 @@ public class PipeLogic
         this.worldObj = var1;
     }
 
-    public boolean blockActivated(EntityPlayer var1)
+    public boolean blockActivated(EntityHuman var1)
     {
         return false;
     }
@@ -99,7 +99,7 @@ public class PipeLogic
         return 0;
     }
 
-    public boolean canInteractWith(EntityPlayer var1)
+    public boolean canInteractWith(EntityHuman var1)
     {
         return true;
     }

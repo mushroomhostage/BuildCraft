@@ -21,7 +21,7 @@ public class FillerFillPyramid extends FillerPattern
         int var12 = 0;
         byte var14;
 
-        if (var1.yCoord <= var5)
+        if (var1.y <= var5)
         {
             var14 = 1;
         }
@@ -43,7 +43,7 @@ public class FillerFillPyramid extends FillerPattern
 
         while (var12 <= var10 / 2 && var12 <= var11 / 2 && var13 >= var5 && var13 <= var8)
         {
-            if (!this.fill(var4 + var12, var13, var6 + var12, var7 - var12, var13, var9 - var12, var3, var1.worldObj))
+            if (!this.fill(var4 + var12, var13, var6 + var12, var7 - var12, var13, var9 - var12, var3, var1.world))
             {
                 return false;
             }

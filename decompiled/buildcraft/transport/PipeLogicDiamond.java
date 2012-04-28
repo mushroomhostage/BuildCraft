@@ -9,7 +9,7 @@ import buildcraft.core.network.PacketUpdate;
 import buildcraft.core.network.TilePacketWrapper;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftCore;
-import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.NBTTagList;
@@ -30,17 +30,17 @@ public class PipeLogicDiamond extends PipeLogic
         }
     }
 
-    public boolean blockActivated(EntityPlayer var1)
+    public boolean blockActivated(EntityHuman var1)
     {
-        if (var1.getCurrentEquippedItem() != null && var1.getCurrentEquippedItem().itemID < Block.blocksList.length && Block.blocksList[var1.getCurrentEquippedItem().itemID] instanceof BlockGenericPipe)
+        if (var1.U() != null && var1.U().id < Block.byId.length && Block.byId[var1.U().id] instanceof BlockGenericPipe)
         {
             return false;
         }
         else
         {
-            if (!APIProxy.isClient(this.container.worldObj))
+            if (!APIProxy.isClient(this.container.world))
             {
-                var1.openGui(mod_BuildCraftTransport.instance, 50, this.container.worldObj, this.container.xCoord, this.container.yCoord, this.container.zCoord);
+                var1.openGui(mod_BuildCraftTransport.instance, 50, this.container.world, this.container.x, this.container.y, this.container.z);
             }
 
             return true;
@@ -59,11 +59,11 @@ public class PipeLogicDiamond extends PipeLogic
 
     public ItemStack decrStackSize(int var1, int var2)
     {
-        ItemStack var3 = this.items[var1].copy();
-        var3.stackSize = var2;
-        this.items[var1].stackSize -= var2;
+        ItemStack var3 = this.items[var1].cloneItemStack();
+        var3.count = var2;
+        this.items[var1].count -= var2;
 
-        if (this.items[var1].stackSize == 0)
+        if (this.items[var1].count == 0)
         {
             this.items[var1] = null;
         }
@@ -83,11 +83,11 @@ public class PipeLogicDiamond extends PipeLogic
     {
         if (this.items[var1] != null || var2 != null)
         {
-            if (this.items[var1] == null || var2 == null || !this.items[var1].isStackEqual(var2))
+            if (this.items[var1] == null || var2 == null || !this.items[var1].c(var2))
             {
                 if (var2 != null)
                 {
-                    this.items[var1] = var2.copy();
+                    this.items[var1] = var2.cloneItemStack();
                 }
                 else
                 {
@@ -126,7 +126,7 @@ public class PipeLogicDiamond extends PipeLogic
         return 1;
     }
 
-    public boolean canInteractWith(EntityPlayer var1)
+    public boolean canInteractWith(EntityHuman var1)
     {
         return true;
     }
@@ -134,13 +134,13 @@ public class PipeLogicDiamond extends PipeLogic
     public void readFromNBT(NBTTagCompound var1)
     {
         super.readFromNBT(var1);
-        NBTTagList var2 = var1.getTagList("items");
+        NBTTagList var2 = var1.getList("items");
 
-        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        for (int var3 = 0; var3 < var2.size(); ++var3)
         {
-            NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
-            int var5 = var4.getInteger("index");
-            this.items[var5] = ItemStack.loadItemStackFromNBT(var4);
+            NBTTagCompound var4 = (NBTTagCompound)var2.get(var3);
+            int var5 = var4.getInt("index");
+            this.items[var5] = ItemStack.a(var4);
         }
     }
 
@@ -151,16 +151,16 @@ public class PipeLogicDiamond extends PipeLogic
 
         for (int var3 = 0; var3 < this.items.length; ++var3)
         {
-            if (this.items[var3] != null && this.items[var3].stackSize > 0)
+            if (this.items[var3] != null && this.items[var3].count > 0)
             {
                 NBTTagCompound var4 = new NBTTagCompound();
-                var2.appendTag(var4);
-                var4.setInteger("index", var3);
-                this.items[var3].writeToNBT(var4);
+                var2.add(var4);
+                var4.setInt("index", var3);
+                this.items[var3].save(var4);
             }
         }
 
-        var1.setTag("items", var2);
+        var1.set("items", var2);
     }
 
     public boolean addItem(ItemStack var1, boolean var2, Orientations var3)
@@ -187,8 +187,8 @@ public class PipeLogicDiamond extends PipeLogic
             }
             else
             {
-                var2.ids[var3] = (short)this.items[var3 + var1 * 9].itemID;
-                var2.dmg[var3] = this.items[var3 + var1 * 9].getItemDamage();
+                var2.ids[var3] = (short)this.items[var3 + var1 * 9].id;
+                var2.dmg[var3] = this.items[var3 + var1 * 9].getData();
             }
         }
 

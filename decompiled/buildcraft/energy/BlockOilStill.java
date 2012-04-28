@@ -18,7 +18,7 @@ public class BlockOilStill extends BlockStationary implements ITextureProvider, 
     /**
      * The type of render function that is called for this block
      */
-    public int getRenderType()
+    public int c()
     {
         return BuildCraftCore.oilModel;
     }
@@ -30,7 +30,7 @@ public class BlockOilStill extends BlockStationary implements ITextureProvider, 
 
     public int stillLiquidId()
     {
-        return BuildCraftEnergy.oilStill.blockID;
+        return BuildCraftEnergy.oilStill.id;
     }
 
     public boolean isBlockReplaceable(World var1, int var2, int var3, int var4)

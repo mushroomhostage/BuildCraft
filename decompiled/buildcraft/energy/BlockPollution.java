@@ -11,8 +11,8 @@ public class BlockPollution extends BlockContainer implements ITextureProvider
 {
     public BlockPollution(int var1)
     {
-        super(var1, Material.air);
-        this.blockIndexInTexture = 80;
+        super(var1, Material.AIR);
+        this.textureId = 80;
     }
 
     public String getTextureFile()
@@ -23,7 +23,7 @@ public class BlockPollution extends BlockContainer implements ITextureProvider
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean renderAsNormalBlock()
+    public boolean b()
     {
         return false;
     }
@@ -32,7 +32,7 @@ public class BlockPollution extends BlockContainer implements ITextureProvider
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube()
+    public boolean a()
     {
         return false;
     }
@@ -40,13 +40,13 @@ public class BlockPollution extends BlockContainer implements ITextureProvider
     /**
      * Returns the TileEntity used by this block.
      */
-    public TileEntity getBlockEntity()
+    public TileEntity a_()
     {
         return new TilePollution();
     }
 
     public int getBlockTexture(IBlockAccess var1, int var2, int var3, int var4, int var5)
     {
-        return 80 + var1.getBlockMetadata(var2, var3, var4);
+        return 80 + var1.getData(var2, var3, var4);
     }
 }

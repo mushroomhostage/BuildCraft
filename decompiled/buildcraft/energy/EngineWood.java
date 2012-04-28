@@ -25,7 +25,7 @@ public class EngineWood extends Engine
 
     public float getPistonSpeed()
     {
-        switch (EngineWood.NamelessClass774541535.$SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[this.getEnergyStage().ordinal()])
+        switch (EngineWood.NamelessClass775222370.$SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[this.getEnergyStage().ordinal()])
         {
             case 1:
                 return 0.01F;
@@ -48,7 +48,7 @@ public class EngineWood extends Engine
     {
         super.update();
 
-        if (this.tile.worldObj.isBlockIndirectlyGettingPowered(this.tile.xCoord, this.tile.yCoord, this.tile.zCoord) && this.tile.worldObj.getWorldTime() % 20L == 0L)
+        if (this.tile.world.isBlockIndirectlyPowered(this.tile.x, this.tile.y, this.tile.z) && this.tile.world.getTime() % 20L == 0L)
         {
             ++this.energy;
         }
@@ -56,7 +56,7 @@ public class EngineWood extends Engine
 
     public boolean isBurning()
     {
-        return this.tile.worldObj.isBlockIndirectlyGettingPowered(this.tile.xCoord, this.tile.yCoord, this.tile.zCoord);
+        return this.tile.world.isBlockIndirectlyPowered(this.tile.x, this.tile.y, this.tile.z);
     }
 
     public int getScaledBurnTime(int var1)
@@ -68,4 +68,47 @@ public class EngineWood extends Engine
 
     public void burn() {}
 
+    static class NamelessClass775222370
+    {
+        static final int[] $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage = new int[Engine.EnergyStage.values().length];
+
+        static
+        {
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Blue.ordinal()] = 1;
+            }
+            catch (NoSuchFieldError var4)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Green.ordinal()] = 2;
+            }
+            catch (NoSuchFieldError var3)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Yellow.ordinal()] = 3;
+            }
+            catch (NoSuchFieldError var2)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Red.ordinal()] = 4;
+            }
+            catch (NoSuchFieldError var1)
+            {
+                ;
+            }
+        }
+    }
 }

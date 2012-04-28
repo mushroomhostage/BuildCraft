@@ -50,14 +50,14 @@ public abstract class PowerProvider
                     var1.doWork();
                     var3 = true;
                 }
-                else if (this.timeTracker.markTimeIfDelay(var2.worldObj, (long)this.latency))
+                else if (this.timeTracker.markTimeIfDelay(var2.world, (long)this.latency))
                 {
                     var1.doWork();
                     var3 = true;
                 }
             }
 
-            if (this.powerLoss > 0 && this.energyLossTracker.markTimeIfDelay(var2.worldObj, (long)this.powerLossRegularity))
+            if (this.powerLoss > 0 && this.energyLossTracker.markTimeIfDelay(var2.world, (long)this.powerLossRegularity))
             {
                 this.energyStored -= this.powerLoss;
 
@@ -107,22 +107,22 @@ public abstract class PowerProvider
 
     public void readFromNBT(NBTTagCompound var1)
     {
-        this.latency = var1.getInteger("latency");
-        this.minEnergyReceived = var1.getInteger("minEnergyReceived");
-        this.maxEnergyReceived = var1.getInteger("maxEnergyReceived");
-        this.maxEnergyStored = var1.getInteger("maxStoreEnergy");
-        this.minActivationEnergy = var1.getInteger("minActivationEnergy");
-        this.energyStored = var1.getInteger("storedEnergy");
+        this.latency = var1.getInt("latency");
+        this.minEnergyReceived = var1.getInt("minEnergyReceived");
+        this.maxEnergyReceived = var1.getInt("maxEnergyReceived");
+        this.maxEnergyStored = var1.getInt("maxStoreEnergy");
+        this.minActivationEnergy = var1.getInt("minActivationEnergy");
+        this.energyStored = var1.getInt("storedEnergy");
     }
 
     public void writeToNBT(NBTTagCompound var1)
     {
-        var1.setInteger("latency", this.latency);
-        var1.setInteger("minEnergyReceived", this.minEnergyReceived);
-        var1.setInteger("maxEnergyReceived", this.maxEnergyReceived);
-        var1.setInteger("maxStoreEnergy", this.maxEnergyStored);
-        var1.setInteger("minActivationEnergy", this.minActivationEnergy);
-        var1.setInteger("storedEnergy", this.energyStored);
+        var1.setInt("latency", this.latency);
+        var1.setInt("minEnergyReceived", this.minEnergyReceived);
+        var1.setInt("maxEnergyReceived", this.maxEnergyReceived);
+        var1.setInt("maxStoreEnergy", this.maxEnergyStored);
+        var1.setInt("minActivationEnergy", this.minActivationEnergy);
+        var1.setInt("storedEnergy", this.energyStored);
     }
 
     public void receiveEnergy(int var1)

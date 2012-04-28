@@ -44,7 +44,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
 
     public boolean canReceiveLiquid(Position var1)
     {
-        TileEntity var2 = this.worldObj.getBlockTileEntity((int)var1.x, (int)var1.y, (int)var1.z);
+        TileEntity var2 = this.worldObj.getTileEntity((int)var1.x, (int)var1.y, (int)var1.z);
         return this.isInput[var1.orientation.ordinal()] ? false : (!Utils.checkPipesConnections(this.worldObj, (int)var1.x, (int)var1.y, (int)var1.z, this.xCoord, this.yCoord, this.zCoord) ? false : var2 instanceof IPipeEntry || var2 instanceof ILiquidContainer);
     }
 
@@ -65,7 +65,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
         {
             if (var1.hasKey("side[" + var2 + "]"))
             {
-                this.side[var2].readFromNBT(var1.getCompoundTag("side[" + var2 + "]"));
+                this.side[var2].readFromNBT(var1.getCompound("side[" + var2 + "]"));
             }
 
             this.isInput[var2] = var1.getBoolean("isInput[" + var2 + "]");
@@ -73,12 +73,12 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
 
         if (var1.hasKey("center"))
         {
-            this.center.readFromNBT(var1.getCompoundTag("center"));
+            this.center.readFromNBT(var1.getCompound("center"));
         }
 
         NBTTagCompound var3 = new NBTTagCompound();
         this.center.writeToNBT(var3);
-        var1.setTag("center", var3);
+        var1.set("center", var3);
     }
 
     public void writeToNBT(NBTTagCompound var1)
@@ -89,13 +89,13 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
         {
             NBTTagCompound var3 = new NBTTagCompound();
             this.side[var2].writeToNBT(var3);
-            var1.setTag("side[" + var2 + "]", var3);
+            var1.set("side[" + var2 + "]", var3);
             var1.setBoolean("isInput[" + var2 + "]", this.isInput[var2]);
         }
 
         NBTTagCompound var4 = new NBTTagCompound();
         this.center.writeToNBT(var4);
-        var1.setTag("center", var4);
+        var1.set("center", var4);
     }
 
     protected void doWork() {}
@@ -253,13 +253,13 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
 
     public static int[] getSplitVector(World var0)
     {
-        if (lastSplit == var0.getWorldTime())
+        if (lastSplit == var0.getTime())
         {
             return splitVector;
         }
         else
         {
-            lastSplit = var0.getWorldTime();
+            lastSplit = var0.getTime();
             splitVector = new int[6];
             int var1;
 
@@ -270,8 +270,8 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
 
             for (var1 = 0; var1 < 20; ++var1)
             {
-                int var2 = var0.rand.nextInt(6);
-                int var3 = var0.rand.nextInt(6);
+                int var2 = var0.random.nextInt(6);
+                int var3 = var0.random.nextInt(6);
                 int var4 = splitVector[var2];
                 splitVector[var2] = splitVector[var3];
                 splitVector[var3] = var4;
@@ -356,7 +356,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
                 }
 
                 this.liquidId = var3;
-                int var4 = (int)(PipeTransportLiquids.this.worldObj.getWorldTime() % (long)PipeTransportLiquids.this.travelDelay);
+                int var4 = (int)(PipeTransportLiquids.this.worldObj.getTime() % (long)PipeTransportLiquids.this.travelDelay);
                 int var5 = var4 > 0 ? var4 - 1 : PipeTransportLiquids.this.travelDelay - 1;
 
                 if (this.qty + var1 > PipeTransportLiquids.LIQUID_IN_PIPE + PipeTransportLiquids.this.flowRate)
@@ -376,7 +376,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
 
         public int empty(int var1)
         {
-            int var2 = (int)(PipeTransportLiquids.this.worldObj.getWorldTime() % (long)PipeTransportLiquids.this.travelDelay);
+            int var2 = (int)(PipeTransportLiquids.this.worldObj.getTime() % (long)PipeTransportLiquids.this.travelDelay);
             int var3 = var2 > 0 ? var2 - 1 : PipeTransportLiquids.this.travelDelay - 1;
 
             if (this.ready - var1 < 0)
@@ -392,7 +392,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
         public void update()
         {
             this.bouncing = false;
-            int var1 = (int)(PipeTransportLiquids.this.worldObj.getWorldTime() % (long)PipeTransportLiquids.this.travelDelay);
+            int var1 = (int)(PipeTransportLiquids.this.worldObj.getTime() % (long)PipeTransportLiquids.this.travelDelay);
             this.ready += this.in[var1];
             this.in[var1] = 0;
             int var2;
@@ -469,7 +469,7 @@ public class PipeTransportLiquids extends PipeTransport implements ILiquidContai
                 this.out[var1] = 0;
             }
 
-            var2 = (int)(PipeTransportLiquids.this.worldObj.getWorldTime() % (long)this.lastQty.length);
+            var2 = (int)(PipeTransportLiquids.this.worldObj.getTime() % (long)this.lastQty.length);
             this.lastTotal += this.qty - this.lastQty[var2];
             this.lastQty[var2] = this.qty;
             this.average = this.lastTotal / this.lastQty.length;

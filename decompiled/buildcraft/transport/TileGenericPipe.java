@@ -19,7 +19,7 @@ import buildcraft.core.network.PacketPayload;
 import buildcraft.core.network.PacketPipeDescription;
 import buildcraft.core.network.PacketTileUpdate;
 import buildcraft.core.network.PacketUpdate;
-import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.Packet;
@@ -38,13 +38,13 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
     /**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound var1)
+    public void b(NBTTagCompound var1)
     {
-        super.writeToNBT(var1);
+        super.b(var1);
 
         if (this.pipe != null)
         {
-            var1.setInteger("pipeId", this.pipe.itemID);
+            var1.setInt("pipeId", this.pipe.itemID);
             this.pipe.writeToNBT(var1);
         }
     }
@@ -52,10 +52,10 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound var1)
+    public void a(NBTTagCompound var1)
     {
-        super.readFromNBT(var1);
-        this.pipe = BlockGenericPipe.createPipe(var1.getInteger("pipeId"));
+        super.a(var1);
+        this.pipe = BlockGenericPipe.createPipe(var1.getInt("pipeId"));
 
         if (this.pipe != null)
         {
@@ -66,31 +66,31 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
 
     public void synchronizeIfDelay(int var1)
     {
-        if (APIProxy.isServerSide() && this.networkSyncTracker.markTimeIfDelay(this.worldObj, (long)var1))
+        if (APIProxy.isServerSide() && this.networkSyncTracker.markTimeIfDelay(this.world, (long)var1))
         {
-            CoreProxy.sendToPlayers(this.getUpdatePacket(), this.xCoord, this.yCoord, this.zCoord, 40, mod_BuildCraftCore.instance);
+            CoreProxy.sendToPlayers(this.getUpdatePacket(), this.x, this.y, this.z, 40, mod_BuildCraftCore.instance);
         }
     }
 
     /**
      * invalidates a tile entity
      */
-    public void invalidate()
+    public void j()
     {
-        super.invalidate();
+        super.j();
 
         if (BlockGenericPipe.isValid(this.pipe))
         {
             BlockGenericPipe.removePipe(this.pipe);
         }
 
-        PersistentWorld.getWorld(this.worldObj).removeTile(new BlockIndex(this.xCoord, this.yCoord, this.zCoord));
+        PersistentWorld.getWorld(this.world).removeTile(new BlockIndex(this.x, this.y, this.z));
     }
 
     /**
      * validates a tile entity
      */
-    public void validate()
+    public void m()
     {
         this.bindPipe();
     }
@@ -99,7 +99,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
      * ticks and creates a new spawn inside its implementation.
      */
-    public void updateEntity()
+    public void q_()
     {
         this.bindPipe();
 
@@ -136,7 +136,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
         {
             if (this.pipe == null)
             {
-                PersistentTile var1 = PersistentWorld.getWorld(this.worldObj).getTile(new BlockIndex(this.xCoord, this.yCoord, this.zCoord));
+                PersistentTile var1 = PersistentWorld.getWorld(this.world).getTile(new BlockIndex(this.x, this.y, this.z));
 
                 if (var1 != null && var1 instanceof Pipe)
                 {
@@ -147,8 +147,8 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
             if (this.pipe != null)
             {
                 this.pipe.setTile(this);
-                this.pipe.setWorld(this.worldObj);
-                PersistentWorld.getWorld(this.worldObj).storeTile(this.pipe, new BlockIndex(this.xCoord, this.yCoord, this.zCoord));
+                this.pipe.setWorld(this.world);
+                PersistentWorld.getWorld(this.world).storeTile(this.pipe, new BlockIndex(this.x, this.y, this.z));
                 this.pipeId = this.pipe.itemID;
                 this.pipeBound = true;
             }
@@ -209,7 +209,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
     /**
      * Returns the number of slots in the inventory.
      */
-    public int getSizeInventory()
+    public int getSize()
     {
         return BlockGenericPipe.isFullyDefined(this.pipe) ? this.pipe.logic.getSizeInventory() : 0;
     }
@@ -217,7 +217,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
     /**
      * Returns the stack in slot i
      */
-    public ItemStack getStackInSlot(int var1)
+    public ItemStack getItem(int var1)
     {
         return BlockGenericPipe.isFullyDefined(this.pipe) ? this.pipe.logic.getStackInSlot(var1) : null;
     }
@@ -226,7 +226,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
      * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
      * stack.
      */
-    public ItemStack decrStackSize(int var1, int var2)
+    public ItemStack splitStack(int var1, int var2)
     {
         return BlockGenericPipe.isFullyDefined(this.pipe) ? this.pipe.logic.decrStackSize(var1, var2) : null;
     }
@@ -234,7 +234,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
     /**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
-    public void setInventorySlotContents(int var1, ItemStack var2)
+    public void setItem(int var1, ItemStack var2)
     {
         if (BlockGenericPipe.isFullyDefined(this.pipe))
         {
@@ -245,7 +245,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
     /**
      * Returns the name of the inventory.
      */
-    public String getInvName()
+    public String getName()
     {
         return BlockGenericPipe.isFullyDefined(this.pipe) ? this.pipe.logic.getInvName() : "";
     }
@@ -254,7 +254,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
      * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
      * this more of a set than a get?*
      */
-    public int getInventoryStackLimit()
+    public int getMaxStackSize()
     {
         return BlockGenericPipe.isFullyDefined(this.pipe) ? this.pipe.logic.getInventoryStackLimit() : 0;
     }
@@ -262,9 +262,9 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
     /**
      * Do not make give this method the name canInteractWith because it clashes with Container
      */
-    public boolean isUseableByPlayer(EntityPlayer var1)
+    public boolean a(EntityHuman var1)
     {
-        return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : (BlockGenericPipe.isFullyDefined(this.pipe) ? this.pipe.logic.canInteractWith(var1) : false);
+        return this.world.getTileEntity(this.x, this.y, this.z) != this ? false : (BlockGenericPipe.isFullyDefined(this.pipe) ? this.pipe.logic.canInteractWith(var1) : false);
     }
 
     public boolean addItem(ItemStack var1, boolean var2, Orientations var3)
@@ -323,18 +323,18 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
     /**
      * Overriden in a sign to provide the text
      */
-    public Packet getDescriptionPacket()
+    public Packet d()
     {
         this.bindPipe();
         PacketPipeDescription var1;
 
         if (this.pipe != null)
         {
-            var1 = new PacketPipeDescription(this.xCoord, this.yCoord, this.zCoord, this.pipe.itemID);
+            var1 = new PacketPipeDescription(this.x, this.y, this.z, this.pipe.itemID);
         }
         else
         {
-            var1 = new PacketPipeDescription(this.xCoord, this.yCoord, this.zCoord, 0);
+            var1 = new PacketPipeDescription(this.x, this.y, this.z, 0);
         }
 
         return var1.getPacket();
@@ -345,9 +345,9 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
         return this.pipe.getNetworkPacket();
     }
 
-    public void openChest() {}
+    public void f() {}
 
-    public void closeChest() {}
+    public void g() {}
 
     public int powerRequest()
     {
@@ -358,7 +358,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
      * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
      * like when you close a workbench GUI.
      */
-    public ItemStack getStackInSlotOnClosing(int var1)
+    public ItemStack splitWithoutUpdate(int var1)
     {
         return null;
     }

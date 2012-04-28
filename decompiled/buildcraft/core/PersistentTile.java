@@ -10,13 +10,13 @@ public abstract class PersistentTile
     public void setTile(TileEntity var1)
     {
         this.tile = var1;
-        this.index = new BlockIndex(var1.xCoord, var1.yCoord, var1.zCoord);
+        this.index = new BlockIndex(var1.x, var1.y, var1.z);
     }
 
     public void destroy() {}
 
     public boolean isValid()
     {
-        return this.tile != null && !this.tile.isInvalid();
+        return this.tile != null && !this.tile.l();
     }
 }

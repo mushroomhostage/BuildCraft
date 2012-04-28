@@ -15,11 +15,11 @@ public abstract class PowerFramework
 
         if (var2.hasKey(baseNBTName))
         {
-            NBTTagCompound var4 = var2.getCompoundTag(baseNBTName);
+            NBTTagCompound var4 = var2.getCompound(baseNBTName);
 
             if (var4.getString("class").equals(this.getClass().getName()))
             {
-                var3.readFromNBT(var4.getCompoundTag("contents"));
+                var3.readFromNBT(var4.getCompound("contents"));
             }
         }
 
@@ -36,8 +36,8 @@ public abstract class PowerFramework
             var4.setString("class", this.getClass().getName());
             NBTTagCompound var5 = new NBTTagCompound();
             var3.writeToNBT(var5);
-            var4.setTag("contents", var5);
-            var2.setTag(baseNBTName, var4);
+            var4.set("contents", var5);
+            var2.set(baseNBTName, var4);
         }
     }
 }

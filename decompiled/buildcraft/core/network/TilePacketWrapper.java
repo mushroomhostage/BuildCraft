@@ -37,9 +37,9 @@ public class TilePacketWrapper
 
         PacketPayload var8 = new PacketPayload(0, var2, var3);
         ByteBuffer var9 = new ByteBuffer();
-        var9.writeInt(var1.xCoord);
-        var9.writeInt(var1.yCoord);
-        var9.writeInt(var1.zCoord);
+        var9.writeInt(var1.x);
+        var9.writeInt(var1.y);
+        var9.writeInt(var1.z);
 
         try
         {

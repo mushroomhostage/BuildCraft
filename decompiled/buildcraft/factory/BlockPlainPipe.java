@@ -14,8 +14,8 @@ public class BlockPlainPipe extends Block implements IPipeConnection, IBlockPipe
 {
     public BlockPlainPipe(int var1)
     {
-        super(var1, Material.glass);
-        this.blockIndexInTexture = 32;
+        super(var1, Material.SHATTERABLE);
+        this.textureId = 32;
         this.minX = 0.25D;
         this.minY = 0.0D;
         this.minZ = 0.25D;
@@ -28,7 +28,7 @@ public class BlockPlainPipe extends Block implements IPipeConnection, IBlockPipe
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube()
+    public boolean a()
     {
         return false;
     }
@@ -36,7 +36,7 @@ public class BlockPlainPipe extends Block implements IPipeConnection, IBlockPipe
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean renderAsNormalBlock()
+    public boolean b()
     {
         return false;
     }

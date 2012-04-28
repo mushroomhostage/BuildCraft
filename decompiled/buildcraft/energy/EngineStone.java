@@ -38,7 +38,7 @@ public class EngineStone extends Engine
 
     public float getPistonSpeed()
     {
-        switch (EngineStone.NamelessClass1890875550.$SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[this.getEnergyStage().ordinal()])
+        switch (EngineStone.NamelessClass492756069.$SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[this.getEnergyStage().ordinal()])
         {
             case 1:
                 return 0.02F;
@@ -70,17 +70,17 @@ public class EngineStone extends Engine
             this.addEnergy(1);
         }
 
-        if (this.burnTime == 0 && this.tile.worldObj.isBlockIndirectlyGettingPowered(this.tile.xCoord, this.tile.yCoord, this.tile.zCoord))
+        if (this.burnTime == 0 && this.tile.world.isBlockIndirectlyPowered(this.tile.x, this.tile.y, this.tile.z))
         {
-            this.burnTime = this.totalBurnTime = this.getItemBurnTime(this.tile.getStackInSlot(0));
+            this.burnTime = this.totalBurnTime = this.getItemBurnTime(this.tile.getItem(0));
 
             if (this.burnTime > 0)
             {
-                ItemStack var1 = this.tile.decrStackSize(1, 1);
+                ItemStack var1 = this.tile.splitStack(1, 1);
 
-                if (var1.getItem().getContainerItem() != null)
+                if (var1.getItem().j() != null)
                 {
-                    this.tile.setInventorySlotContents(1, new ItemStack(var1.getItem().getContainerItem(), 1));
+                    this.tile.setItem(1, new ItemStack(var1.getItem().j(), 1));
                 }
             }
         }
@@ -99,30 +99,30 @@ public class EngineStone extends Engine
         }
         else
         {
-            int var2 = var1.getItem().shiftedIndex;
-            return var2 < Block.blocksList.length && Block.blocksList[var2] != null && Block.blocksList[var2].blockMaterial == Material.wood ? 300 : (var2 == Item.stick.shiftedIndex ? 100 : (var2 == Item.coal.shiftedIndex ? 1600 : (var2 == Item.bucketLava.shiftedIndex ? 20000 : (var2 == Block.sapling.blockID ? 100 : CoreProxy.addFuel(var2, var1.getItemDamage())))));
+            int var2 = var1.getItem().id;
+            return var2 < Block.byId.length && Block.byId[var2] != null && Block.byId[var2].material == Material.WOOD ? 300 : (var2 == Item.STICK.id ? 100 : (var2 == Item.COAL.id ? 1600 : (var2 == Item.LAVA_BUCKET.id ? 20000 : (var2 == Block.SAPLING.id ? 100 : CoreProxy.addFuel(var2, var1.getData())))));
         }
     }
 
     public void readFromNBT(NBTTagCompound var1)
     {
-        this.burnTime = var1.getInteger("burnTime");
-        this.totalBurnTime = var1.getInteger("totalBurnTime");
+        this.burnTime = var1.getInt("burnTime");
+        this.totalBurnTime = var1.getInt("totalBurnTime");
     }
 
     public void writeToNBT(NBTTagCompound var1)
     {
-        var1.setInteger("burnTime", this.burnTime);
-        var1.setInteger("totalBurnTime", this.totalBurnTime);
+        var1.setInt("burnTime", this.burnTime);
+        var1.setInt("totalBurnTime", this.totalBurnTime);
     }
 
     public void delete()
     {
-        ItemStack var1 = this.tile.getStackInSlot(0);
+        ItemStack var1 = this.tile.getItem(0);
 
         if (var1 != null)
         {
-            Utils.dropItems(this.tile.worldObj, var1, this.tile.xCoord, this.tile.yCoord, this.tile.zCoord);
+            Utils.dropItems(this.tile.world, var1, this.tile.x, this.tile.y, this.tile.z);
         }
     }
 
@@ -140,8 +140,51 @@ public class EngineStone extends Engine
 
     public void sendGUINetworkData(ContainerEngine var1, ICrafting var2)
     {
-        var2.updateCraftingInventoryInfo(var1, 0, this.burnTime);
-        var2.updateCraftingInventoryInfo(var1, 1, this.totalBurnTime);
+        var2.setContainerData(var1, 0, this.burnTime);
+        var2.setContainerData(var1, 1, this.totalBurnTime);
     }
 
+    static class NamelessClass492756069
+    {
+        static final int[] $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage = new int[Engine.EnergyStage.values().length];
+
+        static
+        {
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Blue.ordinal()] = 1;
+            }
+            catch (NoSuchFieldError var4)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Green.ordinal()] = 2;
+            }
+            catch (NoSuchFieldError var3)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Yellow.ordinal()] = 3;
+            }
+            catch (NoSuchFieldError var2)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Red.ordinal()] = 4;
+            }
+            catch (NoSuchFieldError var1)
+            {
+                ;
+            }
+        }
+    }
 }

@@ -131,7 +131,7 @@ public class PipeTransportItems extends PipeTransport
 
     public boolean canReceivePipeObjects(Position var1, EntityPassiveItem var2)
     {
-        TileEntity var3 = this.worldObj.getBlockTileEntity((int)var1.x, (int)var1.y, (int)var1.z);
+        TileEntity var3 = this.worldObj.getTileEntity((int)var1.x, (int)var1.y, (int)var1.z);
 
         if (!Utils.checkPipesConnections(this.worldObj, (int)var1.x, (int)var1.y, (int)var1.z, this.xCoord, this.yCoord, this.zCoord))
         {
@@ -221,7 +221,7 @@ public class PipeTransportItems extends PipeTransport
                         this.scheduleRemoval(var2.item);
                         Position var8 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, var2.orientation);
                         var8.moveForwards(1.0D);
-                        TileEntity var9 = this.worldObj.getBlockTileEntity((int)var8.x, (int)var8.y, (int)var8.z);
+                        TileEntity var9 = this.worldObj.getTileEntity((int)var8.x, (int)var8.y, (int)var8.z);
 
                         if (var9 instanceof IPipeEntry)
                         {
@@ -238,7 +238,7 @@ public class PipeTransportItems extends PipeTransport
 
                             if (!APIProxy.isClient(this.worldObj))
                             {
-                                if (var11.checkAvailableSlot((IInventory)var9, true, var8.orientation.reverse()) && var11.items.stackSize == 0)
+                                if (var11.checkAvailableSlot((IInventory)var9, true, var8.orientation.reverse()) && var11.items.count == 0)
                                 {
                                     var2.item.remove();
                                 }
@@ -316,13 +316,13 @@ public class PipeTransportItems extends PipeTransport
     public void readFromNBT(NBTTagCompound var1)
     {
         super.readFromNBT(var1);
-        NBTTagList var2 = var1.getTagList("travelingEntities");
+        NBTTagList var2 = var1.getList("travelingEntities");
 
-        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        for (int var3 = 0; var3 < var2.size(); ++var3)
         {
             try
             {
-                NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+                NBTTagCompound var4 = (NBTTagCompound)var2.get(var3);
                 EntityPassiveItem var5 = new EntityPassiveItem(APIProxy.getWorld());
                 var5.readFromNBT(var4);
 
@@ -333,7 +333,7 @@ public class PipeTransportItems extends PipeTransport
                 else
                 {
                     var5.container = this.container;
-                    PipeTransportItems.EntityData var6 = new PipeTransportItems.EntityData(var5, Orientations.values()[var4.getInteger("orientation")]);
+                    PipeTransportItems.EntityData var6 = new PipeTransportItems.EntityData(var5, Orientations.values()[var4.getInt("orientation")]);
                     var6.toCenter = var4.getBoolean("toCenter");
                     this.entitiesToLoad.add(var6);
                 }
@@ -355,13 +355,13 @@ public class PipeTransportItems extends PipeTransport
         {
             PipeTransportItems.EntityData var4 = (PipeTransportItems.EntityData)var3.next();
             NBTTagCompound var5 = new NBTTagCompound();
-            var2.appendTag(var5);
+            var2.add(var5);
             var4.item.writeToNBT(var5);
             var5.setBoolean("toCenter", var4.toCenter);
-            var5.setInteger("orientation", var4.orientation.ordinal());
+            var5.setInt("orientation", var4.orientation.ordinal());
         }
 
-        var1.setTag("travelingEntities", var2);
+        var1.set("travelingEntities", var2);
     }
 
     public Orientations resolveDestination(PipeTransportItems.EntityData var1)
@@ -378,7 +378,7 @@ public class PipeTransportItems extends PipeTransport
 
             if (!APIProxy.isClient(this.worldObj) && !APIProxy.isServerSide())
             {
-                var3 = this.worldObj.rand.nextInt(var2.size());
+                var3 = this.worldObj.random.nextInt(var2.size());
             }
             else
             {
@@ -433,8 +433,8 @@ public class PipeTransportItems extends PipeTransport
 
     public Packet createItemPacket(EntityPassiveItem var1, Orientations var2)
     {
-        var1.deterministicRandomization += this.worldObj.rand.nextInt(6);
-        PacketPipeTransportContent var3 = new PacketPipeTransportContent(this.container.xCoord, this.container.yCoord, this.container.zCoord, var1, var2);
+        var1.deterministicRandomization += this.worldObj.random.nextInt(6);
+        PacketPipeTransportContent var3 = new PacketPipeTransportContent(this.container.x, this.container.y, this.container.z, var1, var2);
         return var3.getPacket();
     }
 

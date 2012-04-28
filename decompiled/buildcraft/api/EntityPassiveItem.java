@@ -63,7 +63,7 @@ public class EntityPassiveItem
     public EntityPassiveItem(World var1, double var2, double var4, double var6, ItemStack var8)
     {
         this(var1, var2, var4, var6);
-        this.item = var8.copy();
+        this.item = var8.cloneItemStack();
     }
 
     public void readFromNBT(NBTTagCompound var1)
@@ -72,7 +72,7 @@ public class EntityPassiveItem
         this.posY = var1.getDouble("y");
         this.posZ = var1.getDouble("z");
         this.speed = var1.getFloat("speed");
-        this.item = ItemStack.loadItemStackFromNBT(var1.getCompoundTag("Item"));
+        this.item = ItemStack.a(var1.getCompound("Item"));
     }
 
     public void writeToNBT(NBTTagCompound var1)
@@ -82,8 +82,8 @@ public class EntityPassiveItem
         var1.setDouble("z", this.posZ);
         var1.setFloat("speed", this.speed);
         NBTTagCompound var2 = new NBTTagCompound();
-        this.item.writeToNBT(var2);
-        var1.setCompoundTag("Item", var2);
+        this.item.save(var2);
+        var1.setCompound("Item", var2);
     }
 
     public EntityItem toEntityItem(Orientations var1)
@@ -93,13 +93,13 @@ public class EntityPassiveItem
             Position var2 = new Position(0.0D, 0.0D, 0.0D, var1);
             var2.moveForwards(0.1D + (double)(this.speed * 2.0F));
             EntityItem var3 = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, this.item);
-            float var4 = 0.0F + this.worldObj.rand.nextFloat() * 0.04F - 0.02F;
-            var3.motionX = (double)((float)this.worldObj.rand.nextGaussian() * var4) + var2.x;
-            var3.motionY = (double)((float)this.worldObj.rand.nextGaussian() * var4) + var2.y;
-            var3.motionZ = (double)((float)this.worldObj.rand.nextGaussian() * var4) + var2.z;
-            this.worldObj.spawnEntityInWorld(var3);
+            float var4 = 0.0F + this.worldObj.random.nextFloat() * 0.04F - 0.02F;
+            var3.motX = (double)((float)this.worldObj.random.nextGaussian() * var4) + var2.x;
+            var3.motY = (double)((float)this.worldObj.random.nextGaussian() * var4) + var2.y;
+            var3.motZ = (double)((float)this.worldObj.random.nextGaussian() * var4) + var2.z;
+            this.worldObj.addEntity(var3);
             this.remove();
-            var3.delayBeforeCanPickup = 20;
+            var3.pickupDelay = 20;
             return var3;
         }
         else
@@ -118,15 +118,15 @@ public class EntityPassiveItem
 
     public float getEntityBrightness(float var1)
     {
-        int var2 = MathHelper.floor_double(this.posX);
-        int var3 = MathHelper.floor_double(this.posZ);
+        int var2 = MathHelper.floor(this.posX);
+        int var3 = MathHelper.floor(this.posZ);
         this.worldObj.getClass();
 
-        if (this.worldObj.blockExists(var2, 64, var3))
+        if (this.worldObj.isLoaded(var2, 64, var3))
         {
             double var4 = 0.66D;
-            int var6 = MathHelper.floor_double(this.posY + var4);
-            return this.worldObj.getLightBrightness(var2, var6, var3);
+            int var6 = MathHelper.floor(this.posY + var4);
+            return this.worldObj.p(var2, var6, var3);
         }
         else
         {
@@ -136,6 +136,6 @@ public class EntityPassiveItem
 
     public boolean isCorrupted()
     {
-        return this.item == null || this.item.stackSize <= 0 || Item.itemsList[this.item.itemID] == null;
+        return this.item == null || this.item.count <= 0 || Item.byId[this.item.id] == null;
     }
 }

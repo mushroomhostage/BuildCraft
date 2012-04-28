@@ -4,9 +4,9 @@ import forge.DimensionManager;
 import forge.NetworkMod;
 import java.io.File;
 import net.minecraft.server.Block;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityItem;
 import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.EntityPlayerMP;
 import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
@@ -23,9 +23,9 @@ public class CoreProxy
         var0.field_432_ae = var1;
     }
 
-    public static void onCraftingPickup(World var0, EntityPlayer var1, ItemStack var2)
+    public static void onCraftingPickup(World var0, EntityHuman var1, ItemStack var2)
     {
-        var2.onCrafting(var0, var1, var2.stackSize);
+        var2.a(var0, var1, var2.count);
     }
 
     public static File getPropertyFile()
@@ -39,13 +39,13 @@ public class CoreProxy
         {
             for (int var6 = 0; var6 < DimensionManager.getWorlds().length; ++var6)
             {
-                for (int var7 = 0; var7 < DimensionManager.getWorlds()[var6].playerEntities.size(); ++var7)
+                for (int var7 = 0; var7 < DimensionManager.getWorlds()[var6].players.size(); ++var7)
                 {
-                    EntityPlayerMP var8 = (EntityPlayerMP)DimensionManager.getWorlds()[var6].playerEntities.get(var7);
+                    EntityPlayer var8 = (EntityPlayer)DimensionManager.getWorlds()[var6].players.get(var7);
 
-                    if (Math.abs(var8.posX - (double)var1) <= (double)var4 && Math.abs(var8.posY - (double)var2) <= (double)var4 && Math.abs(var8.posZ - (double)var3) <= (double)var4)
+                    if (Math.abs(var8.locX - (double)var1) <= (double)var4 && Math.abs(var8.locY - (double)var2) <= (double)var4 && Math.abs(var8.locZ - (double)var3) <= (double)var4)
                     {
-                        var8.playerNetServerHandler.sendPacket(var0);
+                        var8.netServerHandler.sendPacket(var0);
                     }
                 }
             }
@@ -54,7 +54,7 @@ public class CoreProxy
 
     public static boolean isPlainBlock(Block var0)
     {
-        return var0.renderAsNormalBlock();
+        return var0.b();
     }
 
     public static File getBuildCraftBase()
@@ -79,7 +79,7 @@ public class CoreProxy
         return 0L;
     }
 
-    public static void TakenFromCrafting(EntityPlayer var0, ItemStack var1, IInventory var2)
+    public static void TakenFromCrafting(EntityHuman var0, ItemStack var1, IInventory var2)
     {
         ModLoader.takenFromCrafting(var0, var1, var2);
     }

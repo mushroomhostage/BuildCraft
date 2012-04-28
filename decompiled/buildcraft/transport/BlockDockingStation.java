@@ -24,12 +24,12 @@ public class BlockDockingStation extends BlockContainer implements ITextureProvi
 
     public BlockDockingStation(int var1)
     {
-        super(var1, Material.iron);
-        this.textureTopN = this.blockIndexInTexture = 128;
+        super(var1, Material.ORE);
+        this.textureTopN = this.textureId = 128;
         this.textureTopS = 129;
         this.textureTopE = 130;
         this.textureTopW = 131;
-        this.setHardness(0.5F);
+        this.c(0.5F);
     }
 
     public String getTextureFile()
@@ -40,11 +40,11 @@ public class BlockDockingStation extends BlockContainer implements ITextureProvi
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLiving var5)
+    public void postPlace(World var1, int var2, int var3, int var4, EntityLiving var5)
     {
-        super.onBlockPlacedBy(var1, var2, var3, var4, var5);
-        Orientations var6 = Utils.get2dOrientation(new Position(var5.posX, var5.posY, var5.posZ), new Position((double)var2, (double)var3, (double)var4));
-        var1.setBlockMetadataWithNotify(var2, var3, var4, var6.reverse().ordinal());
+        super.postPlace(var1, var2, var3, var4, var5);
+        Orientations var6 = Utils.get2dOrientation(new Position(var5.locX, var5.locY, var5.locZ), new Position((double)var2, (double)var3, (double)var4));
+        var1.setData(var2, var3, var4, var6.reverse().ordinal());
         System.out.println("ORIENTATION");
         System.out.println(var6.reverse().ordinal());
     }
@@ -52,7 +52,7 @@ public class BlockDockingStation extends BlockContainer implements ITextureProvi
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public int getBlockTextureFromSideAndMetadata(int var1, int var2)
+    public int a(int var1, int var2)
     {
         switch (var1)
         {
@@ -95,7 +95,7 @@ public class BlockDockingStation extends BlockContainer implements ITextureProvi
     /**
      * Returns the TileEntity used by this block.
      */
-    public TileEntity getBlockEntity()
+    public TileEntity a_()
     {
         return new TileDockingStation();
     }

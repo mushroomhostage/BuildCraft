@@ -19,9 +19,9 @@ public class PacketPipeTransportContent extends PacketUpdate
         this.payload = new PacketPayload(6, 4, 0);
         this.payload.intPayload[0] = var4.entityId;
         this.payload.intPayload[1] = var5.ordinal();
-        this.payload.intPayload[2] = var4.item.itemID;
-        this.payload.intPayload[3] = var4.item.stackSize;
-        this.payload.intPayload[4] = var4.item.getItemDamage();
+        this.payload.intPayload[2] = var4.item.id;
+        this.payload.intPayload[3] = var4.item.count;
+        this.payload.intPayload[4] = var4.item.getData();
         this.payload.intPayload[5] = var4.deterministicRandomization;
         this.payload.floatPayload[0] = (float)var4.posX;
         this.payload.floatPayload[1] = (float)var4.posY;

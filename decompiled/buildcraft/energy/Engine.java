@@ -53,7 +53,7 @@ public abstract class Engine
 
     public final Engine.EnergyStage getEnergyStage()
     {
-        if (!APIProxy.isClient(this.tile.worldObj))
+        if (!APIProxy.isClient(this.tile.world))
         {
             this.computeEnergyStage();
         }
@@ -63,7 +63,7 @@ public abstract class Engine
 
     public void update()
     {
-        if (!this.tile.worldObj.isBlockIndirectlyGettingPowered(this.tile.xCoord, this.tile.yCoord, this.tile.zCoord) && this.energy > 1)
+        if (!this.tile.world.isBlockIndirectlyPowered(this.tile.x, this.tile.y, this.tile.z) && this.energy > 1)
         {
             --this.energy;
         }
@@ -87,7 +87,7 @@ public abstract class Engine
 
         if (this.getEnergyStage() == Engine.EnergyStage.Explosion)
         {
-            this.tile.worldObj.createExplosion((Entity)null, (double)this.tile.xCoord, (double)this.tile.yCoord, (double)this.tile.zCoord, (float)this.explosionRange());
+            this.tile.world.explode((Entity)null, (double)this.tile.x, (double)this.tile.y, (double)this.tile.z, (float)this.explosionRange());
         }
 
         if (this.energy > this.maxEnergy)

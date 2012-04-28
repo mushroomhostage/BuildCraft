@@ -10,14 +10,14 @@ public class LegacyBlock extends BlockContainer
 
     public LegacyBlock(int var1, int var2)
     {
-        super(var1, Material.glass);
+        super(var1, Material.SHATTERABLE);
         this.newPipeId = var2;
     }
 
     /**
      * Returns the TileEntity used by this block.
      */
-    public TileEntity getBlockEntity()
+    public TileEntity a_()
     {
         return new LegacyTile();
     }

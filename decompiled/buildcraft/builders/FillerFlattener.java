@@ -44,7 +44,7 @@ public class FillerFlattener extends FillerPattern
                 {
                     if (!var11[var17 - var4][var18 - var6])
                     {
-                        if (!API.softBlock(var1.worldObj.getBlockId(var17, var16, var18)))
+                        if (!API.softBlock(var1.world.getTypeId(var17, var16, var18)))
                         {
                             var11[var17 - var4][var18 - var6] = true;
                         }
@@ -67,7 +67,7 @@ public class FillerFlattener extends FillerPattern
 
         if (var13 != Integer.MAX_VALUE && var3 != null)
         {
-            var3.getItem().onItemUse(var3, BuildCraftCore.getBuildCraftPlayer(var1.worldObj), var1.worldObj, var13, var14 + 1, var15, 0);
+            var3.getItem().interactWith(var3, BuildCraftCore.getBuildCraftPlayer(var1.world), var1.world, var13, var14 + 1, var15, 0);
         }
 
         if (var13 != Integer.MAX_VALUE)
@@ -76,7 +76,7 @@ public class FillerFlattener extends FillerPattern
         }
         else
         {
-            return this.empty(var4, var5, var6, var7, 128, var8, var1.worldObj);
+            return this.empty(var4, var5, var6, var7, 128, var8, var1.world);
         }
     }
 

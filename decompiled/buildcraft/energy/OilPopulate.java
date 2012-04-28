@@ -2,7 +2,7 @@ package buildcraft.energy;
 
 import buildcraft.api.APIProxy;
 import java.util.Random;
-import net.minecraft.server.BiomeGenBase;
+import net.minecraft.server.BiomeBase;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.BuildCraftEnergy;
@@ -21,12 +21,12 @@ public class OilPopulate
                 rand = APIProxy.createNewRandom(var0);
             }
 
-            BiomeGenBase var3 = var0.getWorldChunkManager().getBiomeGenAt(var1, var2);
+            BiomeBase var3 = var0.getWorldChunkManager().a(var1, var2);
             int var6;
             int var7;
             int var8;
 
-            if (var3 == BiomeGenBase.desert && (double)rand.nextFloat() > 0.97D)
+            if (var3 == BiomeBase.DESERT && (double)rand.nextFloat() > 0.97D)
             {
                 int var4 = rand.nextInt(10) + 2;
                 int var5 = rand.nextInt(10) + 2;
@@ -36,9 +36,9 @@ public class OilPopulate
                     var7 = var4 + var1;
                     var8 = var5 + var2;
 
-                    if (var0.getBlockId(var7, var6, var8) != 0)
+                    if (var0.getTypeId(var7, var6, var8) != 0)
                     {
-                        if (var0.getBlockId(var7, var6, var8) == Block.sand.blockID)
+                        if (var0.getTypeId(var7, var6, var8) == Block.SAND.id)
                         {
                             generateSurfaceDeposit(var0, var7, var6, var8, 3);
                         }
@@ -87,7 +87,7 @@ public class OilPopulate
 
                             if (var14 <= var10)
                             {
-                                var0.setBlockWithNotify(var11 + var6, var12 + var7, var13 + var8, BuildCraftEnergy.oilStill.blockID);
+                                var0.setTypeId(var11 + var6, var12 + var7, var13 + var8, BuildCraftEnergy.oilStill.id);
                             }
                         }
                     }
@@ -97,7 +97,7 @@ public class OilPopulate
 
                 for (var12 = 128; var12 >= var7; --var12)
                 {
-                    if (!var17 && var0.getBlockId(var6, var12, var8) != 0 && var0.getBlockId(var6, var12, var8) != Block.leaves.blockID && var0.getBlockId(var6, var12, var8) != Block.wood.blockID && var0.getBlockId(var6, var12, var8) != Block.grass.blockID)
+                    if (!var17 && var0.getTypeId(var6, var12, var8) != 0 && var0.getTypeId(var6, var12, var8) != Block.LEAVES.id && var0.getTypeId(var6, var12, var8) != Block.LOG.id && var0.getTypeId(var6, var12, var8) != Block.GRASS.id)
                     {
                         var17 = true;
 
@@ -123,12 +123,12 @@ public class OilPopulate
 
                         for (var14 = var12 + 1; var14 <= var13; ++var14)
                         {
-                            var0.setBlockWithNotify(var6, var14, var8, BuildCraftEnergy.oilStill.blockID);
+                            var0.setTypeId(var6, var14, var8, BuildCraftEnergy.oilStill.id);
                         }
                     }
                     else if (var17)
                     {
-                        var0.setBlockWithNotify(var6, var12, var8, BuildCraftEnergy.oilStill.blockID);
+                        var0.setTypeId(var6, var12, var8, BuildCraftEnergy.oilStill.id);
                     }
                 }
             }
@@ -157,7 +157,7 @@ public class OilPopulate
         {
             for (int var8 = var3 - var4; var8 <= var3 + var4; ++var8)
             {
-                if (var0.getBlockId(var5, var2 - 1, var8) != BuildCraftEnergy.oilStill.blockID && isOil(var0, var5 + 1, var2 - 1, var8) && isOil(var0, var5 - 1, var2 - 1, var8) && isOil(var0, var5, var2 - 1, var8 + 1) && isOil(var0, var5, var2 - 1, var8 - 1))
+                if (var0.getTypeId(var5, var2 - 1, var8) != BuildCraftEnergy.oilStill.id && isOil(var0, var5 + 1, var2 - 1, var8) && isOil(var0, var5 - 1, var2 - 1, var8) && isOil(var0, var5, var2 - 1, var8 + 1) && isOil(var0, var5, var2 - 1, var8 - 1))
                 {
                     setOilWithProba(var0, 1.0F, var5, var2, var8, true);
                 }
@@ -167,12 +167,12 @@ public class OilPopulate
 
     private static boolean isOil(World var0, int var1, int var2, int var3)
     {
-        return var0.getBlockId(var1, var2, var3) == BuildCraftEnergy.oilStill.blockID || var0.getBlockId(var1, var2, var3) == BuildCraftEnergy.oilMoving.blockID;
+        return var0.getTypeId(var1, var2, var3) == BuildCraftEnergy.oilStill.id || var0.getTypeId(var1, var2, var3) == BuildCraftEnergy.oilMoving.id;
     }
 
     public static void setOilWithProba(World var0, float var1, int var2, int var3, int var4, boolean var5)
     {
-        if (rand.nextFloat() <= var1 && var0.getBlockId(var2, var3 - 2, var4) != 0 || var5)
+        if (rand.nextFloat() <= var1 && var0.getTypeId(var2, var3 - 2, var4) != 0 || var5)
         {
             boolean var6 = false;
 
@@ -186,16 +186,16 @@ public class OilPopulate
 
             if (var6 || var5)
             {
-                if (var0.getBlockId(var2, var3, var4) != Block.waterMoving.blockID && var0.getBlockId(var2, var3, var4) != Block.waterStill.blockID && !isOil(var0, var2, var3, var4))
+                if (var0.getTypeId(var2, var3, var4) != Block.WATER.id && var0.getTypeId(var2, var3, var4) != Block.STATIONARY_WATER.id && !isOil(var0, var2, var3, var4))
                 {
-                    var0.setBlockWithNotify(var2, var3, var4, 0);
+                    var0.setTypeId(var2, var3, var4, 0);
                 }
                 else
                 {
-                    var0.setBlockWithNotify(var2, var3, var4, BuildCraftEnergy.oilStill.blockID);
+                    var0.setTypeId(var2, var3, var4, BuildCraftEnergy.oilStill.id);
                 }
 
-                var0.setBlockWithNotify(var2, var3 - 1, var4, BuildCraftEnergy.oilStill.blockID);
+                var0.setTypeId(var2, var3 - 1, var4, BuildCraftEnergy.oilStill.id);
             }
         }
     }

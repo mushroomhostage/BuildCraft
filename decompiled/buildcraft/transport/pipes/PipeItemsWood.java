@@ -48,7 +48,7 @@ public class PipeItemsWood extends Pipe implements IPowerReceptor
         }
         else
         {
-            int var2 = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+            int var2 = this.worldObj.getData(this.xCoord, this.yCoord, this.zCoord);
 
             if (var2 == var1.ordinal())
             {
@@ -76,23 +76,23 @@ public class PipeItemsWood extends Pipe implements IPowerReceptor
         if (this.powerProvider.energyStored > 0)
         {
             World var1 = this.worldObj;
-            int var2 = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+            int var2 = this.worldObj.getData(this.xCoord, this.yCoord, this.zCoord);
 
             if (var2 <= 5)
             {
                 Position var3 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, Orientations.values()[var2]);
                 var3.moveForwards(1.0D);
-                int var4 = var1.getBlockId((int)var3.x, (int)var3.y, (int)var3.z);
-                TileEntity var5 = var1.getBlockTileEntity((int)var3.x, (int)var3.y, (int)var3.z);
+                int var4 = var1.getTypeId((int)var3.x, (int)var3.y, (int)var3.z);
+                TileEntity var5 = var1.getTileEntity((int)var3.x, (int)var3.y, (int)var3.z);
 
-                if (var5 != null && (var5 instanceof IInventory || var5 instanceof ILiquidContainer) && !PipeLogicWood.isExcludedFromExtraction(Block.blocksList[var4]))
+                if (var5 != null && (var5 instanceof IInventory || var5 instanceof ILiquidContainer) && !PipeLogicWood.isExcludedFromExtraction(Block.byId[var4]))
                 {
                     if (var5 instanceof IInventory)
                     {
                         IInventory var6 = (IInventory)var5;
                         ItemStack var7 = this.checkExtract(var6, true, var3.orientation.reverse());
 
-                        if (var7 == null || var7.stackSize == 0)
+                        if (var7 == null || var7.count == 0)
                         {
                             this.powerProvider.useEnergy(1, 1, false);
                             return;
@@ -135,7 +135,7 @@ public class PipeItemsWood extends Pipe implements IPowerReceptor
                 byte var10;
                 ItemStack var11;
 
-                if (var1.getSizeInventory() == 2)
+                if (var1.getSize() == 2)
                 {
                     var9 = false;
 
@@ -148,19 +148,19 @@ public class PipeItemsWood extends Pipe implements IPowerReceptor
                         var10 = 0;
                     }
 
-                    var11 = var1.getStackInSlot(var10);
+                    var11 = var1.getItem(var10);
 
-                    if (var11 != null && var11.stackSize > 0)
+                    if (var11 != null && var11.count > 0)
                     {
                         if (var2)
                         {
-                            return var1.decrStackSize(var10, this.powerProvider.useEnergy(1, var11.stackSize, true));
+                            return var1.splitStack(var10, this.powerProvider.useEnergy(1, var11.count, true));
                         }
 
                         return var11;
                     }
                 }
-                else if (var1.getSizeInventory() == 3)
+                else if (var1.getSize() == 3)
                 {
                     var9 = false;
 
@@ -177,13 +177,13 @@ public class PipeItemsWood extends Pipe implements IPowerReceptor
                         var10 = 2;
                     }
 
-                    var11 = var1.getStackInSlot(var10);
+                    var11 = var1.getItem(var10);
 
-                    if (var11 != null && var11.stackSize > 0)
+                    if (var11 != null && var11.count > 0)
                     {
                         if (var2)
                         {
-                            return var1.decrStackSize(var10, this.powerProvider.useEnergy(1, var11.stackSize, true));
+                            return var1.splitStack(var10, this.powerProvider.useEnergy(1, var11.count, true));
                         }
 
                         return var11;
@@ -192,7 +192,7 @@ public class PipeItemsWood extends Pipe implements IPowerReceptor
                 else
                 {
                     IInventory var12 = Utils.getInventory(var1);
-                    var11 = this.checkExtractGeneric(var12, var2, var3, 0, var12.getSizeInventory() - 1);
+                    var11 = this.checkExtractGeneric(var12, var2, var3, 0, var12.getSize() - 1);
 
                     if (var11 != null)
                     {
@@ -209,15 +209,15 @@ public class PipeItemsWood extends Pipe implements IPowerReceptor
     {
         for (int var6 = var4; var6 <= var5; ++var6)
         {
-            if (var1.getStackInSlot(var6) != null && var1.getStackInSlot(var6).stackSize > 0)
+            if (var1.getItem(var6) != null && var1.getItem(var6).count > 0)
             {
-                ItemStack var7 = var1.getStackInSlot(var6);
+                ItemStack var7 = var1.getItem(var6);
 
-                if (var7 != null && var7.stackSize > 0)
+                if (var7 != null && var7.count > 0)
                 {
                     if (var2)
                     {
-                        return var1.decrStackSize(var6, this.powerProvider.useEnergy(1, var7.stackSize, true));
+                        return var1.splitStack(var6, this.powerProvider.useEnergy(1, var7.count, true));
                     }
 
                     return var7;

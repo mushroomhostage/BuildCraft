@@ -23,20 +23,20 @@ public class EntityBlock extends Entity
         this.rotationX = 0.0F;
         this.rotationY = 0.0F;
         this.rotationZ = 0.0F;
-        this.preventEntitySpawning = false;
-        this.noClip = true;
-        this.isImmuneToFire = true;
+        this.bf = false;
+        this.bQ = true;
+        this.fireProof = true;
     }
 
     public EntityBlock(World var1, double var2, double var4, double var6, double var8, double var10, double var12)
     {
         this(var1);
-        this.motionX = 0.0D;
-        this.motionY = 0.0D;
-        this.motionZ = 0.0D;
-        this.prevPosX = var2;
-        this.prevPosY = var4;
-        this.prevPosZ = var6;
+        this.motX = 0.0D;
+        this.motY = 0.0D;
+        this.motZ = 0.0D;
+        this.lastX = var2;
+        this.lastY = var4;
+        this.lastZ = var6;
         this.iSize = var8;
         this.jSize = var10;
         this.kSize = var12;
@@ -54,31 +54,31 @@ public class EntityBlock extends Entity
      */
     public void setPosition(double var1, double var3, double var5)
     {
-        this.posX = var1;
-        this.posY = var3;
-        this.posZ = var5;
-        this.boundingBox.minX = this.posX;
-        this.boundingBox.minY = this.posY;
-        this.boundingBox.minZ = this.posZ;
-        this.boundingBox.maxX = this.posX + this.iSize;
-        this.boundingBox.maxY = this.posY + this.jSize;
-        this.boundingBox.maxZ = this.posZ + this.kSize;
+        this.locX = var1;
+        this.locY = var3;
+        this.locZ = var5;
+        this.boundingBox.a = this.locX;
+        this.boundingBox.b = this.locY;
+        this.boundingBox.c = this.locZ;
+        this.boundingBox.d = this.locX + this.iSize;
+        this.boundingBox.e = this.locY + this.jSize;
+        this.boundingBox.f = this.locZ + this.kSize;
     }
 
     /**
      * Tries to moves the entity by the passed in displacement. Args: x, y, z
      */
-    public void moveEntity(double var1, double var3, double var5)
+    public void move(double var1, double var3, double var5)
     {
-        this.setPosition(this.posX + var1, this.posY + var3, this.posZ + var5);
+        this.setPosition(this.locX + var1, this.locY + var3, this.locZ + var5);
     }
 
-    protected void entityInit() {}
+    protected void b() {}
 
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    protected void readEntityFromNBT(NBTTagCompound var1)
+    protected void a(NBTTagCompound var1)
     {
         this.iSize = var1.getDouble("iSize");
         this.jSize = var1.getDouble("jSize");
@@ -88,7 +88,7 @@ public class EntityBlock extends Entity
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
-    protected void writeEntityToNBT(NBTTagCompound var1)
+    protected void b(NBTTagCompound var1)
     {
         var1.setDouble("iSize", this.iSize);
         var1.setDouble("jSize", this.jSize);
@@ -98,8 +98,8 @@ public class EntityBlock extends Entity
     /**
      * Returns true if other Entities should be prevented from moving through this Entity.
      */
-    public boolean canBeCollidedWith()
+    public boolean o_()
     {
-        return !this.isDead;
+        return !this.dead;
     }
 }

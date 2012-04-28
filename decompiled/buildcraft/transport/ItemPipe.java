@@ -4,7 +4,7 @@ import forge.ITextureProvider;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.BuildCraftTransport;
-import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.Item;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.World;
@@ -22,11 +22,11 @@ public class ItemPipe extends Item implements ITextureProvider
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS !
      */
-    public boolean onItemUse(ItemStack var1, EntityPlayer var2, World var3, int var4, int var5, int var6, int var7)
+    public boolean interactWith(ItemStack var1, EntityHuman var2, World var3, int var4, int var5, int var6, int var7)
     {
-        int var8 = BuildCraftTransport.genericPipeBlock.blockID;
+        int var8 = BuildCraftTransport.genericPipeBlock.id;
 
-        if (var3.getBlockId(var4, var5, var6) == Block.snow.blockID)
+        if (var3.getTypeId(var4, var5, var6) == Block.SNOW.id)
         {
             var7 = 0;
         }
@@ -63,23 +63,23 @@ public class ItemPipe extends Item implements ITextureProvider
             }
         }
 
-        if (var1.stackSize == 0)
+        if (var1.count == 0)
         {
             return false;
         }
-        else if (var5 == 127 && Block.blocksList[var8].blockMaterial.isSolid())
+        else if (var5 == 127 && Block.byId[var8].material.isBuildable())
         {
             return false;
         }
-        else if (var3.canBlockBePlacedAt(var8, var4, var5, var6, false, var7))
+        else if (var3.mayPlace(var8, var4, var5, var6, false, var7))
         {
-            BlockGenericPipe.createPipe(var3, var4, var5, var6, this.shiftedIndex);
+            BlockGenericPipe.createPipe(var3, var4, var5, var6, this.id);
 
-            if (var3.setBlockAndMetadataWithNotify(var4, var5, var6, var8, 0))
+            if (var3.setTypeIdAndData(var4, var5, var6, var8, 0))
             {
-                Block.blocksList[var8].onBlockPlaced(var3, var4, var5, var6, var7);
-                Block.blocksList[var8].onBlockPlacedBy(var3, var4, var5, var6, var2);
-                --var1.stackSize;
+                Block.byId[var8].postPlace(var3, var4, var5, var6, var7);
+                Block.byId[var8].postPlace(var3, var4, var5, var6, var2);
+                --var1.count;
             }
 
             return true;
@@ -99,7 +99,7 @@ public class ItemPipe extends Item implements ITextureProvider
     {
         if (this.dummyPipe == null)
         {
-            this.dummyPipe = BlockGenericPipe.createPipe(this.shiftedIndex);
+            this.dummyPipe = BlockGenericPipe.createPipe(this.id);
         }
 
         return this.dummyPipe.getBlockTexture();

@@ -20,16 +20,16 @@ public class BlockFrame extends Block implements IPipeConnection, IBlockPipe, IT
 {
     public BlockFrame(int var1)
     {
-        super(var1, Material.glass);
-        this.blockIndexInTexture = 34;
-        this.setHardness(0.5F);
+        super(var1, Material.SHATTERABLE);
+        this.textureId = 34;
+        this.c(0.5F);
     }
 
     /**
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube()
+    public boolean a()
     {
         return false;
     }
@@ -37,7 +37,7 @@ public class BlockFrame extends Block implements IPipeConnection, IBlockPipe, IT
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean renderAsNormalBlock()
+    public boolean b()
     {
         return false;
     }
@@ -55,7 +55,7 @@ public class BlockFrame extends Block implements IPipeConnection, IBlockPipe, IT
     /**
      * The type of render function that is called for this block
      */
-    public int getRenderType()
+    public int c()
     {
         return BuildCraftCore.pipeModel;
     }
@@ -64,7 +64,7 @@ public class BlockFrame extends Block implements IPipeConnection, IBlockPipe, IT
      * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
      * cleared to be reused)
      */
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World var1, int var2, int var3, int var4)
+    public AxisAlignedBB e(World var1, int var2, int var3, int var4)
     {
         float var5 = 0.25F;
         float var6 = 0.75F;
@@ -103,67 +103,67 @@ public class BlockFrame extends Block implements IPipeConnection, IBlockPipe, IT
             var10 = 1.0F;
         }
 
-        return AxisAlignedBB.getBoundingBoxFromPool((double)var2 + (double)var5, (double)var3 + (double)var7, (double)var4 + (double)var9, (double)var2 + (double)var6, (double)var3 + (double)var8, (double)var4 + (double)var10);
+        return AxisAlignedBB.b((double)var2 + (double)var5, (double)var3 + (double)var7, (double)var4 + (double)var9, (double)var2 + (double)var6, (double)var3 + (double)var8, (double)var4 + (double)var10);
     }
 
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World var1, int var2, int var3, int var4)
     {
-        return this.getCollisionBoundingBoxFromPool(var1, var2, var3, var4);
+        return this.e(var1, var2, var3, var4);
     }
 
     /**
      * Adds to the supplied array any colliding bounding boxes with the passed in bounding box. Args: world, x, y, z,
      * axisAlignedBB, arrayList
      */
-    public void getCollidingBoundingBoxes(World var1, int var2, int var3, int var4, AxisAlignedBB var5, ArrayList var6)
+    public void a(World var1, int var2, int var3, int var4, AxisAlignedBB var5, ArrayList var6)
     {
-        this.setBlockBounds(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
-        super.getCollidingBoundingBoxes(var1, var2, var3, var4, var5, var6);
+        this.a(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
+        super.a(var1, var2, var3, var4, var5, var6);
 
         if (Utils.checkPipesConnections(var1, var2, var3, var4, var2 - 1, var3, var4))
         {
-            this.setBlockBounds(0.0F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
-            super.getCollidingBoundingBoxes(var1, var2, var3, var4, var5, var6);
+            this.a(0.0F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
+            super.a(var1, var2, var3, var4, var5, var6);
         }
 
         if (Utils.checkPipesConnections(var1, var2, var3, var4, var2 + 1, var3, var4))
         {
-            this.setBlockBounds(0.25F, 0.25F, 0.25F, 1.0F, 0.75F, 0.75F);
-            super.getCollidingBoundingBoxes(var1, var2, var3, var4, var5, var6);
+            this.a(0.25F, 0.25F, 0.25F, 1.0F, 0.75F, 0.75F);
+            super.a(var1, var2, var3, var4, var5, var6);
         }
 
         if (Utils.checkPipesConnections(var1, var2, var3, var4, var2, var3 - 1, var4))
         {
-            this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.75F, 0.75F);
-            super.getCollidingBoundingBoxes(var1, var2, var3, var4, var5, var6);
+            this.a(0.25F, 0.0F, 0.25F, 0.75F, 0.75F, 0.75F);
+            super.a(var1, var2, var3, var4, var5, var6);
         }
 
         if (Utils.checkPipesConnections(var1, var2, var3, var4, var2, var3 + 1, var4))
         {
-            this.setBlockBounds(0.25F, 0.25F, 0.25F, 0.75F, 1.0F, 0.75F);
-            super.getCollidingBoundingBoxes(var1, var2, var3, var4, var5, var6);
+            this.a(0.25F, 0.25F, 0.25F, 0.75F, 1.0F, 0.75F);
+            super.a(var1, var2, var3, var4, var5, var6);
         }
 
         if (Utils.checkPipesConnections(var1, var2, var3, var4, var2, var3, var4 - 1))
         {
-            this.setBlockBounds(0.25F, 0.25F, 0.0F, 0.75F, 0.75F, 0.75F);
-            super.getCollidingBoundingBoxes(var1, var2, var3, var4, var5, var6);
+            this.a(0.25F, 0.25F, 0.0F, 0.75F, 0.75F, 0.75F);
+            super.a(var1, var2, var3, var4, var5, var6);
         }
 
         if (Utils.checkPipesConnections(var1, var2, var3, var4, var2, var3, var4 + 1))
         {
-            this.setBlockBounds(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 1.0F);
-            super.getCollidingBoundingBoxes(var1, var2, var3, var4, var5, var6);
+            this.a(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 1.0F);
+            super.a(var1, var2, var3, var4, var5, var6);
         }
 
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        this.a(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
     /**
      * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,
      * x, y, z, startVec, endVec
      */
-    public MovingObjectPosition collisionRayTrace(World var1, int var2, int var3, int var4, Vec3D var5, Vec3D var6)
+    public MovingObjectPosition a(World var1, int var2, int var3, int var4, Vec3D var5, Vec3D var6)
     {
         float var7 = 0.25F;
         float var8 = 0.75F;
@@ -202,15 +202,15 @@ public class BlockFrame extends Block implements IPipeConnection, IBlockPipe, IT
             var12 = 1.0F;
         }
 
-        this.setBlockBounds(var7, var9, var11, var8, var10, var12);
-        MovingObjectPosition var13 = super.collisionRayTrace(var1, var2, var3, var4, var5, var6);
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        this.a(var7, var9, var11, var8, var10, var12);
+        MovingObjectPosition var13 = super.a(var1, var2, var3, var4, var5, var6);
+        this.a(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         return var13;
     }
 
     public boolean isPipeConnected(IBlockAccess var1, int var2, int var3, int var4, int var5, int var6, int var7)
     {
-        return var1.getBlockId(var5, var6, var7) == this.blockID;
+        return var1.getTypeId(var5, var6, var7) == this.id;
     }
 
     public float getHeightInPipe()

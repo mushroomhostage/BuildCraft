@@ -61,9 +61,9 @@ public class Utils
         {
             if (var1.reverse().ordinal() != var5)
             {
-                var6 = new Position((double)var0.xCoord, (double)var0.yCoord, (double)var0.zCoord, Orientations.values()[var5]);
+                var6 = new Position((double)var0.x, (double)var0.y, (double)var0.z, Orientations.values()[var5]);
                 var6.moveForwards(1.0D);
-                TileEntity var7 = var3.getBlockTileEntity((int)var6.x, (int)var6.y, (int)var6.z);
+                TileEntity var7 = var3.getTileEntity((int)var6.x, (int)var6.y, (int)var6.z);
 
                 if (var7 instanceof IPipeEntry && ((IPipeEntry)var7).acceptItems())
                 {
@@ -74,18 +74,18 @@ public class Utils
 
         if (var4.size() > 0)
         {
-            var5 = var3.rand.nextInt(var4.size());
-            var6 = new Position((double)var0.xCoord, (double)var0.yCoord, (double)var0.zCoord, (Orientations)var4.get(var5));
-            Position var10 = new Position((double)var0.xCoord, (double)var0.yCoord, (double)var0.zCoord, (Orientations)var4.get(var5));
+            var5 = var3.random.nextInt(var4.size());
+            var6 = new Position((double)var0.x, (double)var0.y, (double)var0.z, (Orientations)var4.get(var5));
+            Position var10 = new Position((double)var0.x, (double)var0.y, (double)var0.z, (Orientations)var4.get(var5));
             var6.x += 0.5D;
             var6.y += (double)getPipeFloorOf(var2);
             var6.z += 0.5D;
             var6.moveForwards(0.5D);
             var10.moveForwards(1.0D);
-            IPipeEntry var8 = (IPipeEntry)var3.getBlockTileEntity((int)var10.x, (int)var10.y, (int)var10.z);
+            IPipeEntry var8 = (IPipeEntry)var3.getTileEntity((int)var10.x, (int)var10.y, (int)var10.z);
             EntityPassiveItem var9 = new EntityPassiveItem(var3, var6.x, var6.y, var6.z, var2);
             var8.entityEntering(var9, var6.orientation);
-            var2.stackSize = 0;
+            var2.count = 0;
             return true;
         }
         else
@@ -97,23 +97,23 @@ public class Utils
     public static void dropItems(World var0, ItemStack var1, int var2, int var3, int var4)
     {
         float var5 = 0.7F;
-        double var6 = (double)(var0.rand.nextFloat() * var5) + (double)(1.0F - var5) * 0.5D;
-        double var8 = (double)(var0.rand.nextFloat() * var5) + (double)(1.0F - var5) * 0.5D;
-        double var10 = (double)(var0.rand.nextFloat() * var5) + (double)(1.0F - var5) * 0.5D;
+        double var6 = (double)(var0.random.nextFloat() * var5) + (double)(1.0F - var5) * 0.5D;
+        double var8 = (double)(var0.random.nextFloat() * var5) + (double)(1.0F - var5) * 0.5D;
+        double var10 = (double)(var0.random.nextFloat() * var5) + (double)(1.0F - var5) * 0.5D;
         EntityItem var12 = new EntityItem(var0, (double)var2 + var6, (double)var3 + var8, (double)var4 + var10, var1);
-        var12.delayBeforeCanPickup = 10;
-        var0.spawnEntityInWorld(var12);
+        var12.pickupDelay = 10;
+        var0.addEntity(var12);
     }
 
     public static void dropItems(World var0, IInventory var1, int var2, int var3, int var4)
     {
-        for (int var5 = 0; var5 < var1.getSizeInventory(); ++var5)
+        for (int var5 = 0; var5 < var1.getSize(); ++var5)
         {
-            ItemStack var6 = var1.getStackInSlot(var5);
+            ItemStack var6 = var1.getItem(var5);
 
-            if (var6 != null && var6.stackSize > 0)
+            if (var6 != null && var6.count > 0)
             {
-                dropItems(var0, var1.getStackInSlot(var5).copy(), var2, var3, var4);
+                dropItems(var0, var1.getItem(var5).cloneItemStack(), var2, var3, var4);
             }
         }
     }
@@ -123,7 +123,7 @@ public class Utils
         Position var3 = new Position(var1);
         var3.orientation = var2;
         var3.moveForwards(1.0D);
-        return var0.getBlockTileEntity((int)var3.x, (int)var3.y, (int)var3.z);
+        return var0.getTileEntity((int)var3.x, (int)var3.y, (int)var3.z);
     }
 
     public static IInventory getInventory(IInventory var0)
@@ -131,30 +131,30 @@ public class Utils
         if (var0 instanceof TileEntityChest)
         {
             TileEntityChest var1 = (TileEntityChest)var0;
-            Position var2 = new Position((double)var1.xCoord, (double)var1.yCoord, (double)var1.zCoord);
+            Position var2 = new Position((double)var1.x, (double)var1.y, (double)var1.z);
             IInventory var4 = null;
-            TileEntity var3 = getTile(var1.worldObj, var2, Orientations.XNeg);
+            TileEntity var3 = getTile(var1.world, var2, Orientations.XNeg);
 
             if (var3 instanceof TileEntityChest)
             {
                 var4 = (IInventory)var3;
             }
 
-            var3 = getTile(var1.worldObj, var2, Orientations.XPos);
+            var3 = getTile(var1.world, var2, Orientations.XPos);
 
             if (var3 instanceof TileEntityChest)
             {
                 var4 = (IInventory)var3;
             }
 
-            var3 = getTile(var1.worldObj, var2, Orientations.ZNeg);
+            var3 = getTile(var1.world, var2, Orientations.ZNeg);
 
             if (var3 instanceof TileEntityChest)
             {
                 var4 = (IInventory)var3;
             }
 
-            var3 = getTile(var1.worldObj, var2, Orientations.ZPos);
+            var3 = getTile(var1.world, var2, Orientations.ZPos);
 
             if (var3 instanceof TileEntityChest)
             {
@@ -172,12 +172,12 @@ public class Utils
 
     public static IAreaProvider getNearbyAreaProvider(World var0, int var1, int var2, int var3)
     {
-        TileEntity var4 = var0.getBlockTileEntity(var1 + 1, var2, var3);
-        TileEntity var5 = var0.getBlockTileEntity(var1 - 1, var2, var3);
-        TileEntity var6 = var0.getBlockTileEntity(var1, var2, var3 + 1);
-        TileEntity var7 = var0.getBlockTileEntity(var1, var2, var3 - 1);
-        TileEntity var8 = var0.getBlockTileEntity(var1, var2 + 1, var3);
-        TileEntity var9 = var0.getBlockTileEntity(var1, var2 - 1, var3);
+        TileEntity var4 = var0.getTileEntity(var1 + 1, var2, var3);
+        TileEntity var5 = var0.getTileEntity(var1 - 1, var2, var3);
+        TileEntity var6 = var0.getTileEntity(var1, var2, var3 + 1);
+        TileEntity var7 = var0.getTileEntity(var1, var2, var3 - 1);
+        TileEntity var8 = var0.getTileEntity(var1, var2 + 1, var3);
+        TileEntity var9 = var0.getTileEntity(var1, var2 - 1, var3);
         return var4 instanceof IAreaProvider ? (IAreaProvider)var4 : (var5 instanceof IAreaProvider ? (IAreaProvider)var5 : (var6 instanceof IAreaProvider ? (IAreaProvider)var6 : (var7 instanceof IAreaProvider ? (IAreaProvider)var7 : (var8 instanceof IAreaProvider ? (IAreaProvider)var8 : (var9 instanceof IAreaProvider ? (IAreaProvider)var9 : null)))));
     }
 
@@ -223,7 +223,7 @@ public class Utils
 
             int var16 = BuildCraftCore.redLaserTexture;
 
-            switch (Utils.NamelessClass435637901.$SwitchMap$net.minecraft.server$buildcraft$api$LaserKind[var3.ordinal()])
+            switch (Utils.NamelessClass709211172.$SwitchMap$net.minecraft.server$buildcraft$api$LaserKind[var3.ordinal()])
             {
                 case 1:
                     var16 = BuildCraftCore.blueLaserTexture;
@@ -238,7 +238,7 @@ public class Utils
             }
 
             EntityBlock var17 = new EntityBlock(var0, var10, var12, var14, var4, var6, var8, var16);
-            var0.spawnEntityInWorld(var17);
+            var0.addEntity(var17);
             return var17;
         }
     }
@@ -265,7 +265,7 @@ public class Utils
     public static void handleBufferedDescription(ISynchronizedTile var0)
     {
         TileEntity var1 = (TileEntity)var0;
-        BlockIndex var2 = new BlockIndex(var1.xCoord, var1.yCoord, var1.zCoord);
+        BlockIndex var2 = new BlockIndex(var1.x, var1.y, var1.z);
 
         if (BuildCraftCore.bufferedDescriptions.containsKey(var2))
         {
@@ -278,12 +278,12 @@ public class Utils
 
     public static int liquidId(int var0)
     {
-        return var0 != Block.waterStill.blockID && var0 != Block.waterMoving.blockID ? (var0 != Block.lavaStill.blockID && var0 != Block.lavaMoving.blockID ? (Block.blocksList[var0] instanceof ILiquid ? ((ILiquid)Block.blocksList[var0]).stillLiquidId() : 0) : Block.lavaStill.blockID) : Block.waterStill.blockID;
+        return var0 != Block.STATIONARY_WATER.id && var0 != Block.WATER.id ? (var0 != Block.STATIONARY_LAVA.id && var0 != Block.LAVA.id ? (Block.byId[var0] instanceof ILiquid ? ((ILiquid)Block.byId[var0]).stillLiquidId() : 0) : Block.STATIONARY_LAVA.id) : Block.STATIONARY_WATER.id;
     }
 
     public static int packetIdToInt(PacketIds var0)
     {
-        switch (Utils.NamelessClass435637901.$SwitchMap$net.minecraft.server$buildcraft$core$PacketIds[var0.ordinal()])
+        switch (Utils.NamelessClass709211172.$SwitchMap$net.minecraft.server$buildcraft$core$PacketIds[var0.ordinal()])
         {
             case 1:
                 return 70;
@@ -343,7 +343,7 @@ public class Utils
 
     public static void preDestroyBlock(World var0, int var1, int var2, int var3)
     {
-        TileEntity var4 = var0.getBlockTileEntity(var1, var2, var3);
+        TileEntity var4 = var0.getTileEntity(var1, var2, var3);
 
         if (var4 instanceof IInventory && !APIProxy.isClient(var0))
         {
@@ -358,8 +358,8 @@ public class Utils
 
     public static boolean checkPipesConnections(IBlockAccess var0, int var1, int var2, int var3, int var4, int var5, int var6)
     {
-        Block var7 = Block.blocksList[var0.getBlockId(var1, var2, var3)];
-        Block var8 = Block.blocksList[var0.getBlockId(var4, var5, var6)];
+        Block var7 = Block.byId[var0.getTypeId(var1, var2, var3)];
+        Block var8 = Block.byId[var0.getTypeId(var4, var5, var6)];
         return !(var7 instanceof IPipeConnection) && !(var8 instanceof IPipeConnection) ? false : (var7 instanceof IPipeConnection && !((IPipeConnection)var7).isPipeConnected(var0, var1, var2, var3, var4, var5, var6) ? false : !(var8 instanceof IPipeConnection) || ((IPipeConnection)var8).isPipeConnected(var0, var4, var5, var6, var1, var2, var3));
     }
 
@@ -384,4 +384,105 @@ public class Utils
         return var2;
     }
 
+    static class NamelessClass709211172
+    {
+        static final int[] $SwitchMap$net.minecraft.server$buildcraft$api$LaserKind;
+
+        static final int[] $SwitchMap$net.minecraft.server$buildcraft$core$PacketIds = new int[PacketIds.values().length];
+
+        static
+        {
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$core$PacketIds[PacketIds.DiamondPipeGUI.ordinal()] = 1;
+            }
+            catch (NoSuchFieldError var10)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$core$PacketIds[PacketIds.AutoCraftingGUI.ordinal()] = 2;
+            }
+            catch (NoSuchFieldError var9)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$core$PacketIds[PacketIds.FillerGUI.ordinal()] = 3;
+            }
+            catch (NoSuchFieldError var8)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$core$PacketIds[PacketIds.TemplateGUI.ordinal()] = 4;
+            }
+            catch (NoSuchFieldError var7)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$core$PacketIds[PacketIds.BuilderGUI.ordinal()] = 5;
+            }
+            catch (NoSuchFieldError var6)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$core$PacketIds[PacketIds.EngineSteamGUI.ordinal()] = 6;
+            }
+            catch (NoSuchFieldError var5)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$core$PacketIds[PacketIds.EngineCombustionGUI.ordinal()] = 7;
+            }
+            catch (NoSuchFieldError var4)
+            {
+                ;
+            }
+
+            $SwitchMap$net.minecraft.server$buildcraft$api$LaserKind = new int[LaserKind.values().length];
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$LaserKind[LaserKind.Blue.ordinal()] = 1;
+            }
+            catch (NoSuchFieldError var3)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$LaserKind[LaserKind.Red.ordinal()] = 2;
+            }
+            catch (NoSuchFieldError var2)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$LaserKind[LaserKind.Stripes.ordinal()] = 3;
+            }
+            catch (NoSuchFieldError var1)
+            {
+                ;
+            }
+        }
+    }
 }

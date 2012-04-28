@@ -30,7 +30,7 @@ public abstract class FillerPattern
             {
                 for (int var15 = var3; var15 <= var6 && !var9; ++var15)
                 {
-                    if (API.softBlock(var8.getBlockId(var14, var13, var15)))
+                    if (API.softBlock(var8.getTypeId(var14, var13, var15)))
                     {
                         var10 = var14;
                         var11 = var13;
@@ -43,7 +43,7 @@ public abstract class FillerPattern
 
         if (var9 && var7 != null)
         {
-            var7.getItem().onItemUse(var7, BuildCraftCore.getBuildCraftPlayer(var8), var8, var10, var11 + 1, var12, 0);
+            var7.getItem().interactWith(var7, BuildCraftCore.getBuildCraftPlayer(var8), var8, var10, var11 + 1, var12, 0);
         }
 
         return !var9;
@@ -64,7 +64,7 @@ public abstract class FillerPattern
             {
                 for (int var14 = var3; var14 <= var6; ++var14)
                 {
-                    if (!API.softBlock(var7.getBlockId(var13, var12, var14)) && !API.unbreakableBlock(var7.getBlockId(var13, var12, var14)))
+                    if (!API.softBlock(var7.getTypeId(var13, var12, var14)) && !API.unbreakableBlock(var7.getTypeId(var13, var12, var14)))
                     {
                         var8 = true;
                         var9 = var13;

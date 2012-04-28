@@ -5,7 +5,7 @@ import buildcraft.api.Orientations;
 import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.BuildCraftCore;
-import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.Item;
 import net.minecraft.server.ItemStack;
@@ -17,15 +17,15 @@ public class BlockTank extends BlockContainer implements ITextureProvider
 {
     public BlockTank(int var1)
     {
-        super(var1, Material.glass);
-        this.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 1.0F, 0.875F);
-        this.setHardness(1.0F);
+        super(var1, Material.SHATTERABLE);
+        this.a(0.125F, 0.0F, 0.125F, 0.875F, 1.0F, 0.875F);
+        this.c(1.0F);
     }
 
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean renderAsNormalBlock()
+    public boolean b()
     {
         return false;
     }
@@ -34,7 +34,7 @@ public class BlockTank extends BlockContainer implements ITextureProvider
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube()
+    public boolean a()
     {
         return false;
     }
@@ -47,7 +47,7 @@ public class BlockTank extends BlockContainer implements ITextureProvider
     /**
      * Returns the TileEntity used by this block.
      */
-    public TileEntity getBlockEntity()
+    public TileEntity a_()
     {
         return new TileTank();
     }
@@ -60,7 +60,7 @@ public class BlockTank extends BlockContainer implements ITextureProvider
     /**
      * Returns the block texture based on the side being looked at.  Args: side
      */
-    public int getBlockTextureFromSide(int var1)
+    public int a(int var1)
     {
         switch (var1)
         {
@@ -82,7 +82,7 @@ public class BlockTank extends BlockContainer implements ITextureProvider
                 return 98;
 
             default:
-                return var1.getBlockId(var2, var3 - 1, var4) == this.blockID ? 97 : 96;
+                return var1.getTypeId(var2, var3 - 1, var4) == this.id ? 97 : 96;
         }
     }
 
@@ -90,13 +90,13 @@ public class BlockTank extends BlockContainer implements ITextureProvider
      * Called upon block activation (left or right click on the block.). The three integers represent x,y,z of the
      * block.
      */
-    public boolean blockActivated(World var1, int var2, int var3, int var4, EntityPlayer var5)
+    public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
-        if (var5.getCurrentEquippedItem() != null)
+        if (var5.U() != null)
         {
-            int var6 = var5.getCurrentEquippedItem().itemID;
+            int var6 = var5.U().id;
             int var7 = API.getLiquidForBucket(var6);
-            TileTank var8 = (TileTank)var1.getBlockTileEntity(var2, var3, var4);
+            TileTank var8 = (TileTank)var1.getTileEntity(var2, var3, var4);
 
             if (var7 != 0)
             {
@@ -104,7 +104,7 @@ public class BlockTank extends BlockContainer implements ITextureProvider
 
                 if (var9 != 0 && !BuildCraftCore.debugMode)
                 {
-                    var5.inventory.setInventorySlotContents(var5.inventory.currentItem, new ItemStack(Item.bucketEmpty, 1));
+                    var5.inventory.setItem(var5.inventory.itemInHandIndex, new ItemStack(Item.BUCKET, 1));
                 }
 
                 return true;

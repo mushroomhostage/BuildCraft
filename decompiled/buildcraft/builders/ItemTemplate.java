@@ -14,19 +14,19 @@ public class ItemTemplate extends Item implements ITextureProvider
     {
         super(var1);
         this.maxStackSize = 1;
-        this.iconIndex = 32;
+        this.textureId = 32;
     }
 
     public void addInformation(ItemStack var1, List var2)
     {
-        var2.add("#" + var1.getItemDamage());
+        var2.add("#" + var1.getData());
     }
 
     /**
      * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
      * update it's contents.
      */
-    public void onUpdate(ItemStack var1, World var2, Entity var3, int var4, boolean var5) {}
+    public void a(ItemStack var1, World var2, Entity var3, int var4, boolean var5) {}
 
     public String getTextureFile()
     {

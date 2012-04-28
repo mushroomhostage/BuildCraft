@@ -46,17 +46,17 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
      * ticks and creates a new spawn inside its implementation.
      */
-    public void updateEntity()
+    public void q_()
     {
-        super.updateEntity();
+        super.q_();
 
         if (this.tube != null)
         {
-            if (!APIProxy.isClient(this.worldObj))
+            if (!APIProxy.isClient(this.world))
             {
-                if (this.tube.posY - (double)this.aimY > 0.01D)
+                if (this.tube.locY - (double)this.aimY > 0.01D)
                 {
-                    this.tubeY = this.tube.posY - 0.01D;
+                    this.tubeY = this.tube.locY - 0.01D;
                     this.setTubePosition();
 
                     if (APIProxy.isServerSide())
@@ -74,7 +74,7 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
 
                     if (this.isPumpableLiquid(var1))
                     {
-                        var2 = Utils.liquidId(this.worldObj.getBlockId(var1.i, var1.j, var1.k));
+                        var2 = Utils.liquidId(this.world.getTypeId(var1.i, var1.j, var1.k));
 
                         if (this.internalLiquid == 0 || this.liquidId == var2)
                         {
@@ -84,9 +84,9 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
                             {
                                 var1 = this.getNextIndexToPump(true);
 
-                                if (this.liquidId != Block.waterStill.blockID || BuildCraftCore.consumeWaterSources)
+                                if (this.liquidId != Block.STATIONARY_WATER.id || BuildCraftCore.consumeWaterSources)
                                 {
-                                    this.worldObj.setBlockWithNotify(var1.i, var1.j, var1.k, 0);
+                                    this.world.setTypeId(var1.i, var1.j, var1.k, 0);
                                 }
 
                                 this.internalLiquid = this.internalLiquid += 1000;
@@ -98,21 +98,21 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
                             }
                         }
                     }
-                    else if (this.worldObj.getWorldTime() % 100L == 0L)
+                    else if (this.world.getTime() % 100L == 0L)
                     {
-                        this.initializePumpFromPosition(this.xCoord, this.aimY, this.zCoord);
+                        this.initializePumpFromPosition(this.x, this.aimY, this.z);
 
                         if (this.getNextIndexToPump(false) == null)
                         {
-                            for (var2 = this.yCoord - 1; var2 > 0; --var2)
+                            for (var2 = this.y - 1; var2 > 0; --var2)
                             {
-                                if (this.isLiquid(new BlockIndex(this.xCoord, var2, this.zCoord)))
+                                if (this.isLiquid(new BlockIndex(this.x, var2, this.z)))
                                 {
                                     this.aimY = var2;
                                     return;
                                 }
 
-                                if (this.worldObj.getBlockId(this.xCoord, var2, this.zCoord) != 0)
+                                if (this.world.getTypeId(this.x, var2, this.z) != 0)
                                 {
                                     return;
                                 }
@@ -126,9 +126,9 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
             {
                 for (int var4 = 0; var4 < 6; ++var4)
                 {
-                    Position var5 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, Orientations.values()[var4]);
+                    Position var5 = new Position((double)this.x, (double)this.y, (double)this.z, Orientations.values()[var4]);
                     var5.moveForwards(1.0D);
-                    TileEntity var3 = this.worldObj.getBlockTileEntity((int)var5.x, (int)var5.y, (int)var5.z);
+                    TileEntity var3 = this.world.getTileEntity((int)var5.x, (int)var5.y, (int)var5.z);
 
                     if (var3 instanceof ILiquidContainer)
                     {
@@ -146,27 +146,27 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
 
     public void initialize()
     {
-        this.tube = new EntityBlock(this.worldObj);
+        this.tube = new EntityBlock(this.world);
         this.tube.texture = 102;
 
         if (!Double.isNaN(this.tubeY))
         {
-            this.tube.posY = this.tubeY;
+            this.tube.locY = this.tubeY;
         }
         else
         {
-            this.tube.posY = (double)this.yCoord;
+            this.tube.locY = (double)this.y;
         }
 
-        this.tubeY = this.tube.posY;
+        this.tubeY = this.tube.locY;
 
         if (this.aimY == 0)
         {
-            this.aimY = this.yCoord;
+            this.aimY = this.y;
         }
 
         this.setTubePosition();
-        this.worldObj.spawnEntityInWorld(this.tube);
+        this.world.addEntity(this.tube);
 
         if (APIProxy.isServerSide())
         {
@@ -227,7 +227,7 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
         }
 
         LinkedList var7 = (LinkedList)this.blocksToPump.get(Integer.valueOf(var2));
-        int var11 = this.worldObj.getBlockId(var1, var2, var3);
+        int var11 = this.world.getTypeId(var1, var2, var3);
 
         if (this.isLiquid(new BlockIndex(var1, var2, var3)))
         {
@@ -261,13 +261,13 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
 
     public void addToPumpIfLiquid(BlockIndex var1, TreeSet var2, TreeSet var3, LinkedList var4, int var5)
     {
-        if (var5 == this.worldObj.getBlockId(var1.i, var1.j, var1.k))
+        if (var5 == this.world.getTypeId(var1.i, var1.j, var1.k))
         {
             if (!var2.contains(var1))
             {
                 var2.add(var1);
 
-                if ((var1.i - this.xCoord) * (var1.i - this.xCoord) + (var1.k - this.zCoord) * (var1.k - this.zCoord) > 4096)
+                if ((var1.i - this.x) * (var1.i - this.x) + (var1.k - this.z) * (var1.k - this.z) > 4096)
                 {
                     return;
                 }
@@ -287,24 +287,24 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
 
     private boolean isPumpableLiquid(BlockIndex var1)
     {
-        return this.isLiquid(var1) && this.worldObj.getBlockMetadata(var1.i, var1.j, var1.k) == 0;
+        return this.isLiquid(var1) && this.world.getData(var1.i, var1.j, var1.k) == 0;
     }
 
     private boolean isLiquid(BlockIndex var1)
     {
-        return var1 != null && Utils.liquidId(this.worldObj.getBlockId(var1.i, var1.j, var1.k)) != 0;
+        return var1 != null && Utils.liquidId(this.world.getTypeId(var1.i, var1.j, var1.k)) != 0;
     }
 
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound var1)
+    public void a(NBTTagCompound var1)
     {
-        super.readFromNBT(var1);
-        this.internalLiquid = var1.getInteger("internalLiquid");
-        this.aimY = var1.getInteger("aimY");
+        super.a(var1);
+        this.internalLiquid = var1.getInt("internalLiquid");
+        this.aimY = var1.getInt("aimY");
         this.tubeY = (double)var1.getFloat("tubeY");
-        this.liquidId = var1.getInteger("liquidId");
+        this.liquidId = var1.getInt("liquidId");
         PowerFramework.currentFramework.loadPowerProvider(this, var1);
         this.powerProvider.configure(20, 10, 10, 10, 100);
     }
@@ -312,23 +312,23 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
     /**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound var1)
+    public void b(NBTTagCompound var1)
     {
-        super.writeToNBT(var1);
+        super.b(var1);
         PowerFramework.currentFramework.savePowerProvider(this, var1);
-        var1.setInteger("internalLiquid", this.internalLiquid);
-        var1.setInteger("aimY", this.aimY);
+        var1.setInt("internalLiquid", this.internalLiquid);
+        var1.setInt("aimY", this.aimY);
 
         if (this.tube != null)
         {
-            var1.setFloat("tubeY", (float)this.tube.posY);
+            var1.setFloat("tubeY", (float)this.tube.locY);
         }
         else
         {
-            var1.setFloat("tubeY", (float)this.yCoord);
+            var1.setFloat("tubeY", (float)this.y);
         }
 
-        var1.setInteger("liquidId", this.liquidId);
+        var1.setInt("liquidId", this.liquidId);
     }
 
     public boolean isActive()
@@ -366,15 +366,15 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
         {
             this.tube.iSize = 0.5D;
             this.tube.kSize = 0.5D;
-            this.tube.jSize = (double)this.yCoord - this.tube.posY;
-            this.tube.setPosition((double)((float)this.xCoord + 0.25F), this.tubeY, (double)((float)this.zCoord + 0.25F));
+            this.tube.jSize = (double)this.y - this.tube.locY;
+            this.tube.setPosition((double)((float)this.x + 0.25F), this.tubeY, (double)((float)this.z + 0.25F));
         }
     }
 
     /**
      * invalidates a tile entity
      */
-    public void invalidate()
+    public void j()
     {
         this.destroy();
     }

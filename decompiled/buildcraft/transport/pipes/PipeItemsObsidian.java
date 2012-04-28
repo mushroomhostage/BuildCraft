@@ -51,7 +51,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
     {
         super.onEntityCollidedWithBlock(var1);
 
-        if (!var1.isDead)
+        if (!var1.dead)
         {
             if (this.canSuck(var1, 0))
             {
@@ -104,7 +104,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
             Position var3 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, var1);
             Position var4 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, var1);
 
-            switch (PipeItemsObsidian.NamelessClass275615884.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var1.ordinal()])
+            switch (PipeItemsObsidian.NamelessClass2030317739.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var1.ordinal()])
             {
                 case 1:
                     var3.x += (double)var2;
@@ -134,7 +134,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
                     var4.z -= (double)var2;
             }
 
-            switch (PipeItemsObsidian.NamelessClass275615884.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var1.ordinal()])
+            switch (PipeItemsObsidian.NamelessClass2030317739.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var1.ordinal()])
             {
                 case 1:
                 case 2:
@@ -164,7 +164,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
 
             Position var5 = var3.min(var4);
             Position var6 = var3.max(var4);
-            return AxisAlignedBB.getBoundingBoxFromPool(var5.x, var5.y, var5.z, var6.x, var6.y, var6.z);
+            return AxisAlignedBB.b(var5.x, var5.y, var5.z, var6.x, var6.y, var6.z);
         }
     }
 
@@ -191,7 +191,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
         }
         else
         {
-            List var3 = this.worldObj.getEntitiesWithinAABB(Entity.class, var2);
+            List var3 = this.worldObj.a(Entity.class, var2);
 
             for (int var4 = 0; var4 < var3.size(); ++var4)
             {
@@ -209,15 +209,15 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
                     {
                         EntityMinecart var6 = (EntityMinecart)var3.get(var4);
 
-                        if (!var6.isDead && var6.minecartType == 1)
+                        if (!var6.dead && var6.type == 1)
                         {
                             ItemStack var7 = this.checkExtractGeneric(var6, true, this.getSuckingOrientation().reverse());
 
                             if (var7 != null && this.powerProvider.useEnergy(1, 1, true) == 1)
                             {
-                                EntityItem var8 = new EntityItem(this.worldObj, var6.posX, var6.posY + 0.30000001192092896D, var6.posZ, var7);
-                                var8.delayBeforeCanPickup = 10;
-                                this.worldObj.spawnEntityInWorld(var8);
+                                EntityItem var8 = new EntityItem(this.worldObj, var6.locX, var6.locY + 0.30000001192092896D, var6.locZ, var7);
+                                var8.pickupDelay = 10;
+                                this.worldObj.addEntity(var8);
                                 this.pullItemIntoPipe(var8, 1);
                                 return true;
                             }
@@ -232,17 +232,17 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
 
     public ItemStack checkExtractGeneric(IInventory var1, boolean var2, Orientations var3)
     {
-        for (int var4 = 0; var4 < var1.getSizeInventory(); ++var4)
+        for (int var4 = 0; var4 < var1.getSize(); ++var4)
         {
-            if (var1.getStackInSlot(var4) != null && var1.getStackInSlot(var4).stackSize > 0)
+            if (var1.getItem(var4) != null && var1.getItem(var4).count > 0)
             {
-                ItemStack var5 = var1.getStackInSlot(var4);
+                ItemStack var5 = var1.getItem(var4);
 
-                if (var5 != null && var5.stackSize > 0)
+                if (var5 != null && var5.count > 0)
                 {
                     if (var2)
                     {
-                        return var1.decrStackSize(var4, 1);
+                        return var1.splitStack(var4, 1);
                     }
 
                     return var5;
@@ -261,29 +261,29 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
 
             if (var3 != Orientations.Unknown)
             {
-                this.worldObj.playSoundAtEntity(var1, "random.pop", 0.2F, ((this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                this.worldObj.makeSound(var1, "random.pop", 0.2F, ((this.worldObj.random.nextFloat() - this.worldObj.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 ItemStack var4 = null;
 
                 if (var1 instanceof EntityItem)
                 {
                     EntityItem var5 = (EntityItem)var1;
                     TransportProxy.obsidianPipePickup(this.worldObj, var5, this.container);
-                    int var6 = this.powerProvider.useEnergy(var2, var5.item.stackSize * var2, true);
+                    int var6 = this.powerProvider.useEnergy(var2, var5.itemStack.count * var2, true);
 
-                    if (var2 != 0 && var6 / var2 != var5.item.stackSize)
+                    if (var2 != 0 && var6 / var2 != var5.itemStack.count)
                     {
-                        var4 = var5.item.splitStack(var6 / var2);
+                        var4 = var5.itemStack.a(var6 / var2);
                     }
                     else
                     {
-                        var4 = var5.item;
+                        var4 = var5.itemStack;
                         APIProxy.removeEntity(var1);
                     }
                 }
                 else if (var1 instanceof EntityArrow)
                 {
                     this.powerProvider.useEnergy(var2, var2, true);
-                    var4 = new ItemStack(Item.arrow, 1);
+                    var4 = new ItemStack(Item.ARROW, 1);
                     APIProxy.removeEntity(var1);
                 }
 
@@ -304,12 +304,12 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
             ++this.entitiesDroppedIndex;
         }
 
-        this.entitiesDropped[this.entitiesDroppedIndex] = var1.entityId;
+        this.entitiesDropped[this.entitiesDroppedIndex] = var1.id;
     }
 
     public boolean canSuck(Entity var1, int var2)
     {
-        if (!var1.isEntityAlive())
+        if (!var1.isAlive())
         {
             return false;
         }
@@ -317,7 +317,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
         {
             EntityItem var3 = (EntityItem)var1;
 
-            if (var3.item.stackSize <= 0)
+            if (var3.itemStack.count <= 0)
             {
                 return false;
             }
@@ -325,7 +325,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
             {
                 for (int var4 = 0; var4 < this.entitiesDropped.length; ++var4)
                 {
-                    if (var3.entityId == this.entitiesDropped[var4])
+                    if (var3.id == this.entitiesDropped[var4])
                     {
                         return false;
                     }
@@ -355,4 +355,65 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
         return this.getPowerProvider().maxEnergyReceived;
     }
 
+    static class NamelessClass2030317739
+    {
+        static final int[] $SwitchMap$net.minecraft.server$buildcraft$api$Orientations = new int[Orientations.values().length];
+
+        static
+        {
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.XPos.ordinal()] = 1;
+            }
+            catch (NoSuchFieldError var6)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.XNeg.ordinal()] = 2;
+            }
+            catch (NoSuchFieldError var5)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.YPos.ordinal()] = 3;
+            }
+            catch (NoSuchFieldError var4)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.YNeg.ordinal()] = 4;
+            }
+            catch (NoSuchFieldError var3)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.ZPos.ordinal()] = 5;
+            }
+            catch (NoSuchFieldError var2)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.ZNeg.ordinal()] = 6;
+            }
+            catch (NoSuchFieldError var1)
+            {
+                ;
+            }
+        }
+    }
 }

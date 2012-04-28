@@ -6,7 +6,7 @@ import buildcraft.core.Utils;
 import forge.ITextureProvider;
 import net.minecraft.server.BlockContainer;
 import net.minecraft.server.BuildCraftCore;
-import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.Material;
 import net.minecraft.server.TileEntity;
@@ -22,8 +22,8 @@ public class BlockFiller extends BlockContainer implements ITextureProvider
 
     public BlockFiller(int var1)
     {
-        super(var1, Material.iron);
-        this.setHardness(0.5F);
+        super(var1, Material.ORE);
+        this.c(0.5F);
         this.textureSides = 66;
         this.textureTopOn = 64;
         this.textureTopOff = 65;
@@ -33,7 +33,7 @@ public class BlockFiller extends BlockContainer implements ITextureProvider
      * Called upon block activation (left or right click on the block.). The three integers represent x,y,z of the
      * block.
      */
-    public boolean blockActivated(World var1, int var2, int var3, int var4, EntityPlayer var5)
+    public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
         if (!APIProxy.isClient(var1))
         {
@@ -45,15 +45,15 @@ public class BlockFiller extends BlockContainer implements ITextureProvider
 
     public int getBlockTexture(IBlockAccess var1, int var2, int var3, int var4, int var5)
     {
-        int var6 = var1.getBlockMetadata(var2, var3, var4);
+        int var6 = var1.getData(var2, var3, var4);
 
         if (APIProxy.getWorld() == null)
         {
-            return this.getBlockTextureFromSideAndMetadata(var2, var6);
+            return this.a(var2, var6);
         }
         else
         {
-            TileEntity var7 = APIProxy.getWorld().getBlockTileEntity(var2, var3, var4);
+            TileEntity var7 = APIProxy.getWorld().getTileEntity(var2, var3, var4);
 
             if (var7 != null && var7 instanceof TileFiller)
             {
@@ -62,7 +62,7 @@ public class BlockFiller extends BlockContainer implements ITextureProvider
             }
             else
             {
-                return this.getBlockTextureFromSideAndMetadata(var5, var6);
+                return this.a(var5, var6);
             }
         }
     }
@@ -70,7 +70,7 @@ public class BlockFiller extends BlockContainer implements ITextureProvider
     /**
      * Returns the block texture based on the side being looked at.  Args: side
      */
-    public int getBlockTextureFromSide(int var1)
+    public int a(int var1)
     {
         return var1 != 0 && var1 != 1 ? this.textureSides : this.textureTopOn;
     }
@@ -78,7 +78,7 @@ public class BlockFiller extends BlockContainer implements ITextureProvider
     /**
      * Returns the TileEntity used by this block.
      */
-    public TileEntity getBlockEntity()
+    public TileEntity a_()
     {
         return new TileFiller();
     }
@@ -86,10 +86,10 @@ public class BlockFiller extends BlockContainer implements ITextureProvider
     /**
      * Called whenever the block is removed.
      */
-    public void onBlockRemoval(World var1, int var2, int var3, int var4)
+    public void remove(World var1, int var2, int var3, int var4)
     {
         Utils.preDestroyBlock(var1, var2, var3, var4);
-        super.onBlockRemoval(var1, var2, var3, var4);
+        super.remove(var1, var2, var3, var4);
     }
 
     public String getTextureFile()

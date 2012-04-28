@@ -45,7 +45,7 @@ public class EngineIron extends Engine
 
     public float getPistonSpeed()
     {
-        switch (EngineIron.NamelessClass1963762410.$SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[this.getEnergyStage().ordinal()])
+        switch (EngineIron.NamelessClass1840688684.$SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[this.getEnergyStage().ordinal()])
         {
             case 1:
                 return 0.04F;
@@ -66,7 +66,7 @@ public class EngineIron extends Engine
 
     public boolean isBurning()
     {
-        return this.liquidQty > 0 && this.tile.worldObj.isBlockIndirectlyGettingPowered(this.tile.xCoord, this.tile.yCoord, this.tile.zCoord);
+        return this.liquidQty > 0 && this.tile.world.isBlockIndirectlyPowered(this.tile.x, this.tile.y, this.tile.z);
     }
 
     public void burn()
@@ -75,7 +75,7 @@ public class EngineIron extends Engine
 
         if (var1 != null)
         {
-            if (this.tile.worldObj.isBlockIndirectlyGettingPowered(this.tile.xCoord, this.tile.yCoord, this.tile.zCoord) && (this.burnTime > 0 || this.liquidQty > 0))
+            if (this.tile.world.isBlockIndirectlyPowered(this.tile.x, this.tile.y, this.tile.z) && (this.burnTime > 0 || this.liquidQty > 0))
             {
                 if (this.burnTime > 0)
                 {
@@ -96,17 +96,17 @@ public class EngineIron extends Engine
     public void update()
     {
         super.update();
-        ItemStack var1 = this.tile.getStackInSlot(0);
+        ItemStack var1 = this.tile.getItem(0);
         int var2;
 
         if (var1 != null)
         {
-            var2 = API.getLiquidForBucket(var1.itemID);
+            var2 = API.getLiquidForBucket(var1.id);
 
             if (var2 != 0 && this.fill(Orientations.Unknown, 1000, var2, false) == 1000)
             {
                 this.fill(Orientations.Unknown, 1000, var2, true);
-                this.tile.setInventorySlotContents(0, new ItemStack(Item.bucketEmpty, 1));
+                this.tile.setItem(0, new ItemStack(Item.BUCKET, 1));
             }
         }
 
@@ -126,7 +126,7 @@ public class EngineIron extends Engine
             }
         }
 
-        if (this.heat > 0 && !this.tile.worldObj.isBlockIndirectlyGettingPowered(this.tile.xCoord, this.tile.yCoord, this.tile.zCoord))
+        if (this.heat > 0 && !this.tile.world.isBlockIndirectlyPowered(this.tile.x, this.tile.y, this.tile.z))
         {
             if (this.heat >= 10)
             {
@@ -170,7 +170,7 @@ public class EngineIron extends Engine
 
     public int fill(Orientations var1, int var2, int var3, boolean var4)
     {
-        if (var3 == Block.waterStill.blockID)
+        if (var3 == Block.STATIONARY_WATER.id)
         {
             return this.fillCoolant(var1, var2, var3, var4);
         }
@@ -253,22 +253,22 @@ public class EngineIron extends Engine
 
     public void readFromNBT(NBTTagCompound var1)
     {
-        this.liquidId = var1.getInteger("liquidId");
-        this.liquidQty = var1.getInteger("liquidQty");
-        this.burnTime = var1.getInteger("burnTime");
-        this.coolantId = var1.getInteger("coolantId");
-        this.coolantQty = var1.getInteger("coolantQty");
-        this.heat = var1.getInteger("heat");
+        this.liquidId = var1.getInt("liquidId");
+        this.liquidQty = var1.getInt("liquidQty");
+        this.burnTime = var1.getInt("burnTime");
+        this.coolantId = var1.getInt("coolantId");
+        this.coolantQty = var1.getInt("coolantQty");
+        this.heat = var1.getInt("heat");
     }
 
     public void writeToNBT(NBTTagCompound var1)
     {
-        var1.setInteger("liquidId", this.liquidId);
-        var1.setInteger("liquidQty", this.liquidQty);
-        var1.setInteger("burnTime", this.burnTime);
-        var1.setInteger("coolantId", this.coolantId);
-        var1.setInteger("coolantQty", this.coolantQty);
-        var1.setInteger("heat", this.heat);
+        var1.setInt("liquidId", this.liquidId);
+        var1.setInt("liquidQty", this.liquidQty);
+        var1.setInt("burnTime", this.burnTime);
+        var1.setInt("coolantId", this.coolantId);
+        var1.setInt("coolantQty", this.coolantQty);
+        var1.setInt("heat", this.heat);
     }
 
     public int getScaledCoolant(int var1)
@@ -301,10 +301,53 @@ public class EngineIron extends Engine
 
     public void sendGUINetworkData(ContainerEngine var1, ICrafting var2)
     {
-        var2.updateCraftingInventoryInfo(var1, 0, this.liquidQty);
-        var2.updateCraftingInventoryInfo(var1, 1, this.liquidId);
-        var2.updateCraftingInventoryInfo(var1, 2, this.coolantQty);
-        var2.updateCraftingInventoryInfo(var1, 3, this.coolantId);
+        var2.setContainerData(var1, 0, this.liquidQty);
+        var2.setContainerData(var1, 1, this.liquidId);
+        var2.setContainerData(var1, 2, this.coolantQty);
+        var2.setContainerData(var1, 3, this.coolantId);
     }
 
+    static class NamelessClass1840688684
+    {
+        static final int[] $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage = new int[Engine.EnergyStage.values().length];
+
+        static
+        {
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Blue.ordinal()] = 1;
+            }
+            catch (NoSuchFieldError var4)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Green.ordinal()] = 2;
+            }
+            catch (NoSuchFieldError var3)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Yellow.ordinal()] = 3;
+            }
+            catch (NoSuchFieldError var2)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$energy$Engine$EnergyStage[Engine.EnergyStage.Red.ordinal()] = 4;
+            }
+            catch (NoSuchFieldError var1)
+            {
+                ;
+            }
+        }
+    }
 }

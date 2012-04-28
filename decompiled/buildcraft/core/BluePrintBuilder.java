@@ -42,7 +42,7 @@ public class BluePrintBuilder implements IAreaProvider
 
                     if (var7 > 0)
                     {
-                        int var9 = var1.getBlockId(var6, var7, var8);
+                        int var9 = var1.getTypeId(var6, var7, var8);
                         BlockContents var10 = this.bluePrint.contents[var4][var3][var5];
 
                         if (var10 != null)

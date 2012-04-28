@@ -28,10 +28,10 @@ public abstract class BuildCraftPacket extends ForgePacket
         }
 
         Packet250CustomPayload var3 = new Packet250CustomPayload();
-        var3.channel = this.channel;
+        var3.tag = this.channel;
         var3.data = var1.toByteArray();
         var3.length = var3.data.length;
-        var3.isChunkDataPacket = this.isChunkDataPacket;
+        var3.lowPriority = this.isChunkDataPacket;
         return var3;
     }
 }

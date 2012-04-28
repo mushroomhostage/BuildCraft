@@ -24,9 +24,9 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
     {
         TileTank var5 = this;
 
-        for (int var6 = this.yCoord - 1; var6 > 1 && this.worldObj.getBlockTileEntity(this.xCoord, var6, this.zCoord) instanceof TileTank; --var6)
+        for (int var6 = this.y - 1; var6 > 1 && this.world.getTileEntity(this.x, var6, this.z) instanceof TileTank; --var6)
         {
-            var5 = (TileTank)this.worldObj.getBlockTileEntity(this.xCoord, var6, this.zCoord);
+            var5 = (TileTank)this.world.getTileEntity(this.x, var6, this.z);
         }
 
         return var5.actualFill(var1, var2, var3, var4);
@@ -41,7 +41,7 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
         else
         {
             this.liquidId = var3;
-            TileEntity var5 = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord + 1, this.zCoord);
+            TileEntity var5 = this.world.getTileEntity(this.x, this.y + 1, this.z);
             int var6 = 0;
 
             if (this.stored + var2 <= this.getCapacity())
@@ -87,11 +87,11 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound var1)
+    public void a(NBTTagCompound var1)
     {
-        super.readFromNBT(var1);
-        this.stored = var1.getInteger("stored");
-        this.liquidId = var1.getInteger("liquidId");
+        super.a(var1);
+        this.stored = var1.getInt("stored");
+        this.liquidId = var1.getInt("liquidId");
 
         if (this.liquidId == 0)
         {
@@ -102,20 +102,20 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
     /**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound var1)
+    public void b(NBTTagCompound var1)
     {
-        super.writeToNBT(var1);
-        var1.setInteger("stored", this.stored);
-        var1.setInteger("liquidId", this.liquidId);
+        super.b(var1);
+        var1.setInt("stored", this.stored);
+        var1.setInt("liquidId", this.liquidId);
     }
 
     public int empty(int var1, boolean var2)
     {
         TileTank var3 = this;
 
-        for (int var4 = this.yCoord + 1; var4 <= DefaultProps.WORLD_HEIGHT && this.worldObj.getBlockTileEntity(this.xCoord, var4, this.zCoord) instanceof TileTank; ++var4)
+        for (int var4 = this.y + 1; var4 <= DefaultProps.WORLD_HEIGHT && this.world.getTileEntity(this.x, var4, this.z) instanceof TileTank; ++var4)
         {
-            var3 = (TileTank)this.worldObj.getBlockTileEntity(this.xCoord, var4, this.zCoord);
+            var3 = (TileTank)this.world.getTileEntity(this.x, var4, this.z);
         }
 
         return var3.actualEmtpy(var1, var2);
@@ -143,7 +143,7 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
                 this.hasUpdate = true;
             }
 
-            TileEntity var4 = this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
+            TileEntity var4 = this.world.getTileEntity(this.x, this.y - 1, this.z);
 
             if (var4 instanceof TileTank)
             {
@@ -165,9 +165,9 @@ public class TileTank extends TileBuildCraft implements ILiquidContainer
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
      * ticks and creates a new spawn inside its implementation.
      */
-    public void updateEntity()
+    public void q_()
     {
-        if (APIProxy.isServerSide() && this.hasUpdate && this.tracker.markTimeIfDelay(this.worldObj, (long)(2 * BuildCraftCore.updateFactor)))
+        if (APIProxy.isServerSide() && this.hasUpdate && this.tracker.markTimeIfDelay(this.world, (long)(2 * BuildCraftCore.updateFactor)))
         {
             this.sendNetworkUpdate();
             this.hasUpdate = false;

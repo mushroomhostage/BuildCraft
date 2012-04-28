@@ -8,8 +8,8 @@ import buildcraft.core.StackUtil;
 import java.util.List;
 import net.minecraft.server.AxisAlignedBB;
 import net.minecraft.server.Entity;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityMinecart;
-import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.TileEntity;
@@ -19,7 +19,7 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
     /**
      * Returns the number of slots in the inventory.
      */
-    public int getSizeInventory()
+    public int getSize()
     {
         return 1;
     }
@@ -27,7 +27,7 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
     /**
      * Returns the stack in slot i
      */
-    public ItemStack getStackInSlot(int var1)
+    public ItemStack getItem(int var1)
     {
         return null;
     }
@@ -36,7 +36,7 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
      * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
      * stack.
      */
-    public ItemStack decrStackSize(int var1, int var2)
+    public ItemStack splitStack(int var1, int var2)
     {
         return null;
     }
@@ -44,12 +44,12 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
     /**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
-    public void setInventorySlotContents(int var1, ItemStack var2) {}
+    public void setItem(int var1, ItemStack var2) {}
 
     /**
      * Returns the name of the inventory.
      */
-    public String getInvName()
+    public String getName()
     {
         return "DockingStation";
     }
@@ -58,7 +58,7 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
      * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
      * this more of a set than a get?*
      */
-    public int getInventoryStackLimit()
+    public int getMaxStackSize()
     {
         return 0;
     }
@@ -66,14 +66,14 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
     /**
      * Do not make give this method the name canInteractWith because it clashes with Container
      */
-    public boolean isUseableByPlayer(EntityPlayer var1)
+    public boolean a(EntityHuman var1)
     {
         return true;
     }
 
-    public void openChest() {}
+    public void f() {}
 
-    public void closeChest() {}
+    public void g() {}
 
     private AxisAlignedBB getCheckBox(Orientations var1, int var2)
     {
@@ -83,10 +83,10 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
         }
         else
         {
-            Position var3 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, var1);
-            Position var4 = new Position((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, var1);
+            Position var3 = new Position((double)this.x, (double)this.y, (double)this.z, var1);
+            Position var4 = new Position((double)this.x, (double)this.y, (double)this.z, var1);
 
-            switch (TileDockingStation.NamelessClass1642045430.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var1.ordinal()])
+            switch (TileDockingStation.NamelessClass513503343.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var1.ordinal()])
             {
                 case 1:
                     var3.x += (double)var2;
@@ -116,7 +116,7 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
                     var4.z -= (double)var2;
             }
 
-            switch (TileDockingStation.NamelessClass1642045430.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var1.ordinal()])
+            switch (TileDockingStation.NamelessClass513503343.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var1.ordinal()])
             {
                 case 1:
                 case 2:
@@ -146,7 +146,7 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
 
             Position var5 = var3.min(var4);
             Position var6 = var3.max(var4);
-            return AxisAlignedBB.getBoundingBoxFromPool(var5.x, var5.y, var5.z, var6.x, var6.y, var6.z);
+            return AxisAlignedBB.b(var5.x, var5.y, var5.z, var6.x, var6.y, var6.z);
         }
     }
 
@@ -160,7 +160,7 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
         }
         else
         {
-            List var2 = this.worldObj.getEntitiesWithinAABB(Entity.class, var1);
+            List var2 = this.world.a(Entity.class, var1);
 
             for (int var3 = 0; var3 < var2.size(); ++var3)
             {
@@ -176,17 +176,17 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
 
     public ItemStack checkExtractGeneric(IInventory var1, boolean var2, Orientations var3)
     {
-        for (int var4 = 0; var4 < var1.getSizeInventory(); ++var4)
+        for (int var4 = 0; var4 < var1.getSize(); ++var4)
         {
-            if (var1.getStackInSlot(var4) != null && var1.getStackInSlot(var4).stackSize > 0)
+            if (var1.getItem(var4) != null && var1.getItem(var4).count > 0)
             {
-                ItemStack var5 = var1.getStackInSlot(var4);
+                ItemStack var5 = var1.getItem(var4);
 
-                if (var5 != null && var5.stackSize > 0)
+                if (var5 != null && var5.count > 0)
                 {
                     if (var2)
                     {
-                        return var1.decrStackSize(var4, 1);
+                        return var1.splitStack(var4, 1);
                     }
 
                     return var5;
@@ -226,7 +226,7 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
     {
         EntityMinecart var4 = this.getCart();
 
-        if (var4 != null && !var4.isDead && var4.minecartType == 1)
+        if (var4 != null && !var4.dead && var4.type == 1)
         {
             StackUtil var5 = new StackUtil(var1);
             return var5.checkAvailableSlot(var4, var2, var3);
@@ -240,16 +240,77 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
     public ItemStack extractItem(boolean var1, Orientations var2)
     {
         EntityMinecart var3 = this.getCart();
-        return var3 != null && !var3.isDead && var3.minecartType == 1 ? this.checkExtractGeneric(var3, var1, var2) : null;
+        return var3 != null && !var3.dead && var3.type == 1 ? this.checkExtractGeneric(var3, var1, var2) : null;
     }
 
     /**
      * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
      * like when you close a workbench GUI.
      */
-    public ItemStack getStackInSlotOnClosing(int var1)
+    public ItemStack splitWithoutUpdate(int var1)
     {
         return null;
     }
 
+    static class NamelessClass513503343
+    {
+        static final int[] $SwitchMap$net.minecraft.server$buildcraft$api$Orientations = new int[Orientations.values().length];
+
+        static
+        {
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.XPos.ordinal()] = 1;
+            }
+            catch (NoSuchFieldError var6)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.XNeg.ordinal()] = 2;
+            }
+            catch (NoSuchFieldError var5)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.YPos.ordinal()] = 3;
+            }
+            catch (NoSuchFieldError var4)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.YNeg.ordinal()] = 4;
+            }
+            catch (NoSuchFieldError var3)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.ZPos.ordinal()] = 5;
+            }
+            catch (NoSuchFieldError var2)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.ZNeg.ordinal()] = 6;
+            }
+            catch (NoSuchFieldError var1)
+            {
+                ;
+            }
+        }
+    }
 }

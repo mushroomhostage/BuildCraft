@@ -44,14 +44,14 @@ public class Position
 
     public Position(TileEntity var1)
     {
-        this.x = (double)var1.xCoord;
-        this.y = (double)var1.yCoord;
-        this.z = (double)var1.zCoord;
+        this.x = (double)var1.x;
+        this.y = (double)var1.y;
+        this.z = (double)var1.z;
     }
 
     public void moveRight(double var1)
     {
-        switch (Position.NamelessClass1824549879.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[this.orientation.ordinal()])
+        switch (Position.NamelessClass549945414.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[this.orientation.ordinal()])
         {
             case 1:
                 this.x -= var1;
@@ -77,7 +77,7 @@ public class Position
 
     public void moveForwards(double var1)
     {
-        switch (Position.NamelessClass1824549879.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[this.orientation.ordinal()])
+        switch (Position.NamelessClass549945414.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[this.orientation.ordinal()])
         {
             case 1:
                 this.z += var1;
@@ -111,7 +111,7 @@ public class Position
 
     public void moveUp(double var1)
     {
-        switch (Position.NamelessClass1824549879.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[this.orientation.ordinal()])
+        switch (Position.NamelessClass549945414.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[this.orientation.ordinal()])
         {
             case 1:
             case 2:
@@ -150,4 +150,65 @@ public class Position
         return new Position(var1.x < this.x ? this.x : var1.x, var1.y < this.y ? this.y : var1.y, var1.z < this.z ? this.z : var1.z);
     }
 
+    static class NamelessClass549945414
+    {
+        static final int[] $SwitchMap$net.minecraft.server$buildcraft$api$Orientations = new int[Orientations.values().length];
+
+        static
+        {
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.ZPos.ordinal()] = 1;
+            }
+            catch (NoSuchFieldError var6)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.ZNeg.ordinal()] = 2;
+            }
+            catch (NoSuchFieldError var5)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.XPos.ordinal()] = 3;
+            }
+            catch (NoSuchFieldError var4)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.XNeg.ordinal()] = 4;
+            }
+            catch (NoSuchFieldError var3)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.YPos.ordinal()] = 5;
+            }
+            catch (NoSuchFieldError var2)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.YNeg.ordinal()] = 6;
+            }
+            catch (NoSuchFieldError var1)
+            {
+                ;
+            }
+        }
+    }
 }

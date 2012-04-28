@@ -32,16 +32,16 @@ public class StackUtil
         {
             if (var2.reverse().ordinal() != var5)
             {
-                var6 = new Position((double)var1.xCoord, (double)var1.yCoord, (double)var1.zCoord, Orientations.values()[var5]);
+                var6 = new Position((double)var1.x, (double)var1.y, (double)var1.z, Orientations.values()[var5]);
                 var6.moveForwards(1.0D);
-                var7 = var3.getBlockTileEntity((int)var6.x, (int)var6.y, (int)var6.z);
+                var7 = var3.getTileEntity((int)var6.x, (int)var6.y, (int)var6.z);
 
                 if (var7 instanceof ISpecialInventory && ((ISpecialInventory)var7).addItem(this.items, false, var2))
                 {
                     var4.add(var6.orientation);
                 }
 
-                if (var7 instanceof IInventory && Utils.checkPipesConnections(var1.worldObj, var1.xCoord, var1.yCoord, var1.zCoord, var7.xCoord, var7.yCoord, var7.zCoord) && this.checkAvailableSlot((IInventory)var7, false, var6.orientation.reverse()))
+                if (var7 instanceof IInventory && Utils.checkPipesConnections(var1.world, var1.x, var1.y, var1.z, var7.x, var7.y, var7.z) && this.checkAvailableSlot((IInventory)var7, false, var6.orientation.reverse()))
                 {
                     var4.add(var6.orientation);
                 }
@@ -50,13 +50,13 @@ public class StackUtil
 
         if (var4.size() > 0)
         {
-            var5 = var3.rand.nextInt(var4.size());
-            var6 = new Position((double)var1.xCoord, (double)var1.yCoord, (double)var1.zCoord, (Orientations)var4.get(var5));
+            var5 = var3.random.nextInt(var4.size());
+            var6 = new Position((double)var1.x, (double)var1.y, (double)var1.z, (Orientations)var4.get(var5));
             var6.moveForwards(1.0D);
-            var7 = var3.getBlockTileEntity((int)var6.x, (int)var6.y, (int)var6.z);
+            var7 = var3.getTileEntity((int)var6.x, (int)var6.y, (int)var6.z);
             this.checkAvailableSlot((IInventory)var7, true, var6.orientation.reverse());
 
-            if (this.items.stackSize > 0)
+            if (this.items.count > 0)
             {
                 return this.addToRandomInventory(var7, var2);
             }
@@ -103,7 +103,7 @@ public class StackUtil
                     }
                 }
             }
-            else if (var1.getSizeInventory() == 2)
+            else if (var1.getSize() == 2)
             {
                 if (var3 != Orientations.YNeg && var3 != Orientations.YPos)
                 {
@@ -117,7 +117,7 @@ public class StackUtil
                     var4 = true;
                 }
             }
-            else if (var1.getSizeInventory() == 3)
+            else if (var1.getSize() == 3)
             {
                 if (var3 == Orientations.YPos)
                 {
@@ -135,7 +135,7 @@ public class StackUtil
             {
                 var5 = Utils.getInventory(var1);
 
-                for (var10 = 0; var10 < var5.getSizeInventory(); ++var10)
+                for (var10 = 0; var10 < var5.getSize(); ++var10)
                 {
                     if (this.tryAdding(var5, var10, var2, false))
                     {
@@ -151,7 +151,7 @@ public class StackUtil
                 {
                     return true;
                 }
-                else if (this.items.stackSize == 0)
+                else if (this.items.count == 0)
                 {
                     return true;
                 }
@@ -179,7 +179,7 @@ public class StackUtil
                         }
                     }
                 }
-                else if (var1.getSizeInventory() == 2)
+                else if (var1.getSize() == 2)
                 {
                     if (var3 != Orientations.YNeg && var3 != Orientations.YPos)
                     {
@@ -193,7 +193,7 @@ public class StackUtil
                         var4 = true;
                     }
                 }
-                else if (var1.getSizeInventory() == 3)
+                else if (var1.getSize() == 3)
                 {
                     if (var3 == Orientations.YPos)
                     {
@@ -211,7 +211,7 @@ public class StackUtil
                 {
                     var5 = Utils.getInventory(var1);
 
-                    for (var10 = 0; var10 < var5.getSizeInventory(); ++var10)
+                    for (var10 = 0; var10 < var5.getSize(); ++var10)
                     {
                         if (this.tryAdding(var5, var10, var2, true))
                         {
@@ -227,7 +227,7 @@ public class StackUtil
                     {
                         return true;
                     }
-                    else if (this.items.stackSize == 0)
+                    else if (this.items.count == 0)
                     {
                         return true;
                     }
@@ -247,16 +247,16 @@ public class StackUtil
 
     public boolean tryAdding(IInventory var1, int var2, boolean var3, boolean var4)
     {
-        ItemStack var5 = var1.getStackInSlot(var2);
+        ItemStack var5 = var1.getItem(var2);
 
         if (!var4)
         {
-            if (var5 != null && var5.getItem() == this.items.getItem() && var5.getItemDamage() == this.items.getItemDamage() && var5.stackSize + 1 <= var5.getMaxStackSize())
+            if (var5 != null && var5.getItem() == this.items.getItem() && var5.getData() == this.items.getData() && var5.count + 1 <= var5.getMaxStackSize())
             {
                 if (var3)
                 {
-                    ++var5.stackSize;
-                    --this.items.stackSize;
+                    ++var5.count;
+                    --this.items.count;
                 }
 
                 return true;
@@ -266,10 +266,10 @@ public class StackUtil
         {
             if (var3)
             {
-                var5 = this.items.copy();
-                var5.stackSize = 1;
-                --this.items.stackSize;
-                var1.setInventorySlotContents(var2, var5);
+                var5 = this.items.cloneItemStack();
+                var5.count = 1;
+                --this.items.count;
+                var1.setItem(var2, var5);
             }
 
             return true;

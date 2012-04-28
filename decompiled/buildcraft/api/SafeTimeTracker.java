@@ -14,7 +14,7 @@ public class SafeTimeTracker
         }
         else
         {
-            long var4 = var1.getWorldTime();
+            long var4 = var1.getTime();
 
             if (var4 < this.lastMark)
             {
@@ -23,7 +23,7 @@ public class SafeTimeTracker
             }
             else if (this.lastMark + var2 <= var4)
             {
-                this.lastMark = var1.getWorldTime();
+                this.lastMark = var1.getTime();
                 return true;
             }
             else
@@ -35,6 +35,6 @@ public class SafeTimeTracker
 
     public void markTime(World var1)
     {
-        this.lastMark = var1.getWorldTime();
+        this.lastMark = var1.getTime();
     }
 }

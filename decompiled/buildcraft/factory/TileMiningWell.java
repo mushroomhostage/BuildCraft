@@ -29,19 +29,19 @@ public class TileMiningWell extends TileMachine implements IMachine, IPowerRecep
     {
         if (this.powerProvider.useEnergy(25, 25, true) >= 25)
         {
-            World var1 = this.worldObj;
+            World var1 = this.world;
             int var2;
 
-            for (var2 = this.yCoord - 1; var1.getBlockId(this.xCoord, var2, this.zCoord) == BuildCraftFactory.plainPipeBlock.blockID; --var2)
+            for (var2 = this.y - 1; var1.getTypeId(this.x, var2, this.z) == BuildCraftFactory.plainPipeBlock.id; --var2)
             {
                 ;
             }
 
-            if (var2 >= 0 && var1.getBlockId(this.xCoord, var2, this.zCoord) != Block.bedrock.blockID && var1.getBlockId(this.xCoord, var2, this.zCoord) != Block.lavaMoving.blockID && var1.getBlockId(this.xCoord, var2, this.zCoord) != Block.lavaStill.blockID)
+            if (var2 >= 0 && var1.getTypeId(this.x, var2, this.z) != Block.BEDROCK.id && var1.getTypeId(this.x, var2, this.z) != Block.LAVA.id && var1.getTypeId(this.x, var2, this.z) != Block.STATIONARY_LAVA.id)
             {
-                int var3 = var1.getBlockId(this.xCoord, var2, this.zCoord);
-                ItemStack var4 = BuildCraftBlockUtil.getItemStackFromBlock(var1, this.xCoord, var2, this.zCoord);
-                var1.setBlockWithNotify(this.xCoord, var2, this.zCoord, BuildCraftFactory.plainPipeBlock.blockID);
+                int var3 = var1.getTypeId(this.x, var2, this.z);
+                ItemStack var4 = BuildCraftBlockUtil.getItemStackFromBlock(var1, this.x, var2, this.z);
+                var1.setTypeId(this.x, var2, this.z, BuildCraftFactory.plainPipeBlock.id);
 
                 if (var3 != 0)
                 {
@@ -49,19 +49,19 @@ public class TileMiningWell extends TileMachine implements IMachine, IPowerRecep
                     {
                         StackUtil var5 = new StackUtil(var4);
 
-                        if (!var5.addToRandomInventory(this, Orientations.Unknown) || var5.items.stackSize != 0)
+                        if (!var5.addToRandomInventory(this, Orientations.Unknown) || var5.items.count != 0)
                         {
-                            if (!Utils.addToRandomPipeEntry(this, Orientations.Unknown, var4) || var5.items.stackSize != 0)
+                            if (!Utils.addToRandomPipeEntry(this, Orientations.Unknown, var4) || var5.items.count != 0)
                             {
-                                float var6 = var1.rand.nextFloat() * 0.8F + 0.1F;
-                                float var7 = var1.rand.nextFloat() * 0.8F + 0.1F;
-                                float var8 = var1.rand.nextFloat() * 0.8F + 0.1F;
-                                EntityItem var9 = new EntityItem(var1, (double)((float)this.xCoord + var6), (double)((float)this.yCoord + var7 + 0.5F), (double)((float)this.zCoord + var8), var5.items);
+                                float var6 = var1.random.nextFloat() * 0.8F + 0.1F;
+                                float var7 = var1.random.nextFloat() * 0.8F + 0.1F;
+                                float var8 = var1.random.nextFloat() * 0.8F + 0.1F;
+                                EntityItem var9 = new EntityItem(var1, (double)((float)this.x + var6), (double)((float)this.y + var7 + 0.5F), (double)((float)this.z + var8), var5.items);
                                 float var10 = 0.05F;
-                                var9.motionX = (double)((float)var1.rand.nextGaussian() * var10);
-                                var9.motionY = (double)((float)var1.rand.nextGaussian() * var10 + 1.0F);
-                                var9.motionZ = (double)((float)var1.rand.nextGaussian() * var10);
-                                var1.spawnEntityInWorld(var9);
+                                var9.motX = (double)((float)var1.random.nextGaussian() * var10);
+                                var9.motY = (double)((float)var1.random.nextGaussian() * var10 + 1.0F);
+                                var9.motZ = (double)((float)var1.random.nextGaussian() * var10);
+                                var1.addEntity(var9);
                             }
                         }
                     }

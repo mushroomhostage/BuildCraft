@@ -10,11 +10,11 @@ public class LegacyTile extends TileEntity
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
      * ticks and creates a new spawn inside its implementation.
      */
-    public void updateEntity()
+    public void q_()
     {
-        int var1 = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
-        int var2 = ((LegacyBlock)Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord)]).newPipeId;
-        BlockGenericPipe.createPipe(this.worldObj, this.xCoord, this.yCoord, this.zCoord, var2);
-        this.worldObj.setBlockAndMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, BuildCraftTransport.genericPipeBlock.blockID, var1);
+        int var1 = this.world.getData(this.x, this.y, this.z);
+        int var2 = ((LegacyBlock)Block.byId[this.world.getTypeId(this.x, this.y, this.z)]).newPipeId;
+        BlockGenericPipe.createPipe(this.world, this.x, this.y, this.z, var2);
+        this.world.setTypeIdAndData(this.x, this.y, this.z, BuildCraftTransport.genericPipeBlock.id, var1);
     }
 }

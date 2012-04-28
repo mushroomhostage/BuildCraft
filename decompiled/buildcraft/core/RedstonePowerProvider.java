@@ -19,7 +19,7 @@ public class RedstonePowerProvider extends PowerProvider
     public boolean preConditions(IPowerReceptor var1)
     {
         TileEntity var2 = (TileEntity)var1;
-        boolean var3 = var2.worldObj.isBlockIndirectlyGettingPowered(var2.xCoord, var2.yCoord, var2.zCoord);
+        boolean var3 = var2.world.isBlockIndirectlyPowered(var2.x, var2.y, var2.z);
 
         if (BuildCraftCore.continuousCurrentModel)
         {

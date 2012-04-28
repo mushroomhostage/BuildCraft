@@ -56,7 +56,7 @@ public class PipePowerWood extends Pipe implements IPowerReceptor
 
             if (Utils.checkPipesConnections(this.worldObj, this.xCoord, this.yCoord, this.zCoord, (int)var2.x, (int)var2.y, (int)var2.z))
             {
-                TileEntity var3 = this.worldObj.getBlockTileEntity((int)var2.x, (int)var2.y, (int)var2.z);
+                TileEntity var3 = this.worldObj.getTileEntity((int)var2.x, (int)var2.y, (int)var2.z);
 
                 if (var3 instanceof TileGenericPipe)
                 {
@@ -93,7 +93,7 @@ public class PipePowerWood extends Pipe implements IPowerReceptor
         }
         else
         {
-            int var2 = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
+            int var2 = this.worldObj.getData(this.xCoord, this.yCoord, this.zCoord);
 
             if (var2 == var1.ordinal())
             {

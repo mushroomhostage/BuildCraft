@@ -23,7 +23,7 @@ public class FillerFillStairs extends FillerPattern
         int var12;
         byte var13;
 
-        if (var1.yCoord <= var5)
+        if (var1.y <= var5)
         {
             var12 = var5;
             var13 = 1;
@@ -41,19 +41,19 @@ public class FillerFillStairs extends FillerPattern
         byte var20 = 0;
         byte var21 = 0;
 
-        if (var1.xCoord == var4 - 1)
+        if (var1.x == var4 - 1)
         {
             var17[0] = 1;
         }
-        else if (var1.xCoord == var7 + 1)
+        else if (var1.x == var7 + 1)
         {
             var17[1] = 1;
         }
-        else if (var1.zCoord == var6 - 1)
+        else if (var1.z == var6 - 1)
         {
             var17[2] = 1;
         }
-        else if (var1.zCoord == var9 + 1)
+        else if (var1.z == var9 + 1)
         {
             var17[3] = 1;
         }
@@ -61,20 +61,20 @@ public class FillerFillStairs extends FillerPattern
         {
             var16 = true;
 
-            if (var1.xCoord <= var4)
+            if (var1.x <= var4)
             {
                 var18 = var4;
             }
-            else if (var1.xCoord >= var7)
+            else if (var1.x >= var7)
             {
                 var18 = var7;
             }
 
-            if (var1.zCoord <= var6)
+            if (var1.z <= var6)
             {
                 var19 = var6;
             }
-            else if (var1.zCoord >= var9)
+            else if (var1.z >= var9)
             {
                 var19 = var9;
             }
@@ -135,7 +135,7 @@ public class FillerFillStairs extends FillerPattern
         {
             for (; var27 - var26 + 1 > 0 && var28 - var29 + 1 > 0 && var27 - var26 < var10 && var28 - var29 < var11 && var12 >= var5 && var12 <= var8; var12 += var13)
             {
-                if (!this.fill(var26, var12, var29, var27, var12, var28, var3, var1.worldObj))
+                if (!this.fill(var26, var12, var29, var27, var12, var28, var3, var1.world))
                 {
                     return false;
                 }
@@ -162,7 +162,7 @@ public class FillerFillStairs extends FillerPattern
             {
                 if (var13 == 1)
                 {
-                    if (var1.xCoord >= var7)
+                    if (var1.x >= var7)
                     {
                         var26 = var18 - var10 + 1;
                         var27 = var26 + var14;
@@ -173,7 +173,7 @@ public class FillerFillStairs extends FillerPattern
                         var26 = var27 - var14;
                     }
 
-                    if (var1.zCoord >= var9)
+                    if (var1.z >= var9)
                     {
                         var29 = var19 - var11 + 1;
                         var28 = var29 + var15;
@@ -186,7 +186,7 @@ public class FillerFillStairs extends FillerPattern
                 }
                 else if (var13 == -1)
                 {
-                    if (var1.xCoord <= var4)
+                    if (var1.x <= var4)
                     {
                         var26 = var18;
                         var27 = var18 + var14;
@@ -197,7 +197,7 @@ public class FillerFillStairs extends FillerPattern
                         var26 = var18 - var14;
                     }
 
-                    if (var1.zCoord <= var6)
+                    if (var1.z <= var6)
                     {
                         var29 = var19;
                         var28 = var19 + var15;
@@ -209,7 +209,7 @@ public class FillerFillStairs extends FillerPattern
                     }
                 }
 
-                if (!this.fill(var26, var12, var29, var27, var12, var28, var3, var1.worldObj))
+                if (!this.fill(var26, var12, var29, var27, var12, var28, var3, var1.world))
                 {
                     return false;
                 }

@@ -8,8 +8,8 @@ public class ItemBucketOil extends ItemBucket implements ITextureProvider
 {
     public ItemBucketOil(int var1)
     {
-        super(var1, BuildCraftEnergy.oilMoving.blockID);
-        this.iconIndex = 1;
+        super(var1, BuildCraftEnergy.oilMoving.id);
+        this.textureId = 1;
     }
 
     public String getTextureFile()

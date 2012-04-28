@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import net.minecraft.server.Entity;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityItem;
-import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.World;
@@ -69,10 +69,10 @@ public abstract class Pipe extends PersistentTile implements IPipe
         this.container = (TileGenericPipe)var1;
         this.transport.setTile((TileGenericPipe)var1);
         this.logic.setTile((TileGenericPipe)var1);
-        this.setPosition(var1.xCoord, var1.yCoord, var1.zCoord);
+        this.setPosition(var1.x, var1.y, var1.z);
     }
 
-    public boolean blockActivated(World var1, int var2, int var3, int var4, EntityPlayer var5)
+    public boolean blockActivated(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
         return this.logic.blockActivated(var5);
     }

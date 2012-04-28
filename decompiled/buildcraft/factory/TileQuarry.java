@@ -63,7 +63,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
 
     public void createUtilsIfNeeded()
     {
-        if (this.box.isInitialized() || !APIProxy.isClient(this.worldObj))
+        if (this.box.isInitialized() || !APIProxy.isClient(this.world))
         {
             if (this.bluePrintBuilder == null)
             {
@@ -75,7 +75,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                 this.initializeBluePrintBuilder();
             }
 
-            this.nextBlockForBluePrint = this.bluePrintBuilder.findNextBlock(this.worldObj);
+            this.nextBlockForBluePrint = this.bluePrintBuilder.findNextBlock(this.world);
 
             if (this.bluePrintBuilder.done)
             {
@@ -88,7 +88,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
 
                 if (this.loadArm)
                 {
-                    this.arm.joinToWorld(this.worldObj);
+                    this.arm.joinToWorld(this.world);
                     this.loadArm = false;
 
                     if (this.findTarget(false))
@@ -99,7 +99,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
             }
             else
             {
-                this.box.createLasers(this.worldObj, LaserKind.Stripes);
+                this.box.createLasers(this.world, LaserKind.Stripes);
                 this.isDigging = true;
             }
         }
@@ -107,7 +107,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
 
     private void createArm()
     {
-        this.arm = new EntityMechanicalArm(this.worldObj, (double)((float)this.box.xMin + 0.75F), (double)((float)(this.yCoord + this.bluePrintBuilder.bluePrint.sizeY - 1) + 0.25F), (double)((float)this.box.zMin + 0.75F), (double)((float)(this.bluePrintBuilder.bluePrint.sizeX - 2) + 0.5F), (double)((float)(this.bluePrintBuilder.bluePrint.sizeZ - 2) + 0.5F));
+        this.arm = new EntityMechanicalArm(this.world, (double)((float)this.box.xMin + 0.75F), (double)((float)(this.y + this.bluePrintBuilder.bluePrint.sizeY - 1) + 0.25F), (double)((float)this.box.zMin + 0.75F), (double)((float)(this.bluePrintBuilder.bluePrint.sizeX - 2) + 0.5F), (double)((float)(this.bluePrintBuilder.bluePrint.sizeZ - 2) + 0.5F));
         this.arm.listener = this;
         this.loadArm = true;
     }
@@ -116,9 +116,9 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
      * ticks and creates a new spawn inside its implementation.
      */
-    public void updateEntity()
+    public void q_()
     {
-        super.updateEntity();
+        super.q_();
 
         if (this.inProcess && this.arm != null)
         {
@@ -143,7 +143,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
 
     public void doWork()
     {
-        if (!APIProxy.isClient(this.worldObj))
+        if (!APIProxy.isClient(this.world))
         {
             if (!this.inProcess)
             {
@@ -156,7 +156,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                         if (this.bluePrintBuilder.done && this.nextBlockForBluePrint != null)
                         {
                             this.bluePrintBuilder.done = false;
-                            this.box.createLasers(this.worldObj, LaserKind.Stripes);
+                            this.box.createLasers(this.world, LaserKind.Stripes);
                         }
 
                         if (!this.bluePrintBuilder.done)
@@ -165,19 +165,19 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
 
                             if (this.powerProvider.useEnergy(25, 25, true) == 25)
                             {
-                                this.powerProvider.timeTracker.markTime(this.worldObj);
-                                BlockContents var1 = this.bluePrintBuilder.findNextBlock(this.worldObj);
-                                int var2 = this.worldObj.getBlockId(var1.x, var1.y, var1.z);
+                                this.powerProvider.timeTracker.markTime(this.world);
+                                BlockContents var1 = this.bluePrintBuilder.findNextBlock(this.world);
+                                int var2 = this.world.getTypeId(var1.x, var1.y, var1.z);
 
                                 if (var1 != null)
                                 {
                                     if (!API.softBlock(var2))
                                     {
-                                        this.worldObj.setBlockWithNotify(var1.x, var1.y, var1.z, 0);
+                                        this.world.setTypeId(var1.x, var1.y, var1.z, 0);
                                     }
                                     else if (var1.blockId != 0)
                                     {
-                                        this.worldObj.setBlockWithNotify(var1.x, var1.y, var1.z, var1.blockId);
+                                        this.world.setTypeId(var1.x, var1.y, var1.z, var1.blockId);
                                     }
                                 }
                             }
@@ -188,7 +188,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
 
                             if (!this.findTarget(true))
                             {
-                                this.arm.setTarget((double)this.box.xMin + this.arm.sizeX / 2.0D, (double)(this.yCoord + 2), (double)this.box.zMin + this.arm.sizeX / 2.0D);
+                                this.arm.setTarget((double)this.box.xMin + this.arm.sizeX / 2.0D, (double)(this.y + 2), (double)this.box.zMin + this.arm.sizeX / 2.0D);
                                 this.isDigging = false;
                             }
 
@@ -219,7 +219,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
             }
         }
 
-        for (var3 = this.yCoord + 3; var3 >= 0; --var3)
+        for (var3 = this.y + 3; var3 >= 0; --var3)
         {
             int var5;
             byte var6;
@@ -262,7 +262,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                     {
                         int var12 = this.box.xMin + var7 + 1;
                         int var14 = this.box.zMin + var11 + 1;
-                        int var15 = this.worldObj.getBlockId(var12, var3, var14);
+                        int var15 = this.world.getTypeId(var12, var3, var14);
 
                         if (this.blockDig(var15))
                         {
@@ -291,24 +291,24 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound var1)
+    public void a(NBTTagCompound var1)
     {
-        super.readFromNBT(var1);
+        super.a(var1);
         PowerFramework.currentFramework.loadPowerProvider(this, var1);
 
         if (var1.hasKey("box"))
         {
-            this.box.initialize(var1.getCompoundTag("box"));
+            this.box.initialize(var1.getCompound("box"));
             this.loadDefaultBoundaries = false;
         }
         else if (var1.hasKey("xSize"))
         {
-            int var2 = var1.getInteger("xMin");
-            int var3 = var1.getInteger("zMin");
-            int var4 = var1.getInteger("xSize");
-            int var5 = var1.getInteger("ySize");
-            int var6 = var1.getInteger("zSize");
-            this.box.initialize(var2, this.yCoord, var3, var2 + var4 - 1, this.yCoord + var5 - 1, var3 + var6 - 1);
+            int var2 = var1.getInt("xMin");
+            int var3 = var1.getInt("zMin");
+            int var4 = var1.getInt("xSize");
+            int var5 = var1.getInt("ySize");
+            int var6 = var1.getInt("zSize");
+            this.box.initialize(var2, this.y, var3, var2 + var4 - 1, this.y + var5 - 1, var3 + var6 - 1);
             this.loadDefaultBoundaries = false;
         }
         else
@@ -316,15 +316,15 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
             this.loadDefaultBoundaries = true;
         }
 
-        this.targetX = var1.getInteger("targetX");
-        this.targetY = var1.getInteger("targetY");
-        this.targetZ = var1.getInteger("targetZ");
+        this.targetX = var1.getInt("targetX");
+        this.targetY = var1.getInt("targetY");
+        this.targetZ = var1.getInt("targetZ");
 
         if (var1.getBoolean("hasArm"))
         {
-            NBTTagCompound var7 = var1.getCompoundTag("arm");
-            this.arm = new EntityMechanicalArm(this.worldObj);
-            this.arm.readFromNBT(var7);
+            NBTTagCompound var7 = var1.getCompound("arm");
+            this.arm = new EntityMechanicalArm(this.world);
+            this.arm.e(var7);
             this.arm.listener = this;
             this.loadArm = true;
         }
@@ -333,43 +333,43 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
     /**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound var1)
+    public void b(NBTTagCompound var1)
     {
-        super.writeToNBT(var1);
+        super.b(var1);
         PowerFramework.currentFramework.savePowerProvider(this, var1);
-        var1.setInteger("targetX", this.targetX);
-        var1.setInteger("targetY", this.targetY);
-        var1.setInteger("targetZ", this.targetZ);
+        var1.setInt("targetX", this.targetX);
+        var1.setInt("targetY", this.targetY);
+        var1.setInt("targetZ", this.targetZ);
         var1.setBoolean("hasArm", this.arm != null);
         NBTTagCompound var2;
 
         if (this.arm != null)
         {
             var2 = new NBTTagCompound();
-            var1.setTag("arm", var2);
-            this.arm.writeToNBT(var2);
+            var1.set("arm", var2);
+            this.arm.d(var2);
         }
 
         var2 = new NBTTagCompound();
         this.box.writeToNBT(var2);
-        var1.setTag("box", var2);
+        var1.set("box", var2);
     }
 
     public void positionReached(EntityMechanicalArm var1)
     {
         this.inProcess = false;
 
-        if (!APIProxy.isClient(this.worldObj))
+        if (!APIProxy.isClient(this.world))
         {
             int var2 = this.targetX;
             int var3 = this.targetY - 1;
             int var4 = this.targetZ;
-            int var5 = this.worldObj.getBlockId(var2, var3, var4);
+            int var5 = this.world.getTypeId(var2, var3, var4);
 
             if (this.canDig(var5))
             {
-                this.powerProvider.timeTracker.markTime(this.worldObj);
-                ItemStack var6 = BuildCraftBlockUtil.getItemStackFromBlock(this.worldObj, var2, var3, var4);
+                this.powerProvider.timeTracker.markTime(this.world);
+                ItemStack var6 = BuildCraftBlockUtil.getItemStackFromBlock(this.world, var2, var3, var4);
 
                 if (var6 != null)
                 {
@@ -377,44 +377,44 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
                     StackUtil var8 = new StackUtil(var6);
                     var7 = var8.addToRandomInventory(this, Orientations.Unknown);
 
-                    if (!var7 || var8.items.stackSize > 0)
+                    if (!var7 || var8.items.count > 0)
                     {
                         var7 = Utils.addToRandomPipeEntry(this, Orientations.Unknown, var8.items);
                     }
 
                     if (!var7)
                     {
-                        float var9 = this.worldObj.rand.nextFloat() * 0.8F + 0.1F;
-                        float var10 = this.worldObj.rand.nextFloat() * 0.8F + 0.1F;
-                        float var11 = this.worldObj.rand.nextFloat() * 0.8F + 0.1F;
-                        EntityItem var12 = new EntityItem(this.worldObj, (double)((float)this.xCoord + var9), (double)((float)this.yCoord + var10 + 0.5F), (double)((float)this.zCoord + var11), var8.items);
+                        float var9 = this.world.random.nextFloat() * 0.8F + 0.1F;
+                        float var10 = this.world.random.nextFloat() * 0.8F + 0.1F;
+                        float var11 = this.world.random.nextFloat() * 0.8F + 0.1F;
+                        EntityItem var12 = new EntityItem(this.world, (double)((float)this.x + var9), (double)((float)this.y + var10 + 0.5F), (double)((float)this.z + var11), var8.items);
                         float var13 = 0.05F;
-                        var12.motionX = (double)((float)this.worldObj.rand.nextGaussian() * var13);
-                        var12.motionY = (double)((float)this.worldObj.rand.nextGaussian() * var13 + 1.0F);
-                        var12.motionZ = (double)((float)this.worldObj.rand.nextGaussian() * var13);
-                        this.worldObj.spawnEntityInWorld(var12);
+                        var12.motX = (double)((float)this.world.random.nextGaussian() * var13);
+                        var12.motY = (double)((float)this.world.random.nextGaussian() * var13 + 1.0F);
+                        var12.motZ = (double)((float)this.world.random.nextGaussian() * var13);
+                        this.world.addEntity(var12);
                     }
                 }
 
-                this.worldObj.setBlockWithNotify(var2, var3, var4, 0);
+                this.world.setTypeId(var2, var3, var4, 0);
             }
         }
     }
 
     private boolean blockDig(int var1)
     {
-        return var1 == Block.bedrock.blockID || var1 == Block.lavaStill.blockID || var1 == Block.lavaMoving.blockID;
+        return var1 == Block.BEDROCK.id || var1 == Block.STATIONARY_LAVA.id || var1 == Block.LAVA.id;
     }
 
     private boolean canDig(int var1)
     {
-        return !this.blockDig(var1) && !API.softBlock(var1) && var1 != Block.snow.blockID;
+        return !this.blockDig(var1) && !API.softBlock(var1) && var1 != Block.SNOW.id;
     }
 
     /**
      * invalidates a tile entity
      */
-    public void invalidate()
+    public void j()
     {
         this.destroy();
     }
@@ -441,12 +441,12 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
 
         if (!var1)
         {
-            var2 = Utils.getNearbyAreaProvider(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+            var2 = Utils.getNearbyAreaProvider(this.world, this.x, this.y, this.z);
         }
 
         if (var2 == null)
         {
-            var2 = new DefaultAreaProvider(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 10, this.yCoord + 4, this.zCoord + 10);
+            var2 = new DefaultAreaProvider(this.x, this.y, this.z, this.x + 10, this.y + 4, this.z + 10);
             var1 = true;
         }
 
@@ -456,7 +456,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
 
         if (var3 < 3 || var5 < 3)
         {
-            var2 = new DefaultAreaProvider(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 10, this.yCoord + 4, this.zCoord + 10);
+            var2 = new DefaultAreaProvider(this.x, this.y, this.z, this.x + 10, this.y + 4, this.z + 10);
             var1 = true;
         }
 
@@ -475,31 +475,31 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
         {
             int var6 = 0;
             int var7 = 0;
-            Orientations var8 = Orientations.values()[this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord)].reverse();
+            Orientations var8 = Orientations.values()[this.world.getData(this.x, this.y, this.z)].reverse();
 
-            switch (TileQuarry.NamelessClass30844472.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var8.ordinal()])
+            switch (TileQuarry.NamelessClass658445722.$SwitchMap$net.minecraft.server$buildcraft$api$Orientations[var8.ordinal()])
             {
                 case 1:
-                    var6 = this.xCoord + 1;
-                    var7 = this.zCoord - 4 - 1;
+                    var6 = this.x + 1;
+                    var7 = this.z - 4 - 1;
                     break;
 
                 case 2:
-                    var6 = this.xCoord - 9 - 2;
-                    var7 = this.zCoord - 4 - 1;
+                    var6 = this.x - 9 - 2;
+                    var7 = this.z - 4 - 1;
                     break;
 
                 case 3:
-                    var6 = this.xCoord - 4 - 1;
-                    var7 = this.zCoord + 1;
+                    var6 = this.x - 4 - 1;
+                    var7 = this.z + 1;
                     break;
 
                 case 4:
-                    var6 = this.xCoord - 4 - 1;
-                    var7 = this.zCoord - 9 - 2;
+                    var6 = this.x - 4 - 1;
+                    var7 = this.z - 9 - 2;
             }
 
-            this.box.initialize(var6, this.yCoord, var7, var6 + var3 - 1, this.yCoord + var4 - 1, var7 + var5 - 1);
+            this.box.initialize(var6, this.y, var7, var6 + var3 - 1, this.y + var4 - 1, var7 + var5 - 1);
         }
 
         ((IAreaProvider)var2).removeFromWorld();
@@ -526,26 +526,26 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
         {
             for (var3 = 0; var3 < var1.sizeX; ++var3)
             {
-                var1.setBlockId(var3, var2 * (this.box.sizeY() - 1), 0, BuildCraftFactory.frameBlock.blockID);
-                var1.setBlockId(var3, var2 * (this.box.sizeY() - 1), var1.sizeZ - 1, BuildCraftFactory.frameBlock.blockID);
+                var1.setBlockId(var3, var2 * (this.box.sizeY() - 1), 0, BuildCraftFactory.frameBlock.id);
+                var1.setBlockId(var3, var2 * (this.box.sizeY() - 1), var1.sizeZ - 1, BuildCraftFactory.frameBlock.id);
             }
 
             for (var3 = 0; var3 < var1.sizeZ; ++var3)
             {
-                var1.setBlockId(0, var2 * (this.box.sizeY() - 1), var3, BuildCraftFactory.frameBlock.blockID);
-                var1.setBlockId(var1.sizeX - 1, var2 * (this.box.sizeY() - 1), var3, BuildCraftFactory.frameBlock.blockID);
+                var1.setBlockId(0, var2 * (this.box.sizeY() - 1), var3, BuildCraftFactory.frameBlock.id);
+                var1.setBlockId(var1.sizeX - 1, var2 * (this.box.sizeY() - 1), var3, BuildCraftFactory.frameBlock.id);
             }
         }
 
         for (var2 = 1; var2 < this.box.sizeY(); ++var2)
         {
-            var1.setBlockId(0, var2, 0, BuildCraftFactory.frameBlock.blockID);
-            var1.setBlockId(0, var2, var1.sizeZ - 1, BuildCraftFactory.frameBlock.blockID);
-            var1.setBlockId(var1.sizeX - 1, var2, 0, BuildCraftFactory.frameBlock.blockID);
-            var1.setBlockId(var1.sizeX - 1, var2, var1.sizeZ - 1, BuildCraftFactory.frameBlock.blockID);
+            var1.setBlockId(0, var2, 0, BuildCraftFactory.frameBlock.id);
+            var1.setBlockId(0, var2, var1.sizeZ - 1, BuildCraftFactory.frameBlock.id);
+            var1.setBlockId(var1.sizeX - 1, var2, 0, BuildCraftFactory.frameBlock.id);
+            var1.setBlockId(var1.sizeX - 1, var2, var1.sizeZ - 1, BuildCraftFactory.frameBlock.id);
         }
 
-        this.bluePrintBuilder = new BluePrintBuilder(var1, this.box.xMin, this.yCoord, this.box.zMin);
+        this.bluePrintBuilder = new BluePrintBuilder(var1, this.box.xMin, this.y, this.box.zMin);
     }
 
     public void postPacketHandling(PacketUpdate var1)
@@ -565,7 +565,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
     {
         super.initialize();
 
-        if (!APIProxy.isClient(this.worldObj))
+        if (!APIProxy.isClient(this.world))
         {
             this.createUtilsIfNeeded();
         }
@@ -593,4 +593,47 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
         return true;
     }
 
+    static class NamelessClass658445722
+    {
+        static final int[] $SwitchMap$net.minecraft.server$buildcraft$api$Orientations = new int[Orientations.values().length];
+
+        static
+        {
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.XPos.ordinal()] = 1;
+            }
+            catch (NoSuchFieldError var4)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.XNeg.ordinal()] = 2;
+            }
+            catch (NoSuchFieldError var3)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.ZPos.ordinal()] = 3;
+            }
+            catch (NoSuchFieldError var2)
+            {
+                ;
+            }
+
+            try
+            {
+                $SwitchMap$net.minecraft.server$buildcraft$api$Orientations[Orientations.ZNeg.ordinal()] = 4;
+            }
+            catch (NoSuchFieldError var1)
+            {
+                ;
+            }
+        }
+    }
 }

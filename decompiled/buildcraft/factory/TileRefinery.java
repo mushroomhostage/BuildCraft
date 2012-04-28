@@ -12,7 +12,7 @@ import buildcraft.core.IMachine;
 import java.util.Iterator;
 import java.util.LinkedList;
 import net.minecraft.server.BuildCraftCore;
-import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
@@ -54,7 +54,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
 
             if (var4 && var5 > 0)
             {
-                this.updateNetworkTime.markTime(this.worldObj);
+                this.updateNetworkTime.markTime(this.world);
                 this.sendNetworkUpdate();
             }
 
@@ -88,7 +88,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
 
         if (var2 && var4 > 0)
         {
-            this.updateNetworkTime.markTime(this.worldObj);
+            this.updateNetworkTime.markTime(this.world);
             this.sendNetworkUpdate();
         }
 
@@ -113,7 +113,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
     /**
      * Returns the number of slots in the inventory.
      */
-    public int getSizeInventory()
+    public int getSize()
     {
         return 0;
     }
@@ -121,7 +121,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
     /**
      * Returns the stack in slot i
      */
-    public ItemStack getStackInSlot(int var1)
+    public ItemStack getItem(int var1)
     {
         return null;
     }
@@ -130,7 +130,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
      * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
      * stack.
      */
-    public ItemStack decrStackSize(int var1, int var2)
+    public ItemStack splitStack(int var1, int var2)
     {
         return null;
     }
@@ -138,12 +138,12 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
     /**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
-    public void setInventorySlotContents(int var1, ItemStack var2) {}
+    public void setItem(int var1, ItemStack var2) {}
 
     /**
      * Returns the name of the inventory.
      */
-    public String getInvName()
+    public String getName()
     {
         return null;
     }
@@ -152,7 +152,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
      * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
      * this more of a set than a get?*
      */
-    public int getInventoryStackLimit()
+    public int getMaxStackSize()
     {
         return 0;
     }
@@ -160,7 +160,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
     /**
      * Do not make give this method the name canInteractWith because it clashes with Container
      */
-    public boolean isUseableByPlayer(EntityPlayer var1)
+    public boolean a(EntityHuman var1)
     {
         return false;
     }
@@ -181,13 +181,13 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
      * ticks and creates a new spawn inside its implementation.
      */
-    public void updateEntity()
+    public void q_()
     {
-        if (APIProxy.isClient(this.worldObj))
+        if (APIProxy.isClient(this.world))
         {
             this.simpleAnimationIterate();
         }
-        else if (APIProxy.isServerSide() && this.updateNetworkTime.markTimeIfDelay(this.worldObj, (long)(2 * BuildCraftCore.updateFactor)))
+        else if (APIProxy.isServerSide() && this.updateNetworkTime.markTimeIfDelay(this.world, (long)(2 * BuildCraftCore.updateFactor)))
         {
             this.sendNetworkUpdate();
         }
@@ -257,7 +257,7 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
                 this.decreaseAnimation();
             }
 
-            if (this.time.markTimeIfDelay(this.worldObj, (long)var1.delay))
+            if (this.time.markTimeIfDelay(this.world, (long)var1.delay))
             {
                 int var6 = this.powerProvider.useEnergy(var1.energy, var1.energy, true);
 
@@ -299,18 +299,18 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound var1)
+    public void a(NBTTagCompound var1)
     {
-        super.readFromNBT(var1);
+        super.a(var1);
 
         if (var1.hasKey("slot1"))
         {
-            this.slot1.readFromNBT(var1.getCompoundTag("slot1"));
-            this.slot2.readFromNBT(var1.getCompoundTag("slot2"));
-            this.result.readFromNBT(var1.getCompoundTag("result"));
+            this.slot1.readFromNBT(var1.getCompound("slot1"));
+            this.slot2.readFromNBT(var1.getCompound("slot2"));
+            this.result.readFromNBT(var1.getCompound("result"));
         }
 
-        this.animationStage = var1.getInteger("animationStage");
+        this.animationStage = var1.getInt("animationStage");
         this.animationSpeed = var1.getFloat("animationSpeed");
         PowerFramework.currentFramework.loadPowerProvider(this, var1);
         this.powerProvider.configure(20, 25, 25, 25, 1000);
@@ -319,19 +319,19 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
     /**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound var1)
+    public void b(NBTTagCompound var1)
     {
-        super.writeToNBT(var1);
+        super.b(var1);
         NBTTagCompound var2 = new NBTTagCompound();
         NBTTagCompound var3 = new NBTTagCompound();
         NBTTagCompound var4 = new NBTTagCompound();
         this.slot1.writeFromNBT(var2);
         this.slot2.writeFromNBT(var3);
         this.result.writeFromNBT(var4);
-        var1.setTag("slot1", var2);
-        var1.setTag("slot2", var3);
-        var1.setTag("result", var4);
-        var1.setInteger("animationStage", this.animationStage);
+        var1.set("slot1", var2);
+        var1.set("slot2", var3);
+        var1.set("result", var4);
+        var1.setInt("animationStage", this.animationStage);
         var1.setFloat("animationSpeed", this.animationSpeed);
         PowerFramework.currentFramework.savePowerProvider(this, var1);
     }
@@ -395,15 +395,15 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         }
     }
 
-    public void openChest() {}
+    public void f() {}
 
-    public void closeChest() {}
+    public void g() {}
 
     /**
      * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
      * like when you close a workbench GUI.
      */
-    public ItemStack getStackInSlotOnClosing(int var1)
+    public ItemStack splitWithoutUpdate(int var1)
     {
         return null;
     }
@@ -447,17 +447,17 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
 
         public void writeFromNBT(NBTTagCompound var1)
         {
-            var1.setInteger("liquidId", this.liquidId);
-            var1.setInteger("quantity", this.quantity);
+            var1.setInt("liquidId", this.liquidId);
+            var1.setInt("quantity", this.quantity);
         }
 
         public void readFromNBT(NBTTagCompound var1)
         {
-            this.liquidId = var1.getInteger("liquidId");
+            this.liquidId = var1.getInt("liquidId");
 
             if (this.liquidId != 0)
             {
-                this.quantity = var1.getInteger("quantity");
+                this.quantity = var1.getInt("quantity");
             }
             else
             {

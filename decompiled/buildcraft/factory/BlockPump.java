@@ -12,14 +12,14 @@ public class BlockPump extends BlockContainer implements ITextureProvider
 {
     public BlockPump(int var1)
     {
-        super(var1, Material.iron);
-        this.setHardness(5.0F);
+        super(var1, Material.ORE);
+        this.c(5.0F);
     }
 
     /**
      * Returns the TileEntity used by this block.
      */
-    public TileEntity getBlockEntity()
+    public TileEntity a_()
     {
         return new TilePump();
     }
@@ -32,7 +32,7 @@ public class BlockPump extends BlockContainer implements ITextureProvider
     /**
      * Returns the block texture based on the side being looked at.  Args: side
      */
-    public int getBlockTextureFromSide(int var1)
+    public int a(int var1)
     {
         switch (var1)
         {
@@ -50,9 +50,9 @@ public class BlockPump extends BlockContainer implements ITextureProvider
     /**
      * Called whenever the block is removed.
      */
-    public void onBlockRemoval(World var1, int var2, int var3, int var4)
+    public void remove(World var1, int var2, int var3, int var4)
     {
         Utils.preDestroyBlock(var1, var2, var3, var4);
-        super.onBlockRemoval(var1, var2, var3, var4);
+        super.remove(var1, var2, var3, var4);
     }
 }

@@ -22,7 +22,7 @@ public class PipeItemsGold extends Pipe implements IPipeTransportItemsHook
 
     public int getBlockTexture()
     {
-        return this.worldObj != null && this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord) ? 30 : 20;
+        return this.worldObj != null && this.worldObj.isBlockIndirectlyPowered(this.xCoord, this.yCoord, this.zCoord) ? 30 : 20;
     }
 
     public boolean isPipeConnected(TileEntity var1)
@@ -51,7 +51,7 @@ public class PipeItemsGold extends Pipe implements IPipeTransportItemsHook
 
     public void entityEntered(EntityPassiveItem var1, Orientations var2)
     {
-        if (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord))
+        if (this.worldObj.isBlockIndirectlyPowered(this.xCoord, this.yCoord, this.zCoord))
         {
             var1.speed = Utils.pipeNormalSpeed * 20.0F;
         }

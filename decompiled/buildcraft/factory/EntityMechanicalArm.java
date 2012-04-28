@@ -36,15 +36,15 @@ public class EntityMechanicalArm extends Entity
     {
         super(var1);
         this.setPosition(var2, var4, var6);
-        this.motionX = 0.0D;
-        this.motionY = 0.0D;
-        this.motionZ = 0.0D;
-        this.prevPosX = var2;
-        this.prevPosY = var4;
-        this.prevPosZ = var6;
+        this.motX = 0.0D;
+        this.motY = 0.0D;
+        this.motZ = 0.0D;
+        this.lastX = var2;
+        this.lastY = var4;
+        this.lastZ = var6;
         this.sizeX = var10;
         this.sizeZ = var8;
-        this.noClip = true;
+        this.bQ = true;
         this.baseY = var4;
         this.headPosX = var2;
         this.headPosY = var4 - 2.0D;
@@ -54,26 +54,26 @@ public class EntityMechanicalArm extends Entity
         this.inProgressionY = false;
         this.xArm = new EntityBlock(var1, var2, var4, var6, var8, 0.5D, 0.5D);
         this.xArm.texture = BuildCraftFactory.drillTexture;
-        var1.spawnEntityInWorld(this.xArm);
+        var1.addEntity(this.xArm);
         this.yArm = new EntityBlock(var1, var2, var4, var6, 0.5D, 1.0D, 0.5D);
         this.yArm.texture = BuildCraftFactory.drillTexture;
-        var1.spawnEntityInWorld(this.yArm);
+        var1.addEntity(this.yArm);
         this.zArm = new EntityBlock(var1, var2, var4, var6, 0.5D, 0.5D, var10);
         this.zArm.texture = BuildCraftFactory.drillTexture;
-        var1.spawnEntityInWorld(this.zArm);
+        var1.addEntity(this.zArm);
         this.head = new EntityBlock(var1, var2, var4, var6, 0.2D, 1.0D, 0.2D);
         this.head.texture = 42;
-        var1.spawnEntityInWorld(this.head);
+        var1.addEntity(this.head);
         this.head.shadowSize = 1.0F;
         this.updatePosition();
     }
 
-    protected void entityInit() {}
+    protected void b() {}
 
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    protected void readEntityFromNBT(NBTTagCompound var1)
+    protected void a(NBTTagCompound var1)
     {
         this.sizeX = var1.getDouble("sizeX");
         this.sizeZ = var1.getDouble("sizeZ");
@@ -88,28 +88,28 @@ public class EntityMechanicalArm extends Entity
         this.speed = var1.getDouble("speed");
         this.inProgressionXZ = var1.getBoolean("progressionXY");
         this.inProgressionY = var1.getBoolean("progressionY");
-        NBTTagCompound var2 = var1.getCompoundTag("xArm");
-        NBTTagCompound var3 = var1.getCompoundTag("yArm");
-        NBTTagCompound var4 = var1.getCompoundTag("zArm");
-        NBTTagCompound var5 = var1.getCompoundTag("head");
-        this.xArm = new EntityBlock(this.worldObj);
-        this.yArm = new EntityBlock(this.worldObj);
-        this.zArm = new EntityBlock(this.worldObj);
-        this.head = new EntityBlock(this.worldObj);
+        NBTTagCompound var2 = var1.getCompound("xArm");
+        NBTTagCompound var3 = var1.getCompound("yArm");
+        NBTTagCompound var4 = var1.getCompound("zArm");
+        NBTTagCompound var5 = var1.getCompound("head");
+        this.xArm = new EntityBlock(this.world);
+        this.yArm = new EntityBlock(this.world);
+        this.zArm = new EntityBlock(this.world);
+        this.head = new EntityBlock(this.world);
         this.xArm.texture = BuildCraftFactory.drillTexture;
         this.yArm.texture = BuildCraftFactory.drillTexture;
         this.zArm.texture = BuildCraftFactory.drillTexture;
         this.head.texture = 42;
-        this.xArm.readFromNBT(var2);
-        this.yArm.readFromNBT(var3);
-        this.zArm.readFromNBT(var4);
-        this.head.readFromNBT(var5);
+        this.xArm.e(var2);
+        this.yArm.e(var3);
+        this.zArm.e(var4);
+        this.head.e(var5);
     }
 
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
-    protected void writeEntityToNBT(NBTTagCompound var1)
+    protected void b(NBTTagCompound var1)
     {
         var1.setDouble("sizeX", this.sizeX);
         var1.setDouble("sizeZ", this.sizeZ);
@@ -128,14 +128,14 @@ public class EntityMechanicalArm extends Entity
         NBTTagCompound var3 = new NBTTagCompound();
         NBTTagCompound var4 = new NBTTagCompound();
         NBTTagCompound var5 = new NBTTagCompound();
-        var1.setTag("xArm", var2);
-        var1.setTag("yArm", var3);
-        var1.setTag("zArm", var4);
-        var1.setTag("head", var5);
-        this.xArm.writeToNBT(var2);
-        this.yArm.writeToNBT(var3);
-        this.zArm.writeToNBT(var4);
-        this.head.writeToNBT(var5);
+        var1.set("xArm", var2);
+        var1.set("yArm", var3);
+        var1.set("zArm", var4);
+        var1.set("head", var5);
+        this.xArm.d(var2);
+        this.yArm.d(var3);
+        this.zArm.d(var4);
+        this.head.d(var5);
     }
 
     public void setTarget(double var1, double var3, double var5)
@@ -158,7 +158,7 @@ public class EntityMechanicalArm extends Entity
     /**
      * Called to update the entity's position/logic.
      */
-    public void onUpdate()
+    public void F_()
     {
         if (this.speed > 0.0D)
         {
@@ -168,7 +168,7 @@ public class EntityMechanicalArm extends Entity
 
     public void doMove(double var1)
     {
-        super.onUpdate();
+        super.F_();
 
         if (this.inProgressionXZ)
         {
@@ -217,34 +217,34 @@ public class EntityMechanicalArm extends Entity
 
     public void updatePosition()
     {
-        this.xArm.setPosition(this.xArm.posX, this.xArm.posY, this.headPosZ + 0.25D);
+        this.xArm.setPosition(this.xArm.locX, this.xArm.locY, this.headPosZ + 0.25D);
         this.yArm.jSize = this.baseY - this.headPosY - 1.0D;
         this.yArm.setPosition(this.headPosX + 0.25D, this.headPosY + 1.0D, this.headPosZ + 0.25D);
-        this.zArm.setPosition(this.headPosX + 0.25D, this.zArm.posY, this.zArm.posZ);
+        this.zArm.setPosition(this.headPosX + 0.25D, this.zArm.locY, this.zArm.locZ);
         this.head.setPosition(this.headPosX + 0.4D, this.headPosY, this.headPosZ + 0.4D);
     }
 
     public void joinToWorld(World var1)
     {
-        super.worldObj = var1;
-        this.xArm.worldObj = var1;
-        this.yArm.worldObj = var1;
-        this.zArm.worldObj = var1;
-        this.head.worldObj = var1;
-        var1.spawnEntityInWorld(this);
-        var1.spawnEntityInWorld(this.xArm);
-        var1.spawnEntityInWorld(this.yArm);
-        var1.spawnEntityInWorld(this.zArm);
-        var1.spawnEntityInWorld(this.head);
+        super.world = var1;
+        this.xArm.world = var1;
+        this.yArm.world = var1;
+        this.zArm.world = var1;
+        this.head.world = var1;
+        var1.addEntity(this);
+        var1.addEntity(this.xArm);
+        var1.addEntity(this.yArm);
+        var1.addEntity(this.zArm);
+        var1.addEntity(this.head);
     }
 
     public void setEntityDead()
     {
-        this.xArm.setDead();
-        this.yArm.setDead();
-        this.zArm.setDead();
-        this.head.setDead();
-        super.setDead();
+        this.xArm.die();
+        this.yArm.die();
+        this.zArm.die();
+        this.head.die();
+        super.die();
     }
 
     public double[] getHeadPosition()

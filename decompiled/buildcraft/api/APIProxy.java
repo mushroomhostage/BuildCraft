@@ -9,7 +9,7 @@ public class APIProxy
 {
     public static World getWorld()
     {
-        return ModLoader.getMinecraftServerInstance().getWorldManager(0);
+        return ModLoader.getMinecraftServerInstance().getWorldServer(0);
     }
 
     public static boolean isClient(World var0)
@@ -24,7 +24,7 @@ public class APIProxy
 
     public static void removeEntity(Entity var0)
     {
-        var0.setDead();
+        var0.die();
     }
 
     public static Random createNewRandom(World var0)
