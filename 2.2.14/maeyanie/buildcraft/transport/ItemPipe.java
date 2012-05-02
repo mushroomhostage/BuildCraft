@@ -72,10 +72,6 @@ public class ItemPipe extends Item implements ITextureProvider
         {
             return false;
         }
-        else if (var5 == 127 && Block.byId[var11].material.isBuildable())
-        {
-            return false;
-        }
         else if (!var3.mayPlace(var11, var4, var5, var6, false, var7))
         {
             return false;
