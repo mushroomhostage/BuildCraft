@@ -72,10 +72,6 @@ public class ItemPipe extends Item implements ITextureProvider
         {
             return false;
         }
-        else if (var5 == 127 && Block.byId[var8].material.isBuildable())
-        {
-            return false;
-        }
         else if (var3.mayPlace(var8, var4, var5, var6, false, var7))
         {
             // CraftBukkit Mae - Paraphrased from ItemBlock
