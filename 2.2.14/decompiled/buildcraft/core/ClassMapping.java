@@ -295,8 +295,8 @@ public class ClassMapping
         {
             var8 = (Field)var7.next();
             var4[var5.stringIndex] = (String)var8.get(var1);
-            ++var5.stringIndex;
             var6.bytes += var4[var5.stringIndex].length();
+            ++var5.stringIndex;
         }
 
         var7 = this.objectFields.iterator();
@@ -520,8 +520,8 @@ public class ClassMapping
         {
             var8 = (Field)var7.next();
             var8.set(var1, var4[var5.stringIndex]);
-            ++var5.stringIndex;
             var6.bytes += var4[var5.stringIndex].length();
+            ++var5.stringIndex;
         }
 
         var7 = this.objectFields.iterator();
