@@ -10,6 +10,7 @@ import buildcraft.builders.FillerFillStairs;
 import buildcraft.builders.FillerFillWalls;
 import buildcraft.builders.FillerFlattener;
 import buildcraft.builders.FillerRemover;
+import buildcraft.builders.GuiHandler;
 import buildcraft.builders.ItemTemplate;
 import buildcraft.builders.TileBuilder;
 import buildcraft.builders.TileFiller;
@@ -19,6 +20,7 @@ import buildcraft.core.BluePrint;
 import buildcraft.core.CoreProxy;
 import buildcraft.core.DefaultProps;
 import buildcraft.core.FillerRegistry;
+import forge.MinecraftForge;
 import forge.Property;
 import java.io.File;
 
@@ -32,6 +34,11 @@ public class BuildCraftBuilders
     private static boolean initialized = false;
     public static BluePrint[] bluePrints = new BluePrint[65025];
 
+    public static void load()
+    {
+        MinecraftForge.setGuiHandler(mod_BuildCraftBuilders.instance, new GuiHandler());
+    }
+
     public static void initialize()
     {
         if (!initialized)
@@ -39,7 +46,7 @@ public class BuildCraftBuilders
             initialized = true;
             mod_BuildCraftCore.initialize();
             BuildCraftCore.initializeGears();
-            Property var0 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("templateItem.id", 2, DefaultProps.TEMPLATE_ITEM_ID);
+            Property var0 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("templateItem.id", "item", DefaultProps.TEMPLATE_ITEM_ID);
             Property var1 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("marker.id", DefaultProps.MARKER_ID);
             Property var2 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("filler.id", DefaultProps.FILLER_ID);
             Property var3 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("builder.id", DefaultProps.BUILDER_ID);

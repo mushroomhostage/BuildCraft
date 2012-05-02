@@ -9,12 +9,12 @@ import buildcraft.api.PowerFramework;
 import buildcraft.api.PowerProvider;
 import buildcraft.api.TileNetworkData;
 import buildcraft.core.TileBuildCraft;
+import buildcraft.core.network.PacketUpdate;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.Packet;
-import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.TileEntity;
 
 public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInventory, ILiquidContainer, IEngineProvider
@@ -267,6 +267,9 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
         this.engine.writeToNBT(var1);
     }
 
+    /**
+     * Returns the number of slots in the inventory.
+     */
     public int getSize()
     {
         return 1;
@@ -348,19 +351,19 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
         return super.d();
     }
 
-    public Packet230ModLoader getUpdatePacket()
+    public Packet getUpdatePacket()
     {
         this.serverPistonSpeed = this.engine.getPistonSpeed();
         return super.getUpdatePacket();
     }
 
-    public void handleDescriptionPacket(Packet230ModLoader var1)
+    public void handleDescriptionPacket(PacketUpdate var1)
     {
         this.createEngineIfNeeded();
         super.handleDescriptionPacket(var1);
     }
 
-    public void handleUpdatePacket(Packet230ModLoader var1)
+    public void handleUpdatePacket(PacketUpdate var1)
     {
         this.createEngineIfNeeded();
         super.handleUpdatePacket(var1);
@@ -437,6 +440,10 @@ public class TileEngine extends TileBuildCraft implements IPowerReceptor, IInven
         return this.engine;
     }
 
+    /**
+     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
+     * like when you close a workbench GUI.
+     */
     public ItemStack splitWithoutUpdate(int var1)
     {
         return null;

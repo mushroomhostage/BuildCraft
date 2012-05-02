@@ -266,7 +266,8 @@ public class StackUtil
         {
             if (var3)
             {
-                var5 = new ItemStack(this.items.id, 1, this.items.getData());
+                var5 = this.items.cloneItemStack();
+                var5.count = 1;
                 --this.items.count;
                 var1.setItem(var2, var5);
             }

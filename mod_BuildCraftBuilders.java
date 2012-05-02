@@ -1,8 +1,9 @@
 package net.minecraft.server;
 
-public class mod_BuildCraftBuilders extends BaseModMp
-{
+import forge.NetworkMod;
 
+public class mod_BuildCraftBuilders extends NetworkMod
+{
     public static mod_BuildCraftBuilders instance;
 
     public mod_BuildCraftBuilders()
@@ -18,8 +19,21 @@ public class mod_BuildCraftBuilders extends BaseModMp
 
     public String getVersion()
     {
-        return "2.2.13";
+        return "2.2.14";
     }
 
-    public void load() {}
+    public void load()
+    {
+        BuildCraftBuilders.load();
+    }
+
+    public boolean clientSideRequired()
+    {
+        return true;
+    }
+
+    public boolean serverSideRequired()
+    {
+        return false;
+    }
 }

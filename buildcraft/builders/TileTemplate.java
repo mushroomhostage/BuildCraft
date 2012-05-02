@@ -10,13 +10,13 @@ import buildcraft.core.Box;
 import buildcraft.core.CoreProxy;
 import buildcraft.core.TileBuildCraft;
 import buildcraft.core.Utils;
+import buildcraft.core.network.PacketUpdate;
 import net.minecraft.server.BuildCraftBuilders;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.NBTTagList;
-import net.minecraft.server.Packet230ModLoader;
 
 public class TileTemplate extends TileBuildCraft implements IInventory
 {
@@ -173,6 +173,9 @@ public class TileTemplate extends TileBuildCraft implements IInventory
         }
     }
 
+    /**
+     * Returns the number of slots in the inventory.
+     */
     public int getSize()
     {
         return 2;
@@ -356,7 +359,7 @@ public class TileTemplate extends TileBuildCraft implements IInventory
         return this.computingTime * var1 / 200;
     }
 
-    public void handleDescriptionPacket(Packet230ModLoader var1)
+    public void handleDescriptionPacket(PacketUpdate var1)
     {
         boolean var2 = this.box.isInitialized();
         super.handleDescriptionPacket(var1);
@@ -367,7 +370,7 @@ public class TileTemplate extends TileBuildCraft implements IInventory
         }
     }
 
-    public void handleUpdatePacket(Packet230ModLoader var1)
+    public void handleUpdatePacket(PacketUpdate var1)
     {
         boolean var2 = this.box.isInitialized();
         super.handleUpdatePacket(var1);

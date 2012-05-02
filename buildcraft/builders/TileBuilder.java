@@ -15,6 +15,7 @@ import buildcraft.core.BluePrintBuilder;
 import buildcraft.core.Box;
 import buildcraft.core.CoreProxy;
 import buildcraft.core.TileBuildCraft;
+import buildcraft.core.network.PacketUpdate;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftBuilders;
 import net.minecraft.server.BuildCraftCore;
@@ -24,7 +25,6 @@ import net.minecraft.server.ItemBlock;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.NBTTagList;
-import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.mod_BuildCraftBuilders;
 
 // MaeEdit start
@@ -213,6 +213,9 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
         }
     }
 
+    /**
+     * Returns the number of slots in the inventory.
+     */
     public int getSize()
     {
         return this.items.length;
@@ -376,7 +379,7 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
         return this.powerProvider;
     }
 
-    public void handleDescriptionPacket(Packet230ModLoader var1)
+    public void handleDescriptionPacket(PacketUpdate var1)
     {
         boolean var2 = this.box.isInitialized();
         super.handleDescriptionPacket(var1);
@@ -387,7 +390,7 @@ public class TileBuilder extends TileBuildCraft implements IInventory, IPowerRec
         }
     }
 
-    public void handleUpdatePacket(Packet230ModLoader var1)
+    public void handleUpdatePacket(PacketUpdate var1)
     {
         boolean var2 = this.box.isInitialized();
         super.handleUpdatePacket(var1);

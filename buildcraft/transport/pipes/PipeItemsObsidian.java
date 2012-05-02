@@ -207,7 +207,7 @@ public class PipeItemsObsidian extends Pipe implements IPowerReceptor
 
                             if (var7 != null && this.powerProvider.useEnergy(1, 1, true) == 1)
                             {
-                                EntityItem var8 = new EntityItem(this.worldObj, var6.locX, var6.locY + 0.3D, var6.locZ, var7);
+                                EntityItem var8 = new EntityItem(this.worldObj, var6.locX, var6.locY + 0.30000001192092896D, var6.locZ, var7);
                                 var8.pickupDelay = 10;
                                 this.worldObj.addEntity(var8);
                                 this.pullItemIntoPipe(var8, 1);

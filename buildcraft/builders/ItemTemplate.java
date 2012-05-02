@@ -22,6 +22,10 @@ public class ItemTemplate extends Item implements ITextureProvider
         var2.add("#" + var1.getData());
     }
 
+    /**
+     * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
+     * update it's contents.
+     */
     public void a(ItemStack var1, World var2, Entity var3, int var4, boolean var5) {}
 
     public String getTextureFile()

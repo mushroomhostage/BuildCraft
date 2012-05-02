@@ -13,6 +13,7 @@ import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.Material;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.World;
+import net.minecraft.server.mod_BuildCraftBuilders;
 
 public class BlockTemplate extends BlockContainer implements ITextureProvider
 {
@@ -50,7 +51,7 @@ public class BlockTemplate extends BlockContainer implements ITextureProvider
      */
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
-        if (var5.T() != null && var5.T().getItem() == BuildCraftCore.wrenchItem)
+        if (var5.U() != null && var5.U().getItem() == BuildCraftCore.wrenchItem)
         {
             int var7 = var1.getData(var2, var3, var4);
 
@@ -75,7 +76,12 @@ public class BlockTemplate extends BlockContainer implements ITextureProvider
         else
         {
             TileTemplate var6 = (TileTemplate)var1.getTileEntity(var2, var3, var4);
-            BuildersProxy.displayGUITemplate(var5, var6);
+
+            if (!APIProxy.isClient(var1))
+            {
+                var5.openGui(mod_BuildCraftBuilders.instance, 14, var1, var2, var3, var4);
+            }
+
             return true;
         }
     }
@@ -90,7 +96,7 @@ public class BlockTemplate extends BlockContainer implements ITextureProvider
     }
 
     /**
-     * Called when a block is using an item and passed in who placed it. Args: x, y, z, entityLiving
+     * Called when the block is placed in the world.
      */
     public void postPlace(World var1, int var2, int var3, int var4, EntityLiving var5)
     {

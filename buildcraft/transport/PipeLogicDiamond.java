@@ -5,8 +5,8 @@ import buildcraft.api.Orientations;
 import buildcraft.api.SafeTimeTracker;
 import buildcraft.api.TileNetworkData;
 import buildcraft.core.CoreProxy;
-import buildcraft.core.PacketIds;
-import buildcraft.core.TilePacketWrapper;
+import buildcraft.core.network.PacketUpdate;
+import buildcraft.core.network.TilePacketWrapper;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.EntityHuman;
@@ -14,7 +14,6 @@ import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.NBTTagList;
 import net.minecraft.server.Packet;
-import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.mod_BuildCraftTransport;
 
 public class PipeLogicDiamond extends PipeLogic
@@ -27,19 +26,23 @@ public class PipeLogicDiamond extends PipeLogic
     {
         if (networkPacket == null)
         {
-            networkPacket = new TilePacketWrapper(new Class[] {PipeLogicDiamond.PacketStack.class}, PacketIds.DiamondPipeContents);
+            networkPacket = new TilePacketWrapper(new Class[] {PipeLogicDiamond.PacketStack.class});
         }
     }
 
     public boolean blockActivated(EntityHuman var1)
     {
-        if (var1.T() != null && var1.T().id < Block.byId.length && Block.byId[var1.T().id] instanceof BlockGenericPipe)
+        if (var1.U() != null && var1.U().id < Block.byId.length && Block.byId[var1.U().id] instanceof BlockGenericPipe)
         {
             return false;
         }
         else
         {
-            TransportProxy.displayGUIFilter(var1, this.container);
+            if (!APIProxy.isClient(this.container.world))
+            {
+                var1.openGui(mod_BuildCraftTransport.instance, 50, this.container.world, this.container.x, this.container.y, this.container.z);
+            }
+
             return true;
         }
     }
@@ -69,7 +72,7 @@ public class PipeLogicDiamond extends PipeLogic
         {
             for (int var4 = 0; var4 < 6; ++var4)
             {
-                CoreProxy.sendToPlayers((Packet230ModLoader)this.getContentsPacket(var4), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
+                CoreProxy.sendToPlayers(this.getContentsPacket(var4), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
             }
         }
 
@@ -95,7 +98,7 @@ public class PipeLogicDiamond extends PipeLogic
                 {
                     for (int var3 = 0; var3 < 6; ++var3)
                     {
-                        CoreProxy.sendToPlayers((Packet230ModLoader)this.getContentsPacket(var3), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
+                        CoreProxy.sendToPlayers(this.getContentsPacket(var3), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
                     }
                 }
             }
@@ -108,7 +111,7 @@ public class PipeLogicDiamond extends PipeLogic
         {
             for (int var1 = 0; var1 < 6; ++var1)
             {
-                CoreProxy.sendToPlayers((Packet230ModLoader)this.getContentsPacket(var1), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
+                CoreProxy.sendToPlayers(this.getContentsPacket(var1), this.xCoord, this.yCoord, this.zCoord, 50, mod_BuildCraftTransport.instance);
             }
         }
     }
@@ -189,13 +192,13 @@ public class PipeLogicDiamond extends PipeLogic
             }
         }
 
-        return networkPacket.toPacket(this.xCoord, this.yCoord, this.zCoord, (Object)var2);
+        return (new PacketUpdate(30, networkPacket.toPayload(this.xCoord, this.yCoord, this.zCoord, (Object)var2))).getPacket();
     }
 
-    public void handleContentsPacket(Packet230ModLoader var1)
+    public void handleContentsPacket(PacketUpdate var1)
     {
         PipeLogicDiamond.PacketStack var2 = new PipeLogicDiamond.PacketStack();
-        networkPacket.updateFromPacket((Object)var2, var1);
+        networkPacket.fromPayload((Object)var2, var1.payload);
         int var3 = var2.num;
 
         for (int var4 = 0; var4 < 9; ++var4)

@@ -11,6 +11,7 @@ import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.Material;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.World;
+import net.minecraft.server.mod_BuildCraftBuilders;
 
 public class BlockFiller extends BlockContainer implements ITextureProvider
 {
@@ -34,8 +35,11 @@ public class BlockFiller extends BlockContainer implements ITextureProvider
      */
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
-        TileFiller var6 = (TileFiller)var1.getTileEntity(var2, var3, var4);
-        BuildersProxy.displayGUIFiller(var5, var6);
+        if (!APIProxy.isClient(var1))
+        {
+            var5.openGui(mod_BuildCraftBuilders.instance, 12, var1, var2, var3, var4);
+        }
+
         return true;
     }
 

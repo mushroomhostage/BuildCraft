@@ -1,10 +1,11 @@
 package net.minecraft.server;
 
 import buildcraft.core.ClassMapping;
+import forge.NetworkMod;
 import java.util.Date;
 import net.minecraft.server.MinecraftServer;
 
-public class mod_BuildCraftCore extends BaseModMp
+public class mod_BuildCraftCore extends NetworkMod
 {
     public static mod_BuildCraftCore instance;
     BuildCraftCore proxy = new BuildCraftCore();
@@ -35,10 +36,10 @@ public class mod_BuildCraftCore extends BaseModMp
 
     public static String version()
     {
-        return "2.2.13";
+        return "2.2.14";
     }
 
-    public void onTickInGame(MinecraftServer var1)
+    public boolean onTickInGame(MinecraftServer var1)
     {
         if (BuildCraftCore.trackNetworkUsage)
         {
@@ -53,7 +54,21 @@ public class mod_BuildCraftCore extends BaseModMp
             }
         }
 
+        return true;
     }
 
-    public void load() {}
+    public void load()
+    {
+        BuildCraftCore.load();
+    }
+
+    public boolean clientSideRequired()
+    {
+        return true;
+    }
+
+    public boolean serverSideRequired()
+    {
+        return false;
+    }
 }

@@ -12,15 +12,17 @@ import buildcraft.api.SafeTimeTracker;
 import buildcraft.api.TileNetworkData;
 import buildcraft.core.BlockIndex;
 import buildcraft.core.CoreProxy;
-import buildcraft.core.ISynchronizedTile;
-import buildcraft.core.PacketIds;
 import buildcraft.core.PersistentTile;
 import buildcraft.core.PersistentWorld;
+import buildcraft.core.network.ISynchronizedTile;
+import buildcraft.core.network.PacketPayload;
+import buildcraft.core.network.PacketPipeDescription;
+import buildcraft.core.network.PacketTileUpdate;
+import buildcraft.core.network.PacketUpdate;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.Packet;
-import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.mod_BuildCraftCore;
 
@@ -228,6 +230,9 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
         this.blockNeighborChange = true;
     }
 
+    /**
+     * Returns the number of slots in the inventory.
+     */
     public int getSize()
     {
         return BlockGenericPipe.isFullyDefined(this.pipe) ? this.pipe.logic.getSizeInventory() : 0;
@@ -309,11 +314,11 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
         return BlockGenericPipe.isValid(this.pipe) ? this.pipe.transport.acceptItems() : false;
     }
 
-    public void handleDescriptionPacket(Packet230ModLoader var1)
+    public void handleDescriptionPacket(PacketUpdate var1)
     {
-        if (this.pipe == null && var1.dataInt[3] != 0)
+        if (this.pipe == null && var1.payload.intPayload[0] != 0)
         {
-            this.pipe = BlockGenericPipe.createPipe(var1.dataInt[3]);
+            this.pipe = BlockGenericPipe.createPipe(var1.payload.intPayload[0]);
             this.pipeBound = false;
             this.bindPipe();
 
@@ -324,7 +329,7 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
         }
     }
 
-    public void handleUpdatePacket(Packet230ModLoader var1)
+    public void handleUpdatePacket(PacketUpdate var1)
     {
         if (BlockGenericPipe.isValid(this.pipe))
         {
@@ -332,11 +337,11 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
         }
     }
 
-    public void postPacketHandling(Packet230ModLoader var1) {}
+    public void postPacketHandling(PacketUpdate var1) {}
 
-    public Packet230ModLoader getUpdatePacket()
+    public Packet getUpdatePacket()
     {
-        return this.pipe.getNetworkPacket();
+        return (new PacketTileUpdate(this)).getPacket();
     }
 
     /**
@@ -345,25 +350,23 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
     public Packet d()
     {
         this.bindPipe();
-        Packet230ModLoader var1 = new Packet230ModLoader();
-        var1.modId = mod_BuildCraftCore.instance.getId();
-        var1.lowPriority = true;
-        var1.packetType = PacketIds.TileDescription.ordinal();
-        var1.dataInt = new int[4];
-        var1.dataInt[0] = this.x;
-        var1.dataInt[1] = this.y;
-        var1.dataInt[2] = this.z;
+        PacketPipeDescription var1;
 
         if (this.pipe != null)
         {
-            var1.dataInt[3] = this.pipe.itemID;
+            var1 = new PacketPipeDescription(this.x, this.y, this.z, this.pipe.itemID);
         }
         else
         {
-            var1.dataInt[3] = 0;
+            var1 = new PacketPipeDescription(this.x, this.y, this.z, 0);
         }
 
-        return var1;
+        return var1.getPacket();
+    }
+
+    public PacketPayload getPacketPayload()
+    {
+        return this.pipe.getNetworkPacket();
     }
 
     public void f() {}
@@ -375,6 +378,10 @@ public class TileGenericPipe extends TileEntity implements IPowerReceptor, ILiqu
         return this.getPowerProvider().maxEnergyReceived;
     }
 
+    /**
+     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
+     * like when you close a workbench GUI.
+     */
     public ItemStack splitWithoutUpdate(int var1)
     {
         return null;

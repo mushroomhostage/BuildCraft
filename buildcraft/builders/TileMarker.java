@@ -8,10 +8,10 @@ import buildcraft.api.TileNetworkData;
 import buildcraft.core.EntityBlock;
 import buildcraft.core.TileBuildCraft;
 import buildcraft.core.Utils;
+import buildcraft.core.network.PacketUpdate;
 import net.minecraft.server.BuildCraftBuilders;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.Packet;
-import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.World;
 
 public class TileMarker extends TileBuildCraft implements IAreaProvider
@@ -473,7 +473,7 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider
         return this.origin.vectO.getMarker(this.world) == this ? super.d() : null;
     }
 
-    public Packet230ModLoader getUpdatePacket()
+    public Packet getUpdatePacket()
     {
         TileMarker var1 = this.origin.vectO.getMarker(this.world);
 
@@ -492,7 +492,7 @@ public class TileMarker extends TileBuildCraft implements IAreaProvider
         }
     }
 
-    public void postPacketHandling(Packet230ModLoader var1)
+    public void postPacketHandling(PacketUpdate var1)
     {
         super.postPacketHandling(var1);
 

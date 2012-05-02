@@ -38,7 +38,7 @@ public class BlockDockingStation extends BlockContainer implements ITextureProvi
     }
 
     /**
-     * Called when a block is using an item and passed in who placed it. Args: x, y, z, entityLiving
+     * Called when the block is placed in the world.
      */
     public void postPlace(World var1, int var2, int var3, int var4, EntityLiving var5)
     {

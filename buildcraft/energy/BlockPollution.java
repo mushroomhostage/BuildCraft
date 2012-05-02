@@ -21,7 +21,7 @@ public class BlockPollution extends BlockContainer implements ITextureProvider
     }
 
     /**
-     * If this block doesn't render as an ordinary block it will return false (examples: signs, buttons, stairs, etc)
+     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
     public boolean b()
     {

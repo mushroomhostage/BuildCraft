@@ -1,8 +1,8 @@
 package buildcraft.core;
 
 import forge.DimensionManager;
+import forge.NetworkMod;
 import java.io.File;
-import net.minecraft.server.BaseModMp;
 import net.minecraft.server.Block;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityItem;
@@ -11,8 +11,7 @@ import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.ModLoader;
-import net.minecraft.server.ModLoaderMp;
-import net.minecraft.server.Packet230ModLoader;
+import net.minecraft.server.Packet;
 import net.minecraft.server.World;
 
 public class CoreProxy
@@ -34,24 +33,25 @@ public class CoreProxy
         return new File("BuildCraft.cfg");
     }
 
-    public static void sendToPlayers(Packet230ModLoader packet230modloader, int i, int j, int k, int l, BaseModMp basemodmp)
+    public static void sendToPlayers(Packet var0, int var1, int var2, int var3, int var4, NetworkMod var5)
     {
-        if (packet230modloader != null)
+        if (var0 != null)
         {
-            for (int w = 0; w < ModLoader.getMinecraftServerInstance().worlds.size(); w++)
+            for (int var6 = 0; var6 < DimensionManager.getWorlds().length; ++var6)
             {
-                net.minecraft.server.World world = ModLoader.getMinecraftServerInstance().worlds.get(w);
-                for (int p = 0; p < world.players.size(); p++)
+                for (int var7 = 0; var7 < DimensionManager.getWorlds()[var6].players.size(); ++var7)
                 {
-                    EntityPlayer entityplayer = (EntityPlayer)world.players.get(p);
-                    if (Math.abs(entityplayer.locX - (double)i) <= (double)l && Math.abs(entityplayer.locY - (double)j) <= (double)l && Math.abs(entityplayer.locZ - (double)k) <= (double)l)
+                    EntityPlayer var8 = (EntityPlayer)DimensionManager.getWorlds()[var6].players.get(var7);
+
+                    if (Math.abs(var8.locX - (double)var1) <= (double)var4 && Math.abs(var8.locY - (double)var2) <= (double)var4 && Math.abs(var8.locZ - (double)var3) <= (double)var4)
                     {
-                        ModLoaderMp.sendPacketTo(basemodmp, entityplayer, packet230modloader);
+                        var8.netServerHandler.sendPacket(var0);
                     }
                 }
             }
         }
     }
+
     public static boolean isPlainBlock(Block var0)
     {
         return var0.b();
@@ -81,6 +81,6 @@ public class CoreProxy
 
     public static void TakenFromCrafting(EntityHuman var0, ItemStack var1, IInventory var2)
     {
-        ModLoader.takenFromCrafting(var0, var1, var2);
+        ModLoader.takenFromCrafting((EntityPlayer)var0, var1, var2);
     }
 }

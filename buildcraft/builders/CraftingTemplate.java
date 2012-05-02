@@ -17,7 +17,7 @@ class CraftingTemplate extends CraftingTemplateRoot
     }
 
     /**
-     * update the crafting matrix
+     * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
      */
     public void a()
     {

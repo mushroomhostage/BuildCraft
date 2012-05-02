@@ -16,12 +16,12 @@ import buildcraft.core.IMachine;
 import buildcraft.core.StackUtil;
 import buildcraft.core.TileBuildCraft;
 import buildcraft.core.Utils;
+import buildcraft.core.network.PacketUpdate;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.ItemBlock;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.NBTTagList;
-import net.minecraft.server.Packet230ModLoader;
 
 public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPowerReceptor, IMachine
 {
@@ -157,6 +157,9 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         }
     }
 
+    /**
+     * Returns the number of slots in the inventory.
+     */
     public int getSize()
     {
         return 36;
@@ -450,7 +453,7 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         return null;
     }
 
-    public void handleDescriptionPacket(Packet230ModLoader var1)
+    public void handleDescriptionPacket(PacketUpdate var1)
     {
         boolean var2 = this.box.isInitialized();
         super.handleDescriptionPacket(var1);
@@ -463,7 +466,7 @@ public class TileFiller extends TileBuildCraft implements ISpecialInventory, IPo
         }
     }
 
-    public void handleUpdatePacket(Packet230ModLoader var1)
+    public void handleUpdatePacket(PacketUpdate var1)
     {
         boolean var2 = this.box.isInitialized();
         super.handleUpdatePacket(var1);

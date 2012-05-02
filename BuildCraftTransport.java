@@ -5,12 +5,14 @@ import buildcraft.core.DefaultProps;
 import buildcraft.core.ItemBuildCraftTexture;
 import buildcraft.transport.BlockDockingStation;
 import buildcraft.transport.BlockGenericPipe;
+import buildcraft.transport.GuiHandler;
 import buildcraft.transport.LegacyBlock;
 import buildcraft.transport.LegacyTile;
 import buildcraft.transport.PipeLogicWood;
 import buildcraft.transport.TileDummyGenericPipe;
 import buildcraft.transport.TileDummyGenericPipe2;
 import buildcraft.transport.TileGenericPipe;
+import buildcraft.transport.network.ConnectionHandler;
 import buildcraft.transport.pipes.PipeItemsCobblestone;
 import buildcraft.transport.pipes.PipeItemsDiamond;
 import buildcraft.transport.pipes.PipeItemsGold;
@@ -26,6 +28,7 @@ import buildcraft.transport.pipes.PipeLiquidsWood;
 import buildcraft.transport.pipes.PipePowerGold;
 import buildcraft.transport.pipes.PipePowerStone;
 import buildcraft.transport.pipes.PipePowerWood;
+import forge.MinecraftForge;
 import forge.Property;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -55,17 +58,23 @@ public class BuildCraftTransport
     public static Item pipePowerGold;
     private static LinkedList pipeRecipes = new LinkedList();
 
+    public static void load()
+    {
+        MinecraftForge.registerConnectionHandler(new ConnectionHandler());
+        MinecraftForge.setGuiHandler(mod_BuildCraftTransport.instance, new GuiHandler());
+    }
+
     public static void initialize()
     {
         if (!initialized)
         {
             initialized = true;
             mod_BuildCraftCore.initialize();
-            Property var0 = BuildCraftCore.mainConfiguration.getOrCreateBooleanProperty("loadLegacyPipes", 0, true);
+            Property var0 = BuildCraftCore.mainConfiguration.getOrCreateBooleanProperty("loadLegacyPipes", "general", true);
             var0.comment = "set to true to load pre 2.2.5 worlds pipes";
-            Property var1 = BuildCraftCore.mainConfiguration.getOrCreateBooleanProperty("pipes.alwaysConnect", 0, DefaultProps.PIPES_ALWAYS_CONNECT);
+            Property var1 = BuildCraftCore.mainConfiguration.getOrCreateBooleanProperty("pipes.alwaysConnect", "general", DefaultProps.PIPES_ALWAYS_CONNECT);
             var1.comment = "set to false to deactivate pipe connection rules, true by default";
-            Property var2 = BuildCraftCore.mainConfiguration.getOrCreateProperty("woodenPipe.exclusion", 1, "");
+            Property var2 = BuildCraftCore.mainConfiguration.getOrCreateProperty("woodenPipe.exclusion", "block", "");
             PipeLogicWood.excludedBlocks = var2.value.split(",");
             Property var3 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("pipe.id", DefaultProps.GENERIC_PIPE_ID);
             Property var4 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("dockingStation.id", DefaultProps.DOCKING_STATION_ID);
@@ -156,12 +165,12 @@ public class BuildCraftTransport
     private static Item createPipe(int var0, Class var1, String var2, Object var3, Object var4, Object var5)
     {
         String var6 = Character.toLowerCase(var1.getSimpleName().charAt(0)) + var1.getSimpleName().substring(1);
-        Property var7 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty(var6 + ".id", 2, var0);
+        Property var7 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty(var6 + ".id", "item", var0);
         int var8 = Integer.parseInt(var7.value);
         Item var9 = BlockGenericPipe.registerPipe(var8, var1);
         var9.a(var1.getSimpleName());
         CoreProxy.addName(var9, var2);
-        BuildCraftTransport.PipeRecipe var10 = new BuildCraftTransport.PipeRecipe((BuildCraftTransport.NamelessClass1410840006)null);
+        BuildCraftTransport.PipeRecipe var10 = new BuildCraftTransport.PipeRecipe((BuildCraftTransport.NamelessClass1494450339)null);
 
         if (var3 != null && var4 != null && var5 != null)
         {
@@ -179,7 +188,7 @@ public class BuildCraftTransport
         return var9;
     }
 
-    static class NamelessClass1410840006
+    static class NamelessClass1494450339
     {
     }
 
@@ -190,7 +199,7 @@ public class BuildCraftTransport
 
         private PipeRecipe() {}
 
-        PipeRecipe(BuildCraftTransport.NamelessClass1410840006 var1)
+        PipeRecipe(BuildCraftTransport.NamelessClass1494450339 var1)
         {
             this();
         }

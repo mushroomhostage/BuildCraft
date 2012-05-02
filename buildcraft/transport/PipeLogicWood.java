@@ -63,7 +63,7 @@ public class PipeLogicWood extends PipeLogic
             {
                 String var4 = var1[var3];
 
-                if (var4.equals(var0.p()) || var4.equals(Integer.toString(var0.id)))
+                if (var4.equals(var0.q()) || var4.equals(Integer.toString(var0.id)))
                 {
                     return true;
                 }
@@ -75,7 +75,7 @@ public class PipeLogicWood extends PipeLogic
 
     public boolean blockActivated(EntityHuman var1)
     {
-        if (var1.T() != null && var1.T().getItem() == BuildCraftCore.wrenchItem)
+        if (var1.U() != null && var1.U().getItem() == BuildCraftCore.wrenchItem)
         {
             this.switchSource();
             return true;

@@ -17,13 +17,13 @@ import buildcraft.core.DefaultAreaProvider;
 import buildcraft.core.IMachine;
 import buildcraft.core.StackUtil;
 import buildcraft.core.Utils;
+import buildcraft.core.network.PacketUpdate;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftBlockUtil;
 import net.minecraft.server.BuildCraftFactory;
 import net.minecraft.server.EntityItem;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.Packet230ModLoader;
 
 // MaeEdit start
 import org.bukkit.craftbukkit.block.CraftBlockState;
@@ -494,7 +494,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
     {
         if (this.arm != null)
         {
-            this.arm.die();
+            this.arm.setEntityDead();
         }
 
         this.box.deleteLasers();
@@ -615,7 +615,7 @@ public class TileQuarry extends TileMachine implements IArmListener, IMachine, I
         this.bluePrintBuilder = new BluePrintBuilder(var1, this.box.xMin, this.y, this.box.zMin);
     }
 
-    public void postPacketHandling(Packet230ModLoader var1)
+    public void postPacketHandling(PacketUpdate var1)
     {
         super.postPacketHandling(var1);
         this.createUtilsIfNeeded();

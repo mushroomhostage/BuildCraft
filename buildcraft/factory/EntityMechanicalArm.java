@@ -158,7 +158,7 @@ public class EntityMechanicalArm extends Entity
     /**
      * Called to update the entity's position/logic.
      */
-    public void G_()
+    public void F_()
     {
         if (this.speed > 0.0D)
         {
@@ -168,7 +168,7 @@ public class EntityMechanicalArm extends Entity
 
     public void doMove(double var1)
     {
-        super.G_();
+        super.F_();
 
         if (this.inProgressionXZ)
         {
@@ -238,10 +238,7 @@ public class EntityMechanicalArm extends Entity
         var1.addEntity(this.head);
     }
 
-    /**
-     * Will get destroyed next tick
-     */
-    public void die()
+    public void setEntityDead()
     {
         this.xArm.die();
         this.yArm.die();

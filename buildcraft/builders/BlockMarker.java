@@ -106,7 +106,7 @@ public class BlockMarker extends BlockContainer implements ITextureProvider
     }
 
     /**
-     * If this block doesn't render as an ordinary block it will return false (examples: signs, buttons, stairs, etc)
+     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
     public boolean b()
     {
@@ -115,7 +115,7 @@ public class BlockMarker extends BlockContainer implements ITextureProvider
 
     /**
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, blockID
+     * their own) Args: x, y, z, neighbor blockID
      */
     public void doPhysics(World var1, int var2, int var3, int var4, int var5)
     {

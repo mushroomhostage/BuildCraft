@@ -32,7 +32,7 @@ public class BlockRefinery extends BlockContainer
     }
 
     /**
-     * If this block doesn't render as an ordinary block it will return false (examples: signs, buttons, stairs, etc)
+     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
     public boolean b()
     {
@@ -61,7 +61,7 @@ public class BlockRefinery extends BlockContainer
     }
 
     /**
-     * Called when a block is using an item and passed in who placed it. Args: x, y, z, entityLiving
+     * Called when the block is placed in the world.
      */
     public void postPlace(World var1, int var2, int var3, int var4, EntityLiving var5)
     {
@@ -76,11 +76,11 @@ public class BlockRefinery extends BlockContainer
      */
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
-        if (var5.T() != null)
+        if (var5.U() != null)
         {
             int var6;
 
-            if (var5.T().getItem() == BuildCraftCore.wrenchItem)
+            if (var5.U().getItem() == BuildCraftCore.wrenchItem)
             {
                 var6 = var1.getData(var2, var3, var4);
                 switch (Orientations.values()[var6])
@@ -102,7 +102,7 @@ public class BlockRefinery extends BlockContainer
             }
             else
             {
-                var6 = API.getLiquidForBucket(var5.T().id);
+                var6 = API.getLiquidForBucket(var5.U().id);
 
                 if (var6 != 0)
                 {

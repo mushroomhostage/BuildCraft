@@ -2,6 +2,8 @@ package net.minecraft.server;
 
 import buildcraft.api.*;
 import buildcraft.core.*;
+import buildcraft.core.network.ConnectionHandler;
+import forge.MinecraftForge;
 import forge.Property;
 import java.io.File;
 import java.io.PrintStream;
@@ -48,6 +50,11 @@ public class BuildCraftCore
     {
     }
 
+    public static void load()
+    {
+        MinecraftForge.registerConnectionHandler(new ConnectionHandler());
+    }
+
     public static void initialize()
     {
         if (initialized)
@@ -68,13 +75,13 @@ public class BuildCraftCore
         blueLaserTexture = 1;
         stripesLaserTexture = 3;
         transparentTexture = 0;
-        Property property = mainConfiguration.getOrCreateBooleanProperty("current.continuous", 0, DefaultProps.CURRENT_CONTINUOUS);
+        Property property = mainConfiguration.getOrCreateBooleanProperty("current.continuous", "general", DefaultProps.CURRENT_CONTINUOUS);
         property.comment = "set to true for allowing machines to be driven by continuous current";
         continuousCurrentModel = Boolean.parseBoolean(property.value);
-        Property property1 = mainConfiguration.getOrCreateBooleanProperty("trackNetworkUsage", 0, false);
+        Property property1 = mainConfiguration.getOrCreateBooleanProperty("trackNetworkUsage", "general", false);
         trackNetworkUsage = Boolean.parseBoolean(property1.value);
-        Property property2 = mainConfiguration.getOrCreateProperty("power.framework", 0, "buildcraft.energy.PneumaticPowerFramework");
-        Property property3 = mainConfiguration.getOrCreateIntProperty("network.updateFactor", 0, 10);
+        Property property2 = mainConfiguration.getOrCreateProperty("power.framework", "general", "buildcraft.energy.PneumaticPowerFramework");
+        Property property3 = mainConfiguration.getOrCreateIntProperty("network.updateFactor", "general", 10);
         property3.comment = "increasing this number will decrease network update frequency, useful for overloaded servers";
         updateFactor = Integer.parseInt(property3.value);
         String s = "";
@@ -118,18 +125,18 @@ public class BuildCraftCore
         }
 
         // MaeEdit start
-        Property fakeplayer = mainConfiguration.getOrCreateProperty("blocks.placedby", 0, "fakeplayer");
+        Property fakeplayer = mainConfiguration.getOrCreateProperty("blocks.placedby", "general", "fakeplayer");
         fakeplayer.comment = "Configures BLOCK_PLACE and BLOCK_BREAK events. Options are 'null' and 'fakeplayer'";
         buildcraft.core.FakePlayer.setMethod(fakeplayer.value);
-        Property fakename = mainConfiguration.getOrCreateProperty("blocks.fakeplayername", 0, "[BuildCraft]");
+        Property fakename = mainConfiguration.getOrCreateProperty("blocks.fakeplayername", "general", "[BuildCraft]");
         fakename.comment = "Configures the name of the fake player used when blocks.placedby=fakeplayer";
         buildcraft.core.FakePlayer.name = fakename.value;
-        Property fakelogin = mainConfiguration.getOrCreateBooleanProperty("blocks.fakeplayerlogin", 0, false);
+        Property fakelogin = mainConfiguration.getOrCreateBooleanProperty("blocks.fakeplayerlogin", "general", false);
         fakelogin.comment = "Causes login and join events to be sent for the fake player. This may help some plugins, but will cause errors with others. YMMV.";
         buildcraft.core.FakePlayer.doLogin = Boolean.parseBoolean(fakelogin.value);
         // MaeEdit end
 
-        Property property4 = mainConfiguration.getOrCreateIntProperty("wrench.id", 2, DefaultProps.WRENCH_ID);
+        Property property4 = mainConfiguration.getOrCreateIntProperty("wrench.id", "item", DefaultProps.WRENCH_ID);
         mainConfiguration.save();
         initializeGears();
         wrenchItem = (new ItemBuildCraftTexture(Integer.parseInt(property4.value))).d(2).a("wrenchItem");
@@ -183,12 +190,12 @@ public class BuildCraftCore
         }
         else
         {
-            Property property = mainConfiguration.getOrCreateIntProperty("woodenGearItem.id", 2, DefaultProps.WOODEN_GEAR_ID);
-            Property property1 = mainConfiguration.getOrCreateIntProperty("stoneGearItem.id", 2, DefaultProps.STONE_GEAR_ID);
-            Property property2 = mainConfiguration.getOrCreateIntProperty("ironGearItem.id", 2, DefaultProps.IRON_GEAR_ID);
-            Property property3 = mainConfiguration.getOrCreateIntProperty("goldenGearItem.id", 2, DefaultProps.GOLDEN_GEAR_ID);
-            Property property4 = mainConfiguration.getOrCreateIntProperty("diamondGearItem.id", 2, DefaultProps.DIAMOND_GEAR_ID);
-            Property property5 = mainConfiguration.getOrCreateBooleanProperty("modifyWorld", 0, true);
+            Property property = mainConfiguration.getOrCreateIntProperty("woodenGearItem.id", "item", DefaultProps.WOODEN_GEAR_ID);
+            Property property1 = mainConfiguration.getOrCreateIntProperty("stoneGearItem.id", "item", DefaultProps.STONE_GEAR_ID);
+            Property property2 = mainConfiguration.getOrCreateIntProperty("ironGearItem.id", "item", DefaultProps.IRON_GEAR_ID);
+            Property property3 = mainConfiguration.getOrCreateIntProperty("goldenGearItem.id", "item", DefaultProps.GOLDEN_GEAR_ID);
+            Property property4 = mainConfiguration.getOrCreateIntProperty("diamondGearItem.id", "item", DefaultProps.DIAMOND_GEAR_ID);
+            Property property5 = mainConfiguration.getOrCreateBooleanProperty("modifyWorld", "general", true);
             property5.comment = "set to false if BuildCraft should not generate custom blocks (e.g. oil)";
             mainConfiguration.save();
             modifyWorld = property5.value.equals("true");

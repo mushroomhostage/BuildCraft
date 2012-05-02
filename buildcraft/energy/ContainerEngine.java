@@ -16,7 +16,7 @@ public class ContainerEngine extends ContainerEngineRoot
     }
 
     /**
-     * update the crafting matrix
+     * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
      */
     public void a()
     {

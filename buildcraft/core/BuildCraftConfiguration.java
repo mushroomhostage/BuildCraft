@@ -39,26 +39,26 @@ public class BuildCraftConfiguration extends Configuration
                 var3.close();
             }
 
-            this.getOrCreateProperty("stonePipe.id", 1, var2.getProperty("stonePipe.blockId"));
-            this.getOrCreateProperty("woodenPipe.id", 1, var2.getProperty("woodenPipe.blockId"));
-            this.getOrCreateProperty("ironPipe.id", 1, var2.getProperty("ironPipe.blockId"));
-            this.getOrCreateProperty("goldenPipe.id", 1, var2.getProperty("goldenPipe.blockId"));
-            this.getOrCreateProperty("diamondPipe.id", 1, var2.getProperty("diamondPipe.blockId"));
-            this.getOrCreateProperty("obsidianPipe.id", 1, var2.getProperty("obsidianPipeBlock.blockId"));
-            this.getOrCreateProperty("autoWorkbench.id", 1, var2.getProperty("autoWorkbench.blockId"));
-            this.getOrCreateProperty("miningWell.id", 1, var2.getProperty("miningWell.blockId"));
-            this.getOrCreateProperty("quarry.id", 1, var2.getProperty("quarry.blockId"));
-            this.getOrCreateProperty("drill.id", 1, var2.getProperty("drill.blockId"));
-            this.getOrCreateProperty("frame.id", 1, var2.getProperty("frame.blockId"));
-            this.getOrCreateProperty("marker.id", 1, var2.getProperty("marker.blockId"));
-            this.getOrCreateProperty("filler.id", 1, var2.getProperty("filler.blockId"));
-            this.getOrCreateProperty("woodenGearItem.id", 2, var2.getProperty("woodenGearItem.id"));
-            this.getOrCreateProperty("stoneGearItem.id", 2, var2.getProperty("stoneGearItem.id"));
-            this.getOrCreateProperty("ironGearItem.id", 2, var2.getProperty("ironGearItem.id"));
-            this.getOrCreateProperty("goldenGearItem.id", 2, var2.getProperty("goldGearItem.id"));
-            this.getOrCreateProperty("diamondGearItem.id", 2, var2.getProperty("diamondGearItem.id"));
-            this.getOrCreateProperty("mining.enabled", 0, var2.getProperty("mining.enabled"));
-            this.getOrCreateProperty("current.continuous", 0, var2.getProperty("current.continous"));
+            this.getOrCreateProperty("stonePipe.id", "block", var2.getProperty("stonePipe.blockId"));
+            this.getOrCreateProperty("woodenPipe.id", "block", var2.getProperty("woodenPipe.blockId"));
+            this.getOrCreateProperty("ironPipe.id", "block", var2.getProperty("ironPipe.blockId"));
+            this.getOrCreateProperty("goldenPipe.id", "block", var2.getProperty("goldenPipe.blockId"));
+            this.getOrCreateProperty("diamondPipe.id", "block", var2.getProperty("diamondPipe.blockId"));
+            this.getOrCreateProperty("obsidianPipe.id", "block", var2.getProperty("obsidianPipeBlock.blockId"));
+            this.getOrCreateProperty("autoWorkbench.id", "block", var2.getProperty("autoWorkbench.blockId"));
+            this.getOrCreateProperty("miningWell.id", "block", var2.getProperty("miningWell.blockId"));
+            this.getOrCreateProperty("quarry.id", "block", var2.getProperty("quarry.blockId"));
+            this.getOrCreateProperty("drill.id", "block", var2.getProperty("drill.blockId"));
+            this.getOrCreateProperty("frame.id", "block", var2.getProperty("frame.blockId"));
+            this.getOrCreateProperty("marker.id", "block", var2.getProperty("marker.blockId"));
+            this.getOrCreateProperty("filler.id", "block", var2.getProperty("filler.blockId"));
+            this.getOrCreateProperty("woodenGearItem.id", "item", var2.getProperty("woodenGearItem.id"));
+            this.getOrCreateProperty("stoneGearItem.id", "item", var2.getProperty("stoneGearItem.id"));
+            this.getOrCreateProperty("ironGearItem.id", "item", var2.getProperty("ironGearItem.id"));
+            this.getOrCreateProperty("goldenGearItem.id", "item", var2.getProperty("goldGearItem.id"));
+            this.getOrCreateProperty("diamondGearItem.id", "item", var2.getProperty("diamondGearItem.id"));
+            this.getOrCreateProperty("mining.enabled", "general", var2.getProperty("mining.enabled"));
+            this.getOrCreateProperty("current.continuous", "general", var2.getProperty("current.continous"));
             var1.delete();
         }
         catch (IOException var4)

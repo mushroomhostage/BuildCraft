@@ -9,6 +9,7 @@ import buildcraft.core.ItemBuildCraftTexture;
 import buildcraft.energy.BlockEngine;
 import buildcraft.energy.BlockOilFlowing;
 import buildcraft.energy.BlockOilStill;
+import buildcraft.energy.GuiHandler;
 import buildcraft.energy.ItemBucketOil;
 import buildcraft.energy.ItemEngine;
 import buildcraft.energy.ItemFuel;
@@ -35,6 +36,10 @@ public class BuildCraftEnergy
     public static TreeMap saturationStored = new TreeMap();
     private static boolean initialized = false;
 
+    public static void load()
+    {
+        MinecraftForge.setGuiHandler(mod_BuildCraftEnergy.instance, new GuiHandler());
+    }
 
     public static void initialize()
     {
@@ -45,9 +50,9 @@ public class BuildCraftEnergy
             Property var0 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("engine.id", DefaultProps.ENGINE_ID);
             Property var1 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("oilStill.id", DefaultProps.OIL_STILL_ID);
             Property var2 = BuildCraftCore.mainConfiguration.getOrCreateBlockIdProperty("oilMoving.id", DefaultProps.OIL_MOVING_ID);
-            Property var3 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("bucketOil.id", 2, DefaultProps.BUCKET_OIL_ID);
-            Property var4 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("bucketFuel.id", 2, DefaultProps.BUCKET_FUEL_ID);
-            Property var5 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("fuel.id", 2, DefaultProps.FUEL_ID);
+            Property var3 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("bucketOil.id", "item", DefaultProps.BUCKET_OIL_ID);
+            Property var4 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("bucketFuel.id", "item", DefaultProps.BUCKET_FUEL_ID);
+            Property var5 = BuildCraftCore.mainConfiguration.getOrCreateIntProperty("fuel.id", "item", DefaultProps.FUEL_ID);
             BuildCraftCore.mainConfiguration.save();
             engineBlock = new BlockEngine(Integer.parseInt(var0.value));
             ModLoader.registerBlock(engineBlock);

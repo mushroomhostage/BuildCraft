@@ -1,8 +1,15 @@
 package net.minecraft.server;
 
-public class mod_BuildCraftFactory extends BaseModMp
+import forge.NetworkMod;
+
+public class mod_BuildCraftFactory extends NetworkMod
 {
     public static mod_BuildCraftFactory instance;
+
+    public mod_BuildCraftFactory()
+    {
+        instance = this;
+    }
 
     public void modsLoaded()
     {
@@ -13,8 +20,21 @@ public class mod_BuildCraftFactory extends BaseModMp
 
     public String getVersion()
     {
-        return "2.2.13";
+        return "2.2.14";
     }
 
-    public void load() {}
+    public void load()
+    {
+        BuildCraftFactory.load();
+    }
+
+    public boolean clientSideRequired()
+    {
+        return true;
+    }
+
+    public boolean serverSideRequired()
+    {
+        return false;
+    }
 }

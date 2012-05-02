@@ -95,6 +95,9 @@ public class EntityBlock extends Entity
         var1.setDouble("kSize", this.kSize);
     }
 
+    /**
+     * Returns true if other Entities should be prevented from moving through this Entity.
+     */
     public boolean o_()
     {
         return !this.dead;

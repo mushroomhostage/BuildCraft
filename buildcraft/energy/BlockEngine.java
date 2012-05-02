@@ -1,5 +1,6 @@
 package buildcraft.energy;
 
+import buildcraft.api.APIProxy;
 import buildcraft.api.IPipeConnection;
 import buildcraft.api.Orientations;
 import java.util.Random;
@@ -10,6 +11,7 @@ import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.Material;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.World;
+import net.minecraft.server.mod_BuildCraftEnergy;
 
 public class BlockEngine extends BlockContainer implements IPipeConnection
 {
@@ -29,7 +31,7 @@ public class BlockEngine extends BlockContainer implements IPipeConnection
     }
 
     /**
-     * If this block doesn't render as an ordinary block it will return false (examples: signs, buttons, stairs, etc)
+     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
     public boolean b()
     {
@@ -80,19 +82,27 @@ public class BlockEngine extends BlockContainer implements IPipeConnection
     {
         TileEngine var6 = (TileEngine)var1.getTileEntity(var2, var3, var4);
 
-        if (var5.T() != null && var5.T().getItem() == BuildCraftCore.wrenchItem)
+        if (var5.U() != null && var5.U().getItem() == BuildCraftCore.wrenchItem)
         {
             var6.switchOrientation();
             return true;
         }
         else if (var6.engine instanceof EngineStone)
         {
-            EnergyProxy.displayGUISteamEngine(var5, var6);
+            if (!APIProxy.isClient(var6.world))
+            {
+                var5.openGui(mod_BuildCraftEnergy.instance, 21, var1, var2, var3, var4);
+            }
+
             return true;
         }
         else if (var6.engine instanceof EngineIron)
         {
-            EnergyProxy.displayGUICombustionEngine(var5, var6);
+            if (!APIProxy.isClient(var6.world))
+            {
+                var5.openGui(mod_BuildCraftEnergy.instance, 20, var1, var2, var3, var4);
+            }
+
             return true;
         }
         else

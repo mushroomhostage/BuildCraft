@@ -1,10 +1,14 @@
 package buildcraft.core;
 
 import buildcraft.api.IPowerReceptor;
+import buildcraft.core.network.ISynchronizedTile;
+import buildcraft.core.network.PacketPayload;
+import buildcraft.core.network.PacketTileUpdate;
+import buildcraft.core.network.PacketUpdate;
+import buildcraft.core.network.TilePacketWrapper;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.server.Packet;
-import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.mod_BuildCraftCore;
 
@@ -20,12 +24,12 @@ public abstract class TileBuildCraft extends TileEntity implements ISynchronized
     {
         if (!updateWrappers.containsKey(this.getClass()))
         {
-            updateWrappers.put(this.getClass(), new TilePacketWrapper(this.getClass(), PacketIds.TileUpdate));
+            updateWrappers.put(this.getClass(), new TilePacketWrapper(this.getClass()));
         }
 
         if (!descriptionWrappers.containsKey(this.getClass()))
         {
-            descriptionWrappers.put(this.getClass(), new TilePacketWrapper(this.getClass(), PacketIds.TileDescription));
+            descriptionWrappers.put(this.getClass(), new TilePacketWrapper(this.getClass()));
         }
 
         this.updatePacket = (TilePacketWrapper)updateWrappers.get(this.getClass());
@@ -71,23 +75,28 @@ public abstract class TileBuildCraft extends TileEntity implements ISynchronized
      */
     public Packet d()
     {
-        return this.descriptionPacket.toPacket(this);
+        return (new PacketTileUpdate(this)).getPacket();
     }
 
-    public Packet230ModLoader getUpdatePacket()
+    public PacketPayload getPacketPayload()
     {
-        return this.updatePacket.toPacket(this);
+        return this.updatePacket.toPayload(this);
     }
 
-    public void handleDescriptionPacket(Packet230ModLoader var1)
+    public Packet getUpdatePacket()
     {
-        this.descriptionPacket.updateFromPacket((TileEntity)this, var1);
+        return (new PacketTileUpdate(this)).getPacket();
     }
 
-    public void handleUpdatePacket(Packet230ModLoader var1)
+    public void handleDescriptionPacket(PacketUpdate var1)
     {
-        this.updatePacket.updateFromPacket((TileEntity)this, var1);
+        this.descriptionPacket.fromPayload((TileEntity)this, var1.payload);
     }
 
-    public void postPacketHandling(Packet230ModLoader var1) {}
+    public void handleUpdatePacket(PacketUpdate var1)
+    {
+        this.updatePacket.fromPayload((TileEntity)this, var1.payload);
+    }
+
+    public void postPacketHandling(PacketUpdate var1) {}
 }

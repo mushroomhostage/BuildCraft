@@ -16,6 +16,9 @@ import net.minecraft.server.TileEntity;
 
 public class TileDockingStation extends TileEntity implements ILiquidContainer, ISpecialInventory
 {
+    /**
+     * Returns the number of slots in the inventory.
+     */
     public int getSize()
     {
         return 1;
@@ -255,6 +258,10 @@ public class TileDockingStation extends TileEntity implements ILiquidContainer, 
         return var3 != null && !var3.dead && var3.type == 1 ? this.checkExtractGeneric(var3, var1, var2) : null;
     }
 
+    /**
+     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
+     * like when you close a workbench GUI.
+     */
     public ItemStack splitWithoutUpdate(int var1)
     {
         return null;

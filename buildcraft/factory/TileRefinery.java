@@ -134,6 +134,9 @@ public class TileRefinery extends TileMachine implements ILiquidContainer, IPowe
         return this.result.liquidId;
     }
 
+    /**
+     * Returns the number of slots in the inventory.
+     */
     public int getSize()
     {
         return 0;

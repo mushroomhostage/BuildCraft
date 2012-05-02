@@ -2,9 +2,10 @@ package buildcraft.transport;
 
 import buildcraft.api.IPipe;
 import buildcraft.api.Orientations;
-import buildcraft.core.PacketIds;
 import buildcraft.core.PersistentTile;
-import buildcraft.core.TilePacketWrapper;
+import buildcraft.core.network.PacketPayload;
+import buildcraft.core.network.PacketUpdate;
+import buildcraft.core.network.TilePacketWrapper;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -12,7 +13,6 @@ import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityItem;
 import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.World;
 
@@ -38,7 +38,7 @@ public abstract class Pipe extends PersistentTile implements IPipe
 
         if (!networkWrappers.containsKey(this.getClass()))
         {
-            networkWrappers.put(this.getClass(), new TilePacketWrapper(new Class[] {TileGenericPipe.class, this.transport.getClass(), this.logic.getClass()}, PacketIds.TileUpdate));
+            networkWrappers.put(this.getClass(), new TilePacketWrapper(new Class[] {TileGenericPipe.class, this.transport.getClass(), this.logic.getClass()}));
         }
 
         this.networkPacket = (TilePacketWrapper)networkWrappers.get(this.getClass());
@@ -141,14 +141,14 @@ public abstract class Pipe extends PersistentTile implements IPipe
 
     public void onEntityCollidedWithBlock(Entity var1) {}
 
-    public Packet230ModLoader getNetworkPacket()
+    public PacketPayload getNetworkPacket()
     {
-        return this.networkPacket.toPacket(this.xCoord, this.yCoord, this.zCoord, new Object[] {this.container, this.transport, this.logic});
+        return this.networkPacket.toPayload(this.xCoord, this.yCoord, this.zCoord, new Object[] {this.container, this.transport, this.logic});
     }
 
-    public void handlePacket(Packet230ModLoader var1)
+    public void handlePacket(PacketUpdate var1)
     {
-        this.networkPacket.updateFromPacket(new Object[] {this.container, this.transport, this.logic}, var1);
+        this.networkPacket.fromPayload(new Object[] {this.container, this.transport, this.logic}, var1.payload);
     }
 
     public boolean isPoweringTo(int var1)

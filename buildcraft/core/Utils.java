@@ -8,6 +8,9 @@ import buildcraft.api.IPipeEntry;
 import buildcraft.api.LaserKind;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
+import buildcraft.core.network.ISynchronizedTile;
+import buildcraft.core.network.PacketUpdate;
+import java.util.Arrays;
 import java.util.LinkedList;
 import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftCore;
@@ -16,7 +19,6 @@ import net.minecraft.server.IBlockAccess;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.InventoryLargeChest;
 import net.minecraft.server.ItemStack;
-import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.TileEntityChest;
 import net.minecraft.server.World;
@@ -259,53 +261,6 @@ public class Utils
         return var14;
     }
 
-    public static void handleDescriptionPacket(Packet230ModLoader var0)
-    {
-        int var1 = var0.dataInt[0];
-        int var2 = var0.dataInt[1];
-        int var3 = var0.dataInt[2];
-
-        if (APIProxy.getWorld().isLoaded(var1, var2, var3))
-        {
-            TileEntity var4 = APIProxy.getWorld().getTileEntity(var1, var2, var3);
-
-            if (var4 instanceof ISynchronizedTile)
-            {
-                ((ISynchronizedTile)var4).handleDescriptionPacket(var0);
-                ((ISynchronizedTile)var4).postPacketHandling(var0);
-                return;
-            }
-        }
-
-        BlockIndex var5 = new BlockIndex(var1, var2, var3);
-
-        if (BuildCraftCore.bufferedDescriptions.containsKey(var5))
-        {
-            BuildCraftCore.bufferedDescriptions.remove(var5);
-        }
-
-        BuildCraftCore.bufferedDescriptions.put(var5, var0);
-    }
-
-    public static void handleUpdatePacket(Packet230ModLoader var0)
-    {
-        int var1 = var0.dataInt[0];
-        int var2 = var0.dataInt[1];
-        int var3 = var0.dataInt[2];
-
-        if (APIProxy.getWorld().isLoaded(var1, var2, var3))
-        {
-            TileEntity var4 = APIProxy.getWorld().getTileEntity(var1, var2, var3);
-
-            if (var4 instanceof ISynchronizedTile)
-            {
-                ((ISynchronizedTile)var4).handleUpdatePacket(var0);
-                ((ISynchronizedTile)var4).postPacketHandling(var0);
-                return;
-            }
-        }
-    }
-
     public static void handleBufferedDescription(ISynchronizedTile var0)
     {
         TileEntity var1 = (TileEntity)var0;
@@ -313,7 +268,7 @@ public class Utils
 
         if (BuildCraftCore.bufferedDescriptions.containsKey(var2))
         {
-            Packet230ModLoader var3 = (Packet230ModLoader)BuildCraftCore.bufferedDescriptions.get(var2);
+            PacketUpdate var3 = (PacketUpdate)BuildCraftCore.bufferedDescriptions.get(var2);
             BuildCraftCore.bufferedDescriptions.remove(var2);
             var0.handleDescriptionPacket(var3);
             var0.postPacketHandling(var3);
@@ -391,5 +346,26 @@ public class Utils
         Block var7 = Block.byId[var0.getTypeId(var1, var2, var3)];
         Block var8 = Block.byId[var0.getTypeId(var4, var5, var6)];
         return !(var7 instanceof IPipeConnection) && !(var8 instanceof IPipeConnection) ? false : (var7 instanceof IPipeConnection && !((IPipeConnection)var7).isPipeConnected(var0, var1, var2, var3, var4, var5, var6) ? false : !(var8 instanceof IPipeConnection) || ((IPipeConnection)var8).isPipeConnected(var0, var4, var5, var6, var1, var2, var3));
+    }
+
+    public static Object[] concat(Object[] var0, Object[] var1)
+    {
+        Object[] var2 = Arrays.copyOf(var0, var0.length + var1.length);
+        System.arraycopy(var1, 0, var2, var0.length, var1.length);
+        return var2;
+    }
+
+    public static int[] concat(int[] var0, int[] var1)
+    {
+        int[] var2 = Arrays.copyOf(var0, var0.length + var1.length);
+        System.arraycopy(var1, 0, var2, var0.length, var1.length);
+        return var2;
+    }
+
+    public static float[] concat(float[] var0, float[] var1)
+    {
+        float[] var2 = Arrays.copyOf(var0, var0.length + var1.length);
+        System.arraycopy(var1, 0, var2, var0.length, var1.length);
+        return var2;
     }
 }

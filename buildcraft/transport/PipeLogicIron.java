@@ -67,7 +67,7 @@ public class PipeLogicIron extends PipeLogic
     {
         super.blockActivated(var1);
 
-        if (var1.T() != null && var1.T().getItem() == BuildCraftCore.wrenchItem)
+        if (var1.U() != null && var1.U().getItem() == BuildCraftCore.wrenchItem)
         {
             this.switchPosition();
             this.worldObj.notify(this.xCoord, this.yCoord, this.zCoord);

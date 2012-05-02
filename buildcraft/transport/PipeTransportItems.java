@@ -5,13 +5,11 @@ import buildcraft.api.EntityPassiveItem;
 import buildcraft.api.IPipeEntry;
 import buildcraft.api.Orientations;
 import buildcraft.api.Position;
-import buildcraft.api.TileNetworkData;
 import buildcraft.core.CoreProxy;
 import buildcraft.core.IMachine;
-import buildcraft.core.PacketIds;
 import buildcraft.core.StackUtil;
-import buildcraft.core.TilePacketWrapper;
 import buildcraft.core.Utils;
+import buildcraft.core.network.PacketPipeTransportContent;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -22,7 +20,7 @@ import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.NBTTagList;
-import net.minecraft.server.Packet230ModLoader;
+import net.minecraft.server.Packet;
 import net.minecraft.server.TileEntity;
 import net.minecraft.server.mod_BuildCraftTransport;
 
@@ -32,7 +30,6 @@ public class PipeTransportItems extends PipeTransport
     public TreeMap travelingEntities = new TreeMap();
     LinkedList entitiesToLoad = new LinkedList();
     HashSet toRemove = new HashSet();
-    public static TilePacketWrapper networkItemData = null;
 
     public void readjustSpeed(EntityPassiveItem var1)
     {
@@ -419,62 +416,38 @@ public class PipeTransportItems extends PipeTransport
 
     protected void doWork() {}
 
-    public void handleItemPacket(Packet230ModLoader var1)
+    public void handleItemPacket(PacketPipeTransportContent var1)
     {
-        if (networkItemData == null)
+        if (var1.getID() == 2)
         {
-            networkItemData = new TilePacketWrapper(PipeTransportItems.ItemData.class, PacketIds.PipeItem);
-        }
+            EntityPassiveItem var2 = EntityPassiveItem.getOrCreate(this.worldObj, var1.getEntityId());
+            var2.item = new ItemStack(var1.getItemId(), var1.getStackSize(), var1.getItemDamage());
+            var2.setPosition(var1.getPosX(), var1.getPosY(), var1.getPosZ());
+            var2.speed = var1.getSpeed();
+            var2.deterministicRandomization = var1.getRandomization();
 
-        if (var1.packetType == PacketIds.PipeItem.ordinal())
-        {
-            PipeTransportItems.ItemData var2 = new PipeTransportItems.ItemData();
-            networkItemData.updateFromPacket((Object)var2, var1);
-            EntityPassiveItem var3 = EntityPassiveItem.getOrCreate(this.worldObj, var2.entityId);
-            var3.item = new ItemStack(var2.itemID, var2.stackSize, var2.itemDamage);
-            var3.setPosition((double)var2.posX, (double)var2.posY, (double)var2.posZ);
-            var3.speed = var2.speed;
-            var3.deterministicRandomization = var2.deterministicRandomization;
-
-            if (var3.container == this.container && this.travelingEntities.containsKey(Integer.valueOf(var3.entityId)))
+            if (var2.container == this.container && this.travelingEntities.containsKey(Integer.valueOf(var2.entityId)))
             {
-                ((PipeTransportItems.EntityData)this.travelingEntities.get(new Integer(var3.entityId))).orientation = var2.orientation;
+                ((PipeTransportItems.EntityData)this.travelingEntities.get(new Integer(var2.entityId))).orientation = var1.getOrientation();
             }
             else
             {
-                if (var3.container != null)
+                if (var2.container != null)
                 {
-                    ((PipeTransportItems)((TileGenericPipe)var3.container).pipe.transport).scheduleRemoval(var3);
+                    ((PipeTransportItems)((TileGenericPipe)var2.container).pipe.transport).scheduleRemoval(var2);
                 }
 
-                this.travelingEntities.put(new Integer(var3.entityId), new PipeTransportItems.EntityData(var3, var2.orientation));
-                var3.container = this.container;
+                this.travelingEntities.put(new Integer(var2.entityId), new PipeTransportItems.EntityData(var2, var1.getOrientation()));
+                var2.container = this.container;
             }
         }
     }
 
-    public Packet230ModLoader createItemPacket(EntityPassiveItem var1, Orientations var2)
+    public Packet createItemPacket(EntityPassiveItem var1, Orientations var2)
     {
-        if (networkItemData == null)
-        {
-            networkItemData = new TilePacketWrapper(PipeTransportItems.ItemData.class, PacketIds.PipeItem);
-        }
-
         var1.deterministicRandomization += this.worldObj.random.nextInt(6);
-        PipeTransportItems.ItemData var3 = new PipeTransportItems.ItemData();
-        var3.posX = (float)var1.posX;
-        var3.posY = (float)var1.posY;
-        var3.posZ = (float)var1.posZ;
-        var3.entityId = var1.entityId;
-        var3.orientation = var2;
-        var3.speed = var1.speed;
-        var3.itemID = (short)var1.item.id;
-        var3.stackSize = var1.item.count;
-        var3.itemDamage = var1.item.getData();
-        var3.deterministicRandomization = var1.deterministicRandomization;
-        Packet230ModLoader var4 = networkItemData.toPacket(this.xCoord, this.yCoord, this.zCoord, (Object)var3);
-        var4.modId = mod_BuildCraftTransport.instance.getId();
-        return var4;
+        PacketPipeTransportContent var3 = new PacketPipeTransportContent(this.container.x, this.container.y, this.container.z, var1, var2);
+        return var3.getPacket();
     }
 
     public int getNumberOfItems()
@@ -521,35 +494,5 @@ public class PipeTransportItems extends PipeTransport
             this.item = var2;
             this.orientation = var3;
         }
-    }
-
-    public class ItemData
-    {
-        @TileNetworkData
-        public float posX;
-        @TileNetworkData
-        public float posY;
-        @TileNetworkData
-        public float posZ;
-        @TileNetworkData
-        public float speed;
-        @TileNetworkData
-        public int entityId;
-        @TileNetworkData
-        public Orientations orientation;
-        @TileNetworkData
-        public short itemID;
-        @TileNetworkData(
-                intKind = 1
-        )
-        public int stackSize;
-        @TileNetworkData(
-                intKind = 1
-        )
-        public int itemDamage;
-        @TileNetworkData(
-                intKind = 1
-        )
-        public int deterministicRandomization;
     }
 }

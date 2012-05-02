@@ -12,6 +12,7 @@ import buildcraft.core.BlockIndex;
 import buildcraft.core.EntityBlock;
 import buildcraft.core.IMachine;
 import buildcraft.core.Utils;
+import buildcraft.core.network.PacketUpdate;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeMap;
@@ -20,7 +21,6 @@ import net.minecraft.server.Block;
 import net.minecraft.server.BuildCraftCore;
 import net.minecraft.server.BuildCraftEnergy;
 import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.Packet230ModLoader;
 import net.minecraft.server.TileEntity;
 
 public class TilePump extends TileMachine implements IMachine, IPowerReceptor
@@ -349,13 +349,13 @@ public class TilePump extends TileMachine implements IMachine, IPowerReceptor
 
     public void doWork() {}
 
-    public void handleDescriptionPacket(Packet230ModLoader var1)
+    public void handleDescriptionPacket(PacketUpdate var1)
     {
         super.handleDescriptionPacket(var1);
         this.setTubePosition();
     }
 
-    public void handleUpdatePacket(Packet230ModLoader var1)
+    public void handleUpdatePacket(PacketUpdate var1)
     {
         super.handleDescriptionPacket(var1);
         this.setTubePosition();

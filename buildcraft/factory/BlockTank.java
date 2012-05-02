@@ -23,7 +23,7 @@ public class BlockTank extends BlockContainer implements ITextureProvider
     }
 
     /**
-     * If this block doesn't render as an ordinary block it will return false (examples: signs, buttons, stairs, etc)
+     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
     public boolean b()
     {
@@ -90,9 +90,9 @@ public class BlockTank extends BlockContainer implements ITextureProvider
      */
     public boolean interact(World var1, int var2, int var3, int var4, EntityHuman var5)
     {
-        if (var5.T() != null)
+        if (var5.U() != null)
         {
-            int var6 = var5.T().id;
+            int var6 = var5.U().id;
             int var7 = API.getLiquidForBucket(var6);
             TileTank var8 = (TileTank)var1.getTileEntity(var2, var3, var4);
 
